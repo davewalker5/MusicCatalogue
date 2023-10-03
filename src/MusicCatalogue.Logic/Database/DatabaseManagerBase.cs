@@ -8,7 +8,7 @@ namespace MusicCatalogue.Logic.Database
         protected readonly TextInfo _textInfo = new CultureInfo("en-GB", false).TextInfo;
         protected readonly MusicCatalogueDbContext _context;
 
-        public DatabaseManagerBase(MusicCatalogueDbContext context)
+        protected DatabaseManagerBase(MusicCatalogueDbContext context)
         {
             _context = context;
         }
