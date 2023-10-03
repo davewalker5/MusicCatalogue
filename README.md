@@ -151,6 +151,7 @@ dotnet ef database update -s ../MusicCatalogue.LookupTool/MusicCatalogue.LookupT
 
 To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/MusicCatalogue/issues) page for this project on GitHub.
 
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
