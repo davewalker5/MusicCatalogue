@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Music;
+using MusicCatalogue.Entities.Database;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MusicCatalogue.Entities.Music
+namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
     public class Album

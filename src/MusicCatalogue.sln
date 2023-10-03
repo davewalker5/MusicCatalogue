@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.Logic", "Mus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.Tests", "MusicCatalogue.Tests\MusicCatalogue.Tests.csproj", "{DDDA8422-23AF-4D77-A002-C65AF5D8C060}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicCatalogue.Data", "MusicCatalogue.Data\MusicCatalogue.Data.csproj", "{2B3DB383-3118-489F-8FD7-3235924D255D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.Data", "MusicCatalogue.Data\MusicCatalogue.Data.csproj", "{2B3DB383-3118-489F-8FD7-3235924D255D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Entities.Music;
+using MusicCatalogue.Entities.Database;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Data
@@ -10,6 +10,7 @@ namespace MusicCatalogue.Data
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
@@ -22,6 +23,16 @@ namespace MusicCatalogue.Data
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("USER");
+
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+
+                entity.Property(e => e.UserName).IsRequired().HasColumnName("UserName");
+                entity.Property(e => e.Password).IsRequired().HasColumnName("Password");
+            });
+
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("ARTISTS");

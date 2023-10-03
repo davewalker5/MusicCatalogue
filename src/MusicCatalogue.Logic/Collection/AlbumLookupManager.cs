@@ -1,8 +1,9 @@
 ﻿using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Entities.Music;
+using MusicCatalogue.Entities.Database;
 using Serilog.Core;
 using System.Globalization;
+using MusicCatalogue.Entities.Api;
 
 namespace MusicCatalogue.Logic.Collection
 {
