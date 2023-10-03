@@ -6,6 +6,8 @@ namespace MusicCatalogue.Entities.Config
     [ExcludeFromCodeCoverage]
     public class MusicApplicationSettings
     {
+        public string Secret { get; set; } = "";
+        public int TokenLifespanMinutes { get; set; }
         public Severity MinimumLogLevel { get; set; }
         public string LogFile { get; set; } = "";
         public List<ApiEndpoint> ApiEndpoints { get; set; } = new List<ApiEndpoint>();
