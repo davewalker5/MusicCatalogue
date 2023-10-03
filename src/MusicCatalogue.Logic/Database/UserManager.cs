@@ -11,7 +11,7 @@ namespace MusicCatalogue.Logic.Database
     {
         private readonly Lazy<PasswordHasher<string>> _hasher;
 
-        public UserManager(MusicCatalogueDbContext context) : base(context)
+        internal UserManager(MusicCatalogueDbContext context) : base(context)
         {
             _hasher = new Lazy<PasswordHasher<string>>(() => new PasswordHasher<string>());
         }

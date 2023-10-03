@@ -1,6 +1,7 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Logic.Database;
+using MusicCatalogue.Logic.Factory;
 
 namespace MusicCatalogue.Tests
 {
@@ -18,7 +19,7 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _userManager = new UserManager(context);
+            _userManager = new MusicCatalogueFactory(context).Users;
             _userId = Task.Run(() => _userManager.AddAsync(UserName, Password)).Result.Id;
         }
 

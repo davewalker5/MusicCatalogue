@@ -8,7 +8,7 @@ namespace MusicCatalogue.Logic.Database
 {
     public class AlbumManager : DatabaseManagerBase, IAlbumManager
     {
-        public AlbumManager(MusicCatalogueDbContext context) : base(context)
+        internal AlbumManager(MusicCatalogueDbContext context) : base(context)
         {
         }
 

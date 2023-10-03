@@ -1,6 +1,6 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Database;
+using MusicCatalogue.Logic.Factory;
 
 namespace MusicCatalogue.Tests
 {
@@ -20,10 +20,11 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _manager = new AlbumManager(context);
+            var factory = new MusicCatalogueFactory(context);
+            _manager = factory.Albums;
 
             // Add an artist to the database
-            _artistId = Task.Run(() => new ArtistManager(context).AddAsync(ArtistName)).Result.Id;
+            _artistId = Task.Run(() => factory.Artists.AddAsync(ArtistName)).Result.Id;
             Task.Run(() => _manager.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl)).Wait();
         }
 

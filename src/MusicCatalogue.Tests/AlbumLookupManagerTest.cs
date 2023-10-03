@@ -3,6 +3,7 @@ using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
 using MusicCatalogue.Logic.Database;
+using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
@@ -29,8 +30,7 @@ namespace MusicCatalogue.Tests
 
         private MockHttpClient? _client = null;
         private IAlbumLookupManager? _manager = null;
-        private IArtistManager? _artistManager = null;
-        private IAlbumManager? _albumManager = null;
+        private IMusicCatalogueFactory? _factory = null;
 
         [TestInitialize]
         public void Initialise()
@@ -43,12 +43,10 @@ namespace MusicCatalogue.Tests
 
             // Create the database management classes
             var context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _artistManager = new ArtistManager(context);
-            _albumManager = new AlbumManager(context);
-            var trackManager = new TrackManager(context);
+            _factory = new MusicCatalogueFactory(context);
 
             // Create a lookup manager
-            _manager = new AlbumLookupManager(logger, albumsApi, tracksApi, _artistManager, _albumManager, trackManager);
+            _manager = new AlbumLookupManager(logger, albumsApi, tracksApi, _factory);
         }
 
         [TestMethod]
@@ -114,7 +112,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public void ArtistInDbButAlbumNotInDbTest()
         {
-            Task.Run(() => _artistManager!.AddAsync(ArtistName)).Wait();
+            Task.Run(() => _factory!.Artists.AddAsync(ArtistName)).Wait();
 
             _client!.AddResponse(AlbumResponse);
             _client.AddResponse(TracksResponse);
@@ -140,8 +138,8 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public void ArtistAndAlbumInDbTest()
         {
-            var artistId = Task.Run(() => _artistManager!.AddAsync(ArtistName)).Result.Id;
-            Task.Run(() => _albumManager!.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl)).Wait();
+            var artistId = Task.Run(() => _factory!.Artists.AddAsync(ArtistName)).Result.Id;
+            Task.Run(() => _factory!.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl)).Wait();
             var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
 
             Assert.IsNotNull(album);

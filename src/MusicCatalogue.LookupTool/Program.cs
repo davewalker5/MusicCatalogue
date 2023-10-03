@@ -6,6 +6,7 @@ using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
 using MusicCatalogue.Logic.Config;
 using MusicCatalogue.Logic.Database;
+using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
 using System.Diagnostics;
 using System.Reflection;
@@ -55,14 +56,12 @@ namespace MusicCatalogue.LookupPoC
 
             // Configure the database management classes
             var context = new MusicCatalogueDbContextFactory().CreateDbContext(Array.Empty<string>());
-            var artistManager = new ArtistManager(context);
-            var albumManager = new AlbumManager(context);
-            var trackManager = new TrackManager(context);
+            var factory = new MusicCatalogueFactory(context);
 
             // Configure the APIs
             var albumsApi = new TheAudioDBAlbumsApi(logger, client, albumsEndpoint);
             var tracksApi = new TheAudioDBTracksApi(logger, client, tracksEndpoint);
-            var lookupManager = new AlbumLookupManager(logger, albumsApi, tracksApi, artistManager, albumManager, trackManager);
+            var lookupManager = new AlbumLookupManager(logger, albumsApi, tracksApi, factory);
 
             // Lookup the album and its tracks
             var album = await lookupManager.LookupAlbum(args[0], args[1]);

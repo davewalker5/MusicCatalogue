@@ -1,9 +1,8 @@
-﻿using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Logging;
+﻿using MusicCatalogue.Entities.Api;
 using MusicCatalogue.Entities.Database;
-using Serilog.Core;
+using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 using System.Globalization;
-using MusicCatalogue.Entities.Api;
 
 namespace MusicCatalogue.Logic.Collection
 {
@@ -14,24 +13,18 @@ namespace MusicCatalogue.Logic.Collection
         private readonly IMusicLogger _logger;
         private readonly IAlbumsApi _albumsApi;
         private readonly ITracksApi _tracksApi;
-        private readonly IArtistManager _artistManager;
-        private readonly IAlbumManager _albumManager;
-        private readonly ITrackManager _trackManager;
+        private readonly IMusicCatalogueFactory _factory;
 
         public AlbumLookupManager(
             IMusicLogger logger,
             IAlbumsApi albumsApi,
             ITracksApi tracksApi,
-            IArtistManager artistManager,
-            IAlbumManager albumManager,
-            ITrackManager trackManager)
+            IMusicCatalogueFactory factory)
         {
             _logger = logger;
             _albumsApi = albumsApi;
             _tracksApi = tracksApi;
-            _artistManager = artistManager;
-            _albumManager = albumManager;
-            _trackManager = trackManager;
+            _factory = factory;
         }
 
         /// <summary>
@@ -84,20 +77,20 @@ namespace MusicCatalogue.Logic.Collection
         {
             // Save the artist details, first. As with all the database calls in this method, the
             // logic to prevent duplication of artists is in the management class
-            var artist = await _artistManager.AddAsync(template!.Artist!.Name);
+            var artist = await _factory.Artists.AddAsync(template!.Artist!.Name);
 
             // Save the album details
-            var album = await _albumManager.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl);
+            var album = await _factory.Albums.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl);
 
             // Save the track details
             foreach (var track in template.Tracks!)
             {
-                await _trackManager.AddAsync(album.Id, track.Title, track.Number, track.Duration);
+                await _factory.Tracks.AddAsync(album.Id, track.Title, track.Number, track.Duration);
             }
 
             // Retrieve the newly saved album. This will return an object with the related objects
             // attached and all IDs filled in
-            album = await _albumManager.GetAsync(x => x.Id == album.Id);
+            album = await _factory.Albums.GetAsync(x => x.Id == album.Id);
             return album;
         }
 
@@ -113,12 +106,12 @@ namespace MusicCatalogue.Logic.Collection
 
             // Check the artist exists
             _logger.LogMessage(Severity.Info, $"Looking for artist '{artistName}' in the database");
-            var artist = await _artistManager.GetAsync(x => x.Name == artistName);
+            var artist = await _factory.Artists.GetAsync(x => x.Name == artistName);
             if (artist != null)
             {
                 // Look for an album with the specified title by that artist
                 _logger.LogMessage(Severity.Info, $"Looking for album '{albumTitle}' in the database");
-                album = await _albumManager.GetAsync(x => (x.ArtistId == artist.Id) && (x.Title == albumTitle));
+                album = await _factory.Albums.GetAsync(x => (x.ArtistId == artist.Id) && (x.Title == albumTitle));
             }
 
             return album;
