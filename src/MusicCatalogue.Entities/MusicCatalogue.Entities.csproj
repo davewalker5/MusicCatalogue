@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>MusicCatalogue.Entities</PackageId>
+    <PackageVersion>1.0.0.0</PackageVersion>
+    <Authors>Dave Walker</Authors>
+    <Copyright>Copyright (c) Dave Walker 2023</Copyright>
+    <Owners>Dave Walker</Owners>
+    <Summary>Music Catalogue Domain Models</Summary>
+    <PackageTags>Music Catalogue domain models entities</PackageTags>
+    <Title>Music Catalogue Domain Models</Title>
+    <Description>Music Catalogue Domain Models</Description>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageProjectUrl>https://github.com/davewalker5/MusicCatalogue</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <ReleaseVersion>1.0.0.0</ReleaseVersion>
+  </PropertyGroup>
+
+</Project>

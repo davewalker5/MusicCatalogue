@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MusicCatalogue.LookupTool": {
+      "commandName": "Project",
+      "commandLineArgs": "\"Dire Straits\" \"Brothers In Arms\""
+    }
+  }
+}
