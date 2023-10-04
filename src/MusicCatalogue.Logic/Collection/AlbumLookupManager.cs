@@ -1,36 +1,28 @@
-﻿using MusicCatalogue.Entities.Interfaces;
+﻿using MusicCatalogue.Entities.Api;
+using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Entities.Music;
-using Serilog.Core;
-using System.Globalization;
+using MusicCatalogue.Logic.Database;
 
 namespace MusicCatalogue.Logic.Collection
 {
     public class AlbumLookupManager : IAlbumLookupManager
     {
-        private readonly TextInfo _textInfo = new CultureInfo("en-GB", false).TextInfo;
-
         private readonly IMusicLogger _logger;
         private readonly IAlbumsApi _albumsApi;
         private readonly ITracksApi _tracksApi;
-        private readonly IArtistManager _artistManager;
-        private readonly IAlbumManager _albumManager;
-        private readonly ITrackManager _trackManager;
+        private readonly IMusicCatalogueFactory _factory;
 
         public AlbumLookupManager(
             IMusicLogger logger,
             IAlbumsApi albumsApi,
             ITracksApi tracksApi,
-            IArtistManager artistManager,
-            IAlbumManager albumManager,
-            ITrackManager trackManager)
+            IMusicCatalogueFactory factory)
         {
             _logger = logger;
             _albumsApi = albumsApi;
             _tracksApi = tracksApi;
-            _artistManager = artistManager;
-            _albumManager = albumManager;
-            _trackManager = trackManager;
+            _factory = factory;
         }
 
         /// <summary>
@@ -42,8 +34,8 @@ namespace MusicCatalogue.Logic.Collection
         public async Task<Album?> LookupAlbum(string artistName, string albumTitle)
         {
             // Convert the parameters to title case to match the case used to persist data
-            artistName = _textInfo.ToTitleCase(artistName);
-            albumTitle = _textInfo.ToTitleCase(albumTitle);
+            artistName = StringCleaner.Clean(artistName);
+            albumTitle = StringCleaner.Clean(albumTitle);
 
             // See if the album details are held locally, first
             Album? album = await LookupAlbumUsingDb(artistName, albumTitle);
@@ -61,7 +53,7 @@ namespace MusicCatalogue.Logic.Collection
                 if (numberOfTracks > 0)
                 {
                     // Got valid details from the API so store them locally
-                    album = await StoreAlbumLocally(album!);
+                    album = await StoreAlbumLocally(artistName, album!);
                 }
                 else
                 {
@@ -77,26 +69,27 @@ namespace MusicCatalogue.Logic.Collection
         /// <summary>
         /// Store an album locally
         /// </summary>
+        /// <param name="artistName"></param>
         /// <param name="template"></param>
         /// <returns></returns>
-        private async Task<Album> StoreAlbumLocally(Album template)
+        private async Task<Album> StoreAlbumLocally(string artistName, Album template)
         {
             // Save the artist details, first. As with all the database calls in this method, the
             // logic to prevent duplication of artists is in the management class
-            var artist = await _artistManager.AddAsync(template!.Artist!.Name);
+            var artist = await _factory.Artists.AddAsync(artistName);
 
             // Save the album details
-            var album = await _albumManager.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl);
+            var album = await _factory.Albums.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl);
 
             // Save the track details
             foreach (var track in template.Tracks!)
             {
-                await _trackManager.AddAsync(album.Id, track.Title, track.Number, track.Duration);
+                await _factory.Tracks.AddAsync(album.Id, track.Title, track.Number, track.Duration);
             }
 
             // Retrieve the newly saved album. This will return an object with the related objects
             // attached and all IDs filled in
-            album = await _albumManager.GetAsync(x => x.Id == album.Id);
+            album = await _factory.Albums.GetAsync(x => x.Id == album.Id);
             return album;
         }
 
@@ -112,12 +105,21 @@ namespace MusicCatalogue.Logic.Collection
 
             // Check the artist exists
             _logger.LogMessage(Severity.Info, $"Looking for artist '{artistName}' in the database");
-            var artist = await _artistManager.GetAsync(x => x.Name == artistName);
+            var artist = await _factory.Artists.GetAsync(x => x.Name == artistName);
             if (artist != null)
             {
                 // Look for an album with the specified title by that artist
                 _logger.LogMessage(Severity.Info, $"Looking for album '{albumTitle}' in the database");
-                album = await _albumManager.GetAsync(x => (x.ArtistId == artist.Id) && (x.Title == albumTitle));
+                album = await _factory.Albums.GetAsync(x => (x.ArtistId == artist.Id) && (x.Title == albumTitle));
+                if (album != null)
+                {
+                    _logger.LogMessage(Severity.Info, $"Album '{album.Id} - {album.Title}' found locally");
+                }
+                else
+                {
+                    _logger.LogMessage(Severity.Info, $"Album '{albumTitle}' not found locally");
+
+                }
             }
 
             return album;
@@ -172,11 +174,7 @@ namespace MusicCatalogue.Logic.Collection
                 Title = GetPropertyValue(properties, ApiProperty.Title),
                 Released = releasedIsValid ? released : null,
                 Genre = GetPropertyValue(properties, ApiProperty.Genre),
-                CoverUrl = GetPropertyValue(properties, ApiProperty.CoverImageUrl),
-                Artist = new Artist
-                {
-                    Name = GetPropertyValue(properties, ApiProperty.Artist)
-                }
+                CoverUrl = GetPropertyValue(properties, ApiProperty.CoverImageUrl)
             };
         }
 

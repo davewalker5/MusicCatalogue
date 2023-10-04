@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MusicCatalogue.Entities.Music
+namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
     public class Album
@@ -10,9 +10,7 @@ namespace MusicCatalogue.Entities.Music
         [Key]
         public int Id { get; set; }
 
-
         [ForeignKey("Artist.Id")]
-        [Required]
         public int ArtistId { get; set; }
 
         [Required]
@@ -25,8 +23,6 @@ namespace MusicCatalogue.Entities.Music
         public string? CoverUrl { get; set; } = "";
 
 #pragma warning disable CS8618
-        public Artist Artist { get; set; }
-
         public ICollection<Track> Tracks { get; set; }
 #pragma warning restore CS8618
     }

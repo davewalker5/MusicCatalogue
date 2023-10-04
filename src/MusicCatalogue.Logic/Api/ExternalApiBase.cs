@@ -1,8 +1,8 @@
 ﻿using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Entities.Music;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Nodes;
+using MusicCatalogue.Entities.Api;
 
 namespace MusicCatalogue.Logic.Api
 {

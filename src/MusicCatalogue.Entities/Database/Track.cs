@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MusicCatalogue.Entities.Music
+namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
     public class Track
@@ -20,10 +20,6 @@ namespace MusicCatalogue.Entities.Music
         public string Title { get; set; } = "";
 
         public int? Duration { get; set; }
-
-#pragma warning disable CS8618
-        public Album Album { get; set; }
-#pragma warning restore CS8618
 
         /// <summary>
         /// Format the duration in MM:SS format

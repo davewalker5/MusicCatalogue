@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Entities.Music;
+using MusicCatalogue.Entities.Database;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Data
@@ -10,9 +10,11 @@ namespace MusicCatalogue.Data
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
 
@@ -22,16 +24,22 @@ namespace MusicCatalogue.Data
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("USER");
+
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
+
+                entity.Property(e => e.UserName).IsRequired().HasColumnName("UserName");
+                entity.Property(e => e.Password).IsRequired().HasColumnName("Password");
+            });
+
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("ARTISTS");
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
-
-                entity.HasMany(e => e.Albums)
-                    .WithOne(e => e.Artist)
-                    .HasForeignKey(e => e.ArtistId);
             });
 
             modelBuilder.Entity<Album>(entity =>
@@ -44,10 +52,6 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Released).HasColumnName("Released");
                 entity.Property(e => e.Genre).HasColumnName("Genre");
                 entity.Property(e => e.CoverUrl).HasColumnName("CoverUrl");
-
-                entity.HasMany(e => e.Tracks)
-                    .WithOne(e => e.Album)
-                    .HasForeignKey(e => e.AlbumId);
             });
 
             modelBuilder.Entity<Track>(entity =>

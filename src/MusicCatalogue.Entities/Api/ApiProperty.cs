@@ -1,4 +1,4 @@
-﻿namespace MusicCatalogue.Entities.Music
+﻿namespace MusicCatalogue.Entities.Api
 {
     public enum ApiProperty
     {

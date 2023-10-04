@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MusicCatalogue.Entities.Music
+namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
     public class Artist

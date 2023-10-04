@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Music;
+using MusicCatalogue.Entities.Database;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database
 {
     public class TrackManager : DatabaseManagerBase, ITrackManager
     {
-        public TrackManager(MusicCatalogueDbContext context) : base(context)
+        internal TrackManager(MusicCatalogueDbContext context) : base(context)
         {
         }
 
@@ -33,8 +33,6 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<List<Track>> ListAsync(Expression<Func<Track, bool>> predicate)
             => await _context.Tracks
-                             .Include(x => x.Album)
-                             .ThenInclude(y => y.Artist)
                              .Where(predicate)
                              .ToListAsync();
 
@@ -55,7 +53,7 @@ namespace MusicCatalogue.Logic.Database
                 track = new Track
                 {
                     AlbumId = albumId,
-                    Title = _textInfo.ToTitleCase(title),
+                    Title = StringCleaner.Clean(title),
                     Number = number,
                     Duration = duration
                 };

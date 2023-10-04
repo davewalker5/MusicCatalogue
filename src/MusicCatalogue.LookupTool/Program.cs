@@ -5,9 +5,10 @@ using MusicCatalogue.Logic.Api;
 using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
 using MusicCatalogue.Logic.Config;
-using MusicCatalogue.Logic.Database;
+using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 
 namespace MusicCatalogue.LookupPoC
@@ -24,7 +25,7 @@ namespace MusicCatalogue.LookupPoC
             }
 
             // Read the application config file
-            var settings = new ConfigReader<MusicApplicationSettings>().Read("appsettings.json");
+            var settings = new MusicCatalogueConfigReader().Read("appsettings.json");
 
             // Configure the log file
             var logger = new FileLogger();
@@ -55,22 +56,24 @@ namespace MusicCatalogue.LookupPoC
 
             // Configure the database management classes
             var context = new MusicCatalogueDbContextFactory().CreateDbContext(Array.Empty<string>());
-            var artistManager = new ArtistManager(context);
-            var albumManager = new AlbumManager(context);
-            var trackManager = new TrackManager(context);
+            var factory = new MusicCatalogueFactory(context);
 
             // Configure the APIs
             var albumsApi = new TheAudioDBAlbumsApi(logger, client, albumsEndpoint);
             var tracksApi = new TheAudioDBTracksApi(logger, client, tracksEndpoint);
-            var lookupManager = new AlbumLookupManager(logger, albumsApi, tracksApi, artistManager, albumManager, trackManager);
+            var lookupManager = new AlbumLookupManager(logger, albumsApi, tracksApi, factory);
 
             // Lookup the album and its tracks
             var album = await lookupManager.LookupAlbum(args[0], args[1]);
             if (album != null)
             {
+                // Convert the artist name to title case for display
+                TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+                var artistName = textInfo.ToTitleCase(args[0]);
+
                 // Dump the album details
                 Console.WriteLine($"Title: {album.Title}");
-                Console.WriteLine($"Artist: {album.Artist!.Name}");
+                Console.WriteLine($"Artist: {artistName}");
                 Console.WriteLine($"Released: {album.Released}");
                 Console.WriteLine($"Genre: {album.Genre}");
                 Console.WriteLine($"Cover: {album.CoverUrl}");

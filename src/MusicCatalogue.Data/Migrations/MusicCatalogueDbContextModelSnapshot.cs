@@ -19,7 +19,7 @@ namespace MusicCatalogue.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.10");
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Album", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Album", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace MusicCatalogue.Data.Migrations
                     b.ToTable("ALBUMS", (string)null);
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Artist", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Artist", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace MusicCatalogue.Data.Migrations
                     b.ToTable("ARTISTS", (string)null);
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Track", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,9 +102,31 @@ namespace MusicCatalogue.Data.Migrations
                     b.ToTable("TRACKS", (string)null);
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Album", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.User", b =>
                 {
-                    b.HasOne("MusicCatalogue.Entities.Music.Artist", "Artist")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Password");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("UserName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("USER", (string)null);
+                });
+
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Album", b =>
+                {
+                    b.HasOne("MusicCatalogue.Entities.Database.Artist", "Artist")
                         .WithMany("Albums")
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -113,9 +135,9 @@ namespace MusicCatalogue.Data.Migrations
                     b.Navigation("Artist");
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Track", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>
                 {
-                    b.HasOne("MusicCatalogue.Entities.Music.Album", "Album")
+                    b.HasOne("MusicCatalogue.Entities.Database.Album", "Album")
                         .WithMany("Tracks")
                         .HasForeignKey("AlbumId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -124,12 +146,12 @@ namespace MusicCatalogue.Data.Migrations
                     b.Navigation("Album");
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Album", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Album", b =>
                 {
                     b.Navigation("Tracks");
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Music.Artist", b =>
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Artist", b =>
                 {
                     b.Navigation("Albums");
                 });

@@ -1,6 +1,6 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Database;
+using MusicCatalogue.Logic.Factory;
 
 namespace MusicCatalogue.Tests
 {
@@ -24,13 +24,14 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
+            var factory = new MusicCatalogueFactory(context);
 
             // Set up an artist and album for the tracks to belong to
-            _artistId = Task.Run(() => new ArtistManager(context).AddAsync(ArtistName)).Result.Id;
-            _albumId = Task.Run(() => new AlbumManager(context).AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl)).Result.Id;
+            _artistId = Task.Run(() => factory.Artists.AddAsync(ArtistName)).Result.Id;
+            _albumId = Task.Run(() => factory.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl)).Result.Id;
 
             // Create a track manager and add a test track
-            _manager = new TrackManager(context);
+            _manager = factory.Tracks;
             Task.Run(() => _manager.AddAsync(_albumId, TrackTitle, TrackNumber, TrackDuration)).Wait();
         }
 
@@ -52,12 +53,6 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(TrackTitle, track.Title);
             Assert.AreEqual(TrackNumber, track.Number);
             Assert.AreEqual(TrackDuration, track.Duration);
-
-            Assert.IsNotNull(track.Album);
-            Assert.AreEqual(AlbumTitle, track.Album.Title);
-
-            Assert.IsNotNull(track.Album.Artist);
-            Assert.AreEqual(ArtistName, track.Album.Artist.Name);
         }
 
         [TestMethod]

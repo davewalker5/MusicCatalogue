@@ -1,4 +1,4 @@
-﻿using MusicCatalogue.Entities.Music;
+﻿using MusicCatalogue.Entities.Api;
 
 namespace MusicCatalogue.Entities.Interfaces
 {

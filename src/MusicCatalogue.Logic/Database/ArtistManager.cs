@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Music;
+using MusicCatalogue.Entities.Database;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database
 {
     public class ArtistManager : DatabaseManagerBase, IArtistManager
     {
-        public ArtistManager(MusicCatalogueDbContext context) : base(context)
+        internal ArtistManager(MusicCatalogueDbContext context) : base(context)
         {
         }
 
@@ -32,7 +32,10 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="predicate"></param>
         /// <returns></returns>
         public async Task<List<Artist>> ListAsync(Expression<Func<Artist, bool>> predicate)
-            => await _context.Artists.Include(x => x.Albums).Where(predicate).ToListAsync();
+            => await _context.Artists
+                             .Include(x => x.Albums)
+                             .Where(predicate)
+                             .ToListAsync();
 
         /// <summary>
         /// Add an artist, if they doesn't already exist
@@ -47,7 +50,7 @@ namespace MusicCatalogue.Logic.Database
             {
                 artist = new Artist
                 {
-                    Name = _textInfo.ToTitleCase(name)
+                    Name = StringCleaner.Clean(name)
                 };
                 await _context.Artists.AddAsync(artist);
                 await _context.SaveChangesAsync();
