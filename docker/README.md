@@ -47,9 +47,9 @@ Similarly, the port number "7295" can be replaced with any available port on the
 
 The description of the container parameters, above, specifies that a folder containing the SQLite database file and the external API key file is mounted in the running container, using the "-v" parameter.
 
-That folder should contain a SQLite database that has been created using the instructions in the [Music Catalogue README](https://github.com/davewalker5/MusicCatalogue).
+That SQLite database should be created using the instructions in the [Music Catalogue README](https://github.com/davewalker5/MusicCatalogue) and should be called "musiccatalogue.db".
 
-The folder containing the "musiccatalogue.db" file can then be passed to the "docker run" command using the "-v" parameter.
+The key file should be a plain text file called "radpidapi.key" and should contain a single line with the RapidAPI key on it. For further details see the [Music Catalogue README](https://github.com/davewalker5/MusicCatalogue).
 
 #### Running the Image
 
