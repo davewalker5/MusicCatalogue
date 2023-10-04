@@ -5,12 +5,12 @@ using MusicCatalogue.Logic.Config;
 namespace MusicCatalogue.Tests
 {
     [TestClass]
-    public class ConfigReaderTest
+    public class MusicCatalogueConfigReaderTest
     {
         [TestMethod]
         public void ReadAppSettingsTest()
         {
-            var settings = new ConfigReader<MusicApplicationSettings>().Read("appsettings.json");
+            var settings = new MusicCatalogueConfigReader().Read("appsettings.json");
 
             Assert.AreEqual("MusicCatalogue.log", settings?.LogFile);
             Assert.AreEqual(Severity.Info, settings?.MinimumLogLevel);
@@ -25,6 +25,17 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(1, settings?.ApiServiceKeys.Count);
             Assert.AreEqual(ApiServiceType.TheAudioDB, settings?.ApiServiceKeys.First().Service);
             Assert.AreEqual("my-key", settings?.ApiServiceKeys.First().Key);
+        }
+
+        [TestMethod]
+        public void SeparateApiKeyFileTest()
+        {
+            var settings = new MusicCatalogueConfigReader().Read("separateapikeyappsettings.json");
+
+            Assert.IsNotNull(settings?.ApiServiceKeys);
+            Assert.AreEqual(1, settings?.ApiServiceKeys.Count);
+            Assert.AreEqual(ApiServiceType.TheAudioDB, settings?.ApiServiceKeys.First().Service);
+            Assert.AreEqual("my-separate-key", settings?.ApiServiceKeys.First().Key);
         }
     }
 }

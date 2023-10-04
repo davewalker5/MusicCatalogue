@@ -14,10 +14,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="apikey.txt" />
     <None Remove="appsettings.json" />
+    <None Remove="separateapikeyappsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="apikey.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="separateapikeyappsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

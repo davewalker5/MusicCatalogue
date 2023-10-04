@@ -1,0 +1,10 @@
+{
+  "ApplicationSettings": {
+    "ApiServiceKeys": [
+      {
+        "Service": "TheAudioDB",
+        "Key": "apikey.txt"
+      }
+    ]
+  }
+}

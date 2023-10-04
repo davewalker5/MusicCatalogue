@@ -25,7 +25,7 @@ namespace MusicCatalogue.LookupPoC
             }
 
             // Read the application config file
-            var settings = new ConfigReader<MusicApplicationSettings>().Read("appsettings.json");
+            var settings = new MusicCatalogueConfigReader().Read("appsettings.json");
 
             // Configure the log file
             var logger = new FileLogger();

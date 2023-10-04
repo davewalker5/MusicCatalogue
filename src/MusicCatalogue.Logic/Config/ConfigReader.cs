@@ -3,7 +3,7 @@ using MusicCatalogue.Entities.Interfaces;
 
 namespace MusicCatalogue.Logic.Config
 {
-    public class ConfigReader<T> : IConfigReader<T> where T : class
+    public abstract class ConfigReader<T> : IConfigReader<T> where T : class
     {
         /// <summary>
         /// Load and return the application settings from the named JSON-format application settings file

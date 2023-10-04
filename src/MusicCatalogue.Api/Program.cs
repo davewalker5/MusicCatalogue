@@ -9,6 +9,7 @@ using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Logic.Api;
 using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
+using MusicCatalogue.Logic.Config;
 using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
 using System.Text;
@@ -36,6 +37,7 @@ namespace MusicCatalogue.Api
             IConfigurationSection section = configuration.GetSection("ApplicationSettings");
             builder.Services.Configure<MusicApplicationSettings>(section);
             var settings = section.Get<MusicApplicationSettings>();
+            ApiKeyResolver.ResolveAllApiKeys(settings!);
 
             // Configure the DB context
             builder.Services.AddScoped<MusicCatalogueDbContext>();
