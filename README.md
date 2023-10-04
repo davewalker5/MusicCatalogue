@@ -33,7 +33,11 @@ MusicCatalogue.LookupTool "John Coltrane" "Blue Train"
 
 ## Web Service
 
-- Under development
+- The REST Web Service implements endpoints for
+  - Retrieving artist details from the local database
+  - Retrieving album and track details from the local database
+  - Looking up albums via the external APIs (see below)
+- The external lookup uses the "album lookup" algorithm described below
 
 ## GUI
 
@@ -150,7 +154,6 @@ dotnet ef database update -s ../MusicCatalogue.LookupTool/MusicCatalogue.LookupT
 ## Feedback
 
 To file issues or suggestions, please use the [Issues](https://github.com/davewalker5/MusicCatalogue/issues) page for this project on GitHub.
-
 
 ## License
 
