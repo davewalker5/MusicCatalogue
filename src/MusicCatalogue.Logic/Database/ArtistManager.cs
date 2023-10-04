@@ -50,7 +50,7 @@ namespace MusicCatalogue.Logic.Database
             {
                 artist = new Artist
                 {
-                    Name = _textInfo.ToTitleCase(name)
+                    Name = StringCleaner.Clean(name)
                 };
                 await _context.Artists.AddAsync(artist);
                 await _context.SaveChangesAsync();

@@ -6,12 +6,15 @@ using MusicCatalogue.Api.Services;
 using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Config;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 using MusicCatalogue.Logic.Api;
 using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
 using MusicCatalogue.Logic.Config;
 using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
+using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 
 namespace MusicCatalogue.Api
@@ -55,13 +58,19 @@ namespace MusicCatalogue.Api
             // to set up the client headers
             var uri = new Uri(albumsEndpoint);
 
-            // Configure the file logger
-            builder.Services.AddSingleton<IMusicLogger>(x =>
-            {
-                var logger = new FileLogger();
-                logger.Initialise(settings!.LogFile, settings.MinimumLogLevel);
-                return logger;
-            });
+            // Get the version number and application title
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var title = $"Music Catalogue Lookup Tool v{info.FileVersion}";
+
+            // Create the file logger and log the startup messages
+            var logger = new FileLogger();
+            logger.Initialise(settings!.LogFile, settings.MinimumLogLevel);
+            logger.LogMessage(Severity.Info, new string('=', 80));
+            logger.LogMessage(Severity.Info, title);
+
+            // Register the logger with the DI framework
+            builder.Services.AddSingleton<IMusicLogger>(x => logger);
 
             // Configure the HTTP client used by the external APIs
             builder.Services.AddSingleton<IMusicHttpClient>(x =>

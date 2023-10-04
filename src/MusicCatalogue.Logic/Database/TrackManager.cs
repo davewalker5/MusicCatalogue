@@ -53,7 +53,7 @@ namespace MusicCatalogue.Logic.Database
                 track = new Track
                 {
                     AlbumId = albumId,
-                    Title = _textInfo.ToTitleCase(title),
+                    Title = StringCleaner.Clean(title),
                     Number = number,
                     Duration = duration
                 };

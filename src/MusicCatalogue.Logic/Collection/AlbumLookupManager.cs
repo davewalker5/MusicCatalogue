@@ -2,14 +2,12 @@
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using System.Globalization;
+using MusicCatalogue.Logic.Database;
 
 namespace MusicCatalogue.Logic.Collection
 {
     public class AlbumLookupManager : IAlbumLookupManager
     {
-        private readonly TextInfo _textInfo = new CultureInfo("en-GB", false).TextInfo;
-
         private readonly IMusicLogger _logger;
         private readonly IAlbumsApi _albumsApi;
         private readonly ITracksApi _tracksApi;
@@ -36,8 +34,8 @@ namespace MusicCatalogue.Logic.Collection
         public async Task<Album?> LookupAlbum(string artistName, string albumTitle)
         {
             // Convert the parameters to title case to match the case used to persist data
-            artistName = _textInfo.ToTitleCase(artistName);
-            albumTitle = _textInfo.ToTitleCase(albumTitle);
+            artistName = StringCleaner.Clean(artistName);
+            albumTitle = StringCleaner.Clean(albumTitle);
 
             // See if the album details are held locally, first
             Album? album = await LookupAlbumUsingDb(artistName, albumTitle);
@@ -113,6 +111,15 @@ namespace MusicCatalogue.Logic.Collection
                 // Look for an album with the specified title by that artist
                 _logger.LogMessage(Severity.Info, $"Looking for album '{albumTitle}' in the database");
                 album = await _factory.Albums.GetAsync(x => (x.ArtistId == artist.Id) && (x.Title == albumTitle));
+                if (album != null)
+                {
+                    _logger.LogMessage(Severity.Info, $"Album '{album.Id} - {album.Title}' found locally");
+                }
+                else
+                {
+                    _logger.LogMessage(Severity.Info, $"Album '{albumTitle}' not found locally");
+
+                }
             }
 
             return album;

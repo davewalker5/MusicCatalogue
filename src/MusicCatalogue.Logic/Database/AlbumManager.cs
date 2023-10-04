@@ -55,7 +55,7 @@ namespace MusicCatalogue.Logic.Database
                 album = new Album
                 {
                     ArtistId = artistId,
-                    Title = _textInfo.ToTitleCase(title),
+                    Title = StringCleaner.Clean(title),
                     Released = released,
                     Genre = genre,
                     CoverUrl = coverUrl
