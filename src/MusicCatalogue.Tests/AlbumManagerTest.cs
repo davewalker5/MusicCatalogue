@@ -47,7 +47,6 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(Released, album.Released);
             Assert.AreEqual(Genre, album.Genre);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
-            Assert.AreEqual(ArtistName, album.Artist!.Name);
         }
 
         [TestMethod]

@@ -53,12 +53,6 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(TrackTitle, track.Title);
             Assert.AreEqual(TrackNumber, track.Number);
             Assert.AreEqual(TrackDuration, track.Duration);
-
-            Assert.IsNotNull(track.Album);
-            Assert.AreEqual(AlbumTitle, track.Album.Title);
-
-            Assert.IsNotNull(track.Album.Artist);
-            Assert.AreEqual(ArtistName, track.Album.Artist.Name);
         }
 
         [TestMethod]

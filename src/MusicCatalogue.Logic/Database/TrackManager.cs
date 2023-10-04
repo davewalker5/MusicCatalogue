@@ -33,8 +33,6 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<List<Track>> ListAsync(Expression<Func<Track, bool>> predicate)
             => await _context.Tracks
-                             .Include(x => x.Album)
-                             .ThenInclude(y => y.Artist)
                              .Where(predicate)
                              .ToListAsync();
 

@@ -14,6 +14,7 @@ namespace MusicCatalogue.Data
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
 
@@ -39,10 +40,6 @@ namespace MusicCatalogue.Data
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
-
-                entity.HasMany(e => e.Albums)
-                    .WithOne(e => e.Artist)
-                    .HasForeignKey(e => e.ArtistId);
             });
 
             modelBuilder.Entity<Album>(entity =>
@@ -55,10 +52,6 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Released).HasColumnName("Released");
                 entity.Property(e => e.Genre).HasColumnName("Genre");
                 entity.Property(e => e.CoverUrl).HasColumnName("CoverUrl");
-
-                entity.HasMany(e => e.Tracks)
-                    .WithOne(e => e.Album)
-                    .HasForeignKey(e => e.AlbumId);
             });
 
             modelBuilder.Entity<Track>(entity =>

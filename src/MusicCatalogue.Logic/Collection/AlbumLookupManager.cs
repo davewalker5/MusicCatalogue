@@ -55,7 +55,7 @@ namespace MusicCatalogue.Logic.Collection
                 if (numberOfTracks > 0)
                 {
                     // Got valid details from the API so store them locally
-                    album = await StoreAlbumLocally(album!);
+                    album = await StoreAlbumLocally(artistName, album!);
                 }
                 else
                 {
@@ -71,13 +71,14 @@ namespace MusicCatalogue.Logic.Collection
         /// <summary>
         /// Store an album locally
         /// </summary>
+        /// <param name="artistName"></param>
         /// <param name="template"></param>
         /// <returns></returns>
-        private async Task<Album> StoreAlbumLocally(Album template)
+        private async Task<Album> StoreAlbumLocally(string artistName, Album template)
         {
             // Save the artist details, first. As with all the database calls in this method, the
             // logic to prevent duplication of artists is in the management class
-            var artist = await _factory.Artists.AddAsync(template!.Artist!.Name);
+            var artist = await _factory.Artists.AddAsync(artistName);
 
             // Save the album details
             var album = await _factory.Albums.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl);
@@ -166,11 +167,7 @@ namespace MusicCatalogue.Logic.Collection
                 Title = GetPropertyValue(properties, ApiProperty.Title),
                 Released = releasedIsValid ? released : null,
                 Genre = GetPropertyValue(properties, ApiProperty.Genre),
-                CoverUrl = GetPropertyValue(properties, ApiProperty.CoverImageUrl),
-                Artist = new Artist
-                {
-                    Name = GetPropertyValue(properties, ApiProperty.Artist)
-                }
+                CoverUrl = GetPropertyValue(properties, ApiProperty.CoverImageUrl)
             };
         }
 

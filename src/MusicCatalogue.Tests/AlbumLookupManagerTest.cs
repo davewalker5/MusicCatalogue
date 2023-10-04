@@ -98,9 +98,6 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(Genre, album.Genre);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
-            Assert.IsNotNull(album.Artist);
-            Assert.AreEqual(ArtistName, album.Artist.Name);
-
             Assert.IsNotNull(album.Tracks);
             Assert.AreEqual(1, album.Tracks.Count);
             Assert.AreEqual("Blue Train", album.Tracks.First().Title);
@@ -124,9 +121,6 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(Genre, album.Genre);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
-            Assert.IsNotNull(album.Artist);
-            Assert.AreEqual(ArtistName, album.Artist.Name);
-
             Assert.IsNotNull(album.Tracks);
             Assert.AreEqual(1, album.Tracks.Count);
             Assert.AreEqual("Blue Train", album.Tracks.First().Title);
@@ -147,9 +141,6 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(Released, album.Released);
             Assert.AreEqual(Genre, album.Genre);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
-
-            Assert.IsNotNull(album.Artist);
-            Assert.AreEqual(ArtistName, album.Artist.Name);
 
             Assert.IsNotNull(album.Tracks);
             Assert.AreEqual(0, album.Tracks.Count);

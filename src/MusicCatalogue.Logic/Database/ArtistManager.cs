@@ -32,7 +32,10 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="predicate"></param>
         /// <returns></returns>
         public async Task<List<Artist>> ListAsync(Expression<Func<Artist, bool>> predicate)
-            => await _context.Artists.Where(predicate).ToListAsync();
+            => await _context.Artists
+                             .Include(x => x.Albums)
+                             .Where(predicate)
+                             .ToListAsync();
 
         /// <summary>
         /// Add an artist, if they doesn't already exist

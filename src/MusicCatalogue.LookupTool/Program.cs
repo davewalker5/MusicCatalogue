@@ -5,10 +5,10 @@ using MusicCatalogue.Logic.Api;
 using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
 using MusicCatalogue.Logic.Config;
-using MusicCatalogue.Logic.Database;
 using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 
 namespace MusicCatalogue.LookupPoC
@@ -67,9 +67,13 @@ namespace MusicCatalogue.LookupPoC
             var album = await lookupManager.LookupAlbum(args[0], args[1]);
             if (album != null)
             {
+                // Convert the artist name to title case for display
+                TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+                var artistName = textInfo.ToTitleCase(args[0]);
+
                 // Dump the album details
                 Console.WriteLine($"Title: {album.Title}");
-                Console.WriteLine($"Artist: {album.Artist!.Name}");
+                Console.WriteLine($"Artist: {artistName}");
                 Console.WriteLine($"Released: {album.Released}");
                 Console.WriteLine($"Genre: {album.Genre}");
                 Console.WriteLine($"Cover: {album.CoverUrl}");

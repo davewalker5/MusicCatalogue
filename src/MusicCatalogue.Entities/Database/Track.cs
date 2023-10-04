@@ -21,10 +21,6 @@ namespace MusicCatalogue.Entities.Database
 
         public int? Duration { get; set; }
 
-#pragma warning disable CS8618
-        public Album Album { get; set; }
-#pragma warning restore CS8618
-
         /// <summary>
         /// Format the duration in MM:SS format
         /// </summary>

@@ -34,7 +34,7 @@ namespace MusicCatalogue.Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Artist>> GetArtistsAsync(int id)
+        public async Task<ActionResult<Artist>> GetArtistByIdAsync(int id)
         {
             var artist = await _factory.Artists.GetAsync(x => x.Id == id);
 
