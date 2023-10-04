@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using MusicCatalogue.Api.Interfaces;
 using MusicCatalogue.Entities.Config;
 using MusicCatalogue.Entities.Database;
-using MusicCatalogue.Logic.Factory;
+using MusicCatalogue.Entities.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,10 +12,10 @@ namespace MusicCatalogue.Api.Services
 {
     public class UserService : IUserService
     {
-        private readonly MusicCatalogueFactory _factory;
+        private readonly IMusicCatalogueFactory _factory;
         private readonly MusicApplicationSettings _settings;
 
-        public UserService(MusicCatalogueFactory factory, IOptions<MusicApplicationSettings> settings)
+        public UserService(IMusicCatalogueFactory factory, IOptions<MusicApplicationSettings> settings)
         {
             _factory = factory;
             _settings = settings.Value;

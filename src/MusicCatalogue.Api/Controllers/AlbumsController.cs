@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
-using MusicCatalogue.Logic.Factory;
+using MusicCatalogue.Entities.Interfaces;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -11,9 +11,9 @@ namespace MusicCatalogue.Api.Controllers
     [Route("[controller]")]
     public class AlbumsController : Controller
     {
-        private readonly MusicCatalogueFactory _factory;
+        private readonly IMusicCatalogueFactory _factory;
 
-        public AlbumsController(MusicCatalogueFactory factory)
+        public AlbumsController(IMusicCatalogueFactory factory)
         {
             _factory = factory;
         }

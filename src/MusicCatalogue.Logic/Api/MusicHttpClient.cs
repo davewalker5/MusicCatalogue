@@ -23,10 +23,7 @@ namespace MusicCatalogue.Logic.Api
                 {
                     lock (_lock)
                     {
-                        if (_instance == null)
-                        {
-                            _instance = new MusicHttpClient();
-                        }
+                        _instance ??= new MusicHttpClient();
                     }
                 }
 
