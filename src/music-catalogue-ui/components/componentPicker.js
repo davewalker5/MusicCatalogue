@@ -1,7 +1,7 @@
 import pages from "../helpers/navigation";
 
-const ComponentPicker = ({ currentNavLocation }) => {
-  switch (currentNavLocation) {
+const ComponentPicker = ({ currentPage }) => {
+  switch (currentPage) {
     case pages.artists:
       return <span></span>;
     case pages.albums:
