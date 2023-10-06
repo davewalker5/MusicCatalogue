@@ -15,7 +15,8 @@ namespace MusicCatalogue.Tests
         public void TestInitialise()
         {
             _parser = new CommandLineParser();
-            _parser.Add(CommandLineOptionType.Lookup, "--lookup", "-l", "Lookup an album and display its details", 2, 2);
+            _parser.Add(CommandLineOptionType.Lookup, true, "--lookup", "-l", "Lookup an album and display its details", 2, 2);
+            _parser.Add(CommandLineOptionType.Import, true, "--import", "-i", "Import data from a CSV format file", 1, 1);
         }
 
         [TestMethod]
@@ -88,21 +89,29 @@ namespace MusicCatalogue.Tests
         [ExpectedException(typeof(DuplicateOptionException))]
         public void DuplicateOptionTypeFailsTest()
         {
-            _parser!.Add(CommandLineOptionType.Lookup, "--other-lookup", "-ol", "Duplicate option type", 2, 2);
+            _parser!.Add(CommandLineOptionType.Lookup, true, "--other-lookup", "-ol", "Duplicate option type", 2, 2);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DuplicateOptionException))]
         public void DuplicateOptionNameFailsTest()
         {
-            _parser!.Add(CommandLineOptionType.Unknown, "--lookup", "-ol", "Duplicate option name", 2, 2);
+            _parser!.Add(CommandLineOptionType.Unknown, true, "--lookup", "-ol", "Duplicate option name", 2, 2);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DuplicateOptionException))]
         public void DuplicateOptionShortNameFailsTest()
         {
-            _parser!.Add(CommandLineOptionType.Unknown, "--other-lookup", "-l", "Duplicate option shortname", 2, 2);
+            _parser!.Add(CommandLineOptionType.Unknown, true, "--other-lookup", "-l", "Duplicate option shortname", 2, 2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MultipleOperationsException))]
+        public void MultipleOperationsFailsTest()
+        {
+            string[] args = new string[] { "--lookup", "The Beatles", "Let It Be", "--import", "a_file.csv" };
+            _parser!.Parse(args);
         }
     }
 }

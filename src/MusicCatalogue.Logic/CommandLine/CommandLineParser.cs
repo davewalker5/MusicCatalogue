@@ -12,12 +12,13 @@ namespace MusicCatalogue.Logic.CommandLine
         /// Add an option to the available command line options
         /// </summary>
         /// <param name="optionType"></param>
+        /// <param name="isOperation"></param>
         /// <param name="name"></param>
         /// <param name="shortName"></param>
         /// <param name="description"></param>
         /// <param name="minimumNumberOfValues"></param>
         /// <param name="maximumNumberOfValues"></param>
-        public void Add(CommandLineOptionType optionType, string name, string shortName, string description, int minimumNumberOfValues, int maximumNumberOfValues)
+        public void Add(CommandLineOptionType optionType, bool isOperation, string name, string shortName, string description, int minimumNumberOfValues, int maximumNumberOfValues)
         {
             // Check the option's not a duplicate
             if (_options.Select(x => x.OptionType).Contains(optionType))
@@ -41,6 +42,7 @@ namespace MusicCatalogue.Logic.CommandLine
             _options.Add(new CommandLineOption
             {
                 OptionType = optionType,
+                IsOperation = isOperation,
                 Name = name,
                 ShortName = shortName,
                 Description = description,
@@ -61,6 +63,11 @@ namespace MusicCatalogue.Logic.CommandLine
 
             // Check that all arguments have the required number of values
             CheckForMinimumValues();
+
+            // Check that there's only one argument that defines an operation. For example,
+            // looking up an album's details is one operation, importing a CSV file is another.
+            // Both can't be supplied at the same time
+            CheckForSingleOperation();
         }
 
         /// <summary>
@@ -93,6 +100,19 @@ namespace MusicCatalogue.Logic.CommandLine
                     var message = $"Too few values supplied for '{value.Option.Name}': Expected {value.Option.MinimumNumberOfValues}, got {value.Values.Count}";
                     throw new TooFewValuesException(message);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Check there's only one operation specified on the command line
+        /// </summary>
+        private void CheckForSingleOperation()
+        {
+            IEnumerable<CommandLineOption> options = _options.Where(x => _values!.ContainsKey(x.OptionType) && x.IsOperation);
+            if (options!.Count() > 1)
+            {
+                var message = $"Command line specifies multiple operations: {string.Join(", ", options.Select(x => x.ToString()))}";
+                throw new MultipleOperationsException(message);
             }
         }
 

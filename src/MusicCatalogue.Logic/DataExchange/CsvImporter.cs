@@ -13,7 +13,7 @@ namespace MusicCatalogue.Logic.DataExchange
     {
         private readonly MusicCatalogueFactory _factory;
 
-        public EventHandler<TrackDataExchangeEventArgs> RecordImport;
+        public event EventHandler<TrackDataExchangeEventArgs>? TrackImport;
 
 #pragma warning disable CS8618
         internal CsvImporter(MusicCatalogueFactory factory)
@@ -60,13 +60,15 @@ namespace MusicCatalogue.Logic.DataExchange
                                 throw new InvalidRecordFormatException(message);
                             }
 
-                            // Inflate the CSV record to a track and store it in the database
+                            // Inflate the CSV record to a track and save the artist
                             FlattenedTrack track = FlattenedTrack.FromCsv(line);
                             var artist = await _factory.Artists.AddAsync(track.ArtistName);
+
+                            // See if the album exists
                             var album = await _factory.Albums.AddAsync(artist.Id, track.AlbumTitle, track.Released, track.Genre, track.CoverUrl);
                             await _factory.Tracks.AddAsync(album.Id, track.Title, track.TrackNumber, track.Duration);
 
-                            RecordImport?.Invoke(this, new TrackDataExchangeEventArgs { RecordCount = count - 1, Track = track });
+                            TrackImport?.Invoke(this, new TrackDataExchangeEventArgs { RecordCount = count - 1, Track = track });
                         }
                     }
                 }

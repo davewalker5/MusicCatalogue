@@ -6,6 +6,7 @@ namespace MusicCatalogue.Entities.CommandLine
     public class CommandLineOption
     {
         public CommandLineOptionType OptionType { get; set; }
+        public bool IsOperation { get; set; }
         public string Name { get; set; } = "";
         public string ShortName { get; set; } = "";
         public string Description { get; set; } = "";

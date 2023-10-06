@@ -6,5 +6,6 @@
         IArtistManager Artists { get; }
         ITrackManager Tracks { get; }
         IUserManager Users { get; }
+        ICsvImporter Importer { get; }
     }
 }

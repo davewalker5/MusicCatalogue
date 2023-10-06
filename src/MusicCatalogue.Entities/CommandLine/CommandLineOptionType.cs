@@ -4,5 +4,6 @@
     {
         Unknown,
         Lookup,
+        Import,
     }
 }

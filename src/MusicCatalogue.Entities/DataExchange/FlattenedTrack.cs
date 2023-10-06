@@ -51,7 +51,7 @@ namespace MusicCatalogue.Entities.DataExchange
 
             // Split the duration on the ":" separator and convert to milliseconds
             var durationWords = words[DurationField][..^1].Split(new string[] { ":" }, StringSplitOptions.None);
-            var durationMs = 1000 * (60 * int.Parse(durationWords[0]) + 1000 * int.Parse(durationWords[1]));
+            var durationMs = 1000 * (60 * int.Parse(durationWords[0]) +  int.Parse(durationWords[1]));
  
             // Create a new "flattened" record containing artist, album and track details
             return new FlattenedTrack
