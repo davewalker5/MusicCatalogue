@@ -2,7 +2,7 @@
 
 namespace MusicCatalogue.Entities.Interfaces
 {
-    public interface ICsvImporter
+    public interface IImporter
     {
         event EventHandler<TrackDataExchangeEventArgs>? TrackImport;
         Task Import(string file);

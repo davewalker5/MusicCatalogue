@@ -25,6 +25,7 @@ namespace MusicCatalogue.LookupPoC
             CommandLineParser parser = new();
             parser.Add(CommandLineOptionType.Lookup, true, "--lookup", "-l", "Lookup an album and display its details", 2, 2);
             parser.Add(CommandLineOptionType.Import, true, "--import", "-i", "Import data from a CSV format file", 1, 1);
+            parser.Add(CommandLineOptionType.Export, true, "--export", "-e", "Export the collection to a CSV file or Excel Workbook", 1, 1);
             parser.Parse(args);
 
             // Read the application settings
@@ -60,6 +61,13 @@ namespace MusicCatalogue.LookupPoC
             if (values != null)
             {
                 new DataImport(logger, factory).Import(values[0]);
+            }
+
+            // If this is an export, export the collection to the specified file
+            values = parser.GetValues(CommandLineOptionType.Export);
+            if (values != null)
+            {
+                new DataExport(logger, factory).Export(values[0]);
             }
         }
 

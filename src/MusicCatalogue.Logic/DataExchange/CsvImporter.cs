@@ -1,7 +1,6 @@
 ﻿using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Factory;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,16 +8,13 @@ using System.Text.RegularExpressions;
 namespace MusicCatalogue.Logic.DataExchange
 {
     [ExcludeFromCodeCoverage]
-    public partial class CsvImporter : ICsvImporter
+    public partial class CsvImporter : DataExchangeBase, IImporter
     {
-        private readonly MusicCatalogueFactory _factory;
-
         public event EventHandler<TrackDataExchangeEventArgs>? TrackImport;
 
 #pragma warning disable CS8618
-        internal CsvImporter(MusicCatalogueFactory factory)
+        internal CsvImporter(IMusicCatalogueFactory factory) : base(factory)
         {
-            _factory = factory;
         }
 #pragma warning restore CS8618
 
@@ -74,6 +70,5 @@ namespace MusicCatalogue.Logic.DataExchange
                 }
             }
         }
-
     }
 }

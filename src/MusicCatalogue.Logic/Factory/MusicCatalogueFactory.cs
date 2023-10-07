@@ -12,7 +12,9 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IAlbumManager> _albums;
         private readonly Lazy<ITrackManager> _tracks;
         private readonly Lazy<IUserManager> _users;
-        private readonly Lazy<ICsvImporter> _importer;
+        private readonly Lazy<IImporter> _importer;
+        private readonly Lazy<IExporter> _csvExporter;
+        private readonly Lazy<IExporter> _xlsxExporter;
 
         public IArtistManager Artists { get { return _artists.Value; } }
         public IAlbumManager Albums { get { return _albums.Value; } }
@@ -20,7 +22,13 @@ namespace MusicCatalogue.Logic.Factory
         public IUserManager Users { get { return _users.Value; } }
 
         [ExcludeFromCodeCoverage]
-        public ICsvImporter Importer { get {  return _importer.Value; } }
+        public IImporter Importer { get {  return _importer.Value; } }
+
+        [ExcludeFromCodeCoverage]
+        public IExporter CsvExporter { get { return _csvExporter.Value; } }
+
+        [ExcludeFromCodeCoverage]
+        public IExporter XlsxExporter { get { return _xlsxExporter.Value; } }
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
@@ -28,7 +36,9 @@ namespace MusicCatalogue.Logic.Factory
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(context));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(context));
             _users = new Lazy<IUserManager>(() => new UserManager(context));
-            _importer =new Lazy<ICsvImporter>(() => new CsvImporter(this));
+            _importer = new Lazy<IImporter>(() => new CsvImporter(this));
+            _csvExporter = new Lazy<IExporter>(() => new CsvExporter(this));
+            _xlsxExporter = new Lazy<IExporter>(() => new XlsxExporter(this));
         }
     }
 }

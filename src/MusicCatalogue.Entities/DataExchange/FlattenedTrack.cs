@@ -1,5 +1,6 @@
 ﻿using MusicCatalogue.Entities.Database;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace MusicCatalogue.Entities.DataExchange
 {
@@ -19,10 +20,10 @@ namespace MusicCatalogue.Entities.DataExchange
 
         public string ArtistName{ get; set; } = "";
         public string AlbumTitle { get; set; } = "";
-        public string Genre { get; set; } = "";
+        public string? Genre { get; set; } = "";
         public int? Released { get; set; }
         public string? CoverUrl { get; set; } = "";
-        public int TrackNumber { get; set; }
+        public int? TrackNumber { get; set; }
         public string Title { get; set; } = "";
 
         /// <summary>
@@ -31,8 +32,16 @@ namespace MusicCatalogue.Entities.DataExchange
         /// <returns></returns>
         public string ToCsv()
         {
-            var representation = $"\"{ArtistName}\",\"{AlbumTitle}\",\"{Genre}\",\"{Released}\",\"{CoverUrl}\",\"{Title}\",\"{FormattedDuration()}\"";
-            return representation;
+            StringBuilder builder = new StringBuilder();
+            AppendField(builder, ArtistName);
+            AppendField(builder, AlbumTitle);
+            AppendField(builder, Genre);
+            AppendField(builder, Released);
+            AppendField(builder, CoverUrl);
+            AppendField(builder, TrackNumber);
+            AppendField(builder, Title);
+            AppendField(builder, FormattedDuration());
+            return builder.ToString();
         }
 
         /// <summary>
@@ -65,6 +74,23 @@ namespace MusicCatalogue.Entities.DataExchange
                 Title = words[TitleField],
                 Duration = durationMs
             };
+        }
+
+        /// <summary>
+        /// Append a value to a string builder holding a representation of a flattened track in CSV format
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="value"></param>
+        private static void AppendField(StringBuilder builder, object? value)
+        {
+            if (builder.Length > 0)
+            {
+                builder.Append(',');
+            }
+
+            builder.Append('"');
+            builder.Append(value?.ToString() ?? "");
+            builder.Append('"');
         }
     }
 }
