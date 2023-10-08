@@ -5,7 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Logic.DataExchange
 {
-    [ExcludeFromCodeCoverage]
     public class XlsxExporter : DataExportBase, IExporter
     {
         private const string WorksheetName = "Music";

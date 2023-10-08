@@ -5,7 +5,6 @@ using System.Text;
 
 namespace MusicCatalogue.Logic.DataExchange
 {
-    [ExcludeFromCodeCoverage]
     public class CsvExporter : DataExportBase, IExporter
     {
         private StreamWriter? _writer = null;

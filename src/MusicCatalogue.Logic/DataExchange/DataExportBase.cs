@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Logic.DataExchange
 {
-    [ExcludeFromCodeCoverage]
     public abstract class DataExportBase : DataExchangeBase
     {
         private readonly string[] ColumnHeaders =
