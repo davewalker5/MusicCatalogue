@@ -48,17 +48,18 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<Album> AddAsync(int artistId, string title, int? released, string? genre, string? coverUrl)
         {
-            var album = await GetAsync(a => (a.ArtistId == artistId) && (a.Title == title));
+            var clean = StringCleaner.Clean(title)!;
+            var album = await GetAsync(a => (a.ArtistId == artistId) && (a.Title == clean));
 
             if (album == null)
             {
                 album = new Album
                 {
                     ArtistId = artistId,
-                    Title = StringCleaner.Clean(title),
+                    Title = clean,
                     Released = released,
-                    Genre = genre,
-                    CoverUrl = coverUrl
+                    Genre = StringCleaner.RemoveInvalidCharacters(genre),
+                    CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl)
                 };
                 await _context.Albums.AddAsync(album);
                 await _context.SaveChangesAsync();
