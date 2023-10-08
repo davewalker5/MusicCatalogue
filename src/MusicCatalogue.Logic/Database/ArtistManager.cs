@@ -44,13 +44,14 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<Artist> AddAsync(string name)
         {
-            var artist = await GetAsync(a => a.Name == name);
+            var clean = StringCleaner.Clean(name)!;
+            var artist = await GetAsync(a => a.Name == clean);
 
             if (artist == null)
             {
                 artist = new Artist
                 {
-                    Name = StringCleaner.Clean(name)
+                    Name = clean
                 };
                 await _context.Artists.AddAsync(artist);
                 await _context.SaveChangesAsync();

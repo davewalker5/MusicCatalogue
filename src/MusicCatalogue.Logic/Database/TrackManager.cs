@@ -3,6 +3,7 @@ using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Database;
 using System.Linq.Expressions;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace MusicCatalogue.Logic.Database
 {
@@ -46,14 +47,15 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<Track> AddAsync(int albumId, string title, int? number, int? duration)
         {
-            var track = await GetAsync(a => (a.AlbumId == albumId) && (a.Title == title));
+            var clean = StringCleaner.Clean(title)!;
+            var track = await GetAsync(a => (a.AlbumId == albumId) && (a.Title == clean));
 
             if (track == null)
             {
                 track = new Track
                 {
                     AlbumId = albumId,
-                    Title = StringCleaner.Clean(title),
+                    Title = clean,
                     Number = number,
                     Duration = duration
                 };
