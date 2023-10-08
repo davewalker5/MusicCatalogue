@@ -1,34 +1,38 @@
 ﻿using MusicCatalogue.Data;
+using MusicCatalogue.Entities.CommandLine;
 using MusicCatalogue.Entities.Config;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Logic.Api;
-using MusicCatalogue.Logic.Api.TheAudioDB;
-using MusicCatalogue.Logic.Collection;
+using MusicCatalogue.Logic.CommandLine;
 using MusicCatalogue.Logic.Config;
 using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
+using MusicCatalogue.LookupTool.Logic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Reflection;
 
 namespace MusicCatalogue.LookupPoC
 {
     public static class Program
     {
+        /// <summary>
+        /// Application entry point
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static async Task Main(string[] args)
         {
-            // Check the arguments are OK
-            if (args.Length != 2)
-            {
-                Console.WriteLine($"Usage: {System.AppDomain.CurrentDomain.FriendlyName} \"artist\" \"album title\"");
-                return;
-            }
+            // Parse the command line
+            CommandLineParser parser = new();
+            parser.Add(CommandLineOptionType.Lookup, true, "--lookup", "-l", "Lookup an album and display its details", 2, 2);
+            parser.Add(CommandLineOptionType.Import, true, "--import", "-i", "Import data from a CSV format file", 1, 1);
+            parser.Add(CommandLineOptionType.Export, true, "--export", "-e", "Export the collection to a CSV file or Excel Workbook", 1, 1);
+            parser.Parse(args);
 
-            // Read the application config file
-            var settings = new MusicCatalogueConfigReader().Read("appsettings.json");
+            // Read the application settings
+            MusicApplicationSettings? settings = new MusicCatalogueConfigReader().Read("appsettings.json");
 
             // Configure the log file
-            var logger = new FileLogger();
+            FileLogger logger = new FileLogger();
             logger.Initialise(settings!.LogFile, settings.MinimumLogLevel);
 
             // Get the version number and application title
@@ -37,66 +41,35 @@ namespace MusicCatalogue.LookupPoC
             var title = $"Music Catalogue Lookup Tool v{info.FileVersion}";
 
             // Log the startup messages
+            Console.WriteLine($"{title}\n");
             logger.LogMessage(Severity.Info, new string('=', 80));
             logger.LogMessage(Severity.Info, title);
 
-            // Get the API key and the URLs for the album and track lookup endpoints
-            var key = settings.ApiServiceKeys.Find(x => x.Service == ApiServiceType.TheAudioDB)!.Key;
-            var albumsEndpoint = settings.ApiEndpoints.Find(x => x.EndpointType == ApiEndpointType.Albums)!.Url;
-            var tracksEndpoint = settings.ApiEndpoints.Find(x => x.EndpointType == ApiEndpointType.Tracks)!.Url;
-
-            // Convert the URL into a URI instance that will expose the host name - this is needed
-            // to set up the client headers
-            var uri = new Uri(albumsEndpoint);
-
-            // Configure an HTTP client
-            var client = MusicHttpClient.Instance;
-            client.AddHeader("X-RapidAPI-Key", key);
-            client.AddHeader("X-RapidAPI-Host", uri.Host);
-
-            // Configure the database management classes
+            // Configure the business logic factory
             var context = new MusicCatalogueDbContextFactory().CreateDbContext(Array.Empty<string>());
-            var factory = new MusicCatalogueFactory(context);
+            MusicCatalogueFactory factory = new MusicCatalogueFactory(context);
 
-            // Configure the APIs
-            var albumsApi = new TheAudioDBAlbumsApi(logger, client, albumsEndpoint);
-            var tracksApi = new TheAudioDBTracksApi(logger, client, tracksEndpoint);
-            var lookupManager = new AlbumLookupManager(logger, albumsApi, tracksApi, factory);
-
-            // Lookup the album and its tracks
-            var album = await lookupManager.LookupAlbum(args[0], args[1]);
-            if (album != null)
+            // If this is a lookup, look up the album details
+            var values = parser.GetValues(CommandLineOptionType.Lookup);
+            if (values != null)
             {
-                // Convert the artist name to title case for display
-                TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
-                var artistName = textInfo.ToTitleCase(args[0]);
-
-                // Dump the album details
-                Console.WriteLine($"Title: {album.Title}");
-                Console.WriteLine($"Artist: {artistName}");
-                Console.WriteLine($"Released: {album.Released}");
-                Console.WriteLine($"Genre: {album.Genre}");
-                Console.WriteLine($"Cover: {album.CoverUrl}");
-                Console.WriteLine();
-
-                // Dump the track list
-                if ((album.Tracks != null) && (album.Tracks.Count > 0))
-                {
-                    foreach (var track in album.Tracks)
-                    {
-                        Console.WriteLine($"{track.Number} : {track.Title}, {track.FormattedDuration()}");
-                    }
-                    Console.WriteLine();
-                }
-                else
-                {
-                    Console.WriteLine("No tracks found");
-                }
+                await new AlbumLookup(logger, factory, settings!).LookupAlbum(values[0], values[1]);
             }
-            else
+
+            // If this is an import, import data from the specified CSV file
+            values = parser.GetValues(CommandLineOptionType.Import);
+            if (values != null)
             {
-                Console.WriteLine("Album details not found");
+                new DataImport(logger, factory).Import(values[0]);
+            }
+
+            // If this is an export, export the collection to the specified file
+            values = parser.GetValues(CommandLineOptionType.Export);
+            if (values != null)
+            {
+                new DataExport(logger, factory).Export(values[0]);
             }
         }
+
     }
 }

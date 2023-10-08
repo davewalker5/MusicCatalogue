@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
-    public class Track
+    public class Track : TrackBase
     {
         [Key]
         public int Id { get; set; }
@@ -18,26 +18,5 @@ namespace MusicCatalogue.Entities.Database
 
         [Required]
         public string Title { get; set; } = "";
-
-        public int? Duration { get; set; }
-
-        /// <summary>
-        /// Format the duration in MM:SS format
-        /// </summary>
-        /// <returns></returns>
-        public string? FormattedDuration()
-        {
-            string? formatted = null;
-
-            if (Duration != null)
-            {
-                int seconds = (Duration ?? 0) / 1000;
-                int minutes = seconds / 60;
-                seconds -= 60 * minutes;
-                formatted = $"{minutes:00}:{seconds:00}";
-            }
-
-            return formatted;
-        }
     }
 }

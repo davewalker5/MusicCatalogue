@@ -2,7 +2,7 @@
   "profiles": {
     "MusicCatalogue.LookupTool": {
       "commandName": "Project",
-      "commandLineArgs": "\"Dire Straits\" \"Brothers In Arms\""
+      "commandLineArgs": "--export \"C:\\Temp\\Fred.xlsx\""
     }
   }
 }
