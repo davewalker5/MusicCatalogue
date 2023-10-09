@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Data;
-using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Interfaces;
 using System.Linq.Expressions;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace MusicCatalogue.Logic.Database
 {
@@ -35,6 +34,7 @@ namespace MusicCatalogue.Logic.Database
         public async Task<List<Track>> ListAsync(Expression<Func<Track, bool>> predicate)
             => await _context.Tracks
                              .Where(predicate)
+                             .OrderBy(x => x.Number)
                              .ToListAsync();
 
         /// <summary>
