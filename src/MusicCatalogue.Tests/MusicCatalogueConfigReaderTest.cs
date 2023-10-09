@@ -14,6 +14,7 @@ namespace MusicCatalogue.Tests
 
             Assert.AreEqual("MusicCatalogue.log", settings?.LogFile);
             Assert.AreEqual(Severity.Info, settings?.MinimumLogLevel);
+            Assert.AreEqual(MusicCatalogueEnvironment.Development, settings?.Environment);
 
             Assert.IsNotNull(settings?.ApiEndpoints);
             Assert.AreEqual(1, settings?.ApiEndpoints.Count);
