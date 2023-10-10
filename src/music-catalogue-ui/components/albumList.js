@@ -14,6 +14,11 @@ const AlbumList = ({ artist, navigate, logout }) => {
     navigate(pages.artists, null, null);
   }, [navigate]);
 
+  // Callback to navigate to the lookup page
+  const lookup = useCallback(() => {
+    navigate(pages.lookup, null, null);
+  }, [navigate]);
+
   if (currentStatus !== statuses.loaded)
     return <StatusIndicator currentStatus={currentStatus} />;
 
@@ -42,7 +47,7 @@ const AlbumList = ({ artist, navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={navigateBack} logout={logout} />
+      <ButtonBar navigateBack={navigateBack} lookup={lookup} logout={logout} />
     </>
   );
 };

@@ -14,6 +14,11 @@ const TrackList = ({ artist, album, navigate, logout }) => {
     navigate(pages.albums, artist, null);
   }, [navigate, artist]);
 
+  // Callback to navigate to the lookup page
+  const lookup = useCallback(() => {
+    navigate(pages.lookup, null, null);
+  }, [navigate]);
+
   if (currentStatus !== statuses.loaded)
     return <StatusIndicator currentStatus={currentStatus} />;
 
@@ -46,7 +51,7 @@ const TrackList = ({ artist, album, navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={navigateBack} logout={logout} />
+      <ButtonBar navigateBack={navigateBack} lookup={lookup} logout={logout} />
     </>
   );
 };

@@ -2,6 +2,7 @@ import pages from "../helpers/navigation";
 import ArtistList from "./artistList";
 import AlbumList from "./albumList";
 import TrackList from "./trackList";
+import LookupAlbum from "./lookupAlbum";
 
 const ComponentPicker = ({ context, navigate, logout }) => {
   switch (context.page) {
@@ -24,6 +25,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
+    case pages.lookup:
+      return <LookupAlbum logout={logout} />;
     default:
       return <span></span>;
   }
