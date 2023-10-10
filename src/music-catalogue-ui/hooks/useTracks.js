@@ -2,7 +2,7 @@ import statuses from "@/helpers/status";
 import { useState, useEffect } from "react";
 import { apiFetchAlbumById } from "@/helpers/api";
 
-const useTracks = (albumId) => {
+const useTracks = (albumId, logout) => {
   // Current list of tracks and the method to change it
   const [tracks, setTracks] = useState([]);
 
@@ -17,7 +17,7 @@ const useTracks = (albumId) => {
       try {
         // Get the album from the service and set the tracks to the appropriate
         // member of the returned object
-        var fetchedAlbum = await apiFetchAlbumById(albumId);
+        var fetchedAlbum = await apiFetchAlbumById(albumId, logout);
         setTracks(fetchedAlbum.tracks);
         setCurrentStatus(statuses.loaded);
       } catch {

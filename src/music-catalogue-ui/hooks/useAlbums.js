@@ -2,7 +2,7 @@ import statuses from "@/helpers/status";
 import { useState, useEffect } from "react";
 import { apiFetchAlbumsByArtist } from "@/helpers/api";
 
-const useAlbums = (artistId) => {
+const useAlbums = (artistId, logout) => {
   // Current list of albums and the method to change it
   const [albums, setAlbums] = useState([]);
 
@@ -17,7 +17,7 @@ const useAlbums = (artistId) => {
       try {
         // Get a list of albums via the service, store it in state and clear the
         // loading status
-        var fetchedAlbums = await apiFetchAlbumsByArtist(artistId);
+        var fetchedAlbums = await apiFetchAlbumsByArtist(artistId, logout);
         setAlbums(fetchedAlbums);
         setCurrentStatus(statuses.loaded);
       } catch {

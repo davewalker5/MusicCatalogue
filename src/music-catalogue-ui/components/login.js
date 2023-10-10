@@ -1,6 +1,6 @@
 import styles from "./login.module.css";
 import { React, useState } from "react";
-import { apiAuthenticate } from "@/helpers/api";
+import { apiAuthenticate, apiSetToken } from "@/helpers/api";
 
 const Login = ({ login }) => {
   const submit = async (e) => {
@@ -14,6 +14,7 @@ const Login = ({ login }) => {
     // Attempt to login
     const token = await apiAuthenticate(username, password);
     if (token != null) {
+      apiSetToken(token);
       login(true);
     }
   };

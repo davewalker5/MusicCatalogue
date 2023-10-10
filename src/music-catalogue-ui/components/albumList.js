@@ -7,7 +7,7 @@ import pages from "@/helpers/navigation";
 import ButtonBar from "./buttonBar";
 
 const AlbumList = ({ artist, navigate, logout }) => {
-  const { albums, setAlbums, currentStatus } = useAlbums(artist.id);
+  const { albums, setAlbums, currentStatus } = useAlbums(artist.id, logout);
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {

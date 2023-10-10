@@ -2,7 +2,7 @@ import statuses from "@/helpers/status";
 import { useState, useEffect } from "react";
 import { apiFetchAllArtists } from "@/helpers/api";
 
-const useArtists = () => {
+const useArtists = (logout) => {
   // Current list of artists and the method to change it
   const [artists, setArtists] = useState([]);
 
@@ -17,7 +17,7 @@ const useArtists = () => {
       try {
         // Get a list of artists via the service, store it in state and clear the
         // loading status
-        var fetchedArtists = await apiFetchAllArtists();
+        var fetchedArtists = await apiFetchAllArtists(logout);
         setArtists(fetchedArtists);
         setCurrentStatus(statuses.loaded);
       } catch {

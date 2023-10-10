@@ -3,6 +3,7 @@ import Login from "./login";
 import Banner from "./banner";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
+import { apiClearToken } from "@/helpers/api";
 
 const App = () => {
   // Flag indicating the user's logged in
@@ -14,6 +15,7 @@ const App = () => {
   }, []);
 
   const logout = useCallback(() => {
+    apiClearToken();
     setLoggedIn(false);
   }, []);
 

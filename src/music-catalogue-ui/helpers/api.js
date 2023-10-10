@@ -1,4 +1,19 @@
-import { baseUrl, username, password } from "@/helpers/constants";
+import config from "../config.json";
+
+const apiSetToken = (token) => {
+  // TODO: Move to HTTP Cookie
+  localStorage.setItem("token", token);
+};
+
+const apiGetToken = (token) => {
+  // TODO: Move to HTTP Cookie
+  return localStorage.getItem("token");
+};
+
+const apiClearToken = () => {
+  // TODO: Move to HTTP Cookie
+  localStorage.removeItem("token");
+};
 
 const apiAuthenticate = async (username, password) => {
   // Create a JSON body containing the credentials
@@ -8,7 +23,7 @@ const apiAuthenticate = async (username, password) => {
   });
 
   // Call the API to authenticate as the specified user and return a token
-  const url = baseUrl + "/users/authenticate/";
+  const url = `${config.api.baseUrl}/users/authenticate/`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -23,9 +38,9 @@ const apiAuthenticate = async (username, password) => {
   return token.replace(/"/g, "");
 };
 
-const apiFetchAllArtists = async () => {
-  // TODO: This call can be removed once user login has been implemented
-  var token = await apiAuthenticate(username, password);
+const apiFetchAllArtists = async (logout) => {
+  // Get the token
+  var token = apiGetToken();
 
   // Construct the request headers
   const headers = {
@@ -33,20 +48,25 @@ const apiFetchAllArtists = async () => {
   };
 
   // Call the API to get a list of all artists
-  const url = baseUrl + "/artists/";
+  const url = `${config.api.baseUrl}/artists/`;
   const response = await fetch(url, {
     method: "GET",
     headers: headers,
   });
 
-  // Get the response content as JSON and return it
-  const artists = await response.json();
-  return artists;
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const artists = await response.json();
+    return artists;
+  } else {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
 };
 
-const apiFetchAlbumsByArtist = async (artistId) => {
-  // TODO: This call can be removed once user login has been implemented
-  var token = await apiAuthenticate(username, password);
+const apiFetchAlbumsByArtist = async (artistId, logout) => {
+  // Get the token
+  var token = apiGetToken();
 
   // Construct the request headers
   const headers = {
@@ -54,20 +74,25 @@ const apiFetchAlbumsByArtist = async (artistId) => {
   };
 
   // Call the API to get a list of all albums by the specified artist
-  const url = baseUrl + `/albums/artist/${artistId}`;
+  const url = `${config.api.baseUrl}/albums/artist/${artistId}`;
   const response = await fetch(url, {
     method: "GET",
     headers: headers,
   });
 
-  // Get the response content as JSON and return it
-  const albums = await response.json();
-  return albums;
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const albums = await response.json();
+    return albums;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
 };
 
-const apiFetchAlbumById = async (albumId) => {
-  // TODO: This call can be removed once user login has been implemented
-  var token = await apiAuthenticate(username, password);
+const apiFetchAlbumById = async (albumId, logout) => {
+  // Get the token
+  var token = apiGetToken();
 
   // Construct the request headers
   const headers = {
@@ -75,15 +100,20 @@ const apiFetchAlbumById = async (albumId) => {
   };
 
   // Call the API to get the details for the specifiedf album
-  const url = baseUrl + `/albums/${albumId}`;
+  const url = `${config.api.baseUrl}/albums/${albumId}`;
   const response = await fetch(url, {
     method: "GET",
     headers: headers,
   });
 
-  // Get the response content as JSON and return it
-  const album = await response.json();
-  return album;
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const album = await response.json();
+    return album;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
 };
 
 export {
@@ -91,4 +121,6 @@ export {
   apiFetchAllArtists,
   apiFetchAlbumsByArtist,
   apiFetchAlbumById,
+  apiSetToken,
+  apiClearToken,
 };

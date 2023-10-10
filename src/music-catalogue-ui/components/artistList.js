@@ -5,7 +5,7 @@ import StatusIndicator from "./statusIndicator";
 import ButtonBar from "./buttonBar";
 
 const ArtistList = ({ navigate, logout }) => {
-  const { artists, setArtists, currentStatus } = useArtists();
+  const { artists, setArtists, currentStatus } = useArtists(logout);
 
   if (currentStatus !== statuses.loaded)
     return <StatusIndicator currentStatus={currentStatus} />;
