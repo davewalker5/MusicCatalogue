@@ -1,6 +1,11 @@
 import { useCallback } from "react";
 import ButtonBar from "./buttonBar";
 
+/**
+ * Component to render the album lookup page
+ * @param {*} param0
+ * @returns
+ */
 const LookupAlbum = ({ logout }) => {
   // Album lookup callback
   const lookup = useCallback(() => {}, []);

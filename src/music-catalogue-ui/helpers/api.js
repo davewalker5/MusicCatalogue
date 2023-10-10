@@ -1,20 +1,38 @@
 import config from "../config.json";
 
+/**
+ * Store the JWT token
+ * @param {*} token
+ */
 const apiSetToken = (token) => {
   // TODO: Move to HTTP Cookie
   localStorage.setItem("token", token);
 };
 
+/**
+ * Retrieve the current JWT token
+ * @param {*} token
+ * @returns
+ */
 const apiGetToken = (token) => {
   // TODO: Move to HTTP Cookie
   return localStorage.getItem("token");
 };
 
+/**
+ * Clear the current JWT token
+ */
 const apiClearToken = () => {
   // TODO: Move to HTTP Cookie
   localStorage.removeItem("token");
 };
 
+/**
+ * Authenticate with the Music Catalogue REST API
+ * @param {*} username
+ * @param {*} password
+ * @returns
+ */
 const apiAuthenticate = async (username, password) => {
   // Create a JSON body containing the credentials
   const body = JSON.stringify({
@@ -38,6 +56,11 @@ const apiAuthenticate = async (username, password) => {
   return token.replace(/"/g, "");
 };
 
+/**
+ * Fetch a list of all artists from the Music Catalogue REST API
+ * @param {*} logout
+ * @returns
+ */
 const apiFetchAllArtists = async (logout) => {
   // Get the token
   var token = apiGetToken();
@@ -64,6 +87,13 @@ const apiFetchAllArtists = async (logout) => {
   }
 };
 
+/**
+ * Fetch a list of albums by the specified artist from the Music Catalogue
+ * REST API
+ * @param {*} artistId
+ * @param {*} logout
+ * @returns
+ */
 const apiFetchAlbumsByArtist = async (artistId, logout) => {
   // Get the token
   var token = apiGetToken();
@@ -90,6 +120,13 @@ const apiFetchAlbumsByArtist = async (artistId, logout) => {
   }
 };
 
+/**
+ * Return the album details and track list for the specified album from the
+ * Music Catalogue REST API
+ * @param {*} albumId
+ * @param {*} logout
+ * @returns
+ */
 const apiFetchAlbumById = async (albumId, logout) => {
   // Get the token
   var token = apiGetToken();

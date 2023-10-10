@@ -4,6 +4,12 @@ import AlbumList from "./albumList";
 import TrackList from "./trackList";
 import LookupAlbum from "./lookupAlbum";
 
+/**
+ * Component using the current page name to render the components required
+ * by that page
+ * @param {*} param0
+ * @returns
+ */
 const ComponentPicker = ({ context, navigate, logout }) => {
   switch (context.page) {
     case pages.artists:

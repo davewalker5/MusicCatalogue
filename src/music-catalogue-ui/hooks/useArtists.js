@@ -2,6 +2,12 @@ import statuses from "@/helpers/status";
 import { useState, useEffect } from "react";
 import { apiFetchAllArtists } from "@/helpers/api";
 
+/**
+ * Hook that uses the API helpers to retrieve a list of artists from the
+ * Music Catalogue REST API
+ * @param {*} logout
+ * @returns
+ */
 const useArtists = (logout) => {
   // Current list of artists and the method to change it
   const [artists, setArtists] = useState([]);
@@ -26,7 +32,7 @@ const useArtists = (logout) => {
     };
 
     fetchArtists();
-  }, []);
+  }, [logout]);
 
   return { artists, setArtists, currentStatus };
 };

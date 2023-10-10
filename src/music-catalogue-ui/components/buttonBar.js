@@ -1,5 +1,10 @@
 import styles from "./buttonBar.module.css";
 
+/**
+ * Component to render the configurable button bar at the bottom of the page
+ * @param {*} param0
+ * @returns
+ */
 const ButtonBar = ({ navigateBack, lookup, logout }) => {
   const lookupStyles = navigateBack
     ? `btn btn-primary ${styles.lookup}`

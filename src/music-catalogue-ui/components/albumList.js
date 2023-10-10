@@ -6,6 +6,11 @@ import StatusIndicator from "./statusIndicator";
 import pages from "@/helpers/navigation";
 import ButtonBar from "./buttonBar";
 
+/**
+ * Component to render the table of all albums by the specified artist
+ * @param {*} param0
+ * @returns
+ */
 const AlbumList = ({ artist, navigate, logout }) => {
   const { albums, setAlbums, currentStatus } = useAlbums(artist.id, logout);
 

@@ -6,6 +6,11 @@ import StatusIndicator from "./statusIndicator";
 import ButtonBar from "./buttonBar";
 import pages from "@/helpers/navigation";
 
+/**
+ * Component to render a table listing all the artists in the catalogue
+ * @param {*} param0
+ * @returns
+ */
 const ArtistList = ({ navigate, logout }) => {
   const { artists, setArtists, currentStatus } = useArtists(logout);
 

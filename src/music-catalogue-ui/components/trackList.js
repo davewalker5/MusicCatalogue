@@ -6,6 +6,11 @@ import StatusIndicator from "./statusIndicator";
 import pages from "@/helpers/navigation";
 import ButtonBar from "./buttonBar";
 
+/**
+ * Component to render the list of tracks for the specified album
+ * @param {*} param0
+ * @returns
+ */
 const TrackList = ({ artist, album, navigate, logout }) => {
   const { tracks, setTracks, currentStatus } = useTracks(album.id, logout);
 

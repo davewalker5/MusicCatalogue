@@ -1,5 +1,10 @@
 import pages from "@/helpers/navigation";
 
+/**
+ * Component to render a row containing the details of a single album
+ * @param {*} param0
+ * @returns
+ */
 const AlbumRow = ({ artist, album, navigate }) => {
   return (
     <tr onClick={() => navigate(pages.tracks, artist, album, navigate)}>

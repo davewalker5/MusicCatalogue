@@ -2,6 +2,11 @@ import styles from "./login.module.css";
 import { React, useState } from "react";
 import { apiAuthenticate, apiSetToken } from "@/helpers/api";
 
+/**
+ * Component to render the login page
+ * @param {*} param0
+ * @returns
+ */
 const Login = ({ login }) => {
   const submit = async (e) => {
     // Prevent default handling of the submit button press

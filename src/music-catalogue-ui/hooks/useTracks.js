@@ -2,6 +2,13 @@ import statuses from "@/helpers/status";
 import { useState, useEffect } from "react";
 import { apiFetchAlbumById } from "@/helpers/api";
 
+/**
+ * Hook that uses the API helpers to retrieve a list of tracks for the
+ * specified album from the Music Catalogue REST API
+ * @param {*} albumId
+ * @param {*} logout
+ * @returns
+ */
 const useTracks = (albumId, logout) => {
   // Current list of tracks and the method to change it
   const [tracks, setTracks] = useState([]);
