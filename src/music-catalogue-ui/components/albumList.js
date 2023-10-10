@@ -2,6 +2,7 @@ import useAlbums from "@/hooks/useAlbums";
 import statuses from "@/helpers/status";
 import AlbumRow from "./albumRow";
 import StatusIndicator from "./statusIndicator";
+import pages from "@/helpers/navigation";
 
 const AlbumList = ({ artist, navigate }) => {
   const { albums, setAlbums, currentStatus } = useAlbums(artist.id);
@@ -12,7 +13,7 @@ const AlbumList = ({ artist, navigate }) => {
   return (
     <>
       <div className="row mb-2">
-        <h5 className="themeFontColor text-center">Albums</h5>
+        <h5 className="themeFontColor text-center">Albums by {artist.name}</h5>
       </div>
       <table className="table table-hover">
         <thead>
@@ -34,6 +35,12 @@ const AlbumList = ({ artist, navigate }) => {
           ))}
         </tbody>
       </table>
+      <button
+        className="btn btn-primary"
+        onClick={() => navigate(pages.artists, null, null)}
+      >
+        &lt; Back
+      </button>
     </>
   );
 };

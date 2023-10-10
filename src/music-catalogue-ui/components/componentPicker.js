@@ -10,7 +10,13 @@ const ComponentPicker = ({ context, navigate }) => {
     case pages.albums:
       return <AlbumList artist={context.artist} navigate={navigate} />;
     case pages.tracks:
-      return <TrackList artist={context.artist} album={context.album} />;
+      return (
+        <TrackList
+          artist={context.artist}
+          album={context.album}
+          navigate={navigate}
+        />
+      );
     default:
       return <span></span>;
   }

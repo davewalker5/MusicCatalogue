@@ -14,7 +14,7 @@ const Banner = ({ navigate }) => {
       </div>
       <div className="col-9 mt-5">
         <div className={styles.title}>
-          <div>Personal Music Catalogue</div>
+          <div>Music Catalogue</div>
         </div>
       </div>
     </header>

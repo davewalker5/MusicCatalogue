@@ -2,8 +2,9 @@ import useTracks from "@/hooks/useTracks";
 import statuses from "@/helpers/status";
 import TrackRow from "./trackRow";
 import StatusIndicator from "./statusIndicator";
+import pages from "@/helpers/navigation";
 
-const TrackList = ({ artist, album }) => {
+const TrackList = ({ artist, album, navigate }) => {
   const { tracks, setTracks, currentStatus } = useTracks(album.id);
 
   if (currentStatus !== statuses.loaded)
@@ -12,7 +13,9 @@ const TrackList = ({ artist, album }) => {
   return (
     <>
       <div className="row mb-2">
-        <h5 className="themeFontColor text-center">Tracks</h5>
+        <h5 className="themeFontColor text-center">
+          {artist.name} - {album.title}
+        </h5>
       </div>
       <table className="table table-hover">
         <thead>
@@ -26,10 +29,22 @@ const TrackList = ({ artist, album }) => {
         </thead>
         <tbody>
           {tracks.map((t) => (
-            <TrackRow key={t.id} artist={artist} album={album} track={t} />
+            <TrackRow
+              key={t.id}
+              artist={artist}
+              album={album}
+              track={t}
+              navigate={navigate}
+            />
           ))}
         </tbody>
       </table>
+      <button
+        className="btn btn-primary"
+        onClick={() => navigate(pages.albums, artist, null)}
+      >
+        &lt; Back
+      </button>
     </>
   );
 };

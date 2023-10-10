@@ -1,0 +1,8 @@
+.artist {
+  color: blue;
+  text-decoration: none;
+}
+
+.artist:hover {
+  text-decoration: underline;
+}
