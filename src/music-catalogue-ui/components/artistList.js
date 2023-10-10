@@ -3,10 +3,9 @@ import statuses from "@/helpers/status";
 import ArtistRow from "./artistRow";
 import StatusIndicator from "./statusIndicator";
 
-const ArtistList = ({ onSelected }) => {
+const ArtistList = ({ navigate }) => {
   const { artists, setArtists, currentStatus } = useArtists();
 
-  // Early return = conditional rendering
   if (currentStatus !== statuses.loaded)
     return <StatusIndicator currentStatus={currentStatus} />;
 
@@ -23,7 +22,7 @@ const ArtistList = ({ onSelected }) => {
         </thead>
         <tbody>
           {artists.map((a) => (
-            <ArtistRow key={a.id} artist={a} onSelected={onSelected} />
+            <ArtistRow key={a.id} artist={a} navigate={navigate} />
           ))}
         </tbody>
       </table>

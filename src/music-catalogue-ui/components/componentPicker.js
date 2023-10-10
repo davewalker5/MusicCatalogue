@@ -1,12 +1,13 @@
 import pages from "../helpers/navigation";
 import ArtistList from "./artistList";
+import AlbumList from "./albumList";
 
-const ComponentPicker = ({ currentPage }) => {
-  switch (currentPage) {
+const ComponentPicker = ({ context, navigate }) => {
+  switch (context.page) {
     case pages.artists:
-      return <ArtistList />;
+      return <ArtistList navigate={navigate} />;
     case pages.albums:
-      return <span></span>;
+      return <AlbumList artist={context.artist} navigate={navigate} />;
     case pages.tracks:
       return <span></span>;
     default:

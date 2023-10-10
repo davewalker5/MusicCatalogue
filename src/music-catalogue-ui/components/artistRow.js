@@ -1,12 +1,8 @@
-import { useContext } from "react";
-import { navigationContext } from "./app";
 import pages from "@/helpers/navigation";
 
-const ArtistRow = ({ artist }) => {
-  const { navigate } = useContext(navigationContext);
-
+const ArtistRow = ({ artist, navigate }) => {
   return (
-    <tr onClick={() => navigate(pages.albums, artist)}>
+    <tr onClick={() => navigate(pages.albums, artist, null)}>
       <td>{artist.name}</td>
     </tr>
   );

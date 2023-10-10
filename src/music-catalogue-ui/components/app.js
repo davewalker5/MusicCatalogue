@@ -3,35 +3,30 @@ import Banner from "./banner";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 
-// Create a navigation context for the current page to display
-const navigationContext = React.createContext(pages.artists);
-
 const App = () => {
-  // Function used to change the current page. navTo is the page to navigate
-  // to, a member of the pages object. param is a parameter passed to the
-  // navigation function e.g. an artist id or an album id
-  const navigate = useCallback(
-    (navTo, param) => setCurrentPage({ current: navTo, param, navigate }),
-    []
-  );
-
-  // Store the current page and the navigation function in state
-  const [page, setCurrentPage] = useState({
-    current: pages.artists,
-    navigate,
+  const [context, setContext] = useState({
+    page: pages.artists,
+    artist: null,
+    album: null,
   });
 
-  // Note that the application provides a navigation context to all children
-  // below it in the hierarchy
+  const navigate = useCallback((page, artist, album) => {
+    console.log(page);
+    console.log(artist);
+    console.log(album);
+    setContext({
+      page: page,
+      artist: artist,
+      album: album,
+    });
+  }, []);
+
   return (
-    <navigationContext.Provider value={page}>
-      <Banner>
-        <div>Personal Music Catalogue</div>
-      </Banner>
-      <ComponentPicker currentPage={page.current} />
-    </navigationContext.Provider>
+    <>
+      <Banner navigate={navigate} />
+      <ComponentPicker context={context} navigate={navigate} />
+    </>
   );
 };
 
-export { navigationContext };
 export default App;

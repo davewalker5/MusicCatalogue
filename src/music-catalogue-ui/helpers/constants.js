@@ -1,6 +1,6 @@
 // This file is temporary, pending implementation of user login
-const username = "a-user";
-const password = "the-password";
-const baseUrl = "http://host:port";
+const username = "dave";
+const password = "password";
+const baseUrl = "http://localhost:8098";
 
 export { baseUrl, username, password };
