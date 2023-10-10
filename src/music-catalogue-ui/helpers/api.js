@@ -53,7 +53,7 @@ const apiFetchAlbumsByArtist = async (artistId) => {
     Authorization: `Bearer ${token}`,
   };
 
-  // Call the API to get a list of all artists
+  // Call the API to get a list of all albums by the specified artist
   const url = baseUrl + `/albums/artist/${artistId}`;
   const response = await fetch(url, {
     method: "GET",
@@ -65,4 +65,30 @@ const apiFetchAlbumsByArtist = async (artistId) => {
   return albums;
 };
 
-export { apiAuthenticate, apiFetchAllArtists, apiFetchAlbumsByArtist };
+const apiFetchAlbumById = async (albumId) => {
+  // TODO: This call can be removed once user login has been implemented
+  var token = await apiAuthenticate(username, password);
+
+  // Construct the request headers
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  // Call the API to get the details for the specifiedf album
+  const url = baseUrl + `/albums/${albumId}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: headers,
+  });
+
+  // Get the response content as JSON and return it
+  const album = await response.json();
+  return album;
+};
+
+export {
+  apiAuthenticate,
+  apiFetchAllArtists,
+  apiFetchAlbumsByArtist,
+  apiFetchAlbumById,
+};

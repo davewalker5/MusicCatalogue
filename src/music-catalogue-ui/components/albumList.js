@@ -25,7 +25,12 @@ const AlbumList = ({ artist, navigate }) => {
         </thead>
         <tbody>
           {albums.map((a) => (
-            <AlbumRow key={a.id} artist={artist} album={a} navgate={navigate} />
+            <AlbumRow
+              key={a.id}
+              artist={artist}
+              album={a}
+              navigate={navigate}
+            />
           ))}
         </tbody>
       </table>
