@@ -13,7 +13,7 @@ const TrackRow = ({ artist, album, track, navigate }) => {
       </td>
       <td>{track.number}</td>
       <td>{track.title}</td>
-      <td>{track.duration}</td>
+      <td>{track.formattedDuration}</td>
     </tr>
   );
 };

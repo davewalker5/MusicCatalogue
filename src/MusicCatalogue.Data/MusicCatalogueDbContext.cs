@@ -63,6 +63,7 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Number).HasColumnName("Number");
                 entity.Property(e => e.Title).IsRequired().HasColumnName("Title");
                 entity.Property(e => e.Duration).HasColumnName("Duration");
+                entity.Ignore(e => e.FormattedDuration);
             });
         }
     }

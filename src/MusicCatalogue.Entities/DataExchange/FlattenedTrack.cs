@@ -40,7 +40,7 @@ namespace MusicCatalogue.Entities.DataExchange
             AppendField(builder, CoverUrl);
             AppendField(builder, TrackNumber);
             AppendField(builder, Title);
-            AppendField(builder, FormattedDuration());
+            AppendField(builder, FormattedDuration);
             return builder.ToString();
         }
 
