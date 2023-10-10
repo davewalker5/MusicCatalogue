@@ -1,11 +1,18 @@
+import { useCallback } from "react";
 import useAlbums from "@/hooks/useAlbums";
 import statuses from "@/helpers/status";
 import AlbumRow from "./albumRow";
 import StatusIndicator from "./statusIndicator";
 import pages from "@/helpers/navigation";
+import ButtonBar from "./buttonBar";
 
-const AlbumList = ({ artist, navigate }) => {
+const AlbumList = ({ artist, navigate, logout }) => {
   const { albums, setAlbums, currentStatus } = useAlbums(artist.id);
+
+  // Backwards navigation callback
+  const navigateBack = useCallback(() => {
+    navigate(pages.artists, null, null);
+  }, [navigate]);
 
   if (currentStatus !== statuses.loaded)
     return <StatusIndicator currentStatus={currentStatus} />;
@@ -35,12 +42,7 @@ const AlbumList = ({ artist, navigate }) => {
           ))}
         </tbody>
       </table>
-      <button
-        className="btn btn-primary"
-        onClick={() => navigate(pages.artists, null, null)}
-      >
-        &lt; Back
-      </button>
+      <ButtonBar navigateBack={navigateBack} logout={logout} />
     </>
   );
 };

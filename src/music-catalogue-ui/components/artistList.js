@@ -2,8 +2,9 @@ import useArtists from "@/hooks/useArtists";
 import statuses from "@/helpers/status";
 import ArtistRow from "./artistRow";
 import StatusIndicator from "./statusIndicator";
+import ButtonBar from "./buttonBar";
 
-const ArtistList = ({ navigate }) => {
+const ArtistList = ({ navigate, logout }) => {
   const { artists, setArtists, currentStatus } = useArtists();
 
   if (currentStatus !== statuses.loaded)
@@ -26,6 +27,7 @@ const ArtistList = ({ navigate }) => {
           ))}
         </tbody>
       </table>
+      <ButtonBar navigateBack={null} logout={logout} />
     </>
   );
 };
