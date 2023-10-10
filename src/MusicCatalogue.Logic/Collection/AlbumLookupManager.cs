@@ -34,16 +34,16 @@ namespace MusicCatalogue.Logic.Collection
         public async Task<Album?> LookupAlbum(string artistName, string albumTitle)
         {
             // Convert the parameters to title case to match the case used to persist data
-            artistName = StringCleaner.Clean(artistName);
-            albumTitle = StringCleaner.Clean(albumTitle);
+            artistName = StringCleaner.Clean(artistName)!;
+            albumTitle = StringCleaner.Clean(albumTitle)!;
 
             // See if the album details are held locally, first
-            Album? album = await LookupAlbumUsingDb(artistName, albumTitle);
+            Album? album = await LookupAlbumUsingDb(artistName!, albumTitle!);
             if (album == null)
             {
                 // Not held locally so use the API to look up the details
                 _logger.LogMessage(Severity.Info, "Album not found locally - using the API to lookup album details");
-                album = await LookupAlbumUsingApi(artistName, albumTitle);
+                album = await LookupAlbumUsingApi(artistName!, albumTitle!);
 
                 // An album is valid if it isn't null and it has at least 1 track. If not, then it's
                 // not valid and shouldn't be persisted to the database
@@ -53,7 +53,7 @@ namespace MusicCatalogue.Logic.Collection
                 if (numberOfTracks > 0)
                 {
                     // Got valid details from the API so store them locally
-                    album = await StoreAlbumLocally(artistName, album!);
+                    album = await StoreAlbumLocally(artistName!, album!);
                 }
                 else
                 {

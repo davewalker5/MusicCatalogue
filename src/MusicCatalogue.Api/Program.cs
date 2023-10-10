@@ -128,6 +128,14 @@ namespace MusicCatalogue.Api
 
             app.UseHttpsRedirection();
 
+            // Allow the development React application to access the service
+            if (settings.Environment == MusicCatalogueEnvironment.Development)
+            {
+                app.UseCors(x => x.WithOrigins("http://localhost:3000")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader());
+            }
+
             app.UseAuthorization();
 
 

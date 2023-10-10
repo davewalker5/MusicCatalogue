@@ -68,7 +68,7 @@ namespace MusicCatalogue.Logic.DataExchange
             _worksheet!.Cell(row, 5).Value = track.CoverUrl ?? "";
             _worksheet!.Cell(row, 6).Value = track.TrackNumber?.ToString() ?? "";
             _worksheet!.Cell(row, 7).Value = track.Title ?? "";
-            _worksheet!.Cell(row, 8).Value = track.FormattedDuration() ?? "";
+            _worksheet!.Cell(row, 8).Value = track.FormattedDuration ?? "";
         }
     }
 }

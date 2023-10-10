@@ -34,7 +34,7 @@ namespace MusicCatalogue.Api.Controllers
 
         [HttpGet]
         [Route("artist/{artistId}")]
-        public async Task<ActionResult<List<Album>>> GetAlbumsByArtistAsync(int artistId)
+        public async Task<ActionResult<IEnumerable<Album>>> GetAlbumsByArtistAsync(int artistId)
         {
             List<Album> albums = await _factory.Albums.ListAsync(x => x.ArtistId == artistId);
 

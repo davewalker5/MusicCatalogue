@@ -63,7 +63,7 @@ namespace MusicCatalogue.LookupTool.Logic
                 {
                     foreach (var track in album.Tracks)
                     {
-                        Console.WriteLine($"{track.Number} : {track.Title}, {track.FormattedDuration()}");
+                        Console.WriteLine($"{track.Number} : {track.Title}, {track.FormattedDuration}");
                     }
                     Console.WriteLine();
                 }

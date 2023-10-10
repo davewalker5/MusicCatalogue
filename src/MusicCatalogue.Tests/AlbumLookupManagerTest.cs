@@ -103,7 +103,7 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual("Blue Train", album.Tracks.First().Title);
             Assert.AreEqual(1, album.Tracks.First().Number);
             Assert.AreEqual(643200, album.Tracks.First().Duration);
-            Assert.AreEqual("10:43", album.Tracks.First().FormattedDuration());
+            Assert.AreEqual("10:43", album.Tracks.First().FormattedDuration);
         }
 
         [TestMethod]
@@ -126,7 +126,7 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual("Blue Train", album.Tracks.First().Title);
             Assert.AreEqual(1, album.Tracks.First().Number);
             Assert.AreEqual(643200, album.Tracks.First().Duration);
-            Assert.AreEqual("10:43", album.Tracks.First().FormattedDuration());
+            Assert.AreEqual("10:43", album.Tracks.First().FormattedDuration);
         }
 
         [TestMethod]
