@@ -1,4 +1,4 @@
-import styles from "./buttonBar.module.css";
+import CallbackButton from "./CallbackButton";
 
 /**
  * Component to render the configurable button bar at the bottom of the page
@@ -6,33 +6,15 @@ import styles from "./buttonBar.module.css";
  * @returns
  */
 const ButtonBar = ({ navigateBack, lookup, logout }) => {
-  const lookupStyles = navigateBack
-    ? `btn btn-primary ${styles.lookup}`
-    : "btn btn-primary";
-
   return (
     <div>
       <div className="float-start">
-        {navigateBack ? (
-          <button className="btn btn-primary" onClick={() => navigateBack()}>
-            &lt; Back
-          </button>
-        ) : (
-          <></>
-        )}
-
-        {lookup ? (
-          <button className={lookupStyles} onClick={() => lookup()}>
-            Lookup
-          </button>
-        ) : (
-          <></>
-        )}
+        <CallbackButton label="&lt; Back" callback={navigateBack} />
+        {navigateBack != null ? " " : <></>}
+        <CallbackButton label="Lookup" callback={lookup} />
       </div>
       <div className="float-end">
-        <button className="btn btn-primary" onClick={() => logout()}>
-          Logout
-        </button>
+        <CallbackButton label="Logout" callback={logout} />
       </div>
     </div>
   );

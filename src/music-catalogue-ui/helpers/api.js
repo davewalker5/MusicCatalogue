@@ -14,7 +14,7 @@ const apiSetToken = (token) => {
  * @param {*} token
  * @returns
  */
-const apiGetToken = (token) => {
+const apiGetToken = () => {
   // TODO: Move to HTTP Cookie
   return localStorage.getItem("token");
 };
@@ -25,6 +25,22 @@ const apiGetToken = (token) => {
 const apiClearToken = () => {
   // TODO: Move to HTTP Cookie
   localStorage.removeItem("token");
+};
+
+/**
+ * Return the HTTP headers used when calling the REST API
+ * @returns
+ */
+const apiGetHeaders = () => {
+  // Get the token
+  var token = apiGetToken();
+
+  // Construct the request headers
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  return headers;
 };
 
 /**
@@ -62,19 +78,11 @@ const apiAuthenticate = async (username, password) => {
  * @returns
  */
 const apiFetchAllArtists = async (logout) => {
-  // Get the token
-  var token = apiGetToken();
-
-  // Construct the request headers
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
   // Call the API to get a list of all artists
   const url = `${config.api.baseUrl}/artists/`;
   const response = await fetch(url, {
     method: "GET",
-    headers: headers,
+    headers: apiGetHeaders(),
   });
 
   if (response.ok) {
@@ -97,19 +105,11 @@ const apiFetchAllArtists = async (logout) => {
  * @returns
  */
 const apiFetchArtistById = async (artistId, logout) => {
-  // Get the token
-  var token = apiGetToken();
-
-  // Construct the request headers
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
   // Call the API to get the artist details
   const url = `${config.api.baseUrl}/artists/${artistId}`;
   const response = await fetch(url, {
     method: "GET",
-    headers: headers,
+    headers: apiGetHeaders(),
   });
 
   if (response.ok) {
@@ -132,19 +132,11 @@ const apiFetchArtistById = async (artistId, logout) => {
  * @returns
  */
 const apiFetchAlbumsByArtist = async (artistId, logout) => {
-  // Get the token
-  var token = apiGetToken();
-
-  // Construct the request headers
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
   // Call the API to get a list of all albums by the specified artist
   const url = `${config.api.baseUrl}/albums/artist/${artistId}`;
   const response = await fetch(url, {
     method: "GET",
-    headers: headers,
+    headers: apiGetHeaders(),
   });
 
   if (response.ok) {
@@ -167,19 +159,11 @@ const apiFetchAlbumsByArtist = async (artistId, logout) => {
  * @returns
  */
 const apiFetchAlbumById = async (albumId, logout) => {
-  // Get the token
-  var token = apiGetToken();
-
-  // Construct the request headers
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
   // Call the API to get the details for the specifiedf album
   const url = `${config.api.baseUrl}/albums/${albumId}`;
   const response = await fetch(url, {
     method: "GET",
-    headers: headers,
+    headers: apiGetHeaders(),
   });
 
   if (response.ok) {
@@ -202,14 +186,6 @@ const apiFetchAlbumById = async (albumId, logout) => {
  * @param {*} logout
  */
 const apiLookupAlbum = async (artistName, albumTitle, logout) => {
-  // Get the token
-  var token = apiGetToken();
-
-  // Construct the request headers
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-
   // URL encode the lookup properties
   const encodedArtistName = encodeURIComponent(artistName);
   const encodedAlbumTitle = encodeURIComponent(albumTitle);
@@ -218,7 +194,7 @@ const apiLookupAlbum = async (artistName, albumTitle, logout) => {
   const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}`;
   const response = await fetch(url, {
     method: "GET",
-    headers: headers,
+    headers: apiGetHeaders(),
   });
 
   if (response.ok) {
