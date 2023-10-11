@@ -1,21 +1,26 @@
 import { useCallback } from "react";
 import useTracks from "@/hooks/useTracks";
-import statuses from "@/helpers/status";
 import TrackRow from "./trackRow";
-import StatusIndicator from "./statusIndicator";
 import pages from "@/helpers/navigation";
 import ButtonBar from "./buttonBar";
 
+/**
+ * Component to render the list of tracks for the specified album
+ * @param {*} param0
+ * @returns
+ */
 const TrackList = ({ artist, album, navigate, logout }) => {
-  const { tracks, setTracks, currentStatus } = useTracks(album.id, logout);
+  const { tracks, setTracks } = useTracks(album.id, logout);
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {
     navigate(pages.albums, artist, null);
   }, [navigate, artist]);
 
-  if (currentStatus !== statuses.loaded)
-    return <StatusIndicator currentStatus={currentStatus} />;
+  // Callback to navigate to the lookup page
+  const lookup = useCallback(() => {
+    navigate(pages.lookup, null, null);
+  }, [navigate]);
 
   return (
     <>
@@ -46,7 +51,7 @@ const TrackList = ({ artist, album, navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={navigateBack} logout={logout} />
+      <ButtonBar navigateBack={navigateBack} lookup={lookup} logout={logout} />
     </>
   );
 };

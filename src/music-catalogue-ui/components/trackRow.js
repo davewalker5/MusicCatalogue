@@ -1,6 +1,11 @@
 import styles from "./trackRow.module.css";
 import pages from "@/helpers/navigation";
 
+/**
+ * Component to render a row containing the details for a single track
+ * @param {*} param0
+ * @returns
+ */
 const TrackRow = ({ artist, album, track, navigate }) => {
   return (
     <tr>

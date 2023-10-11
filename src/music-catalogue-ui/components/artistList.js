@@ -1,14 +1,21 @@
+import { useCallback } from "react";
 import useArtists from "@/hooks/useArtists";
-import statuses from "@/helpers/status";
 import ArtistRow from "./artistRow";
-import StatusIndicator from "./statusIndicator";
 import ButtonBar from "./buttonBar";
+import pages from "@/helpers/navigation";
 
+/**
+ * Component to render a table listing all the artists in the catalogue
+ * @param {*} param0
+ * @returns
+ */
 const ArtistList = ({ navigate, logout }) => {
-  const { artists, setArtists, currentStatus } = useArtists(logout);
+  const { artists, setArtists } = useArtists(logout);
 
-  if (currentStatus !== statuses.loaded)
-    return <StatusIndicator currentStatus={currentStatus} />;
+  // Callback to navigate to the lookup page
+  const lookup = useCallback(() => {
+    navigate(pages.lookup, null, null);
+  }, [navigate]);
 
   return (
     <>
@@ -27,7 +34,7 @@ const ArtistList = ({ navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={null} logout={logout} />
+      <ButtonBar navigateBack={null} lookup={lookup} logout={logout} />
     </>
   );
 };

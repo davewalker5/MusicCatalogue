@@ -1,21 +1,26 @@
 import { useCallback } from "react";
 import useAlbums from "@/hooks/useAlbums";
-import statuses from "@/helpers/status";
 import AlbumRow from "./albumRow";
-import StatusIndicator from "./statusIndicator";
 import pages from "@/helpers/navigation";
 import ButtonBar from "./buttonBar";
 
+/**
+ * Component to render the table of all albums by the specified artist
+ * @param {*} param0
+ * @returns
+ */
 const AlbumList = ({ artist, navigate, logout }) => {
-  const { albums, setAlbums, currentStatus } = useAlbums(artist.id, logout);
+  const { albums, setAlbums } = useAlbums(artist.id, logout);
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {
     navigate(pages.artists, null, null);
   }, [navigate]);
 
-  if (currentStatus !== statuses.loaded)
-    return <StatusIndicator currentStatus={currentStatus} />;
+  // Callback to navigate to the lookup page
+  const lookup = useCallback(() => {
+    navigate(pages.lookup, null, null);
+  }, [navigate]);
 
   return (
     <>
@@ -25,8 +30,8 @@ const AlbumList = ({ artist, navigate, logout }) => {
       <table className="table table-hover">
         <thead>
           <tr>
-            <th>Album Title</th>
             <th>Artist</th>
+            <th>Album Title</th>
             <th>Genre</th>
             <th>Released</th>
           </tr>
@@ -42,7 +47,7 @@ const AlbumList = ({ artist, navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={navigateBack} logout={logout} />
+      <ButtonBar navigateBack={navigateBack} lookup={lookup} logout={logout} />
     </>
   );
 };

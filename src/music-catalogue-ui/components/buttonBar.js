@@ -1,19 +1,20 @@
-const ButtonBar = ({ navigateBack, logout }) => {
+import CallbackButton from "./callbackButton";
+
+/**
+ * Component to render the configurable button bar at the bottom of the page
+ * @param {*} param0
+ * @returns
+ */
+const ButtonBar = ({ navigateBack, lookup, logout }) => {
   return (
     <div>
-      <div class="float-start">
-        {navigateBack ? (
-          <button className="btn btn-primary " onClick={() => navigateBack()}>
-            &lt; Back
-          </button>
-        ) : (
-          <></>
-        )}
+      <div className="float-start">
+        <CallbackButton label="&lt; Back" callback={navigateBack} />
+        {navigateBack != null ? " " : <></>}
+        <CallbackButton label="Lookup" callback={lookup} />
       </div>
-      <div class="float-end">
-        <button className="btn btn-primary" onClick={() => logout()}>
-          Logout
-        </button>
+      <div className="float-end">
+        <CallbackButton label="Logout" callback={logout} />
       </div>
     </div>
   );

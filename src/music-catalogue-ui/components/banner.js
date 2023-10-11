@@ -1,6 +1,11 @@
 import styles from "./banner.module.css";
 import pages from "@/helpers/navigation";
 
+/**
+ * Component to render the banner displayed on all pages
+ * @param {*} param0
+ * @returns
+ */
 const Banner = ({ navigate }) => {
   return (
     <header className="row mb-4">
