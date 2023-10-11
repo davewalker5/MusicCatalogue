@@ -15,13 +15,46 @@
 
 ## The Console Lookup Tool
 
-- The application provides a simple command line interface for looking up albums one at a time
-- The results are stored in a local SQLite database and subsequent searches for the same album return results from there rather than by querying the external APIs (see below)
-- The following command line arguments are required:
-  - Artist name
-  - Album title
-- Both should be enclosed in double-quotes
-- For example:
+### Overview
+
+- The application provides a simple command line interface for:
+  - Looking up albums one at a time, given an artist and album title
+  - Importing data from CSV files
+  - Exporting data to CSV files or Excel workbooks
+- Album lookup results and imported data are stored in a local SQLite database and subsequent searches for the same album return results from there rather than by querying the external APIs (see below)
+
+### Command Line Options
+
+- The following command line arguments are supported:
+
+| Option   | Short Name | Required Values          | Comments                                    |
+| -------- | ---------- | ------------------------ | ------------------------------------------- |
+| --lookup | -l         | Artist name, album title | Performs an album lookup                    |
+| --import | -i         | CSV file path            | Import data from the specified CSV file     |
+| --export | -e         | File path                | Export the collection to the specified file |
+
+- For album lookups, it is recommended that the artist name and album title are both be double-quoted
+- This is mandatory if either contains spaces
+- For data exports, the exported format is based on the file extension for the supplied file path:
+
+| Extension | Exported format |
+| --------- | --------------- |
+| xlsx      | Excel workbook  |
+| csv       | CSV file        |
+
+### CSV File Format
+
+- The first row in the CSV file is expected to contain headers and is ignored
+- All fields in the CSV file must be double-quoted and may not contain ","
+- Durations should be specified in MM:SS format, e.g. "03:10" for 3 minutes and 10 seconds
+- The following is an example, illustrating the format for the headers and for the rows containing data:
+
+```
+Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration
+"Nat King Cole","After Midnight","Jazz","1957","","1","Just You Just Me","03:00"
+```
+
+### Example - Album Lookup
 
 ```bash
 MusicCatalogue.LookupTool "John Coltrane" "Blue Train"
