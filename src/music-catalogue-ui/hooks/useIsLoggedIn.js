@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
  * @returns
  */
 const useIsLoggedIn = () => {
-  // Current list of albums and the method to change it
   const [isLoggedIn, setIsLoggedIn] = useState([]);
 
   useEffect(() => {

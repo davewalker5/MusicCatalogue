@@ -8,24 +8,21 @@ import { apiAuthenticate, apiSetToken } from "@/helpers/api";
  * @returns
  */
 const Login = ({ login }) => {
-  // Configure state items for controlled form fields
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const submit = (e) => {
+    // Prevent event propagation
+    e.preventDefault();
+    // e.nativeEvent.stopPropagation();
 
-  const submit = useCallback(
-    async (e) => {
-      // Prevent default handling of the submit button press
-      e.preventDefault();
+    // Get the form elements
+    const userName = e.target.username.value;
+    const password = e.target.password.value;
 
-      // Attempt to login
-      const token = await apiAuthenticate(userName, password);
-      if (token != null) {
-        apiSetToken(token);
-        login(true);
-      }
-    },
-    [userName, password, login]
-  );
+    // Attempt to login
+    apiAuthenticate(userName, password).then(function (token) {
+      apiSetToken(token);
+      login(true);
+    });
+  };
 
   return (
     <>
@@ -40,8 +37,6 @@ const Login = ({ login }) => {
                 placeholder="Username"
                 name="username"
                 autoComplete="username"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
               />
             </div>
             <div className="form-group mt-3">
@@ -52,8 +47,6 @@ const Login = ({ login }) => {
                 placeholder="Password"
                 name="password"
                 autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="d-grid gap-2 mt-3">

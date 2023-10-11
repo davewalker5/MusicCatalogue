@@ -1,4 +1,4 @@
-import CallbackButton from "./CallbackButton";
+import CallbackButton from "./callbackButton";
 
 /**
  * Component to render the configurable button bar at the bottom of the page

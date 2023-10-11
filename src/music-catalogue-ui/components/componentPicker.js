@@ -2,6 +2,7 @@ import pages from "../helpers/navigation";
 import ArtistList from "./artistList";
 import AlbumList from "./albumList";
 import TrackList from "./trackList";
+import LookupAlbum from "./lookupAlbum";
 
 /**
  * Component using the current page name to render the components required
@@ -31,9 +32,9 @@ const ComponentPicker = ({ context, navigate, logout }) => {
         />
       );
     case pages.lookup:
-      return <span></span>;
+      return <LookupAlbum navigate={navigate} logout={logout} />;
     default:
-      return <span></span>;
+      return <span />;
   }
 };
 

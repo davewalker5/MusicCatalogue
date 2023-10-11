@@ -7,7 +7,7 @@ import pages from "@/helpers/navigation";
  */
 const AlbumRow = ({ artist, album, navigate }) => {
   return (
-    <tr onClick={() => navigate(pages.tracks, artist, album, navigate)}>
+    <tr onClick={() => navigate(pages.tracks, artist, album)}>
       <td>{artist.name}</td>
       <td>{album.title}</td>
       <td>{album.genre}</td>

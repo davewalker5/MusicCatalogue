@@ -6,25 +6,18 @@ import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/api";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 
+const defaultContext = {
+  page: pages.artists,
+  artist: null,
+  album: null,
+};
+
 const App = () => {
+  // Hook to determine the current logged in state, and a method to change it
   const { isLoggedIn, setIsLoggedIn } = useIsLoggedIn();
 
-  // Callbacks to set the logged in flag
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, [setIsLoggedIn]);
-
-  const logout = useCallback(() => {
-    apiClearToken();
-    setIsLoggedIn(false);
-  }, [setIsLoggedIn]);
-
   // Application-wide context
-  const [context, setContext] = useState({
-    page: pages.artists,
-    artist: null,
-    album: null,
-  });
+  const [context, setContext] = useState(defaultContext);
 
   // Callback to set the context
   const navigate = useCallback((page, artist, album) => {
@@ -34,6 +27,17 @@ const App = () => {
       album: album,
     });
   }, []);
+
+  // Callbacks to set the logged in flag
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+    setContext(defaultContext);
+  }, [setIsLoggedIn]);
+
+  const logout = useCallback(() => {
+    apiClearToken();
+    setIsLoggedIn(false);
+  }, [setIsLoggedIn]);
 
   // If the user's logged in, show the banner and current component. Otherwise,
   // show the login page
