@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import useAlbums from "@/hooks/useAlbums";
-import statuses from "@/helpers/status";
 import AlbumRow from "./albumRow";
-import StatusIndicator from "./statusIndicator";
 import pages from "@/helpers/navigation";
 import ButtonBar from "./buttonBar";
 
@@ -12,7 +10,7 @@ import ButtonBar from "./buttonBar";
  * @returns
  */
 const AlbumList = ({ artist, navigate, logout }) => {
-  const { albums, setAlbums, currentStatus } = useAlbums(artist.id, logout);
+  const { albums, setAlbums } = useAlbums(artist.id, logout);
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {
@@ -24,9 +22,6 @@ const AlbumList = ({ artist, navigate, logout }) => {
     navigate(pages.lookup, null, null);
   }, [navigate]);
 
-  if (currentStatus !== statuses.loaded)
-    return <StatusIndicator currentStatus={currentStatus} />;
-
   return (
     <>
       <div className="row mb-2">
@@ -35,8 +30,8 @@ const AlbumList = ({ artist, navigate, logout }) => {
       <table className="table table-hover">
         <thead>
           <tr>
-            <th>Album Title</th>
             <th>Artist</th>
+            <th>Album Title</th>
             <th>Genre</th>
             <th>Released</th>
           </tr>

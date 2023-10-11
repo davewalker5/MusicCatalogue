@@ -1,5 +1,5 @@
 import styles from "./login.module.css";
-import { React, useState } from "react";
+import { React, useState, useCallback } from "react";
 import { apiAuthenticate, apiSetToken } from "@/helpers/api";
 
 /**
@@ -8,21 +8,24 @@ import { apiAuthenticate, apiSetToken } from "@/helpers/api";
  * @returns
  */
 const Login = ({ login }) => {
-  const submit = async (e) => {
-    // Prevent default handling of the submit button press
-    e.preventDefault();
+  // Configure state items for controlled form fields
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
-    // Extract the credentials from the form
-    const username = e.target.username.value;
-    const password = e.target.password.value;
+  const submit = useCallback(
+    async (e) => {
+      // Prevent default handling of the submit button press
+      e.preventDefault();
 
-    // Attempt to login
-    const token = await apiAuthenticate(username, password);
-    if (token != null) {
-      apiSetToken(token);
-      login(true);
-    }
-  };
+      // Attempt to login
+      const token = await apiAuthenticate(userName, password);
+      if (token != null) {
+        apiSetToken(token);
+        login(true);
+      }
+    },
+    [userName, password, login]
+  );
 
   return (
     <>
@@ -36,6 +39,9 @@ const Login = ({ login }) => {
                 className="form-control mt-1"
                 placeholder="Username"
                 name="username"
+                autoComplete="username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </div>
             <div className="form-group mt-3">
@@ -45,6 +51,9 @@ const Login = ({ login }) => {
                 className="form-control mt-1"
                 placeholder="Password"
                 name="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="d-grid gap-2 mt-3">

@@ -12,9 +12,9 @@ const ButtonBar = ({ navigateBack, lookup, logout }) => {
 
   return (
     <div>
-      <div class="float-start">
+      <div className="float-start">
         {navigateBack ? (
-          <button className="btn btn-primary " onClick={() => navigateBack()}>
+          <button className="btn btn-primary" onClick={() => navigateBack()}>
             &lt; Back
           </button>
         ) : (
@@ -29,7 +29,7 @@ const ButtonBar = ({ navigateBack, lookup, logout }) => {
           <></>
         )}
       </div>
-      <div class="float-end">
+      <div className="float-end">
         <button className="btn btn-primary" onClick={() => logout()}>
           Logout
         </button>

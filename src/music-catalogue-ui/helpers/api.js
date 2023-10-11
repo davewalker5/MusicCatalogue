@@ -81,9 +81,46 @@ const apiFetchAllArtists = async (logout) => {
     // Get the response content as JSON and return it
     const artists = await response.json();
     return artists;
-  } else {
+  } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
     logout();
+  } else {
+    return null;
+  }
+};
+
+/**
+ * Fetch the details for a single artist from the Music Catalogue REST API
+ * given the artist ID
+ * @param {*} artistId
+ * @param {*} logout
+ * @returns
+ */
+const apiFetchArtistById = async (artistId, logout) => {
+  // Get the token
+  var token = apiGetToken();
+
+  // Construct the request headers
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  // Call the API to get the artist details
+  const url = `${config.api.baseUrl}/artists/${artistId}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: headers,
+  });
+
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const artist = await response.json();
+    return artist;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    return null;
   }
 };
 
@@ -117,6 +154,8 @@ const apiFetchAlbumsByArtist = async (artistId, logout) => {
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
     logout();
+  } else {
+    return null;
   }
 };
 
@@ -150,14 +189,57 @@ const apiFetchAlbumById = async (albumId, logout) => {
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
     logout();
+  } else {
+    return null;
+  }
+};
+
+/**
+ * Look up an album using the REST API, calling the external service for the
+ * details if not found in the local database
+ * @param {*} artistName
+ * @param {*} albumTitle
+ * @param {*} logout
+ */
+const apiLookupAlbum = async (artistName, albumTitle, logout) => {
+  // Get the token
+  var token = apiGetToken();
+
+  // Construct the request headers
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  // URL encode the lookup properties
+  const encodedArtistName = encodeURIComponent(artistName);
+  const encodedAlbumTitle = encodeURIComponent(albumTitle);
+
+  // Call the API to get the details for the specifiedf album
+  const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: headers,
+  });
+
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const album = await response.json();
+    return album;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    return null;
   }
 };
 
 export {
-  apiAuthenticate,
-  apiFetchAllArtists,
-  apiFetchAlbumsByArtist,
-  apiFetchAlbumById,
   apiSetToken,
   apiClearToken,
+  apiAuthenticate,
+  apiFetchAllArtists,
+  apiFetchArtistById,
+  apiFetchAlbumsByArtist,
+  apiFetchAlbumById,
+  apiLookupAlbum,
 };
