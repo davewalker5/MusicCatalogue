@@ -8,26 +8,23 @@ import { apiAuthenticate, apiSetToken } from "@/helpers/api";
  * @returns
  */
 const Login = ({ login }) => {
-  const submit = (e) => {
-    // Prevent event propagation
-    e.preventDefault();
-    // e.nativeEvent.stopPropagation();
+  // Configure state for the controlled values
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    // Get the form elements
-    const userName = e.target.username.value;
-    const password = e.target.password.value;
-
-    // Attempt to login
-    apiAuthenticate(userName, password).then(function (token) {
+  // Callback to attempt to login
+  const tryLogin = useCallback(async () => {
+    const token = await apiAuthenticate(username, password);
+    if (token != null) {
       apiSetToken(token);
       login(true);
-    });
-  };
+    }
+  }, [username, password, login]);
 
   return (
     <>
       <div className={styles.authFormContainer}>
-        <form className={styles.authForm} onSubmit={submit}>
+        <div className={styles.authForm}>
           <div className={styles.authFormContent}>
             <h3 className={styles.authFormTitle}>Log In</h3>
             <div className="form-group mt-3">
@@ -37,6 +34,8 @@ const Login = ({ login }) => {
                 placeholder="Username"
                 name="username"
                 autoComplete="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="form-group mt-3">
@@ -47,15 +46,17 @@ const Login = ({ login }) => {
                 placeholder="Password"
                 name="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="d-grid gap-2 mt-3">
-              <button type="submit" className="btn btn-primary">
+              <button className="btn btn-primary" onClick={tryLogin}>
                 Log In
               </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

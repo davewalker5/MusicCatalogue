@@ -13,6 +13,7 @@ const LookupAlbum = ({ navigate, logout }) => {
   // Configure state for the controlled fields
   const [artistName, setArtistName] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {
@@ -31,7 +32,11 @@ const LookupAlbum = ({ navigate, logout }) => {
       if (artist != null) {
         // Navigate to the track list
         navigate(pages.tracks, artist, album);
+      } else {
+        setErrorMessage(`Artist with id ${album.artistId} not found`);
       }
+    } else {
+      setErrorMessage(`Album "${albumTitle}" by "${artistName}" not found`);
     }
   }, [artistName, albumTitle, navigate, logout]);
 
@@ -62,6 +67,9 @@ const LookupAlbum = ({ navigate, logout }) => {
                 value={albumTitle}
                 onChange={(e) => setAlbumTitle(e.target.value)}
               />
+            </div>
+            <div className="d-grid gap-2 mt-3 row">
+              <span className={styles.lookupError}>{errorMessage}</span>
             </div>
             <div className="d-grid gap-2 mt-3 row">
               <ButtonBar
