@@ -33,7 +33,7 @@
 | --import | -i         | CSV file path            | Import data from the specified CSV file     |
 | --export | -e         | File path                | Export the collection to the specified file |
 
-- For album lookups, it is recommended that the artist name and album title are both be double-quoted
+- For album lookups, it is recommended that the artist name and album title are both double-quoted
 - This is mandatory if either contains spaces
 - For data exports, the exported format is based on the file extension for the supplied file path:
 
