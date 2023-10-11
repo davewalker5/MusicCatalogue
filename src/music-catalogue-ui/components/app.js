@@ -4,20 +4,20 @@ import Banner from "./banner";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/api";
+import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 
 const App = () => {
-  // Flag indicating the user's logged in
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useIsLoggedIn();
 
   // Callbacks to set the logged in flag
   const login = useCallback(() => {
-    setLoggedIn(true);
-  }, []);
+    setIsLoggedIn(true);
+  }, [setIsLoggedIn]);
 
   const logout = useCallback(() => {
     apiClearToken();
-    setLoggedIn(false);
-  }, []);
+    setIsLoggedIn(false);
+  }, [setIsLoggedIn]);
 
   // Application-wide context
   const [context, setContext] = useState({
@@ -39,7 +39,7 @@ const App = () => {
   // show the login page
   return (
     <>
-      {loggedIn ? (
+      {isLoggedIn ? (
         <>
           <Banner navigate={navigate} />
           <ComponentPicker

@@ -15,8 +15,13 @@ const apiSetToken = (token) => {
  * @returns
  */
 const apiGetToken = () => {
-  // TODO: Move to HTTP Cookie
-  return localStorage.getItem("token");
+  try {
+    // TODO: Move to HTTP Cookie
+    const token = localStorage.getItem("token");
+    return token;
+  } catch {
+    return null;
+  }
 };
 
 /**
@@ -211,6 +216,7 @@ const apiLookupAlbum = async (artistName, albumTitle, logout) => {
 
 export {
   apiSetToken,
+  apiGetToken,
   apiClearToken,
   apiAuthenticate,
   apiFetchAllArtists,
