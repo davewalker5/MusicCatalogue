@@ -6,6 +6,7 @@
 [![Releases](https://img.shields.io/github/v/release/davewalker5/MusicCatalogue.svg?include_prereleases)](https://github.com/davewalker5/MusicCatalogue/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/davewalker5/MusicCatalogue/blob/master/LICENSE)
 [![Language](https://img.shields.io/badge/language-c%23-blue.svg)](https://github.com/davewalker5/MusicCatalogue/)
+[![Language](https://img.shields.io/badge/language-React.js-blue.svg)](https://github.com/davewalker5/MusicCatalogue/)
 [![Language](https://img.shields.io/badge/database-SQLite-blue.svg)](https://github.com/davewalker5/MusicCatalogue/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davewalker5/MusicCatalogue)](https://github.com/davewalker5/MusicCatalogue/)
 
