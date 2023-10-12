@@ -33,7 +33,7 @@
 | GUI          | React.js | Browser UI for catalogue browsing                                  |
 
 - NuGet packages are available for the entities, data and logic
-- Docker builsd of the REST API and GUI are also available
+- Docker builds of the REST API and GUI are also available
 
 ## The Console Lookup Tool
 
