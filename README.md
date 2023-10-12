@@ -11,17 +11,40 @@
 
 ## Overview
 
-- To be completed once the web service and GUI have been implemented
+<img src="diagrams/application-schematic.png" alt="Application Schematic" width="600">
+
+- The Music Catalogue repository is intended to provide a catalogue for a private music collection
+- It supports the following functions:
+  - Music catalogue collection browser
+  - Album search
+  - External API integration for looking up new albums
+  - Data import from CSV format files
+  - Data export as CSV or Excel workbooks
+- It contains the following components:
+
+| Component    | Language | Purpose                                                            |
+| ------------ | -------- | ------------------------------------------------------------------ |
+| Entities     | C#       | Catalogue entities (albums, artists, tracks)                       |
+| Data         | C#       | Database context and migrations for a SQLite database              |
+| Logic        | C#       | Business logic for browsing the data and external API integration  |
+| Console Tool | C#       | Command line tool providing facilities based on the business logic |
+| REST API     | C#       | Web API exposing the facilities provided by the business logic     |
+| GUI          | React.js | Browser UI for catalogue browsing                                  |
+
+- NuGet packages are available for the entities, data and logic
+- A Docker build of the REST API is also available
 
 ## The Console Lookup Tool
 
 ### Overview
 
-- The application provides a simple command line interface for:
+- The console application provides a simple command line interface for:
   - Looking up albums one at a time, given an artist and album title
   - Importing data from CSV files
   - Exporting data to CSV files or Excel workbooks
-- Album lookup results and imported data are stored in a local SQLite database and subsequent searches for the same album return results from there rather than by querying the external APIs (see below)
+- The album lookup facility uses the algorithm described under "Album Lookup", below
+- Consequently, searching for an album that's not currently in the catalogue will add it to the local database
+- The console application doesn't use the web service (see below) and can be used standalone
 
 ### Command Line Options
 
@@ -57,12 +80,64 @@ Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration
 ### Example - Album Lookup
 
 ```bash
-MusicCatalogue.LookupTool "John Coltrane" "Blue Train"
+MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 ```
 
 - The output lists the album details and the number, title and duration of each track:
 
 ![Console Lookup Tool](diagrams/lookup-tool.png)
+
+## GUI
+
+### Overview
+
+- The GUI is written using React.js
+- It provides facilities to:
+  - Browse the artists, albums and track lists in the collection
+  - Perform album lookups, given an artist name and title
+- The album lookup facility uses the algorithm described under "Album Lookup", below
+- Consequently, searching for an album that's not currently in the catalogue will add it to the local database
+- The GUI uses the web service (see below) to retrieve and lookup data
+
+### Login
+
+- On browing to the application, the login dialog is displayed, prompting for a username and password
+- This authenticates with the web service (see below), so a valid login in the local database is required
+- Instructions on adding a user to the database are given in the "Database Users" section, below
+
+### Browsing the Catalogue
+
+- After logging in, the "Artists" page is displayed, listing the artists currently in the database
+- This acts as the home page for the site and clicking on the "Artists" menu item or the site logo navigates back to it
+
+<img src="diagrams/artist-list.png" alt="Artist List" width="600">
+
+- As the mouse pointer is moved up and down the table, the current row is highlighted
+- Clicking on a row opens the album list for the artist shown in that row:
+
+<img src="diagrams/album-list.png" alt="Album List" width="600">
+
+- As the mouse pointer is moved up and down the table, the current row is highlighted
+- Clicking on a row opens the track list for the album shown in that row:
+
+<img src="diagrams/track-list.png" alt="Track List" width="600">
+
+- Clicking on the artist name in any row in the track list or clicking on the "Back" button returns to the album list for that artist
+
+### Album Lookup
+
+- To search for an album, click on the "Search" menu bar item:
+
+<img src="diagrams/album-search.png" alt="Album Search" width="600">
+
+- Enter the artist name and album title then click on "Lookup" to search for the album
+- If the album is found, the track list for the album is displayed
+- The album lookup facility uses the algorithm described under "Album Lookup", below
+- Consequently, searching for an album that's not currently in the catalogue will add it to the local database
+
+### Data Import and Export
+
+- These are scheduled for implementation in a future iteration of the UI
 
 ## Web Service
 
@@ -104,10 +179,6 @@ var context = new MusicCatalogueDbContextFactory().CreateDbContext(Array.Empty<s
 var factory = new MusicCatalogueFactory(context);
 Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 ```
-
-## GUI
-
-- Under development
 
 ## Application Configuration File
 
