@@ -9,5 +9,6 @@
         IImporter Importer { get; }
         IExporter CsvExporter { get; }
         IExporter XlsxExporter { get; }
+        IStatisticsManager Statistics { get; }
     }
 }
