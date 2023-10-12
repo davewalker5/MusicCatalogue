@@ -58,8 +58,7 @@ web service:
 }
 ```
 
-The UI is a React application that runs in the local browser, so the URL must be
-accessible from the host.
+The UI is a React application and requests to the service originate from the local browser, so the URL must be accessible from the host.
 
 #### Running the Image
 
