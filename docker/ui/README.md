@@ -77,7 +77,7 @@ services:
     ports:
       - "8086:3000"
     volumes:
-      - /local/config/ui-config.json:/opt/musiccatalogue.ui-1.3.0.0/config.json
+      - /local/config/ui-config.json:/opt/musiccatalogue.ui-1.4.0.0/config.json
 
   music-api:
     container_name: musiccatalogueservice
@@ -86,7 +86,7 @@ services:
     ports:
       - "8098:80"
     volumes:
-      - /local/data:/var/opt/musiccatalogue.api-1.3.0.0/
+      - /local/data:/var/opt/musiccatalogue.api-1.4.0.0/
 ```
 
 The local path to the config file and the local data path and port for the service should be set per the
