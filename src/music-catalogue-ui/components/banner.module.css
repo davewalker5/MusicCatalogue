@@ -1,13 +1,13 @@
 .logo {
-  margin: 20px;
-  height: 150px;
+  margin-left: 20px;
+  margin-top: 40px;
+  height: 75px;
   cursor: pointer;
 }
 
 .title {
-  float: inline-end;
+  float: left;
   font-style: italic;
-  font-size: 4em;
+  font-size: 2em;
   color: black;
-  text-align: left;
 }
