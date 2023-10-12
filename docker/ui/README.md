@@ -58,7 +58,7 @@ web service:
 }
 ```
 
-The UI is a React application and requests to the service originate from the local browser, so the URL must be accessible from the host.
+The UI is a React application and requests to the service originate from the local browser, so the URL must be accessible from the host. In the example Docker Compose file, listed below, both the UI and serive are run in Docker on the same host, with container ports mapped to host ports using the "ports" section.
 
 #### Running the Image
 
