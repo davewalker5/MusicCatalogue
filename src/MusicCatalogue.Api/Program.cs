@@ -131,7 +131,7 @@ namespace MusicCatalogue.Api
             // Allow the development React application to access the service
             if (settings.Environment == MusicCatalogueEnvironment.Development)
             {
-                app.UseCors(x => x.WithOrigins("http://localhost:3000")
+                app.UseCors(x => x.AllowAnyOrigin()
                    .AllowAnyMethod()
                    .AllowAnyHeader());
             }
