@@ -57,7 +57,7 @@ Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration
 ### Example - Album Lookup
 
 ```bash
-MusicCatalogue.LookupTool "John Coltrane" "Blue Train"
+MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 ```
 
 - The output lists the album details and the number, title and duration of each track:
