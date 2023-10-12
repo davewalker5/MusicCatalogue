@@ -47,6 +47,11 @@
 - Consequently, searching for an album that's not currently in the catalogue will add it to the local database
 - The console application doesn't use the web service (see below) and can be used standalone
 
+### Configuration
+
+- The console application uses an "appsettings.json" file to hold configuration settings
+- It's described in the "Application Configuration File" section, below
+
 ### Command Line Options
 
 - The following command line arguments are supported:
@@ -99,6 +104,18 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 - The album lookup facility uses the algorithm described under "Album Lookup", below
 - Consequently, searching for an album that's not currently in the catalogue will add it to the local database
 - The GUI uses the web service (see below) to retrieve and lookup data
+
+### Configuration
+
+- The UI uses a simple "config.json" file containing only one setting, the base URL for the Music Catalogue web service:
+
+```json
+{
+  "api": {
+    "baseUrl": "http://localhost:8098"
+  }
+}
+```
 
 ### Login
 
@@ -158,6 +175,11 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 
 - For full details of the service endpoints, it's recommended to build and run the service and review the documentation exposed at the above URL
 
+### Configuration
+
+- The web service uses an "appsettings.json" file to hold configuration settings
+- It's described in the "Application Configuration File" section, below
+
 ### Authentication
 
 - The service uses bearer token authentication, so clients should:
@@ -184,6 +206,7 @@ Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 ## Application Configuration File
 
 - The console application and web service use a common configuration file format, described in this section
+- The GUI has a much simpler configuration file that's described along with the UI, above
 
 ### General Settings and Database Connection String
 
