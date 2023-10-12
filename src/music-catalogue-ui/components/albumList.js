@@ -1,8 +1,5 @@
-import { useCallback } from "react";
 import useAlbums from "@/hooks/useAlbums";
 import AlbumRow from "./albumRow";
-import pages from "@/helpers/navigation";
-import ButtonBar from "./buttonBar";
 
 /**
  * Component to render the table of all albums by the specified artist
@@ -12,19 +9,9 @@ import ButtonBar from "./buttonBar";
 const AlbumList = ({ artist, navigate, logout }) => {
   const { albums, setAlbums } = useAlbums(artist.id, logout);
 
-  // Backwards navigation callback
-  const navigateBack = useCallback(() => {
-    navigate(pages.artists, null, null);
-  }, [navigate]);
-
-  // Callback to navigate to the lookup page
-  const lookup = useCallback(() => {
-    navigate(pages.lookup, null, null);
-  }, [navigate]);
-
   return (
     <>
-      <div className="row mb-2">
+      <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">Albums by {artist.name}</h5>
       </div>
       <table className="table table-hover">
@@ -47,7 +34,6 @@ const AlbumList = ({ artist, navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={navigateBack} lookup={lookup} logout={logout} />
     </>
   );
 };

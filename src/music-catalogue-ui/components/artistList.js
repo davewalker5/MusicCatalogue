@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import useArtists from "@/hooks/useArtists";
 import ArtistRow from "./artistRow";
-import ButtonBar from "./buttonBar";
 import pages from "@/helpers/navigation";
 
 /**
@@ -19,7 +18,7 @@ const ArtistList = ({ navigate, logout }) => {
 
   return (
     <>
-      <div className="row mb-2">
+      <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">Artists</h5>
       </div>
       <table className="table table-hover">
@@ -34,7 +33,6 @@ const ArtistList = ({ navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={null} lookup={lookup} logout={logout} />
     </>
   );
 };

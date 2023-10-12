@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import Login from "./login";
-import Banner from "./banner";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/api";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
+import MenuBar from "./menuBar";
 
 const defaultContext = {
   page: pages.artists,
@@ -45,12 +45,16 @@ const App = () => {
     <>
       {isLoggedIn ? (
         <>
-          <Banner navigate={navigate} />
-          <ComponentPicker
-            context={context}
-            navigate={navigate}
-            logout={logout}
-          />
+          <div>
+            <MenuBar navigate={navigate} logout={logout} />
+          </div>
+          <div>
+            <ComponentPicker
+              context={context}
+              navigate={navigate}
+              logout={logout}
+            />
+          </div>
         </>
       ) : (
         <Login login={login} />
