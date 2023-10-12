@@ -25,6 +25,8 @@ const ArtistList = ({ navigate, logout }) => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Albums</th>
+            <th>Tracks</th>
           </tr>
         </thead>
         <tbody>
