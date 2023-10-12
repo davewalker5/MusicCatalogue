@@ -22,12 +22,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<List<Artist>>> GetArtistsAsync()
         {
+            // Get a list of all artists in the catalogue
             List<Artist> artists = await _factory.Artists.ListAsync(x => true);
 
+            // If there are no artists, return a no content response
             if (!artists.Any())
             {
                 return NoContent();
             }
+
+            // Populate the artist statistics
+            await _factory.Statistics.PopulateArtistStatistics(artists);
 
             return artists;
         }
