@@ -22,7 +22,7 @@ In order to run this image you'll need docker installed.
 
 #### Container Parameters
 
-The following "docker run" parameters are recommended when running the flightrecorderapisqlite image:
+The following "docker run" parameters are recommended when running the musiccatalogueapisqlite image:
 
 | Parameter | Value                                      | Purpose                                                               |
 | --------- | ------------------------------------------ | --------------------------------------------------------------------- |
