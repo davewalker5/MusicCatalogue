@@ -5,3 +5,7 @@
 tr {
   cursor: pointer;
 }
+
+.pageTitle {
+  margin-top: 25px;
+}

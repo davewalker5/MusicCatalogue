@@ -1,6 +1,5 @@
 import styles from "./lookupAlbum.module.css";
 import pages from "@/helpers/navigation";
-import ButtonBar from "./buttonBar";
 import { useCallback, useState } from "react";
 import { apiFetchArtistById, apiLookupAlbum } from "@/helpers/api";
 
@@ -42,7 +41,7 @@ const LookupAlbum = ({ navigate, logout }) => {
 
   return (
     <>
-      <div className="row mb-2">
+      <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">Lookup Album</h5>
       </div>
       <div className={styles.lookupFormContainer}>
@@ -68,15 +67,13 @@ const LookupAlbum = ({ navigate, logout }) => {
                 onChange={(e) => setAlbumTitle(e.target.value)}
               />
             </div>
-            <div className="d-grid gap-2 mt-3 row">
+            <div className="d-grid gap-2 mt-3">
               <span className={styles.lookupError}>{errorMessage}</span>
             </div>
-            <div className="d-grid gap-2 mt-3 row">
-              <ButtonBar
-                navigateBack={navigateBack}
-                lookup={lookup}
-                logout={logout}
-              />
+            <div className={styles.lookupButton}>
+              <button className="btn btn-primary" onClick={() => lookup()}>
+                Lookup
+              </button>
             </div>
           </div>
         </div>

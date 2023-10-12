@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import useTracks from "@/hooks/useTracks";
 import TrackRow from "./trackRow";
 import pages from "@/helpers/navigation";
-import ButtonBar from "./buttonBar";
 
 /**
  * Component to render the list of tracks for the specified album
@@ -17,14 +16,9 @@ const TrackList = ({ artist, album, navigate, logout }) => {
     navigate(pages.albums, artist, null);
   }, [navigate, artist]);
 
-  // Callback to navigate to the lookup page
-  const lookup = useCallback(() => {
-    navigate(pages.lookup, null, null);
-  }, [navigate]);
-
   return (
     <>
-      <div className="row mb-2">
+      <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">
           {artist.name} - {album.title}
         </h5>
@@ -51,7 +45,9 @@ const TrackList = ({ artist, album, navigate, logout }) => {
           ))}
         </tbody>
       </table>
-      <ButtonBar navigateBack={navigateBack} lookup={lookup} logout={logout} />
+      <button className="btn btn-primary" onClick={() => navigateBack()}>
+        &lt; Back to Albums By {artist.name}
+      </button>
     </>
   );
 };

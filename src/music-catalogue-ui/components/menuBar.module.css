@@ -1,0 +1,37 @@
+.titleBarContainer {
+  padding-top: 20px;
+  padding-bottom: 60px;
+  box-shadow: 0 5px 4px -4px grey;
+}
+
+.titleElement,
+.title {
+  float: left;
+  padding: 10px;
+  vertical-align: center;
+}
+
+.logo {
+  height: 35px;
+  cursor: pointer;
+}
+
+.title {
+  float: left;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: black;
+}
+
+.menuContainer {
+  float: right;
+  vertical-align: center;
+}
+
+.menuItem {
+  float: right;
+  padding: 10px;
+  color: black;
+  cursor: pointer;
+}
