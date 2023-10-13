@@ -10,6 +10,16 @@
 [![Language](https://img.shields.io/badge/database-SQLite-blue.svg)](https://github.com/davewalker5/MusicCatalogue/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davewalker5/MusicCatalogue)](https://github.com/davewalker5/MusicCatalogue/)
 
+## Contents
+
+- [Overview](#overview)
+- [Console Lookup Tool](#the-console-lookup-tool)
+- [UI](#gui)
+- [Web Service](#web-service)
+- [Application Configuration File](#application-configuration-file)
+- [Album Lookup](#album-lookup)
+- [SQLite Database](#sqlite-database)
+
 ## Overview
 
 <img src="diagrams/application-schematic.png" alt="Application Schematic" width="600">
@@ -34,6 +44,8 @@
 
 - NuGet packages are available for the entities, data and logic
 - Docker builds of the REST API and GUI are also available
+
+[^ top](#musiccatalogue)
 
 ## The Console Lookup Tool
 
@@ -92,6 +104,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 - The output lists the album details and the number, title and duration of each track:
 
 ![Console Lookup Tool](diagrams/lookup-tool.png)
+
+[^ top](#musiccatalogue)
 
 ## GUI
 
@@ -156,6 +170,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 ### Data Import and Export
 
 - These are scheduled for implementation in a future iteration of the UI
+
+[^ top](#musiccatalogue)
 
 ## Web Service
 
@@ -270,6 +286,8 @@ Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 - The "Key" can also specify an external text file in an alternative location containing a single line holding the API key
 - This approach is used in the Docker image of the API, where the key file is mounted from the host, avoiding baking the API key into the image
 
+[^ top](#musiccatalogue)
+
 ## Album Lookup
 
 - The local SQLite database is searched preferentially for album details
@@ -281,6 +299,8 @@ Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 - Consequently, subsequent searches with the same criteria will return data from the local database, not the APIs
 - Artist names, album titles and track names are stored in title case
 - Searches convert the search criteria to title case when looking details up in the database
+
+[^ top](#musiccatalogue)
 
 ## SQLite Database
 
@@ -310,6 +330,8 @@ dotnet ef database update -s ../MusicCatalogue.LookupTool/MusicCatalogue.LookupT
 
 - If the database doesn't exist, it will create it
 - It will then bring the database up to date by applying all pending migrations
+
+[^ top](#musiccatalogue)
 
 ## Authors
 
