@@ -267,6 +267,9 @@ Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 }
 ```
 
+- The "Key" can also specify an external text file in an alternative location containing a single line holding the API key
+- This approach is used in the Docker image of the API, where the key file is mounted from the host, avoiding baking the API key into the image
+
 ## Album Lookup
 
 - The local SQLite database is searched preferentially for album details
