@@ -219,6 +219,8 @@ var factory = new MusicCatalogueFactory(context);
 Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 ```
 
+[^ top](#musiccatalogue)
+
 ## Application Configuration File
 
 - The console application and web service use a common configuration file format, described in this section
