@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Linq;
 
 namespace MusicCatalogue.Logic.Database
 {
@@ -13,7 +12,7 @@ namespace MusicCatalogue.Logic.Database
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static string? Clean(string? s)
+        public static string Clean(string s)
         {
             var clean = s;
 

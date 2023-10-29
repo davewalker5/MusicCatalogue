@@ -1,6 +1,8 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MusicCatalogue.Api.Entities;
 using MusicCatalogue.Api.Interfaces;
 using MusicCatalogue.Api.Services;
 using MusicCatalogue.Data;
@@ -61,7 +63,7 @@ namespace MusicCatalogue.Api
             // Get the version number and application title
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(assembly.Location);
-            var title = $"Music Catalogue Lookup Tool v{info.FileVersion}";
+            var title = $"Music Catalogue API v{info.FileVersion}";
 
             // Create the file logger and log the startup messages
             var logger = new FileLogger();
@@ -96,6 +98,10 @@ namespace MusicCatalogue.Api
             builder.Services.AddScoped<IMusicCatalogueFactory, MusicCatalogueFactory>();
             builder.Services.AddScoped<IAlbumLookupManager, AlbumLookupManager>();
             builder.Services.AddScoped<IUserService, UserService>();
+
+            // Add the catalogue exporter hosted service
+            builder.Services.AddSingleton<IBackgroundQueue<CatalogueExportWorkItem>, BackgroundQueue<CatalogueExportWorkItem>>();
+            builder.Services.AddHostedService<CatalogueExportService>();
 
             // Configure JWT
             byte[] key = Encoding.ASCII.GetBytes(settings!.Secret);

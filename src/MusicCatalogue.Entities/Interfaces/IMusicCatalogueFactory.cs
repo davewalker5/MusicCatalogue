@@ -10,5 +10,6 @@
         IExporter CsvExporter { get; }
         IExporter XlsxExporter { get; }
         IStatisticsManager Statistics { get; }
+        IJobStatusManager JobStatuses { get; }
     }
 }
