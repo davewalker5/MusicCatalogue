@@ -14,11 +14,6 @@ const LookupAlbum = ({ navigate, logout }) => {
   const [albumTitle, setAlbumTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Backwards navigation callback
-  const navigateBack = useCallback(() => {
-    navigate(pages.artists, null, null);
-  }, [navigate]);
-
   // Lookup navigation callback
   const lookup = useCallback(async () => {
     // Lookup the album - this will preferentially use the local database via the

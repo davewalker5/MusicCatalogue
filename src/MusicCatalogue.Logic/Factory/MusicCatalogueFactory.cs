@@ -16,10 +16,12 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IExporter> _csvExporter;
         private readonly Lazy<IExporter> _xlsxExporter;
         private readonly Lazy<IStatisticsManager> _statistics;
+        private readonly Lazy<IJobStatusManager> _jobStatuses;
 
         public IArtistManager Artists { get { return _artists.Value; } }
         public IAlbumManager Albums { get { return _albums.Value; } }
         public ITrackManager Tracks { get { return _tracks.Value; } }
+        public IJobStatusManager JobStatuses { get { return _jobStatuses.Value; } }
         public IUserManager Users { get { return _users.Value; } }
 
         [ExcludeFromCodeCoverage]
@@ -37,6 +39,7 @@ namespace MusicCatalogue.Logic.Factory
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(context));
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(context));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(context));
+            _jobStatuses = new Lazy<IJobStatusManager>(() => new JobStatusManager(context));
             _users = new Lazy<IUserManager>(() => new UserManager(context));
             _importer = new Lazy<IImporter>(() => new CsvImporter(this));
             _csvExporter = new Lazy<IExporter>(() => new CsvExporter(this));

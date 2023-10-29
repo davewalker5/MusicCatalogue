@@ -86,13 +86,12 @@
 ### CSV File Format
 
 - The first row in the CSV file is expected to contain headers and is ignored
-- All fields in the CSV file must be double-quoted and may not contain ","
 - Durations should be specified in MM:SS format, e.g. "03:10" for 3 minutes and 10 seconds
 - The following is an example, illustrating the format for the headers and for the rows containing data:
 
 ```
 Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration
-"Nat King Cole","After Midnight","Jazz","1957","","1","Just You Just Me","03:00"
+Duke Ellington,Ellington Indigoes,Jazz,1958,,1,Solitude,04:43
 ```
 
 ### Example - Album Lookup
@@ -167,9 +166,24 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 - The album lookup facility uses the algorithm described under "Album Lookup", below
 - Consequently, searching for an album that's not currently in the catalogue will add it to the local database
 
-### Data Import and Export
+### Data Import
 
-- These are scheduled for implementation in a future iteration of the UI
+- This is scheduled for implementation in a future iteration of the UI
+
+### Data Export
+
+- To export the music catalogue, click on the "Export" menu bar item:
+
+<img src="diagrams/catalogue-export.png" alt="Music Catalogue Export" width="600">
+
+- Enter the file name, without a path, and click on the "Export" button to request an export
+- A request is sent to the web service to perform an export of the catalogue in the background
+- The "export" page is updated when the request has been sent:
+
+<img src="diagrams/catalogue-export-requested.png" alt="Music Catalogue Export" width="600">
+
+- Once the export is complete, the file will appear in the folder indicated by the "CatalogueExportPath" configuration setting (see below)
+- The exported format is based on the file extension for the supplied file path, as per the command-line tool (see above)
 
 [^ top](#musiccatalogue)
 
@@ -230,13 +244,14 @@ Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 
 - The appsettings.json file in the console application project contains the following keys for controlling the application:
 
-| Section             | Key              | Purpose                                                                 |
-| ------------------- | ---------------- | ----------------------------------------------------------------------- |
-| ApplicationSettings | LogFile          | Path and name of the log file. If this is blank, no log file is created |
-| ApplicationSettings | MinimumLogLevel  | Minimum message severity to log (Debug, Info, Warning or Error)         |
-| ApplicationSettings | ApiEndpoints     | Set of endpoint definitions for external APIs                           |
-| ApplicationSettings | ApiServiceKeys   | Set of API key definitions for external APIs                            |
-| ConnectionStrings   | MusicCatalogueDB | SQLite connection string for the database                               |
+| Section             | Key                 | Purpose                                                                 |
+| ------------------- | ------------------- | ----------------------------------------------------------------------- |
+| ApplicationSettings | LogFile             | Path and name of the log file. If this is blank, no log file is created |
+| ApplicationSettings | MinimumLogLevel     | Minimum message severity to log (Debug, Info, Warning or Error)         |
+| ApplicationSettings | CatalogueExportPath | Path to the folder where music catalogue exports are written            |
+| ApplicationSettings | ApiEndpoints        | Set of endpoint definitions for external APIs                           |
+| ApplicationSettings | ApiServiceKeys      | Set of API key definitions for external APIs                            |
+| ConnectionStrings   | MusicCatalogueDB    | SQLite connection string for the database                               |
 
 ### External API Configuration
 
