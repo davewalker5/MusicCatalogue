@@ -1,4 +1,5 @@
 ﻿using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Exceptions;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -15,8 +16,6 @@ namespace MusicCatalogue.Entities.DataExchange
         private const int TrackNumberField = 5;
         private const int TitleField = 6;
         private const int DurationField = 7;
-
-        public const string CsvRecordPattern = @"^(""[a-zA-Z0-9-() \/']+"",){3}""[0-9]+"",("".*"",)""[0-9]+"",(""[a-zA-Z0-9-() \/']+"",)""[0-9]+\:[0-9]{2}""$";
 
         public string ArtistName{ get; set; } = "";
         public string AlbumTitle { get; set; } = "";
@@ -47,31 +46,34 @@ namespace MusicCatalogue.Entities.DataExchange
         /// <summary>
         /// Create a flattened track record from a CSV string
         /// </summary>
-        /// <param name="record"></param>
+        /// <param name="fields"></param>
         /// <returns></returns>
-        public static FlattenedTrack FromCsv(string record)
+        public static FlattenedTrack FromCsv(IList<string> fields)
         {
-            // Split the record into words
-            var words = record.Split(new string[] { "\",\"" }, StringSplitOptions.None);
+            // Check we have the required number of fields
+            if (fields.Count() != 8)
+            {
+                throw new InvalidRecordFormatException("Incorrect number of CSV fields");
+            }
 
             // Get the release date and cover URL, both of which may be NULL
-            int? releaseYear = !string.IsNullOrEmpty(words[ReleasedField]) ? int.Parse(words[ReleasedField]) : null;
-            string? coverUrl = !string.IsNullOrEmpty(words[CoverField]) ? words[CoverField] : null;
+            int? releaseYear = !string.IsNullOrEmpty(fields[ReleasedField]) ? int.Parse(fields[ReleasedField]) : null;
+            string? coverUrl = !string.IsNullOrEmpty(fields[CoverField]) ? fields[CoverField] : null;
 
             // Split the duration on the ":" separator and convert to milliseconds
-            var durationWords = words[DurationField][..^1].Split(new string[] { ":" }, StringSplitOptions.None);
+            var durationWords = fields[DurationField].Split(new string[] { ":" }, StringSplitOptions.None);
             var durationMs = 1000 * (60 * int.Parse(durationWords[0]) +  int.Parse(durationWords[1]));
  
             // Create a new "flattened" record containing artist, album and track details
             return new FlattenedTrack
             {
-                ArtistName = words[ArtistField][1..],
-                AlbumTitle = words[AlbumField],
-                Genre = words[GenreField],
+                ArtistName = fields[ArtistField],
+                AlbumTitle = fields[AlbumField],
+                Genre = fields[GenreField],
                 Released = releaseYear,
                 CoverUrl = coverUrl,
-                TrackNumber = int.Parse(words[TrackNumberField]),
-                Title = words[TitleField],
+                TrackNumber = int.Parse(fields[TrackNumberField]),
+                Title = fields[TitleField],
                 Duration = durationMs
             };
         }
@@ -83,14 +85,20 @@ namespace MusicCatalogue.Entities.DataExchange
         /// <param name="value"></param>
         private static void AppendField(StringBuilder builder, object? value)
         {
+            // Add a separator if there are already fields in the line under construction
             if (builder.Length > 0)
             {
                 builder.Append(',');
             }
 
-            builder.Append('"');
-            builder.Append(value?.ToString() ?? "");
-            builder.Append('"');
+            // Convert the value to string and see if it contains the delimiter
+            var stringValue = (value?.ToString() ?? "").Replace('"', '\'');
+            var containsDelimiter = !string.IsNullOrEmpty(stringValue) && stringValue.Contains(",");
+
+            // Add the value to the builder, quoting it if needed
+            if (containsDelimiter) builder.Append('"');
+            builder.Append(stringValue);
+            if (containsDelimiter) builder.Append('"');
         }
     }
 }

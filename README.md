@@ -86,13 +86,12 @@
 ### CSV File Format
 
 - The first row in the CSV file is expected to contain headers and is ignored
-- All fields in the CSV file must be double-quoted and may not contain ","
 - Durations should be specified in MM:SS format, e.g. "03:10" for 3 minutes and 10 seconds
 - The following is an example, illustrating the format for the headers and for the rows containing data:
 
 ```
 Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration
-"Nat King Cole","After Midnight","Jazz","1957","","1","Just You Just Me","03:00"
+Duke Ellington,Ellington Indigoes,Jazz,1958,,1,Solitude,04:43
 ```
 
 ### Example - Album Lookup
