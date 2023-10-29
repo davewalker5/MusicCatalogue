@@ -11,7 +11,6 @@ namespace MusicCatalogue.Api.Services
     public class CatalogueExportService : BackgroundQueueProcessor<CatalogueExportWorkItem>
     {
         private readonly MusicApplicationSettings _settings;
-
         public CatalogueExportService(
             ILogger<BackgroundQueueProcessor<CatalogueExportWorkItem>> logger,
             IBackgroundQueue<CatalogueExportWorkItem> queue,
@@ -37,8 +36,11 @@ namespace MusicCatalogue.Api.Services
             var extension = Path.GetExtension(item.FileName).ToLower();
             IExporter? exporter = extension == ".xlsx" ? factory.XlsxExporter : factory.CsvExporter;
 
+            // Construct the full path to the export file
+            var filePath = Path.Combine(_settings.CatalogueExportPath, item.FileName);
+
             // Export the file
-            await exporter.Export(item.FileName);
+            await exporter.Export(filePath);
             MessageLogger.LogInformation("Catalogue export completed");
         }
     }

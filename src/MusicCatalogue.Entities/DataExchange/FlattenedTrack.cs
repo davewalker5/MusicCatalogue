@@ -51,7 +51,7 @@ namespace MusicCatalogue.Entities.DataExchange
         public static FlattenedTrack FromCsv(IList<string> fields)
         {
             // Check we have the required number of fields
-            if (fields.Count() != 8)
+            if ((fields == null) || (fields.Count != 8))
             {
                 throw new InvalidRecordFormatException("Incorrect number of CSV fields");
             }

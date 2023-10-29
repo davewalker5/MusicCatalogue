@@ -29,9 +29,9 @@ namespace MusicCatalogue.Api.Services
         /// De-queue an item
         /// </summary>
         /// <returns></returns>
-        public T Dequeue()
+        public T? Dequeue()
         {
-            var successful = _queue.TryDequeue(out T item);
+            var successful = _queue.TryDequeue(out T? item);
             return successful ? item : null;
         }
     }

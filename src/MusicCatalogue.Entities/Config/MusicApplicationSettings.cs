@@ -11,6 +11,7 @@ namespace MusicCatalogue.Entities.Config
         public Severity MinimumLogLevel { get; set; }
         public string LogFile { get; set; } = "";
         public MusicCatalogueEnvironment Environment { get; set; }
+        public string CatalogueExportPath { get; set; } = "";
         public List<ApiEndpoint> ApiEndpoints { get; set; } = new List<ApiEndpoint>();
         public List<ApiServiceKey> ApiServiceKeys { get; set; } = new List<ApiServiceKey>();
 
