@@ -33,7 +33,7 @@ const apiClearToken = () => {
 };
 
 /**
- * Return the HTTP headers used when calling the REST API
+ * Return the HTTP headers used when sending GET requests to the REST API
  * @returns
  */
 const apiGetHeaders = () => {
@@ -42,6 +42,24 @@ const apiGetHeaders = () => {
 
   // Construct the request headers
   const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  return headers;
+};
+
+/**
+ * Return the HTTP headers used when sending POST and PUT requests to the REST API
+ * @returns
+ */
+const apiGetPostHeaders = () => {
+  // Get the token
+  var token = apiGetToken();
+
+  // Construct the request headers
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
 
@@ -214,6 +232,33 @@ const apiLookupAlbum = async (artistName, albumTitle, logout) => {
   }
 };
 
+/**
+ * Request an export of the catalogue
+ * @param {*} fileName
+ * @param {*} logout
+ */
+const apiRequestExport = async (fileName, logout) => {
+  // Create a JSON body containing the file name to export to
+  const body = JSON.stringify({
+    fileName: fileName,
+  });
+
+  // Call the API to request the export
+  const url = `${config.api.baseUrl}/export/catalogue`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
+
+  return response.ok;
+};
+
 export {
   apiSetToken,
   apiGetToken,
@@ -224,4 +269,5 @@ export {
   apiFetchAlbumsByArtist,
   apiFetchAlbumById,
   apiLookupAlbum,
+  apiRequestExport,
 };

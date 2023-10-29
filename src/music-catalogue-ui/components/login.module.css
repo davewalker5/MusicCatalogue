@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
 }
 
 .authForm {

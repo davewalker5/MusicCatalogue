@@ -17,7 +17,12 @@ const MenuBar = ({ navigate, logout }) => {
         <span className={styles.menuItem} onClick={() => logout()}>
           Log Out
         </span>
-        <span className={styles.menuItem}>Export</span>
+        <span
+          className={styles.menuItem}
+          onClick={() => navigate(pages.export, null, null)}
+        >
+          Export
+        </span>
         <span className={styles.menuItem}>Import</span>
         <span
           className={styles.menuItem}
