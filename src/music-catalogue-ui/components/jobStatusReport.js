@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styles from "./jobStatusReport.module.css";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const JobStatusReport = ({ navigate, logout }) => {
@@ -17,20 +18,14 @@ const JobStatusReport = ({ navigate, logout }) => {
             <div class="mt-3">
               <div class="d-inline-flex align-items-center">
                 <label className={styles.reportFormLabel}>From</label>
-                <input
-                  class="form-control mt-1"
-                  placeholder="Start date"
-                  name="start"
+                <DatePicker
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                 />
               </div>
               <div class="d-inline-flex align-items-center">
                 <label className={styles.reportFormLabel}>To</label>
-                <input
-                  class="form-control mt-1"
-                  placeholder="End date"
-                  name="end"
+                <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                 />
