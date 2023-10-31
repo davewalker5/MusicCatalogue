@@ -25,7 +25,9 @@ const MenuBar = ({ navigate, logout }) => {
             </div>
           </button>
           <div className={styles.dropdownContent}>
-            <a href="#">Job Status</a>
+            <a onClick={() => navigate(pages.jobStatusReport, null, null)}>
+              Job Status
+            </a>
           </div>
         </div>
         <a onClick={() => navigate(pages.export, null, null)}>Export</a>
