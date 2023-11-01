@@ -185,6 +185,17 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 - Once the export is complete, the file will appear in the folder indicated by the "CatalogueExportPath" configuration setting (see below)
 - The exported format is based on the file extension for the supplied file path, as per the command-line tool (see above)
 
+### Reports
+
+#### Job Status Report
+
+- To view a report on the status of background export jobs, click on the "Reports > Job Status" menu bar item:
+
+<img src="diagrams/reports-job-status.png" alt="Job Status Report" width="600">
+
+- Use the date pickers to select the start and end dates for the report and click on the "Search" button to view the results
+- Records are included from 00:00 on the start date up to and including 23:59 on the end date
+
 [^ top](#musiccatalogue)
 
 ## Web Service
