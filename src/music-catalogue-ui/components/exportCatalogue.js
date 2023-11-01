@@ -2,7 +2,7 @@ import styles from "./exportCatalogue.module.css";
 import { useCallback, useState } from "react";
 import { apiRequestExport } from "@/helpers/api";
 
-const ExportCatalogue = ({ navigate, logout }) => {
+const ExportCatalogue = ({ logout }) => {
   const [fileName, setFileName] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");

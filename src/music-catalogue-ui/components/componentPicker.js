@@ -4,6 +4,7 @@ import AlbumList from "./albumList";
 import TrackList from "./trackList";
 import LookupAlbum from "./lookupAlbum";
 import ExportCatalogue from "./exportCatalogue";
+import JobStatusReport from "./jobStatusReport";
 
 /**
  * Component using the current page name to render the components required
@@ -35,7 +36,9 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.lookup:
       return <LookupAlbum navigate={navigate} logout={logout} />;
     case pages.export:
-      return <ExportCatalogue navigate={navigate} logout={logout} />;
+      return <ExportCatalogue logout={logout} />;
+    case pages.jobStatusReport:
+      return <JobStatusReport logout={logout} />;
     default:
       return <span />;
   }

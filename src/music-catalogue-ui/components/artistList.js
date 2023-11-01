@@ -29,11 +29,13 @@ const ArtistList = ({ navigate, logout }) => {
             <th>Tracks</th>
           </tr>
         </thead>
-        <tbody>
-          {artists.map((a) => (
-            <ArtistRow key={a.id} artist={a} navigate={navigate} />
-          ))}
-        </tbody>
+        {artists != null && (
+          <tbody>
+            {artists.map((a) => (
+              <ArtistRow key={a.id} artist={a} navigate={navigate} />
+            ))}
+          </tbody>
+        )}
       </table>
     </>
   );

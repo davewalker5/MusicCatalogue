@@ -1,19 +1,9 @@
-.titleBarContainer {
-  padding-top: 20px;
-  padding-bottom: 60px;
-  box-shadow: 0 5px 4px -4px lightgrey;
-}
-
+/* Site title */
 .titleElement,
 .title {
   float: left;
   padding: 10px;
   vertical-align: center;
-}
-
-.logo {
-  height: 35px;
-  cursor: pointer;
 }
 
 .title {
@@ -24,14 +14,87 @@
   color: black;
 }
 
-.menuContainer {
-  float: right;
-  vertical-align: center;
+/* Site logo */
+.logo {
+  height: 35px;
+  cursor: pointer;
 }
 
-.menuItem {
+/* Navbar container */
+.navbar {
+  overflow: hidden;
+  font-family: Arial;
+  padding-top: 10px;
+  box-shadow: 0 5px 4px -4px lightgrey;
+}
+
+/* Links inside the navbar */
+.navbar a {
   float: right;
-  padding: 10px;
+  font-size: 16px;
   color: black;
-  cursor: pointer;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  float: left;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: black;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0;
+}
+
+/* Add a grey background color to navbar links on hover */
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+  background-color: lightgray;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  margin-top: 50px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdownArrowContainer {
+  display: inline;
+  padding-left: 5px;
+}
+
+/* Links inside the dropdown */
+.dropdownContent a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdownContent a:hover {
+  background-color: #lightgray;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdownContent {
+  display: block;
 }

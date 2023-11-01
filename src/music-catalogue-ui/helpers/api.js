@@ -67,6 +67,55 @@ const apiGetPostHeaders = () => {
 };
 
 /**
+ * Format a date/time in a manner suitable for use with the API without using
+ * 3rd party libraries
+ * @param {F} date
+ */
+const apiFormatDateTime = (date) => {
+  // Get the formatted date components
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+
+  // Get the formatted time components
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  // Construct and return the formatted date/time
+  const formattedDate =
+    year +
+    "-" +
+    month +
+    "-" +
+    day +
+    "%20" +
+    hours +
+    ":" +
+    minutes +
+    ":" +
+    seconds;
+  return formattedDate;
+};
+
+/**
+ * Read the response content as JSON and return the resulting object
+ * @param {*} response
+ * @returns
+ */
+const apiReadResponseData = async (response) => {
+  // The API can return a No Content response so check for that first
+  if (response.status == 204) {
+    // No content response, so return null
+    return null;
+  } else {
+    // Get the response content as JSON and return it
+    const data = await response.json();
+    return data;
+  }
+};
+
+/**
  * Authenticate with the Music Catalogue REST API
  * @param {*} username
  * @param {*} password
@@ -110,7 +159,7 @@ const apiFetchAllArtists = async (logout) => {
 
   if (response.ok) {
     // Get the response content as JSON and return it
-    const artists = await response.json();
+    const artists = await apiReadResponseData(response);
     return artists;
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
@@ -137,7 +186,7 @@ const apiFetchArtistById = async (artistId, logout) => {
 
   if (response.ok) {
     // Get the response content as JSON and return it
-    const artist = await response.json();
+    const artist = await apiReadResponseData(response);
     return artist;
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
@@ -164,7 +213,7 @@ const apiFetchAlbumsByArtist = async (artistId, logout) => {
 
   if (response.ok) {
     // Get the response content as JSON and return it
-    const albums = await response.json();
+    const albums = await apiReadResponseData(response);
     return albums;
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
@@ -191,7 +240,7 @@ const apiFetchAlbumById = async (albumId, logout) => {
 
   if (response.ok) {
     // Get the response content as JSON and return it
-    const album = await response.json();
+    const album = await apiReadResponseData(response);
     return album;
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
@@ -213,7 +262,7 @@ const apiLookupAlbum = async (artistName, albumTitle, logout) => {
   const encodedArtistName = encodeURIComponent(artistName);
   const encodedAlbumTitle = encodeURIComponent(albumTitle);
 
-  // Call the API to get the details for the specifiedf album
+  // Call the API to get the details for the specified album
   const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}`;
   const response = await fetch(url, {
     method: "GET",
@@ -222,7 +271,7 @@ const apiLookupAlbum = async (artistName, albumTitle, logout) => {
 
   if (response.ok) {
     // Get the response content as JSON and return it
-    const album = await response.json();
+    const album = await apiReadResponseData(response);
     return album;
   } else if (response.status == 401) {
     // Unauthorized so the token's likely expired - force a login
@@ -259,6 +308,51 @@ const apiRequestExport = async (fileName, logout) => {
   return response.ok;
 };
 
+const apiJobStatusReport = async (from, to, logout) => {
+  // Make sure the dates cover the period 00:00:00 on the start date to 23:59:59 on the
+  // end date
+  const startDate = new Date(
+    from.getFullYear(),
+    from.getMonth(),
+    from.getDate(),
+    0,
+    0,
+    0
+  );
+
+  const endDate = new Date(
+    to.getFullYear(),
+    to.getMonth(),
+    to.getDate(),
+    23,
+    59,
+    59
+  );
+
+  // Construct the route. Dates need to be formatted in a specific fashion for the API
+  // to decode them and they also need to be URL encoded
+  const fromRouteSegment = apiFormatDateTime(startDate);
+  const toRouteSegment = apiFormatDateTime(endDate);
+  const url = `${config.api.baseUrl}/reports/jobs/${fromRouteSegment}/${toRouteSegment}`;
+  console.log(url);
+  // Call the API to get content for the report
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const records = await apiReadResponseData(response);
+    return records;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    return null;
+  }
+};
+
 export {
   apiSetToken,
   apiGetToken,
@@ -270,4 +364,5 @@ export {
   apiFetchAlbumById,
   apiLookupAlbum,
   apiRequestExport,
+  apiJobStatusReport,
 };
