@@ -36,9 +36,9 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.lookup:
       return <LookupAlbum navigate={navigate} logout={logout} />;
     case pages.export:
-      return <ExportCatalogue navigate={navigate} logout={logout} />;
+      return <ExportCatalogue logout={logout} />;
     case pages.jobStatusReport:
-      return <JobStatusReport navigate={navigate} logout={logout} />;
+      return <JobStatusReport logout={logout} />;
     default:
       return <span />;
   }

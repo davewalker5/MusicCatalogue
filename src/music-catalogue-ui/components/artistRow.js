@@ -6,7 +6,6 @@ import pages from "@/helpers/navigation";
  * @returns
  */
 const ArtistRow = ({ artist, navigate }) => {
-  console.log(artist);
   return (
     <tr onClick={() => navigate(pages.albums, artist, null)}>
       <td>{artist.name}</td>
