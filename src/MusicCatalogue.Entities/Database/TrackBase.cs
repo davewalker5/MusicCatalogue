@@ -1,5 +1,8 @@
-﻿namespace MusicCatalogue.Entities.Database
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace MusicCatalogue.Entities.Database
 {
+    [ExcludeFromCodeCoverage]
     public abstract class TrackBase
     {
         public int? Duration { get; set; }

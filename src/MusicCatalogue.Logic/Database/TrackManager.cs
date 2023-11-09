@@ -65,5 +65,20 @@ namespace MusicCatalogue.Logic.Database
 
             return track;
         }
+
+        /// <summary>
+        /// Delete the tracks associated with an album, given its ID
+        /// </summary>
+        /// <param name="albumId"></param>
+        /// <returns></returns>
+        public async Task DeleteAsync(int albumId)
+        {
+            List<Track> tracks = await ListAsync(x => x.AlbumId == albumId);
+            if (tracks.Any())
+            {
+                _context.Tracks.RemoveRange(tracks);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
