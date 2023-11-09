@@ -231,7 +231,7 @@ const apiFetchAlbumsByArtist = async (artistId, logout) => {
  * @returns
  */
 const apiFetchAlbumById = async (albumId, logout) => {
-  // Call the API to get the details for the specifiedf album
+  // Call the API to get the details for the specified album
   const url = `${config.api.baseUrl}/albums/${albumId}`;
   const response = await fetch(url, {
     method: "GET",
@@ -247,6 +247,29 @@ const apiFetchAlbumById = async (albumId, logout) => {
     logout();
   } else {
     return null;
+  }
+};
+
+/**
+ * Delete the album with the specified ID, along with all its tracks
+ * @param {*} albumId
+ * @param {*} logout
+ * @returns
+ */
+const apiDeleteAlbum = async (albumId, logout) => {
+  // Call the API to delete the specified album
+  const url = `${config.api.baseUrl}/albums/${albumId}`;
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: apiGetHeaders(),
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    // Return the response status code
+    return response.ok;
   }
 };
 
@@ -362,6 +385,7 @@ export {
   apiFetchArtistById,
   apiFetchAlbumsByArtist,
   apiFetchAlbumById,
+  apiDeleteAlbum,
   apiLookupAlbum,
   apiRequestExport,
   apiJobStatusReport,
