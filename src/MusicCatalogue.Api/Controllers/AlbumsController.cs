@@ -45,5 +45,21 @@ namespace MusicCatalogue.Api.Controllers
 
             return albums;
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteAlbum(int id)
+        {
+            // Check the album exists, first
+            var album = await _factory.Albums.GetAsync(x => x.Id == id);
+            if (album == null)
+            {
+                return NotFound();
+            }
+
+            // It does, so delete it
+            await _factory.Albums.DeleteAsync(id);
+            return Ok();
+        }
     }
 }
