@@ -149,7 +149,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 <img src="diagrams/album-list.png" alt="Album List" width="600">
 
 - As the mouse pointer is moved up and down the table, the current row is highlighted
-- Clicking on a row opens the track list for the album shown in that row:
+- Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the album shown in that row along with the associated tracks
+- Clicking anywhere else on a row opens the track list for the album shown in that row:
 
 <img src="diagrams/track-list.png" alt="Track List" width="600">
 

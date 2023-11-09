@@ -1,4 +1,5 @@
-﻿using MusicCatalogue.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Logic.Database;
 using MusicCatalogue.Logic.DataExchange;
@@ -18,6 +19,7 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IStatisticsManager> _statistics;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
 
+        public DbContext Context { get; private set; }
         public IArtistManager Artists { get { return _artists.Value; } }
         public IAlbumManager Albums { get { return _albums.Value; } }
         public ITrackManager Tracks { get { return _tracks.Value; } }
@@ -36,8 +38,9 @@ namespace MusicCatalogue.Logic.Factory
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
+            Context = context;
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(context));
-            _albums = new Lazy<IAlbumManager>(() => new AlbumManager(context));
+            _albums = new Lazy<IAlbumManager>(() => new AlbumManager(this));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(context));
             _jobStatuses = new Lazy<IJobStatusManager>(() => new JobStatusManager(context));
             _users = new Lazy<IUserManager>(() => new UserManager(context));

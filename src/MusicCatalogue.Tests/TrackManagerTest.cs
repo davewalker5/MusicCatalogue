@@ -76,5 +76,14 @@ namespace MusicCatalogue.Tests
             var tracks = await _manager!.ListAsync(e => e.Title == "Missing");
             Assert.AreEqual(0, tracks!.Count);
         }
+
+        [TestMethod]
+        public async Task DeleteTest()
+        {
+            await _manager!.DeleteAsync(_albumId);
+            var tracks = await _manager!.ListAsync(e => e.AlbumId == _albumId);
+            Assert.AreEqual(0, tracks!.Count);
+
+        }
     }
 }

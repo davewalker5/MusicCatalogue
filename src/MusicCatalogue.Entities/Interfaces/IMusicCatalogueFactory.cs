@@ -1,7 +1,10 @@
-﻿namespace MusicCatalogue.Entities.Interfaces
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MusicCatalogue.Entities.Interfaces
 {
     public interface IMusicCatalogueFactory
     {
+        DbContext Context { get; }
         IAlbumManager Albums { get; }
         IArtistManager Artists { get; }
         ITrackManager Tracks { get; }
