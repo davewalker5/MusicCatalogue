@@ -22,6 +22,8 @@ namespace MusicCatalogue.Entities.Database
 
         public string? CoverUrl { get; set; } = "";
 
+        public bool? IsWishListItem { get; set; }
+
 #pragma warning disable CS8618
         public ICollection<Track> Tracks { get; set; }
 #pragma warning restore CS8618

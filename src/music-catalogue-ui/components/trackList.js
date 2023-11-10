@@ -5,23 +5,35 @@ import pages from "@/helpers/navigation";
 
 /**
  * Component to render the list of tracks for the specified album
- * @param {*} param0
+ * @param {*} artist
+ * @param {*} album
+ * @param {*} isWishList
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
-const TrackList = ({ artist, album, navigate, logout }) => {
+const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
   const { tracks, setTracks } = useTracks(album.id, logout);
+
+  // Set the page title to reflect whether we're viewing the wish list
+  const title = isWishList
+    ? `${artist.name} - ${album.title} (Wish List)`
+    : `${artist.name} - ${album.title}`;
+
+  // Set the back button text to indicate whether we're viewing the wish list
+  const backButtonText = isWishList
+    ? `Back to Wish List for ${artist.name}`
+    : `Back to Albums by ${artist.name}`;
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {
-    navigate(pages.albums, artist, null);
-  }, [navigate, artist]);
+    navigate(pages.albums, artist, null, isWishList);
+  }, [navigate, artist, isWishList]);
 
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">
-          {artist.name} - {album.title}
-        </h5>
+        <h5 className="themeFontColor text-center">{title}</h5>
       </div>
       <table className="table table-hover">
         <thead>
@@ -40,13 +52,14 @@ const TrackList = ({ artist, album, navigate, logout }) => {
               artist={artist}
               album={album}
               track={t}
+              isWishList={isWishList}
               navigate={navigate}
             />
           ))}
         </tbody>
       </table>
       <button className="btn btn-primary" onClick={() => navigateBack()}>
-        &lt; Back to Albums By {artist.name}
+        &lt; {backButtonText}
       </button>
     </>
   );

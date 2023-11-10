@@ -5,10 +5,11 @@ import { apiFetchAlbumsByArtist } from "@/helpers/api";
  * Hook that uses the API helpers to retrieve a list of albums by the specified
  * artist from the Music Catalogue REST API
  * @param {*} artistId
+ * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const useAlbums = (artistId, logout) => {
+const useAlbums = (artistId, isWishList, logout) => {
   // Current list of albums and the method to change it
   const [albums, setAlbums] = useState([]);
 
@@ -17,13 +18,17 @@ const useAlbums = (artistId, logout) => {
       try {
         // Get a list of albums via the service, store it in state and clear the
         // loading status
-        var fetchedAlbums = await apiFetchAlbumsByArtist(artistId, logout);
+        var fetchedAlbums = await apiFetchAlbumsByArtist(
+          artistId,
+          isWishList,
+          logout
+        );
         setAlbums(fetchedAlbums);
       } catch {}
     };
 
     fetchAlbums(artistId);
-  }, [artistId, logout]);
+  }, [artistId, isWishList, logout]);
 
   return { albums, setAlbums };
 };

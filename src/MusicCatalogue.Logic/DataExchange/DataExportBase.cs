@@ -16,6 +16,7 @@ namespace MusicCatalogue.Logic.DataExchange
             "Track Number",
             "Track",
             "Duration",
+            "Wish List"
         };
 
         public event EventHandler<TrackDataExchangeEventArgs>? TrackExport;
@@ -71,7 +72,8 @@ namespace MusicCatalogue.Logic.DataExchange
                             CoverUrl = album.CoverUrl,
                             TrackNumber = track.Number,
                             Title = track.Title,
-                            Duration = track.Duration
+                            Duration = track.Duration,
+                            IsWishlistItem = album.IsWishListItem
                         };
 
                         // Call the method to add this track to the file

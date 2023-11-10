@@ -4,10 +4,11 @@ import { apiFetchAllArtists } from "@/helpers/api";
 /**
  * Hook that uses the API helpers to retrieve a list of artists from the
  * Music Catalogue REST API
+ * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const useArtists = (logout) => {
+const useArtists = (isWishlist, logout) => {
   // Current list of artists and the method to change it
   const [artists, setArtists] = useState([]);
 
@@ -16,13 +17,13 @@ const useArtists = (logout) => {
       try {
         // Get a list of artists via the service, store it in state and clear the
         // loading status
-        var fetchedArtists = await apiFetchAllArtists(logout);
+        var fetchedArtists = await apiFetchAllArtists(isWishlist, logout);
         setArtists(fetchedArtists);
       } catch {}
     };
 
     fetchArtists();
-  }, [logout]);
+  }, [isWishlist, logout]);
 
   return { artists, setArtists };
 };

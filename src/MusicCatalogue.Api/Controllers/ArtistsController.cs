@@ -18,12 +18,30 @@ namespace MusicCatalogue.Api.Controllers
             _factory = factory;
         }
 
+        /// <summary>
+        /// Return a list of all the artists in the catalogue
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        [Route("")]
-        public async Task<ActionResult<List<Artist>>> GetArtistsAsync()
+        [Route("{wishlist:bool}")]
+        public async Task<ActionResult<List<Artist>>> GetArtistsAsync(bool wishlist)
         {
             // Get a list of all artists in the catalogue
             List<Artist> artists = await _factory.Artists.ListAsync(x => true);
+
+            // The artist list includes the albums by that artist, so where an artist has any albums
+            // filter them according to the wish list filter
+            foreach (var artist in artists)
+            {
+                if ((artist.Albums != null) && artist.Albums.Any())
+                {
+                    var filtered = artist.Albums.Where(x => (x.IsWishListItem ?? false) == wishlist).ToList();
+                    artist.Albums = filtered;
+                }
+            }
+
+            // Remove any artists with no albums
+            artists.RemoveAll(x => (x.Albums == null) || ((x.Albums != null) && !x.Albums.Any()));
 
             // If there are no artists, return a no content response
             if (!artists.Any())
@@ -32,13 +50,18 @@ namespace MusicCatalogue.Api.Controllers
             }
 
             // Populate the artist statistics
-            await _factory.Statistics.PopulateArtistStatistics(artists);
+            await _factory.Statistics.PopulateArtistStatistics(artists, wishlist);
 
             return artists;
         }
 
+        /// <summary>
+        /// Return artist details given an artist ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<ActionResult<Artist>> GetArtistByIdAsync(int id)
         {
             var artist = await _factory.Artists.GetAsync(x => x.Id == id);

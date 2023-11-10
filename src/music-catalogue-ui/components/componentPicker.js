@@ -9,17 +9,26 @@ import JobStatusReport from "./jobStatusReport";
 /**
  * Component using the current page name to render the components required
  * by that page
- * @param {*} param0
+ * @param {*} context
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
 const ComponentPicker = ({ context, navigate, logout }) => {
   switch (context.page) {
     case pages.artists:
-      return <ArtistList navigate={navigate} logout={logout} />;
+      return (
+        <ArtistList
+          isWishList={context.isWishList}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
     case pages.albums:
       return (
         <AlbumList
           artist={context.artist}
+          isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}
         />
@@ -29,6 +38,7 @@ const ComponentPicker = ({ context, navigate, logout }) => {
         <TrackList
           artist={context.artist}
           album={context.album}
+          isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}
         />

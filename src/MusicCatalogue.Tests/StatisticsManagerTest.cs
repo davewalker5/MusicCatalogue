@@ -26,7 +26,7 @@ namespace MusicCatalogue.Tests
 
             // Set up an artist and album for the tracks to belong to and add a track
             var artistId = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result.Id;
-            var albumId = Task.Run(() => _factory.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl)).Result.Id;
+            var albumId = Task.Run(() => _factory.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl, false)).Result.Id;
             Task.Run(() => _factory.Tracks.AddAsync(albumId, TrackTitle, TrackNumber, TrackDuration)).Wait();
         }
 
@@ -39,7 +39,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNull(artists[0].AlbumCount);
             Assert.IsNull(artists[0].TrackCount);
 
-            Task.Run(() => _factory!.Statistics.PopulateArtistStatistics(artists)).Wait();
+            Task.Run(() => _factory!.Statistics.PopulateArtistStatistics(artists, false)).Wait();
             Assert.AreEqual(1, artists[0].AlbumCount);
             Assert.AreEqual(1, artists[0].TrackCount);
         }

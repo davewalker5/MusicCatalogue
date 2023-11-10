@@ -30,8 +30,9 @@ namespace MusicCatalogue.Logic.Collection
         /// </summary>
         /// <param name="artistName"></param>
         /// <param name="albumTitle"></param>
+        /// <param name="storeAlbumInWishlist"></param>
         /// <returns></returns>
-        public async Task<Album?> LookupAlbum(string artistName, string albumTitle)
+        public async Task<Album?> LookupAlbum(string artistName, string albumTitle, bool storeAlbumInWishlist)
         {
             // Convert the parameters to title case to match the case used to persist data
             artistName = StringCleaner.Clean(artistName)!;
@@ -53,7 +54,7 @@ namespace MusicCatalogue.Logic.Collection
                 if (numberOfTracks > 0)
                 {
                     // Got valid details from the API so store them locally
-                    album = await StoreAlbumLocally(artistName!, album!);
+                    album = await StoreAlbumLocally(artistName!, album!, storeAlbumInWishlist);
                 }
                 else
                 {
@@ -71,15 +72,16 @@ namespace MusicCatalogue.Logic.Collection
         /// </summary>
         /// <param name="artistName"></param>
         /// <param name="template"></param>
+        /// <param name="storeAlbumInWishlist"></param>
         /// <returns></returns>
-        private async Task<Album> StoreAlbumLocally(string artistName, Album template)
+        private async Task<Album> StoreAlbumLocally(string artistName, Album template, bool storeAlbumInWishlist)
         {
             // Save the artist details, first. As with all the database calls in this method, the
             // logic to prevent duplication of artists is in the management class
             var artist = await _factory.Artists.AddAsync(artistName);
 
             // Save the album details
-            var album = await _factory.Albums.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl);
+            var album = await _factory.Albums.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl, storeAlbumInWishlist);
 
             // Save the track details
             foreach (var track in template.Tracks!)

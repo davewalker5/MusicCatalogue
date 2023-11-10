@@ -29,7 +29,7 @@ namespace MusicCatalogue.Tests
 
             // Add an artist, an album and one track
             var artist = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result;
-            var album = Task.Run(() => _factory.Albums.AddAsync(artist.Id, AlbumName, Released, Genre, CoverUrl)).Result;
+            var album = Task.Run(() => _factory.Albums.AddAsync(artist.Id, AlbumName, Released, Genre, CoverUrl, false)).Result;
             Task.Run(() => _factory.Tracks.AddAsync(album.Id, TrackName, TrackNumber, Duration)).Wait();
         }
 

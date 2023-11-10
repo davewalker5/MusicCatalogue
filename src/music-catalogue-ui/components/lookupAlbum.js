@@ -2,10 +2,12 @@ import styles from "./lookupAlbum.module.css";
 import pages from "@/helpers/navigation";
 import { useCallback, useState } from "react";
 import { apiFetchArtistById, apiLookupAlbum } from "@/helpers/api";
+import Select from "react-select";
 
 /**
  * Component to render the album lookup page
- * @param {*} param0
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
 const LookupAlbum = ({ navigate, logout }) => {
@@ -13,26 +15,41 @@ const LookupAlbum = ({ navigate, logout }) => {
   const [artistName, setArtistName] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [target, setTarget] = useState("wishlist");
 
   // Lookup navigation callback
   const lookup = useCallback(async () => {
+    // Determine where to store new albums based on the target drop-down
+    const storeInWishList = target.value == "wishlist";
+
     // Lookup the album - this will preferentially use the local database via the
     // REST API and fallback to the external API if needed
-    const album = await apiLookupAlbum(artistName, albumTitle, logout);
+    const album = await apiLookupAlbum(
+      artistName,
+      albumTitle,
+      storeInWishList,
+      logout
+    );
     if (album != null) {
       // The album only contains the artist ID, not the full artist details, but
       // they will now be stored locally, so fetch them
       const artist = await apiFetchArtistById(album.artistId, logout);
       if (artist != null) {
         // Navigate to the track list
-        navigate(pages.tracks, artist, album);
+        navigate(pages.tracks, artist, album, storeInWishList);
       } else {
         setErrorMessage(`Artist with id ${album.artistId} not found`);
       }
     } else {
       setErrorMessage(`Album "${albumTitle}" by "${artistName}" not found`);
     }
-  }, [artistName, albumTitle, navigate, logout]);
+  }, [artistName, albumTitle, target, navigate, logout]);
+
+  // Construct a list of select list options for the target directory
+  const options = [
+    { value: "wishlist", label: "Wish List" },
+    { value: "catalogue", label: "Main Catalogue" },
+  ];
 
   return (
     <>
@@ -62,9 +79,18 @@ const LookupAlbum = ({ navigate, logout }) => {
                 onChange={(e) => setAlbumTitle(e.target.value)}
               />
             </div>
+            <div className="form-group mt-3">
+              <label className={styles.lookupFormLabel}>Target Directory</label>
+              <Select
+                defaultValue={target}
+                onChange={setTarget}
+                options={options}
+              />
+            </div>
             <div className="d-grid gap-2 mt-3">
               <span className={styles.lookupError}>{errorMessage}</span>
             </div>
+            <div className="d-grid gap-2 mt-3"></div>
             <div className={styles.lookupButton}>
               <button className="btn btn-primary" onClick={() => lookup()}>
                 Lookup

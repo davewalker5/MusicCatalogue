@@ -146,12 +146,13 @@ const apiAuthenticate = async (username, password) => {
 
 /**
  * Fetch a list of all artists from the Music Catalogue REST API
+ * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const apiFetchAllArtists = async (logout) => {
+const apiFetchAllArtists = async (isWishList, logout) => {
   // Call the API to get a list of all artists
-  const url = `${config.api.baseUrl}/artists/`;
+  const url = `${config.api.baseUrl}/artists/${isWishList}`;
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),
@@ -200,12 +201,14 @@ const apiFetchArtistById = async (artistId, logout) => {
  * Fetch a list of albums by the specified artist from the Music Catalogue
  * REST API
  * @param {*} artistId
+ * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const apiFetchAlbumsByArtist = async (artistId, logout) => {
+const apiFetchAlbumsByArtist = async (artistId, isWishList, logout) => {
   // Call the API to get a list of all albums by the specified artist
-  const url = `${config.api.baseUrl}/albums/artist/${artistId}`;
+  const url = `${config.api.baseUrl}/albums/artist/${artistId}/${isWishList}`;
+  console.log(url);
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),
@@ -278,18 +281,59 @@ const apiDeleteAlbum = async (albumId, logout) => {
  * details if not found in the local database
  * @param {*} artistName
  * @param {*} albumTitle
+ * @param {*} storeInWishList
  * @param {*} logout
  */
-const apiLookupAlbum = async (artistName, albumTitle, logout) => {
+const apiLookupAlbum = async (
+  artistName,
+  albumTitle,
+  storeInWishList,
+  logout
+) => {
   // URL encode the lookup properties
   const encodedArtistName = encodeURIComponent(artistName);
   const encodedAlbumTitle = encodeURIComponent(albumTitle);
 
   // Call the API to get the details for the specified album
-  const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}`;
+  const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}/${storeInWishList}`;
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),
+  });
+
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const album = await apiReadResponseData(response);
+    return album;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    return null;
+  }
+};
+
+/**
+ * Set the wish list flag on an album
+ * @param {*} album
+ * @param {*} wishListFlag
+ * @param {*} logout
+ * @returns
+ */
+const apiSetAlbumWishListFlag = async (album, wishListFlag, logout) => {
+  // Construct the body - the wish list flat needs to be updated before this
+  // and there's no need to send the track information - an empty array will do
+  album.isWishListItem = wishListFlag;
+  album.tracks = [];
+  const body = JSON.stringify(album);
+  console.log(body);
+
+  // Call the API to set the wish list flag for a given album
+  const url = `${config.api.baseUrl}/albums`;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: apiGetPostHeaders(),
+    body: body,
   });
 
   if (response.ok) {
@@ -387,6 +431,7 @@ export {
   apiFetchAlbumById,
   apiDeleteAlbum,
   apiLookupAlbum,
+  apiSetAlbumWishListFlag,
   apiRequestExport,
   apiJobStatusReport,
 };

@@ -6,13 +6,13 @@ import pages from "@/helpers/navigation";
  * @param {*} param0
  * @returns
  */
-const TrackRow = ({ artist, album, track, navigate }) => {
+const TrackRow = ({ artist, album, track, isWishList, navigate }) => {
   return (
     <tr>
       <td>{album.title}</td>
       <td
         className={styles.artist}
-        onClick={() => navigate(pages.albums, artist, null)}
+        onClick={() => navigate(pages.albums, artist, null, isWishList)}
       >
         {artist.name}
       </td>
