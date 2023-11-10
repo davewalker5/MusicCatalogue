@@ -26,7 +26,8 @@
 
 - The Music Catalogue repository is intended to provide a catalogue for a private music collection
 - It supports the following functions:
-  - Music catalogue collection browser
+  - Music catalogue collection browser (artists, albums and tracks)
+  - A "wish list" of albums with the ability to move albums between the main catalogue and the wish list at will
   - Album search
   - External API integration for looking up new albums
   - Data import from CSV format files
@@ -68,14 +69,22 @@
 
 - The following command line arguments are supported:
 
-| Option   | Short Name | Required Values          | Comments                                    |
-| -------- | ---------- | ------------------------ | ------------------------------------------- |
-| --lookup | -l         | Artist name, album title | Performs an album lookup                    |
-| --import | -i         | CSV file path            | Import data from the specified CSV file     |
-| --export | -e         | File path                | Export the collection to the specified file |
+| Option   | Short Name | Required Values                  | Comments                                    |
+| -------- | ---------- | -------------------------------- | ------------------------------------------- |
+| --lookup | -l         | Artist name, album title, target | Performs an album lookup                    |
+| --import | -i         | CSV file path                    | Import data from the specified CSV file     |
+| --export | -e         | File path                        | Export the collection to the specified file |
 
-- For album lookups, it is recommended that the artist name and album title are both double-quoted
-- This is mandatory if either contains spaces
+- For album lookups
+  - It is recommended that the artist name and album title are both double-quoted
+  - This is mandatory if either contains spaces
+  - The target determines whether the album is tagged as being in the wish list or the main catalogue:
+
+| Value     | Target                                 |
+| --------- | -------------------------------------- |
+| wishlist  | Store new albums in the wish list      |
+| catalogue | Store new albums in the main catalogue |
+
 - For data exports, the exported format is based on the file extension for the supplied file path:
 
 | Extension | Exported format |
@@ -90,14 +99,19 @@
 - The following is an example, illustrating the format for the headers and for the rows containing data:
 
 ```
-Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration
-Duke Ellington,Ellington Indigoes,Jazz,1958,,1,Solitude,04:43
+Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration,Wish List
+Duke Ellington,Ellington Indigoes,Jazz,1958,,1,Solitude,04:43,False
 ```
+
+- Exports include all albums in both the main catalogue and the wish list
 
 ### Example - Album Lookup
 
+- The following command will look-up the album "Blue Train" by John Coltrane
+- In this example, if the album isn't stored locally and is looked up using the external APIs (see below) the results will be stored in the main cataloge
+
 ```bash
-MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
+MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 ```
 
 - The output lists the album details and the number, title and duration of each track:
@@ -138,6 +152,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 
 ### Browsing the Catalogue
 
+#### Main Catalogue
+
 - After logging in, the "Artists" page is displayed, listing the artists currently in the database
 - This acts as the home page for the site and clicking on the "Artists" menu item or the site logo navigates back to it
 
@@ -150,11 +166,24 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 
 - As the mouse pointer is moved up and down the table, the current row is highlighted
 - Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the album shown in that row along with the associated tracks
+- Clicking on the "heart" icon moves the album from the main catalogue to the wish list then refreshes the album list
 - Clicking anywhere else on a row opens the track list for the album shown in that row:
 
 <img src="diagrams/track-list.png" alt="Track List" width="600">
 
 - Clicking on the artist name in any row in the track list or clicking on the "Back" button returns to the album list for that artist
+
+#### The Wish List
+
+- To view the wish list, click on the "Wish List" menu item
+- A page identical in layout to the "Artists" page is displayed, but with a title indicating that it is the wish list
+- The page operates in an identical manner to the "Artists" page and clicking on a row in the table navigates to the wish list for that artist:
+
+<img src="diagrams/wish-list-album-list.png" alt="Wish List Album List" width="600">
+
+- Clicking on a row drills into the album content, as per the "Artists" page
+- Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the album shown in that row along with the associated tracks
+- Clicking on the vinyl record icon moves the album from the wish list to the main catalogue then refreshes the album list
 
 ### Album Lookup
 
@@ -162,7 +191,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train"
 
 <img src="diagrams/album-search.png" alt="Album Search" width="600">
 
-- Enter the artist name and album title then click on "Lookup" to search for the album
+- Enter the artist name and album title and select the target directory (wish list or main catalogue) then click on "Lookup" to search for the album
 - If the album is found, the track list for the album is displayed
 - The album lookup facility uses the algorithm described under "Album Lookup", below
 - Consequently, searching for an album that's not currently in the catalogue will add it to the local database
