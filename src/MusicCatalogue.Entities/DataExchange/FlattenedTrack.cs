@@ -16,6 +16,7 @@ namespace MusicCatalogue.Entities.DataExchange
         private const int TrackNumberField = 5;
         private const int TitleField = 6;
         private const int DurationField = 7;
+        private const int WishlistItemField = 8;
 
         public string ArtistName{ get; set; } = "";
         public string AlbumTitle { get; set; } = "";
@@ -24,6 +25,7 @@ namespace MusicCatalogue.Entities.DataExchange
         public string? CoverUrl { get; set; } = "";
         public int? TrackNumber { get; set; }
         public string Title { get; set; } = "";
+        public bool? IsWishlistItem { get; set;  }
 
         /// <summary>
         /// Create a representation of the flattened track in CSV format
@@ -40,6 +42,7 @@ namespace MusicCatalogue.Entities.DataExchange
             AppendField(builder, TrackNumber);
             AppendField(builder, Title);
             AppendField(builder, FormattedDuration);
+            AppendField(builder, (IsWishlistItem ?? false).ToString());
             return builder.ToString();
         }
 
@@ -51,7 +54,7 @@ namespace MusicCatalogue.Entities.DataExchange
         public static FlattenedTrack FromCsv(IList<string> fields)
         {
             // Check we have the required number of fields
-            if ((fields == null) || (fields.Count != 8))
+            if ((fields == null) || (fields.Count != 9))
             {
                 throw new InvalidRecordFormatException("Incorrect number of CSV fields");
             }
@@ -74,7 +77,8 @@ namespace MusicCatalogue.Entities.DataExchange
                 CoverUrl = coverUrl,
                 TrackNumber = int.Parse(fields[TrackNumberField]),
                 Title = fields[TitleField],
-                Duration = durationMs
+                Duration = durationMs,
+                IsWishlistItem = bool.Parse(fields[WishlistItemField])
             };
         }
 
@@ -93,7 +97,7 @@ namespace MusicCatalogue.Entities.DataExchange
 
             // Convert the value to string and see if it contains the delimiter
             var stringValue = (value?.ToString() ?? "").Replace('"', '\'');
-            var containsDelimiter = !string.IsNullOrEmpty(stringValue) && stringValue.Contains(",");
+            var containsDelimiter = !string.IsNullOrEmpty(stringValue) && stringValue.Contains(',');
 
             // Add the value to the builder, quoting it if needed
             if (containsDelimiter) builder.Append('"');

@@ -28,14 +28,14 @@ namespace MusicCatalogue.Tests
 
             // Add an artist to the database
             _artistId = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result.Id;
-            _albumId = Task.Run(() => _factory.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl)).Result.Id;
+            _albumId = Task.Run(() => _factory.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl, false)).Result.Id;
             Task.Run(() => _factory.Tracks.AddAsync(_albumId, TrackTitle, TrackNumber, TrackDuration)).Wait();
         }
 
         [TestMethod]
         public async Task AddDuplicateTest()
         {
-            await _factory!.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl);
+            await _factory!.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl, false);
             var albums = await _factory!.Albums.ListAsync(x => true);
             Assert.AreEqual(1, albums.Count);
         }
@@ -51,6 +51,28 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(Released, album.Released);
             Assert.AreEqual(Genre, album.Genre);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
+            Assert.IsFalse(album.IsWishListItem);
+        }
+
+        [TestMethod]
+        public async Task UpdateTest()
+        {
+            var album = await _factory!.Albums.UpdateAsync(_albumId, _artistId, AlbumTitle, Released, Genre, CoverUrl, true);
+            Assert.IsNotNull(album);
+            Assert.IsTrue(album.Id > 0);
+            Assert.AreEqual(_artistId, album.ArtistId);
+            Assert.AreEqual(AlbumTitle, album.Title);
+            Assert.AreEqual(Released, album.Released);
+            Assert.AreEqual(Genre, album.Genre);
+            Assert.AreEqual(CoverUrl, album.CoverUrl);
+            Assert.IsTrue(album.IsWishListItem);
+        }
+
+        [TestMethod]
+        public async Task UpdateMissingTest()
+        {
+            var album = await _factory!.Albums.UpdateAsync(-1, _artistId, AlbumTitle, Released, Genre, CoverUrl, true);
+            Assert.IsNull(album);
         }
 
         [TestMethod]

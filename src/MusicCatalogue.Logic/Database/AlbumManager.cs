@@ -52,8 +52,9 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="released"></param>
         /// <param name="genre"></param>
         /// <param name="coverUrl"></param>
+        /// <param name="isWishlistItem"></param>
         /// <returns></returns>
-        public async Task<Album> AddAsync(int artistId, string title, int? released, string? genre, string? coverUrl)
+        public async Task<Album> AddAsync(int artistId, string title, int? released, string? genre, string? coverUrl, bool? isWishlistItem)
         {
             var clean = StringCleaner.Clean(title)!;
             var album = await GetAsync(a => (a.ArtistId == artistId) && (a.Title == clean));
@@ -66,10 +67,40 @@ namespace MusicCatalogue.Logic.Database
                     Title = clean,
                     Released = released,
                     Genre = StringCleaner.RemoveInvalidCharacters(genre),
-                    CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl)
+                    CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl),
+                    IsWishListItem = isWishlistItem
                 };
                 await _context!.Albums.AddAsync(album);
                 await _context.SaveChangesAsync();
+            }
+
+            return album;
+        }
+
+        /// <summary>
+        /// Update the properties of the specified album
+        /// </summary>
+        /// <param name="albumId"></param>
+        /// <param name="artistId"></param>
+        /// <param name="title"></param>
+        /// <param name="released"></param>
+        /// <param name="genre"></param>
+        /// <param name="coverUrl"></param>
+        /// <param name="isWishlistItem"></param>
+        /// <returns></returns>
+        public async Task<Album?> UpdateAsync(int albumId, int artistId, string title, int? released, string? genre, string? coverUrl, bool? isWishlistItem)
+        {
+            var album = await GetAsync(x => x.Id == albumId);
+            if (album != null)
+            {
+                album.ArtistId = artistId;
+                album.Title = StringCleaner.Clean(title)!;
+                album.Released = released;
+                album.Genre = StringCleaner.RemoveInvalidCharacters(genre);
+                album.CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl);
+                album.IsWishListItem = isWishlistItem;
+
+                await _context!.SaveChangesAsync();
             }
 
             return album;
