@@ -1,7 +1,6 @@
 import pages from "@/helpers/navigation";
-import DeleteAlbum from "./deleteAlbum";
-import AddAlbumToWishList from "./addAlbumToWishList";
-import AddAlbumToCatalogue from "./addAlbumToCatalogue";
+import DeleteAlbumActionIcon from "./deleteAlbumActionIcon";
+import AlbumWishListActionIcon from "./albumWishListActionIcon";
 
 /**
  * Component to render a row containing the details of a single album
@@ -36,7 +35,7 @@ const AlbumRow = ({
         {album.released}
       </td>
       <td>
-        <DeleteAlbum
+        <DeleteAlbumActionIcon
           album={album}
           isWishList={isWishList}
           logout={logout}
@@ -44,21 +43,13 @@ const AlbumRow = ({
         />
       </td>
       <td>
-        {isWishList == false ? (
-          <AddAlbumToWishList
-            artistId={artist.id}
-            album={album}
-            logout={logout}
-            setAlbums={setAlbums}
-          />
-        ) : (
-          <AddAlbumToCatalogue
-            artistId={artist.id}
-            album={album}
-            logout={logout}
-            setAlbums={setAlbums}
-          />
-        )}
+        <AlbumWishListActionIcon
+          artistId={artist.id}
+          album={album}
+          isWishList={isWishList}
+          logout={logout}
+          setAlbums={setAlbums}
+        />
       </td>
     </tr>
   );

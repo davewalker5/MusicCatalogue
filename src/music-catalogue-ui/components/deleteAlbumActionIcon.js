@@ -3,7 +3,7 @@ import { apiDeleteAlbum, apiFetchAlbumsByArtist } from "@/helpers/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
-const DeleteAlbum = ({ album, isWishList, logout, setAlbums }) => {
+const DeleteAlbumActionIcon = ({ album, isWishList, logout, setAlbums }) => {
   /* Callback to prompt for confirmation and delete an album */
   const confirmDeleteAlbum = useCallback(
     async (e, album) => {
@@ -40,4 +40,4 @@ const DeleteAlbum = ({ album, isWishList, logout, setAlbums }) => {
   );
 };
 
-export default DeleteAlbum;
+export default DeleteAlbumActionIcon;
