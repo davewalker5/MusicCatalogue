@@ -308,6 +308,41 @@ const apiLookupAlbum = async (artistName, albumTitle, logout) => {
 };
 
 /**
+ * Set the wish list flag on an album
+ * @param {*} album
+ * @param {*} wishListFlag
+ * @param {*} logout
+ * @returns
+ */
+const apiSetAlbumWishListFlag = async (album, wishListFlag, logout) => {
+  // Construct the body - the wish list flat needs to be updated before this
+  // and there's no need to send the track information - an empty array will do
+  album.isWishListItem = wishListFlag;
+  album.tracks = [];
+  const body = JSON.stringify(album);
+  console.log(body);
+
+  // Call the API to set the wish list flag for a given album
+  const url = `${config.api.baseUrl}/albums`;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.ok) {
+    // Get the response content as JSON and return it
+    const album = await apiReadResponseData(response);
+    return album;
+  } else if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    return null;
+  }
+};
+
+/**
  * Request an export of the catalogue
  * @param {*} fileName
  * @param {*} logout
@@ -390,6 +425,7 @@ export {
   apiFetchAlbumById,
   apiDeleteAlbum,
   apiLookupAlbum,
+  apiSetAlbumWishListFlag,
   apiRequestExport,
   apiJobStatusReport,
 };

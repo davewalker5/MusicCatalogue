@@ -1,6 +1,7 @@
 import pages from "@/helpers/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import DeleteAlbum from "./deleteAlbum";
+import AddAlbumToWishList from "./addAlbumToWishList";
+import AddAlbumToCatalogue from "./addAlbumToCatalogue";
 
 /**
  * Component to render a row containing the details of a single album
@@ -8,10 +9,18 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  * @param {*} album
  * @param {*} isWishList
  * @param {*} navigate
- * @param {*} deleteAlbum
+ * @param {*} logout
+ * @param {*} setAlbums
  * @returns
  */
-const AlbumRow = ({ artist, album, isWishList, navigate, deleteAlbum }) => {
+const AlbumRow = ({
+  artist,
+  album,
+  isWishList,
+  navigate,
+  logout,
+  setAlbums,
+}) => {
   return (
     <tr>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
@@ -27,10 +36,29 @@ const AlbumRow = ({ artist, album, isWishList, navigate, deleteAlbum }) => {
         {album.released}
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faTrashAlt}
-          onClick={(e) => deleteAlbum(e, album)}
+        <DeleteAlbum
+          album={album}
+          isWishList={isWishList}
+          logout={logout}
+          setAlbums={setAlbums}
         />
+      </td>
+      <td>
+        {isWishList == false ? (
+          <AddAlbumToWishList
+            artistId={artist.id}
+            album={album}
+            logout={logout}
+            setAlbums={setAlbums}
+          />
+        ) : (
+          <AddAlbumToCatalogue
+            artistId={artist.id}
+            album={album}
+            logout={logout}
+            setAlbums={setAlbums}
+          />
+        )}
       </td>
     </tr>
   );

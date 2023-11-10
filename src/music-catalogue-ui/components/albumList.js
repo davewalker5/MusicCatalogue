@@ -1,7 +1,5 @@
-import { useCallback } from "react";
 import useAlbums from "@/hooks/useAlbums";
 import AlbumRow from "./albumRow";
-import { apiDeleteAlbum, apiFetchAlbumsByArtist } from "@/helpers/api";
 
 /**
  * Component to render the table of all albums by the specified artist
@@ -19,33 +17,10 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
     ? `Wish List for ${artist.name}`
     : `Albums by ${artist.name}`;
 
-  /* Callback to prompt for confirmation and delete an album */
-  const confirmDeleteAlbum = useCallback(
-    async (e, album) => {
-      // Prevent the default action associated with the click event
-      e.preventDefault();
-
-      // Show a confirmation message and get the user response
-      const message = `This will delete the album "${album.title}" - click OK to confirm`;
-      const result = confirm(message);
-
-      // If they've confirmed the deletion ...
-      if (result) {
-        // ... delete the album and confirm the API call was successful
-        const result = await apiDeleteAlbum(album.id, logout);
-        if (result) {
-          // Successful, so refresh the album list
-          const fetchedAlbums = await apiFetchAlbumsByArtist(
-            artist.id,
-            isWishList,
-            logout
-          );
-          setAlbums(fetchedAlbums);
-        }
-      }
-    },
-    [artist, isWishList, setAlbums, logout]
-  );
+  // Callback to pass to child components to set the album list
+  const setAlbumsCallback = (albums) => {
+    setAlbums(albums);
+  };
 
   return (
     <>
@@ -60,6 +35,7 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
             <th>Genre</th>
             <th>Released</th>
             <th />
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -71,7 +47,8 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
               album={a}
               isWishList={isWishList}
               navigate={navigate}
-              deleteAlbum={confirmDeleteAlbum}
+              logout={logout}
+              setAlbums={setAlbumsCallback}
             />
           ))}
         </tbody>
