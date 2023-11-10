@@ -281,15 +281,21 @@ const apiDeleteAlbum = async (albumId, logout) => {
  * details if not found in the local database
  * @param {*} artistName
  * @param {*} albumTitle
+ * @param {*} storeInWishList
  * @param {*} logout
  */
-const apiLookupAlbum = async (artistName, albumTitle, logout) => {
+const apiLookupAlbum = async (
+  artistName,
+  albumTitle,
+  storeInWishList,
+  logout
+) => {
   // URL encode the lookup properties
   const encodedArtistName = encodeURIComponent(artistName);
   const encodedAlbumTitle = encodeURIComponent(albumTitle);
 
   // Call the API to get the details for the specified album
-  const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}`;
+  const url = `${config.api.baseUrl}/search/${encodedArtistName}/${encodedAlbumTitle}/${storeInWishList}`;
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),

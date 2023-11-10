@@ -36,6 +36,7 @@ const AlbumRow = ({
       </td>
       <td>
         <DeleteAlbumActionIcon
+          artistId={artist.id}
           album={album}
           isWishList={isWishList}
           logout={logout}
