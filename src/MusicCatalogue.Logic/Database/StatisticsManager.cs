@@ -23,12 +23,16 @@ namespace MusicCatalogue.Logic.Database
             // Iterate over the supplied list
             foreach (var artist in artists)
             {
-                // If the albums are already attached, use that list to calculate the statistics. Otherwise,
-                // load the albums from the database
-                var albums = artist.Albums;
-                if ((albums?.Count ?? 0) == 0)
+                List<Album> albums;
+
+                // Make sure the tracks and albums are loaded - the wish list flag is either null, false or true
+                if (wishlist)
                 {
-                    albums = await _factory.Albums.ListAsync(x => x.ArtistId == artist.Id);
+                    albums = await _factory.Albums.ListAsync(x => (x.ArtistId == artist.Id) && (x.IsWishListItem == true));
+                }
+                else
+                {
+                    albums = await _factory.Albums.ListAsync(x => (x.ArtistId == artist.Id) && (x.IsWishListItem != true));
                 }
 
                 // Count the albums and tracks
