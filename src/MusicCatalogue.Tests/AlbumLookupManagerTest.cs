@@ -53,7 +53,7 @@ namespace MusicCatalogue.Tests
         public void AlbumNotFoundTest()
         {
             _client!.AddResponse(AlbumNotFoundResponse);
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
             Assert.IsNull(album);
         }
 
@@ -61,7 +61,7 @@ namespace MusicCatalogue.Tests
         public void AlbumRequestNetworkErrorTest()
         {
             _client!.AddResponse(null);
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
             Assert.IsNull(album);
         }
 
@@ -70,7 +70,7 @@ namespace MusicCatalogue.Tests
         {
             _client!.AddResponse(AlbumResponse);
             _client.AddResponse(TracksNotFoundResponse);
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNull(album);
         }
@@ -80,7 +80,7 @@ namespace MusicCatalogue.Tests
         {
             _client!.AddResponse(AlbumResponse);
             _client!.AddResponse(MalformedTracksResponse);
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNull(album);
         }
@@ -90,7 +90,7 @@ namespace MusicCatalogue.Tests
         {
             _client!.AddResponse(AlbumResponse);
             _client.AddResponse(TracksResponse);
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
@@ -113,7 +113,7 @@ namespace MusicCatalogue.Tests
 
             _client!.AddResponse(AlbumResponse);
             _client.AddResponse(TracksResponse);
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
@@ -134,7 +134,7 @@ namespace MusicCatalogue.Tests
         {
             var artistId = Task.Run(() => _factory!.Artists.AddAsync(ArtistName)).Result.Id;
             Task.Run(() => _factory!.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl, false)).Wait();
-            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle)).Result;
+            var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);

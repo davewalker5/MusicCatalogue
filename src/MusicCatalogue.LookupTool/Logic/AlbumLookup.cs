@@ -25,7 +25,8 @@ namespace MusicCatalogue.LookupTool.Logic
         /// </summary>
         /// <param name="artistName"></param>
         /// <param name="albumTitle"></param>
-        public async Task LookupAlbum(string artistName, string albumTitle)
+        /// <param name="storeInWishList"></param>
+        public async Task LookupAlbum(string artistName, string albumTitle, bool storeInWishList)
         {
             // Get the API key and the URLs for the album and track lookup endpoints
             var key = _settings!.ApiServiceKeys.Find(x => x.Service == ApiServiceType.TheAudioDB)!.Key;
@@ -47,7 +48,7 @@ namespace MusicCatalogue.LookupTool.Logic
             var lookupManager = new AlbumLookupManager(_logger, albumsApi, tracksApi, _factory);
 
             // Lookup the album and its tracks
-            var album = await lookupManager.LookupAlbum(artistName, albumTitle);
+            var album = await lookupManager.LookupAlbum(artistName, albumTitle, storeInWishList);
             if (album != null)
             {
                 // Dump the album details
