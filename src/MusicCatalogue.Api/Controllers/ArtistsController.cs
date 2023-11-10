@@ -50,7 +50,7 @@ namespace MusicCatalogue.Api.Controllers
             }
 
             // Populate the artist statistics
-            await _factory.Statistics.PopulateArtistStatistics(artists);
+            await _factory.Statistics.PopulateArtistStatistics(artists, wishlist);
 
             return artists;
         }

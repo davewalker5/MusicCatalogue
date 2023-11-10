@@ -4,6 +4,6 @@ namespace MusicCatalogue.Entities.Interfaces
 {
     public interface IStatisticsManager
     {
-        Task PopulateArtistStatistics(IEnumerable<Artist> artists);
+        Task PopulateArtistStatistics(IEnumerable<Artist> artists, bool wishlist);
     }
 }

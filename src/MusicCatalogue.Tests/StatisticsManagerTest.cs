@@ -39,7 +39,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNull(artists[0].AlbumCount);
             Assert.IsNull(artists[0].TrackCount);
 
-            Task.Run(() => _factory!.Statistics.PopulateArtistStatistics(artists)).Wait();
+            Task.Run(() => _factory!.Statistics.PopulateArtistStatistics(artists, false)).Wait();
             Assert.AreEqual(1, artists[0].AlbumCount);
             Assert.AreEqual(1, artists[0].TrackCount);
         }
