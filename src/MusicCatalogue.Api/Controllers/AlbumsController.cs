@@ -46,6 +46,35 @@ namespace MusicCatalogue.Api.Controllers
             return albums;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<Album>> UpdateAlbumAsync([FromBody] Album template)
+        {
+            // Attempt the update
+            var album = await _factory.Albums.UpdateAsync(
+                template.Id,
+                template.ArtistId,
+                template.Title,
+                template.Released,
+                template.Genre,
+                template.CoverUrl,
+                template.IsWishListItem);
+
+            // If the result is NULL, the album doesn't exist
+            if (album == null)
+            {
+                return NotFound();
+            }
+
+            // Return the updated album
+            return album;
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteAlbum(int id)
