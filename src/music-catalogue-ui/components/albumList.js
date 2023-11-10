@@ -5,11 +5,19 @@ import { apiDeleteAlbum, apiFetchAlbumsByArtist } from "@/helpers/api";
 
 /**
  * Component to render the table of all albums by the specified artist
- * @param {*} param0
+ * @param {*} artist
+ * @param {*} isWishList
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
-const AlbumList = ({ artist, navigate, logout }) => {
-  const { albums, setAlbums } = useAlbums(artist.id, logout);
+const AlbumList = ({ artist, isWishList, navigate, logout }) => {
+  const { albums, setAlbums } = useAlbums(artist.id, isWishList, logout);
+
+  // Set the page title to reflect whether we're viewing the wish list
+  const title = isWishList
+    ? `Wish List for ${artist.name}`
+    : `Albums by ${artist.name}`;
 
   /* Callback to prompt for confirmation and delete an album */
   const confirmDeleteAlbum = useCallback(
@@ -27,18 +35,22 @@ const AlbumList = ({ artist, navigate, logout }) => {
         const result = await apiDeleteAlbum(album.id, logout);
         if (result) {
           // Successful, so refresh the album list
-          const fetchedAlbums = await apiFetchAlbumsByArtist(artist.id, logout);
+          const fetchedAlbums = await apiFetchAlbumsByArtist(
+            artist.id,
+            isWishList,
+            logout
+          );
           setAlbums(fetchedAlbums);
         }
       }
     },
-    [artist, setAlbums, logout]
+    [artist, isWishList, setAlbums, logout]
   );
 
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">Albums by {artist.name}</h5>
+        <h5 className="themeFontColor text-center">{title}</h5>
       </div>
       <table className="table table-hover">
         <thead>
@@ -57,6 +69,7 @@ const AlbumList = ({ artist, navigate, logout }) => {
               id={a.id}
               artist={artist}
               album={a}
+              isWishList={isWishList}
               navigate={navigate}
               deleteAlbum={confirmDeleteAlbum}
             />

@@ -5,21 +5,21 @@ import pages from "@/helpers/navigation";
 
 /**
  * Component to render a table listing all the artists in the catalogue
- * @param {*} param0
+ * @param {*} isWishList
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
-const ArtistList = ({ navigate, logout }) => {
-  const { artists, setArtists } = useArtists(logout);
+const ArtistList = ({ isWishList, navigate, logout }) => {
+  const { artists, setArtists } = useArtists(isWishList, logout);
 
-  // Callback to navigate to the lookup page
-  const lookup = useCallback(() => {
-    navigate(pages.lookup, null, null);
-  }, [navigate]);
+  // Set the page title to reflect whether we're viewing the wish list
+  const title = isWishList ? "Wish List Artists" : "Artists";
 
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">Artists</h5>
+        <h5 className="themeFontColor text-center">{title}</h5>
       </div>
       <table className="table table-hover">
         <thead>
@@ -32,7 +32,12 @@ const ArtistList = ({ navigate, logout }) => {
         {artists != null && (
           <tbody>
             {artists.map((a) => (
-              <ArtistRow key={a.id} artist={a} navigate={navigate} />
+              <ArtistRow
+                key={a.id}
+                artist={a}
+                isWishList={isWishList}
+                navigate={navigate}
+              />
             ))}
           </tbody>
         )}

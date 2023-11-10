@@ -146,12 +146,13 @@ const apiAuthenticate = async (username, password) => {
 
 /**
  * Fetch a list of all artists from the Music Catalogue REST API
+ * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const apiFetchAllArtists = async (logout) => {
+const apiFetchAllArtists = async (isWishList, logout) => {
   // Call the API to get a list of all artists
-  const url = `${config.api.baseUrl}/artists/`;
+  const url = `${config.api.baseUrl}/artists/${isWishList}`;
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),
@@ -200,12 +201,14 @@ const apiFetchArtistById = async (artistId, logout) => {
  * Fetch a list of albums by the specified artist from the Music Catalogue
  * REST API
  * @param {*} artistId
+ * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const apiFetchAlbumsByArtist = async (artistId, logout) => {
+const apiFetchAlbumsByArtist = async (artistId, isWishList, logout) => {
   // Call the API to get a list of all albums by the specified artist
-  const url = `${config.api.baseUrl}/albums/artist/${artistId}`;
+  const url = `${config.api.baseUrl}/albums/artist/${artistId}/${isWishList}`;
+  console.log(url);
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),

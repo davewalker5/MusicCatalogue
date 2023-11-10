@@ -5,7 +5,8 @@ import { apiFetchArtistById, apiLookupAlbum } from "@/helpers/api";
 
 /**
  * Component to render the album lookup page
- * @param {*} param0
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
 const LookupAlbum = ({ navigate, logout }) => {
@@ -25,7 +26,8 @@ const LookupAlbum = ({ navigate, logout }) => {
       const artist = await apiFetchArtistById(album.artistId, logout);
       if (artist != null) {
         // Navigate to the track list
-        navigate(pages.tracks, artist, album);
+        // TODO: Set the isWishList flag from the form
+        navigate(pages.tracks, artist, album, false);
       } else {
         setErrorMessage(`Artist with id ${album.artistId} not found`);
       }

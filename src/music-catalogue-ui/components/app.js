@@ -10,6 +10,7 @@ const defaultContext = {
   page: pages.artists,
   artist: null,
   album: null,
+  isWishList: false,
 };
 
 const App = () => {
@@ -20,11 +21,12 @@ const App = () => {
   const [context, setContext] = useState(defaultContext);
 
   // Callback to set the context
-  const navigate = useCallback((page, artist, album) => {
+  const navigate = useCallback((page, artist, album, isWishList) => {
     setContext({
       page: page,
       artist: artist,
       album: album,
+      isWishList: isWishList,
     });
   }, []);
 
