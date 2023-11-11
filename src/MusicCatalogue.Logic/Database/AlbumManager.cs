@@ -41,6 +41,7 @@ namespace MusicCatalogue.Logic.Database
             => await _context!.Albums
                               .Where(predicate)
                               .OrderBy(x => x.Title)
+                              .Include(x => x.Retailer)
                               .Include(x => x.Tracks)
                               .ToListAsync();
 

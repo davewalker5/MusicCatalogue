@@ -24,7 +24,15 @@ namespace MusicCatalogue.Entities.Database
 
         public bool? IsWishListItem { get; set; }
 
+        public DateTime? Purchased { get; set; }
+
+        public decimal? Price { get; set; }
+
+        public int? RetailerId { get; set; }
+
 #pragma warning disable CS8618
+        public Retailer Retailer { get; set; }
+
         public ICollection<Track> Tracks { get; set; }
 #pragma warning restore CS8618
     }
