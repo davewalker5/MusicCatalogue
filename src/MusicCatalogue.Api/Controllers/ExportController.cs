@@ -20,7 +20,7 @@ namespace MusicCatalogue.Api.Controllers
 
         [HttpPost]
         [Route("catalogue")]
-        public IActionResult ExportSightings([FromBody] CatalogueExportWorkItem item)
+        public IActionResult Export([FromBody] CatalogueExportWorkItem item)
         {
             // Set the job name used in the job status record
             item.JobName = "Catalogue Export";
