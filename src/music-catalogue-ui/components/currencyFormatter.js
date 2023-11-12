@@ -1,8 +1,8 @@
 import config from "../config.json";
 
-const CurrencyFormatter = ({ value }) => {
+const CurrencyFormatter = ({ value, renderZeroAsBlank }) => {
   // Check there's a value to format
-  if (value != null) {
+  if (value != null && (value > 0 || !renderZeroAsBlank)) {
     // Create a formatter to format the value
     const formatter = new Intl.NumberFormat(config.region.locale, {
       style: "currency",

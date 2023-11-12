@@ -44,7 +44,7 @@ const AlbumRow = ({
         <DateFormatter value={album.purchased} />
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
-        <CurrencyFormatter value={album.price} />
+        <CurrencyFormatter value={album.price} renderZeroAsBlank={true} />
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
         {retailerName}

@@ -1,4 +1,5 @@
 import pages from "@/helpers/navigation";
+import CurrencyFormatter from "./currencyFormatter";
 
 /**
  * Component to render a row containing the details for a single artist
@@ -13,6 +14,12 @@ const ArtistRow = ({ artist, isWishList, navigate }) => {
       <td>{artist.name}</td>
       <td>{artist.albumCount}</td>
       <td>{artist.trackCount}</td>
+      <td>
+        <CurrencyFormatter
+          value={artist.totalAlbumSpend}
+          renderZeroAsBlank={true}
+        />
+      </td>
     </tr>
   );
 };
