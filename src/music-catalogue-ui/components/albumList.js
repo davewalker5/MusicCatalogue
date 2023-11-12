@@ -34,6 +34,9 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
             <th>Album Title</th>
             <th>Genre</th>
             <th>Released</th>
+            <th>Purchased</th>
+            <th>Price</th>
+            <th>Retailer</th>
             <th />
             <th />
           </tr>

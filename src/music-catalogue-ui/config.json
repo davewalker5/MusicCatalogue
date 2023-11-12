@@ -1,5 +1,9 @@
 {
   "api": {
     "baseUrl": "http://localhost:8098"
+  },
+  "region": {
+    "locale": "en-GB",
+    "currency": "GBP"
   }
 }

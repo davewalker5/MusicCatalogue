@@ -1,6 +1,8 @@
 import pages from "@/helpers/navigation";
 import DeleteAlbumActionIcon from "./deleteAlbumActionIcon";
 import AlbumWishListActionIcon from "./albumWishListActionIcon";
+import CurrencyFormatter from "./currencyFormatter";
+import DateFormatter from "./dateFormatter";
 
 /**
  * Component to render a row containing the details of a single album
@@ -20,6 +22,10 @@ const AlbumRow = ({
   logout,
   setAlbums,
 }) => {
+  // Get the retailer name
+  const retailer = album["retailer"];
+  const retailerName = retailer != null ? retailer["name"] : "";
+
   return (
     <tr>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
@@ -33,6 +39,15 @@ const AlbumRow = ({
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
         {album.released}
+      </td>
+      <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
+        <DateFormatter value={album.purchased} />
+      </td>
+      <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
+        <CurrencyFormatter value={album.price} />
+      </td>
+      <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
+        {retailerName}
       </td>
       <td>
         <DeleteAlbumActionIcon
