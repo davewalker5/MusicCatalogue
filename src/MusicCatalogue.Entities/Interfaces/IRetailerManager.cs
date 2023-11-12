@@ -8,5 +8,7 @@ namespace MusicCatalogue.Entities.Interfaces
         Task<Retailer> AddAsync(string name);
         Task<Retailer> GetAsync(Expression<Func<Retailer, bool>> predicate);
         Task<List<Retailer>> ListAsync(Expression<Func<Retailer, bool>> predicate);
+        Task<Retailer?> UpdateAsync(int retailerId, string name);
+        Task DeleteAsync(int retailerId);
     }
 }

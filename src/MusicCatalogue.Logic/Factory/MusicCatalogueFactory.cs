@@ -44,7 +44,7 @@ namespace MusicCatalogue.Logic.Factory
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(context));
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(this));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(context));
-            _retailers = new Lazy<IRetailerManager>(() => new RetailerManager(context));
+            _retailers = new Lazy<IRetailerManager>(() => new RetailerManager(this));
             _jobStatuses = new Lazy<IJobStatusManager>(() => new JobStatusManager(context));
             _users = new Lazy<IUserManager>(() => new UserManager(context));
             _importer = new Lazy<IImporter>(() => new CsvImporter(this));
