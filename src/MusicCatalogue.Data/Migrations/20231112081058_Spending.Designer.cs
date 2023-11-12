@@ -11,7 +11,7 @@ using MusicCatalogue.Data;
 namespace MusicCatalogue.Data.Migrations
 {
     [DbContext(typeof(MusicCatalogueDbContext))]
-    [Migration("20231112075128_Spending")]
+    [Migration("20231112081058_Spending")]
     partial class Spending
     {
         /// <inheritdoc />
@@ -126,15 +126,17 @@ namespace MusicCatalogue.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Retailers");
+                    b.ToTable("RETAILERS", (string)null);
                 });
 
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>

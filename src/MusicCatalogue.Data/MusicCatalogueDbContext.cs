@@ -36,6 +36,14 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Password).IsRequired().HasColumnName("Password");
             });
 
+            modelBuilder.Entity<Retailer>(entity =>
+            {
+                entity.ToTable("RETAILERS");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
+            });
+
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("ARTISTS");

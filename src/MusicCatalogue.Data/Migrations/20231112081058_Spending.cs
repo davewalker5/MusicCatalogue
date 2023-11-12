@@ -38,7 +38,7 @@ namespace MusicCatalogue.Data.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Retailers",
+                name: "RETAILERS",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -47,7 +47,7 @@ namespace MusicCatalogue.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Retailers", x => x.Id);
+                    table.PrimaryKey("PK_RETAILERS", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
@@ -56,10 +56,10 @@ namespace MusicCatalogue.Data.Migrations
                 column: "RetailerId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ALBUMS_Retailers_RetailerId",
+                name: "FK_ALBUMS_RETAILERS_RetailerId",
                 table: "ALBUMS",
                 column: "RetailerId",
-                principalTable: "Retailers",
+                principalTable: "RETAILERS",
                 principalColumn: "Id");
         }
 
@@ -67,11 +67,11 @@ namespace MusicCatalogue.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ALBUMS_Retailers_RetailerId",
+                name: "FK_ALBUMS_RETAILERS_RetailerId",
                 table: "ALBUMS");
 
             migrationBuilder.DropTable(
-                name: "Retailers");
+                name: "RETAILERS");
 
             migrationBuilder.DropIndex(
                 name: "IX_ALBUMS_RetailerId",

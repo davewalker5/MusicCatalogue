@@ -125,15 +125,17 @@ namespace MusicCatalogue.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Retailers");
+                    b.ToTable("RETAILERS", (string)null);
                 });
 
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>
