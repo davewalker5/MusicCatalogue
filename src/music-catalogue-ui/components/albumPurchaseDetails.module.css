@@ -17,5 +17,11 @@
 }
 
 .purchaseDetailsButton {
+  margin-left: 10px;
   float: right;
+}
+
+.purchaseDetailsError {
+  font-weight: bold;
+  color: red;
 }

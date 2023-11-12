@@ -35,7 +35,6 @@ const apiAlbumUpdate = async (album, logout) => {
 const apiFetchAlbumsByArtist = async (artistId, isWishList, logout) => {
   // Call the API to get a list of all albums by the specified artist
   const url = `${config.api.baseUrl}/albums/artist/${artistId}/${isWishList}`;
-  console.log(url);
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),
@@ -149,7 +148,7 @@ const apiSetAlbumPurchaseDetails = async (
   logout
 ) => {
   // Update the purchase details
-  album.purchaseDate = purchaseDate;
+  album.purchased = purchaseDate;
   album.price = price;
   album.retailerId = retailerId;
 
