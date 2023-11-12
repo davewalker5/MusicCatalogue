@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetchAllArtists } from "@/helpers/api";
+import { apiFetchAllArtists } from "@/helpers/apiArtists";
 
 /**
  * Hook that uses the API helpers to retrieve a list of artists from the

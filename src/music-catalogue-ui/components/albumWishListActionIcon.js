@@ -4,8 +4,20 @@ import {
   faHeartCirclePlus,
   faRecordVinyl,
 } from "@fortawesome/free-solid-svg-icons";
-import { apiSetAlbumWishListFlag, apiFetchAlbumsByArtist } from "@/helpers/api";
+import {
+  apiSetAlbumWishListFlag,
+  apiFetchAlbumsByArtist,
+} from "@/helpers/apiAlbums";
 
+/**
+ * Icon and associated action to move an album between the catalogue and wish list
+ * @param {*} artistId
+ * @param {*} album
+ * @param {*} isWishList
+ * @param {*} logout
+ * @param {*} setAlbums
+ * @returns
+ */
 const AlbumWishListActionIcon = ({
   artistId,
   album,

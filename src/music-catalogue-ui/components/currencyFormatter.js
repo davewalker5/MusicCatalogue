@@ -1,5 +1,10 @@
 import config from "../config.json";
 
+/**
+ * Format a value as currency using the locale from the config file
+ * @param {*} param0
+ * @returns
+ */
 const CurrencyFormatter = ({ value, renderZeroAsBlank }) => {
   // Check there's a value to format
   if (value != null && (value > 0 || !renderZeroAsBlank)) {

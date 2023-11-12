@@ -1,7 +1,8 @@
 import styles from "./lookupAlbum.module.css";
 import pages from "@/helpers/navigation";
 import { useCallback, useState } from "react";
-import { apiFetchArtistById, apiLookupAlbum } from "@/helpers/api";
+import { apiFetchArtistById } from "@/helpers/apiArtists";
+import { apiLookupAlbum } from "@/helpers/apiAlbums";
 import Select from "react-select";
 
 /**

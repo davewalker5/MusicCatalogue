@@ -1,5 +1,10 @@
 import config from "../config.json";
 
+/**
+ * Format a value as a date using the locale from the config file
+ * @param {*} param0
+ * @returns
+ */
 const DateFormatter = ({ value }) => {
   // Check there's a value to format
   if (value != null) {

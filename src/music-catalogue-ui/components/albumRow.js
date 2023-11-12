@@ -3,6 +3,8 @@ import DeleteAlbumActionIcon from "./deleteAlbumActionIcon";
 import AlbumWishListActionIcon from "./albumWishListActionIcon";
 import CurrencyFormatter from "./currencyFormatter";
 import DateFormatter from "./dateFormatter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoins } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component to render a row containing the details of a single album
@@ -65,6 +67,14 @@ const AlbumRow = ({
           isWishList={isWishList}
           logout={logout}
           setAlbums={setAlbums}
+        />
+      </td>
+      <td>
+        <FontAwesomeIcon
+          icon={faCoins}
+          onClick={() =>
+            navigate(pages.albumPurchaseDetails, artist, album, false)
+          }
         />
       </td>
     </tr>

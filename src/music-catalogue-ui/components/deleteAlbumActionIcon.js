@@ -1,8 +1,17 @@
 import { useCallback } from "react";
-import { apiDeleteAlbum, apiFetchAlbumsByArtist } from "@/helpers/api";
+import { apiDeleteAlbum, apiFetchAlbumsByArtist } from "@/helpers/apiAlbums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * Icon and associated action to delete an album
+ * @param {*} artistId
+ * @param {*} album
+ * @param {*} isWishList
+ * @param {*} logout
+ * @param {*} setAlbums
+ * @returns
+ */
 const DeleteAlbumActionIcon = ({
   artistId,
   album,

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import Login from "./login";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
-import { apiClearToken } from "@/helpers/api";
+import { apiClearToken } from "@/helpers/apiToken";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import MenuBar from "./menuBar";
 
