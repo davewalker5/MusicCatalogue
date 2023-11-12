@@ -31,9 +31,9 @@ namespace MusicCatalogue.Entities.Database
         public int? RetailerId { get; set; }
 
 #pragma warning disable CS8618
-        public Retailer Retailer { get; set; }
+        public Retailer? Retailer { get; set; }
 
-        public ICollection<Track> Tracks { get; set; }
+        public ICollection<Track>? Tracks { get; set; }
 #pragma warning restore CS8618
     }
 }

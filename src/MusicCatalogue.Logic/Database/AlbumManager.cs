@@ -122,6 +122,7 @@ namespace MusicCatalogue.Logic.Database
             var album = await GetAsync(x => x.Id == albumId);
             if (album != null)
             {
+                // Apply the changes
                 album.ArtistId = artistId;
                 album.Title = StringCleaner.Clean(title)!;
                 album.Released = released;
@@ -132,7 +133,11 @@ namespace MusicCatalogue.Logic.Database
                 album.Price = price;
                 album.RetailerId = retailerId;
 
+                // Save the changes
                 await _context!.SaveChangesAsync();
+
+                // Reload the album to reflect changes in e.g. retailer
+                album = await GetAsync(x => x.Id == albumId);
             }
 
             return album;
