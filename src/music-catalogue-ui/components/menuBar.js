@@ -3,6 +3,12 @@ import pages from "../helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * Component to render the menu bar
+ * @param {*} navigate
+ * @param {*} logout
+ * @returns
+ */
 const MenuBar = ({ navigate, logout }) => {
   return (
     <>

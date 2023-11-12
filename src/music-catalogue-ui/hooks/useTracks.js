@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetchAlbumById } from "@/helpers/api";
+import { apiFetchAlbumById } from "@/helpers/apiAlbums";
 
 /**
  * Hook that uses the API helpers to retrieve a list of tracks for the
@@ -23,7 +23,7 @@ const useTracks = (albumId, logout) => {
     };
 
     fetchTracks(albumId);
-  }, []);
+  }, [albumId, logout]);
 
   return { tracks, setTracks };
 };

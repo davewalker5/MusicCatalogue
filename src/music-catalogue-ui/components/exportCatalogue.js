@@ -1,7 +1,12 @@
 import styles from "./exportCatalogue.module.css";
 import { useCallback, useState } from "react";
-import { apiRequestExport } from "@/helpers/api";
+import { apiRequestExport } from "@/helpers/apiDataExchange";
 
+/**
+ * Component to prompt for an export file name and request an export of the catalogue
+ * @param {*} logout
+ * @returns
+ */
 const ExportCatalogue = ({ logout }) => {
   const [fileName, setFileName] = useState("");
   const [message, setMessage] = useState("");

@@ -38,6 +38,7 @@ namespace MusicCatalogue.Logic.Database
                 // Count the albums and tracks
                 artist.AlbumCount = albums!.Count;
                 artist.TrackCount = (albums.Count > 0) ? albums.Sum(x => x.Tracks.Count) : 0;
+                artist.TotalAlbumSpend = (albums.Count > 0) ? albums.Sum(x => x.Price ?? 0M) : 0;
             }
         }
     }

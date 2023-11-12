@@ -1,4 +1,4 @@
-import { apiGetToken } from "@/helpers/api";
+import { apiGetToken } from "@/helpers/apiToken";
 import { useState, useEffect } from "react";
 
 /**

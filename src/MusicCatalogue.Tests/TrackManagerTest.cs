@@ -28,7 +28,7 @@ namespace MusicCatalogue.Tests
 
             // Set up an artist and album for the tracks to belong to
             _artistId = Task.Run(() => factory.Artists.AddAsync(ArtistName)).Result.Id;
-            _albumId = Task.Run(() => factory.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl, false)).Result.Id;
+            _albumId = Task.Run(() => factory.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl, false, null, null, null)).Result.Id;
 
             // Create a track manager and add a test track
             _manager = factory.Tracks;

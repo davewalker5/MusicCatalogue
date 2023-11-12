@@ -81,7 +81,16 @@ namespace MusicCatalogue.Logic.Collection
             var artist = await _factory.Artists.AddAsync(artistName);
 
             // Save the album details
-            var album = await _factory.Albums.AddAsync(artist.Id, template.Title, template.Released, template.Genre, template.CoverUrl, storeAlbumInWishlist);
+            var album = await _factory.Albums.AddAsync(
+                artist.Id,
+                template.Title, 
+                template.Released,
+                template.Genre,
+                template.CoverUrl,
+                storeAlbumInWishlist,
+                template.Purchased,
+                template.Price,
+                template.RetailerId);
 
             // Save the track details
             foreach (var track in template.Tracks!)

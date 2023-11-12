@@ -7,6 +7,7 @@ const pages = {
   lookup: "Lookup",
   export: "Export",
   jobStatusReport: "JobStatusReport",
+  albumPurchaseDetails: "AlbumPurchaseDetails",
 };
 
 export default pages;

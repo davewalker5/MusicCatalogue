@@ -1,7 +1,5 @@
-import { useCallback } from "react";
 import useArtists from "@/hooks/useArtists";
 import ArtistRow from "./artistRow";
-import pages from "@/helpers/navigation";
 
 /**
  * Component to render a table listing all the artists in the catalogue
@@ -27,6 +25,7 @@ const ArtistList = ({ isWishList, navigate, logout }) => {
             <th>Name</th>
             <th>Albums</th>
             <th>Tracks</th>
+            <th>Total Spend</th>
           </tr>
         </thead>
         {artists != null && (

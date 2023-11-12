@@ -16,6 +16,8 @@ namespace MusicCatalogue.Entities.Database
 
         public int? TrackCount { get; set; }
 
+        public decimal TotalAlbumSpend { get; set; }
+
 #pragma warning disable CS8618
         public ICollection<Album> Albums { get; set; }
 #pragma warning restore CS8618

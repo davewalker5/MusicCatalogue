@@ -10,6 +10,7 @@ namespace MusicCatalogue.Data
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<Retailer> Retailers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<JobStatus> JobStatuses { get; set; }
 
@@ -35,6 +36,14 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Password).IsRequired().HasColumnName("Password");
             });
 
+            modelBuilder.Entity<Retailer>(entity =>
+            {
+                entity.ToTable("RETAILERS");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
+            });
+
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("ARTISTS");
@@ -43,6 +52,7 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
                 entity.Ignore(e => e.AlbumCount);
                 entity.Ignore(e => e.TrackCount);
+                entity.Ignore(e => e.TotalAlbumSpend);
             });
 
             modelBuilder.Entity<Album>(entity =>
@@ -55,6 +65,9 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Released).HasColumnName("Released");
                 entity.Property(e => e.Genre).HasColumnName("Genre");
                 entity.Property(e => e.CoverUrl).HasColumnName("CoverUrl");
+                entity.Property(e => e.Purchased).HasColumnName("Purchased");
+                entity.Property(e => e.Price).HasColumnName("Price");
+                entity.Property(e => e.RetailerId).HasColumnName("RetailerId");
             });
 
             modelBuilder.Entity<Track>(entity =>

@@ -1,6 +1,7 @@
 import styles from "./login.module.css";
 import { React, useState, useCallback } from "react";
-import { apiAuthenticate, apiSetToken } from "@/helpers/api";
+import { apiAuthenticate } from "@/helpers/apiAuthenticate";
+import { apiSetToken } from "@/helpers/apiToken";
 
 /**
  * Component to render the login page

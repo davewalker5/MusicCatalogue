@@ -41,9 +41,21 @@ namespace MusicCatalogue.Data.Migrations
                     b.Property<bool?>("IsWishListItem")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Price");
+
+                    b.Property<DateTime?>("Purchased")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Purchased");
+
                     b.Property<int?>("Released")
                         .HasColumnType("INTEGER")
                         .HasColumnName("Released");
+
+                    b.Property<int?>("RetailerId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("RetailerId");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -53,6 +65,8 @@ namespace MusicCatalogue.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ArtistId");
+
+                    b.HasIndex("RetailerId");
 
                     b.ToTable("ALBUMS", (string)null);
                 });
@@ -107,6 +121,23 @@ namespace MusicCatalogue.Data.Migrations
                     b.ToTable("JOB_STATUS", (string)null);
                 });
 
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Retailer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RETAILERS", (string)null);
+                });
+
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>
                 {
                     b.Property<int>("Id")
@@ -125,6 +156,9 @@ namespace MusicCatalogue.Data.Migrations
                     b.Property<int?>("Number")
                         .HasColumnType("INTEGER")
                         .HasColumnName("Number");
+
+                    b.Property<DateTime?>("Purchased")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -167,6 +201,12 @@ namespace MusicCatalogue.Data.Migrations
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("MusicCatalogue.Entities.Database.Retailer", "Retailer")
+                        .WithMany()
+                        .HasForeignKey("RetailerId");
+
+                    b.Navigation("Retailer");
                 });
 
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>

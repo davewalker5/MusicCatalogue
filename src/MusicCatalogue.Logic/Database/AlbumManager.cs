@@ -41,6 +41,7 @@ namespace MusicCatalogue.Logic.Database
             => await _context!.Albums
                               .Where(predicate)
                               .OrderBy(x => x.Title)
+                              .Include(x => x.Retailer)
                               .Include(x => x.Tracks)
                               .ToListAsync();
 
@@ -53,8 +54,20 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="genre"></param>
         /// <param name="coverUrl"></param>
         /// <param name="isWishlistItem"></param>
+        /// <param name="purchased"></param>
+        /// <param name="price"></param>
+        /// <param name="retailerId"></param>
         /// <returns></returns>
-        public async Task<Album> AddAsync(int artistId, string title, int? released, string? genre, string? coverUrl, bool? isWishlistItem)
+        public async Task<Album> AddAsync(
+            int artistId,
+            string title,
+            int? released, 
+            string? genre,
+            string? coverUrl,
+            bool? isWishlistItem,
+            DateTime? purchased,
+            decimal? price,
+            int? retailerId)
         {
             var clean = StringCleaner.Clean(title)!;
             var album = await GetAsync(a => (a.ArtistId == artistId) && (a.Title == clean));
@@ -68,7 +81,10 @@ namespace MusicCatalogue.Logic.Database
                     Released = released,
                     Genre = StringCleaner.RemoveInvalidCharacters(genre),
                     CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl),
-                    IsWishListItem = isWishlistItem
+                    IsWishListItem = isWishlistItem,
+                    Purchased = purchased,
+                    Price = price,
+                    RetailerId = retailerId
                 };
                 await _context!.Albums.AddAsync(album);
                 await _context.SaveChangesAsync();
@@ -87,20 +103,41 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="genre"></param>
         /// <param name="coverUrl"></param>
         /// <param name="isWishlistItem"></param>
+        /// <param name="purchased"></param>
+        /// <param name="price"></param>
+        /// <param name="retailerId"></param>
         /// <returns></returns>
-        public async Task<Album?> UpdateAsync(int albumId, int artistId, string title, int? released, string? genre, string? coverUrl, bool? isWishlistItem)
+        public async Task<Album?> UpdateAsync(
+            int albumId,
+            int artistId,
+            string title,
+            int? released,
+            string? genre,
+            string? coverUrl,
+            bool? isWishlistItem,
+            DateTime? purchased,
+            decimal? price,
+            int? retailerId)
         {
             var album = await GetAsync(x => x.Id == albumId);
             if (album != null)
             {
+                // Apply the changes
                 album.ArtistId = artistId;
                 album.Title = StringCleaner.Clean(title)!;
                 album.Released = released;
                 album.Genre = StringCleaner.RemoveInvalidCharacters(genre);
                 album.CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl);
                 album.IsWishListItem = isWishlistItem;
+                album.Purchased = purchased;
+                album.Price = price;
+                album.RetailerId = retailerId;
 
+                // Save the changes
                 await _context!.SaveChangesAsync();
+
+                // Reload the album to reflect changes in e.g. retailer
+                album = await GetAsync(x => x.Id == albumId);
             }
 
             return album;

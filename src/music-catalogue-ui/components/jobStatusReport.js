@@ -2,9 +2,14 @@ import React, { useCallback, useState } from "react";
 import styles from "./jobStatusReport.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { apiJobStatusReport } from "@/helpers/api";
+import { apiJobStatusReport } from "@/helpers/apiReports";
 import JobStatusRow from "./jobStatusRow";
 
+/**
+ * Component to display the job status search page and its results
+ * @param {*} logout
+ * @returns
+ */
 const JobStatusReport = ({ logout }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());

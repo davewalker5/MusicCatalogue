@@ -36,6 +36,7 @@ namespace MusicCatalogue.Logic.Database
                              .Where(predicate)
                              .OrderBy(x => x.Name)
                              .Include(x => x.Albums)
+                             .ThenInclude(x => x.Retailer)
                              .ToListAsync();
 
         /// <summary>
