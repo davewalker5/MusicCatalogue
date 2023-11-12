@@ -133,7 +133,7 @@ namespace MusicCatalogue.Tests
         public void ArtistAndAlbumInDbTest()
         {
             var artistId = Task.Run(() => _factory!.Artists.AddAsync(ArtistName)).Result.Id;
-            Task.Run(() => _factory!.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl, false)).Wait();
+            Task.Run(() => _factory!.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl, false, null, null, null)).Wait();
             var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNotNull(album);

@@ -1,7 +1,6 @@
 ﻿using ClosedXML.Excel;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Logic.DataExchange
 {
@@ -70,6 +69,9 @@ namespace MusicCatalogue.Logic.DataExchange
             _worksheet!.Cell(row, 7).Value = track.Title ?? "";
             _worksheet!.Cell(row, 8).Value = track.FormattedDuration ?? "";
             _worksheet!.Cell(row, 9).Value = (track.IsWishlistItem ?? false).ToString();
+            _worksheet!.Cell(row, 10).Value = track.FormattedPurchaseDate;
+            _worksheet!.Cell(row, 11).Value = track.Price != null ? track.Price.ToString() : "";
+            _worksheet!.Cell(row, 12).Value = track.RetailerName ?? "";
         }
     }
 }

@@ -44,6 +44,7 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
                 entity.Ignore(e => e.AlbumCount);
                 entity.Ignore(e => e.TrackCount);
+                entity.Ignore(e => e.TotalAlbumSpend);
             });
 
             modelBuilder.Entity<Album>(entity =>
@@ -56,6 +57,9 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Released).HasColumnName("Released");
                 entity.Property(e => e.Genre).HasColumnName("Genre");
                 entity.Property(e => e.CoverUrl).HasColumnName("CoverUrl");
+                entity.Property(e => e.Purchased).HasColumnName("Purchased");
+                entity.Property(e => e.Price).HasColumnName("Price");
+                entity.Property(e => e.RetailerId).HasColumnName("RetailerId");
             });
 
             modelBuilder.Entity<Track>(entity =>

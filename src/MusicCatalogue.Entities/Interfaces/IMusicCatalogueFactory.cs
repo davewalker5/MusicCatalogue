@@ -8,6 +8,7 @@ namespace MusicCatalogue.Entities.Interfaces
         IAlbumManager Albums { get; }
         IArtistManager Artists { get; }
         ITrackManager Tracks { get; }
+        IRetailerManager Retailers { get; }
         IUserManager Users { get; }
         IImporter Importer { get; }
         IExporter CsvExporter { get; }

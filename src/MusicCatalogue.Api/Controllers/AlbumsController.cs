@@ -85,7 +85,10 @@ namespace MusicCatalogue.Api.Controllers
                 template.Released,
                 template.Genre,
                 template.CoverUrl,
-                template.IsWishListItem);
+                template.IsWishListItem,
+                template.Purchased,
+                template.Price,
+                template.RetailerId);
 
             // If the result is NULL, the album doesn't exist
             if (album == null)

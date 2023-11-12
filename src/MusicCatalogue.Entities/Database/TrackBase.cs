@@ -1,11 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
     public abstract class TrackBase
     {
+        protected const string DateTimeFormat = "dd/MM/yyyy";
+
         public int? Duration { get; set; }
+
         public string? FormattedDuration
         {
             get
@@ -21,6 +25,16 @@ namespace MusicCatalogue.Entities.Database
                 {
                     return null;
                 }
+            }
+        }
+
+        public DateTime? Purchased { get; set; }
+
+        public string FormattedPurchaseDate
+        {
+            get
+            {
+                return Purchased != null ? (Purchased ?? DateTime.Now).ToString(DateTimeFormat) : "";
             }
         }
     }

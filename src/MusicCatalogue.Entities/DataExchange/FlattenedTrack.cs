@@ -17,6 +17,10 @@ namespace MusicCatalogue.Entities.DataExchange
         private const int TitleField = 6;
         private const int DurationField = 7;
         private const int WishlistItemField = 8;
+        private const int PurchasedField = 9;
+        private const int PriceField = 10;
+        private const int RetailerField = 11;
+        private const int NumberOfFields = 12;
 
         public string ArtistName{ get; set; } = "";
         public string AlbumTitle { get; set; } = "";
@@ -27,12 +31,19 @@ namespace MusicCatalogue.Entities.DataExchange
         public string Title { get; set; } = "";
         public bool? IsWishlistItem { get; set;  }
 
+        public decimal? Price { get; set; }
+        public string? RetailerName { get; set; } = "";
+
         /// <summary>
         /// Create a representation of the flattened track in CSV format
         /// </summary>
         /// <returns></returns>
         public string ToCsv()
         {
+            var wishListString = (IsWishlistItem ?? false).ToString();
+            var purchasedDateString = Purchased != null ? (Purchased ?? DateTime.Now).ToString(DateTimeFormat) : "";
+            var priceString = Price != null ? Price.ToString() : "";
+
             StringBuilder builder = new StringBuilder();
             AppendField(builder, ArtistName);
             AppendField(builder, AlbumTitle);
@@ -42,7 +53,11 @@ namespace MusicCatalogue.Entities.DataExchange
             AppendField(builder, TrackNumber);
             AppendField(builder, Title);
             AppendField(builder, FormattedDuration);
-            AppendField(builder, (IsWishlistItem ?? false).ToString());
+            AppendField(builder, wishListString);
+            AppendField(builder, purchasedDateString);
+            AppendField(builder, priceString);
+            AppendField(builder, RetailerName ?? "");
+
             return builder.ToString();
         }
 
@@ -54,7 +69,7 @@ namespace MusicCatalogue.Entities.DataExchange
         public static FlattenedTrack FromCsv(IList<string> fields)
         {
             // Check we have the required number of fields
-            if ((fields == null) || (fields.Count != 9))
+            if ((fields == null) || (fields.Count != NumberOfFields))
             {
                 throw new InvalidRecordFormatException("Incorrect number of CSV fields");
             }
@@ -66,7 +81,17 @@ namespace MusicCatalogue.Entities.DataExchange
             // Split the duration on the ":" separator and convert to milliseconds
             var durationWords = fields[DurationField].Split(new string[] { ":" }, StringSplitOptions.None);
             var durationMs = 1000 * (60 * int.Parse(durationWords[0]) +  int.Parse(durationWords[1]));
- 
+
+            // Determine the purchase date
+            DateTime? purchasedDate = null;
+            if (!string.IsNullOrEmpty(fields[PurchasedField]))
+            {
+                purchasedDate = DateTime.ParseExact(fields[PurchasedField], DateTimeFormat, null);
+            }
+
+            // Determine the price
+            decimal? price = !string.IsNullOrEmpty(fields[PriceField]) ? decimal.Parse(fields[PriceField]) : null;
+
             // Create a new "flattened" record containing artist, album and track details
             return new FlattenedTrack
             {
@@ -78,7 +103,10 @@ namespace MusicCatalogue.Entities.DataExchange
                 TrackNumber = int.Parse(fields[TrackNumberField]),
                 Title = fields[TitleField],
                 Duration = durationMs,
-                IsWishlistItem = bool.Parse(fields[WishlistItemField])
+                IsWishlistItem = bool.Parse(fields[WishlistItemField]),
+                Purchased = purchasedDate,
+                Price = price,
+                RetailerName = fields[RetailerField]
             };
         }
 

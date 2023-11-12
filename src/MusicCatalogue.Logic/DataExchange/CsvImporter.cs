@@ -48,8 +48,22 @@ namespace MusicCatalogue.Logic.DataExchange
                             var track = FlattenedTrack.FromCsv(fields!);
                             var artist = await _factory.Artists.AddAsync(track.ArtistName);
 
-                            // See if the album exists
-                            var album = await _factory.Albums.AddAsync(artist.Id, track.AlbumTitle, track.Released, track.Genre, track.CoverUrl, track.IsWishlistItem);
+                            // Add the retailer
+                            var retailer = await _factory.Retailers.AddAsync(track.RetailerName);
+
+                            // Add the album
+                            var album = await _factory.Albums.AddAsync(
+                                artist.Id,
+                                track.AlbumTitle,
+                                track.Released,
+                                track.Genre,
+                                track.CoverUrl,
+                                track.IsWishlistItem,
+                                track.Purchased,
+                                track.Price,
+                                retailer.Id);
+
+                            // Add the track
                             await _factory.Tracks.AddAsync(album.Id, track.Title, track.TrackNumber, track.Duration);
 
                             TrackImport?.Invoke(this, new TrackDataExchangeEventArgs { RecordCount = count - 1, Track = track });

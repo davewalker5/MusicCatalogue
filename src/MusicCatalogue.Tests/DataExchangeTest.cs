@@ -13,6 +13,9 @@ namespace MusicCatalogue.Tests
         private const string Genre = "Jazz";
         private const int Released = 1957;
         private const string CoverUrl = "https://some.server/after-mightnight.jpg";
+        private DateTime Purchased = new(2023, 11, 1);
+        private const decimal Price = 37.99M;
+        private const string RetailerName = "Truck Store";
         private const int TrackNumber = 1;
         private const string TrackName = "Just You Just Me";
         private const int Duration = 180000;
@@ -28,8 +31,9 @@ namespace MusicCatalogue.Tests
             _factory = new MusicCatalogueFactory(context);
 
             // Add an artist, an album and one track
+            var retailer = Task.Run(() => _factory.Retailers.AddAsync(RetailerName)).Result;
             var artist = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result;
-            var album = Task.Run(() => _factory.Albums.AddAsync(artist.Id, AlbumName, Released, Genre, CoverUrl, false)).Result;
+            var album = Task.Run(() => _factory.Albums.AddAsync(artist.Id, AlbumName, Released, Genre, CoverUrl, false, Purchased, Price, retailer.Id)).Result;
             Task.Run(() => _factory.Tracks.AddAsync(album.Id, TrackName, TrackNumber, Duration)).Wait();
         }
 
