@@ -99,8 +99,8 @@
 - The following is an example, illustrating the format for the headers and for the rows containing data:
 
 ```
-Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration,Wish List
-Duke Ellington,Ellington Indigoes,Jazz,1958,,1,Solitude,04:43,False
+Artist,Album,Genre,Released,Cover Url,Track Number,Track,Duration,Wish List,Purchase Date,Price,Retailer
+George Harrison,All Things Must Pass,Rock & Roll,1970,https://www.theaudiodb.com/images/media/album/thumb/all-things-must-pass-4f09954aa6370.jpg,1,I'd Have You Anytime,02:56,False,12/11/2023,59.07,Amazon
 ```
 
 - Exports include all albums in both the main catalogue and the wish list
@@ -134,12 +134,16 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 ### Configuration
 
-- The UI uses a simple "config.json" file containing only one setting, the base URL for the Music Catalogue web service:
+- The UI uses a simple "config.json" file containing the base URL for the Music Catalogue web service and locale settings used by the UI:
 
 ```json
 {
   "api": {
     "baseUrl": "http://localhost:8098"
+  },
+  "region": {
+    "locale": "en-GB",
+    "currency": "GBP"
   }
 }
 ```
@@ -167,6 +171,10 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - As the mouse pointer is moved up and down the table, the current row is highlighted
 - Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the album shown in that row along with the associated tracks
 - Clicking on the "heart" icon moves the album from the main catalogue to the wish list then refreshes the album list
+- Clicking on the "money" icon opens a form allowing the purchase details to be set:
+
+<img src="diagrams/purchase-details.png" alt="Purchase Details" width="600">
+
 - Clicking anywhere else on a row opens the track list for the album shown in that row:
 
 <img src="diagrams/track-list.png" alt="Track List" width="600">
@@ -184,6 +192,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - Clicking on a row drills into the album content, as per the "Artists" page
 - Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the album shown in that row along with the associated tracks
 - Clicking on the vinyl record icon moves the album from the wish list to the main catalogue then refreshes the album list
+- Clicking on the money icon opens the purchase details page and allows the price and a potential retailer to be set, but not the purchase date
 
 ### Album Lookup
 
@@ -237,6 +246,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
   - Retrieving artist details from the local database
   - Retrieving album and track details from the local database
   - Looking up albums via the external APIs (see below)
+  - Managing retailers and purchase details
 - The external lookup uses the "album lookup" algorithm described under "Album Lookup", below
 - Swagger documentation exposed at:
 
