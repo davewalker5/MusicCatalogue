@@ -17,5 +17,6 @@ namespace MusicCatalogue.Entities.Interfaces
         IStatisticsManager Statistics { get; }
         IJobStatusManager JobStatuses { get; }
         IWishListBasedReport<GenreStatistics> GenreStatistics { get; }
+        IWishListBasedReport<ArtistStatistics> ArtistStatistics { get; }
     }
 }

@@ -15,6 +15,7 @@ namespace MusicCatalogue.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<JobStatus> JobStatuses { get; set; }
         public virtual DbSet<GenreStatistics> GenreStatistics { get; set; }
+        public virtual DbSet<ArtistStatistics> ArtistStatistics { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
