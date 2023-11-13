@@ -24,3 +24,7 @@
 .lookupButton {
   float: right;
 }
+
+.lookupCatalogueSelector {
+  width: 300px;
+}

@@ -16,7 +16,7 @@ const LookupAlbum = ({ navigate, logout }) => {
   const [artistName, setArtistName] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [target, setTarget] = useState("wishlist");
+  const [catalogue, setCatalogue] = useState("wishlist");
 
   // Lookup navigation callback
   const lookup = useCallback(
@@ -25,7 +25,7 @@ const LookupAlbum = ({ navigate, logout }) => {
       e.preventDefault();
 
       // Determine where to store new albums based on the target drop-down
-      const storeInWishList = target.value == "wishlist";
+      const storeInWishList = catalogue.value == "wishlist";
 
       // Lookup the album - this will preferentially use the local database via the
       // REST API and fallback to the external API if needed
@@ -49,7 +49,7 @@ const LookupAlbum = ({ navigate, logout }) => {
         setErrorMessage(`Album "${albumTitle}" by "${artistName}" not found`);
       }
     },
-    [artistName, albumTitle, target, navigate, logout]
+    [artistName, albumTitle, catalogue, navigate, logout]
   );
 
   // Construct a list of select list options for the target directory
@@ -87,10 +87,11 @@ const LookupAlbum = ({ navigate, logout }) => {
               />
             </div>
             <div className="form-group mt-3">
-              <label className={styles.lookupFormLabel}>Target Directory</label>
+              <label className={styles.lookupFormLabel}>Save Album To</label>
               <Select
-                defaultValue={target}
-                onChange={setTarget}
+                className={styles.lookupCatalogueSelector}
+                defaultValue={catalogue}
+                onChange={setCatalogue}
                 options={options}
               />
             </div>

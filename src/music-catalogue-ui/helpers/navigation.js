@@ -6,6 +6,7 @@ const pages = {
   tracks: "Tracks",
   lookup: "Lookup",
   export: "Export",
+  genreStatisticsReport: "GenreStatisticsReport",
   jobStatusReport: "JobStatusReport",
   albumPurchaseDetails: "AlbumPurchaseDetails",
 };

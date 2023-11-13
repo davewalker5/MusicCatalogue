@@ -35,7 +35,7 @@ const apiJobStatusReport = async (from, to, logout) => {
   const fromRouteSegment = apiFormatDateTime(startDate);
   const toRouteSegment = apiFormatDateTime(endDate);
   const url = `${config.api.baseUrl}/reports/jobs/${fromRouteSegment}/${toRouteSegment}`;
-  console.log(url);
+
   // Call the API to get content for the report
   const response = await fetch(url, {
     method: "GET",
@@ -46,4 +46,24 @@ const apiJobStatusReport = async (from, to, logout) => {
   return records;
 };
 
-export { apiJobStatusReport };
+/**
+ * Call the API to retrieve the genre statistics report
+ * @param {*} wishlist
+ * @param {*} logout
+ * @returns
+ */
+const apiGenreStatisticsReport = async (wishlist, logout) => {
+  // Construct the route
+  const url = `${config.api.baseUrl}/reports/genres/${wishlist}`;
+
+  // Call the API to get content for the report
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const records = await apiReadResponseData(response, logout);
+  return records;
+};
+
+export { apiJobStatusReport, apiGenreStatisticsReport };

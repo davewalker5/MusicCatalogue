@@ -1,3 +1,5 @@
+import DateAndTimeFormatter from "./dateAndTimeFormatter";
+
 /**
  * Component to render a row containing the details of a single job status record
  * @param {*} record
@@ -8,8 +10,12 @@ const JobStatusRow = ({ record }) => {
     <tr>
       <td>{record.name}</td>
       <td>{record.parameters}</td>
-      <td>{record.start}</td>
-      <td>{record.end}</td>
+      <td>
+        <DateAndTimeFormatter value={record.start} />
+      </td>
+      <td>
+        <DateAndTimeFormatter value={record.end} />
+      </td>
       <td>{record.error}</td>
     </tr>
   );

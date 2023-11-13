@@ -4,6 +4,7 @@ import AlbumList from "./albumList";
 import TrackList from "./trackList";
 import LookupAlbum from "./lookupAlbum";
 import ExportCatalogue from "./exportCatalogue";
+import GenreStatusReport from "./genreStatisticsReport";
 import JobStatusReport from "./jobStatusReport";
 import AlbumPurchaseDetails from "./albumPurchaseDetails";
 
@@ -48,6 +49,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return <LookupAlbum navigate={navigate} logout={logout} />;
     case pages.export:
       return <ExportCatalogue logout={logout} />;
+    case pages.genreStatisticsReport:
+      return <GenreStatusReport logout={logout} />;
     case pages.jobStatusReport:
       return <JobStatusReport logout={logout} />;
     case pages.albumPurchaseDetails:
