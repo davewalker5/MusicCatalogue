@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MusicCatalogue.Entities.Reporting;
 
 namespace MusicCatalogue.Entities.Interfaces
 {
@@ -15,5 +16,6 @@ namespace MusicCatalogue.Entities.Interfaces
         IExporter XlsxExporter { get; }
         IStatisticsManager Statistics { get; }
         IJobStatusManager JobStatuses { get; }
+        IWishListBasedReport<GenreStatistics> GenreStatistics { get; }
     }
 }
