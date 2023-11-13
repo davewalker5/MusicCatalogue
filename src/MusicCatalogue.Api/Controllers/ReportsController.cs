@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Reporting;
 using System.Web;
 
 namespace MusicCatalogue.Api.Controllers
@@ -29,7 +31,7 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("jobs/{start}/{end}")]
-        public async Task<ActionResult<List<JobStatus>>> GetJobsAsync(string start, string end)
+        public async Task<ActionResult<List<JobStatus>>> GetJobsReportAsync(string start, string end)
         {
             // Decode the start and end date and convert them to dates
             DateTime startDate = DateTime.ParseExact(HttpUtility.UrlDecode(start), DateTimeFormat, null);
@@ -50,6 +52,27 @@ namespace MusicCatalogue.Api.Controllers
 
             // Convert to a list and return the results
             return results;
+        }
+
+        /// <summary>
+        /// Generate the genre statistics report
+        /// </summary>
+        /// <param name="wishlist"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("genres/{wishlist}")]
+        public async Task<ActionResult<List<GenreStatistics>>> GetGenresReportAsync(bool wishlist)
+        {
+            // Get the report content
+            var results = await _factory.GenreStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
+
+            if (!results.Any())
+            {
+                return NoContent();
+            }
+
+            // Convert to a list and return the results
+            return results.ToList();
         }
     }
 }
