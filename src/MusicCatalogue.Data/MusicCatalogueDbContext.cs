@@ -53,9 +53,6 @@ namespace MusicCatalogue.Data
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
-                entity.Ignore(e => e.AlbumCount);
-                entity.Ignore(e => e.TrackCount);
-                entity.Ignore(e => e.TotalAlbumSpend);
             });
 
             modelBuilder.Entity<Album>(entity =>

@@ -49,9 +49,6 @@ namespace MusicCatalogue.Api.Controllers
                 return NoContent();
             }
 
-            // Populate the artist statistics
-            await _factory.Statistics.PopulateArtistStatistics(artists, wishlist);
-
             return artists;
         }
 
