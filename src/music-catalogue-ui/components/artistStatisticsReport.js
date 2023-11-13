@@ -2,19 +2,19 @@ import React, { useCallback, useState } from "react";
 import styles from "./reports.module.css";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
-import { apiGenreStatisticsReport } from "@/helpers/apiReports";
-import GenreStatisticsRow from "./genreStatisticsRow";
+import { apiArtistStatisticsReport } from "@/helpers/apiReports";
+import ArtistStatisticsRow from "./artistStatisticsRow";
 
 /**
- * Component to display the genre statistics report page and its results
+ * Component to display the artist statistics report page and its results
  * @param {*} logout
  * @returns
  */
-const GenreStatisticsReport = ({ logout }) => {
+const ArtistStatisticsReport = ({ logout }) => {
   const [catalogue, setCatalogue] = useState(0);
   const [records, setRecords] = useState(null);
 
-  // Callback to request the genre statistics report from the API
+  // Callback to request the artist statistics report from the API
   const getReportCallback = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
@@ -24,7 +24,7 @@ const GenreStatisticsReport = ({ logout }) => {
       const forWishList = catalogue.value == "wishlist";
 
       // Fetch the report
-      const fetchedRecords = await apiGenreStatisticsReport(
+      const fetchedRecords = await apiArtistStatisticsReport(
         forWishList,
         logout
       );
@@ -42,7 +42,7 @@ const GenreStatisticsReport = ({ logout }) => {
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">Genre Statistics Report</h5>
+        <h5 className="themeFontColor text-center">Artist Statistics Report</h5>
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
@@ -72,8 +72,7 @@ const GenreStatisticsReport = ({ logout }) => {
       <table className="table table-hover">
         <thead>
           <tr>
-            <th>Genre</th>
-            <th>Artists</th>
+            <th>Name</th>
             <th>Albums</th>
             <th>Tracks</th>
             <th>Total Spend</th>
@@ -82,7 +81,7 @@ const GenreStatisticsReport = ({ logout }) => {
         {records != null && (
           <tbody>
             {records.map((r) => (
-              <GenreStatisticsRow key={r.id} record={r} />
+              <ArtistStatisticsRow key={r.id} record={r} />
             ))}
           </tbody>
         )}
@@ -91,4 +90,4 @@ const GenreStatisticsReport = ({ logout }) => {
   );
 };
 
-export default GenreStatisticsReport;
+export default ArtistStatisticsReport;

@@ -14,8 +14,8 @@ namespace MusicCatalogue.Entities.Interfaces
         IImporter Importer { get; }
         IExporter CsvExporter { get; }
         IExporter XlsxExporter { get; }
-        IStatisticsManager Statistics { get; }
         IJobStatusManager JobStatuses { get; }
         IWishListBasedReport<GenreStatistics> GenreStatistics { get; }
+        IWishListBasedReport<ArtistStatistics> ArtistStatistics { get; }
     }
 }

@@ -19,12 +19,15 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IImporter> _importer;
         private readonly Lazy<IExporter> _csvExporter;
         private readonly Lazy<IExporter> _xlsxExporter;
-        private readonly Lazy<IStatisticsManager> _statistics;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
+        private readonly Lazy<IWishListBasedReport<ArtistStatistics>> _artistStatistics;
 
         [ExcludeFromCodeCoverage]
         public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
+
+        [ExcludeFromCodeCoverage]
+        public IWishListBasedReport<ArtistStatistics> ArtistStatistics { get { return _artistStatistics.Value; } }
 
         public DbContext Context { get; private set; }
         public IArtistManager Artists { get { return _artists.Value; } }
@@ -42,7 +45,6 @@ namespace MusicCatalogue.Logic.Factory
 
         [ExcludeFromCodeCoverage]
         public IExporter XlsxExporter { get { return _xlsxExporter.Value; } }
-        public IStatisticsManager Statistics { get { return _statistics.Value; } }
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
@@ -56,8 +58,8 @@ namespace MusicCatalogue.Logic.Factory
             _importer = new Lazy<IImporter>(() => new CsvImporter(this));
             _csvExporter = new Lazy<IExporter>(() => new CsvExporter(this));
             _xlsxExporter = new Lazy<IExporter>(() => new XlsxExporter(this));
-            _statistics = new Lazy<IStatisticsManager>(() => new StatisticsManager(this));
             _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
+            _artistStatistics = new Lazy<IWishListBasedReport<ArtistStatistics>>(() => new WishListBasedReport<ArtistStatistics>(context));
         }
     }
 }

@@ -15,6 +15,7 @@ namespace MusicCatalogue.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<JobStatus> JobStatuses { get; set; }
         public virtual DbSet<GenreStatistics> GenreStatistics { get; set; }
+        public virtual DbSet<ArtistStatistics> ArtistStatistics { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
@@ -52,9 +53,6 @@ namespace MusicCatalogue.Data
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
-                entity.Ignore(e => e.AlbumCount);
-                entity.Ignore(e => e.TrackCount);
-                entity.Ignore(e => e.TotalAlbumSpend);
             });
 
             modelBuilder.Entity<Album>(entity =>

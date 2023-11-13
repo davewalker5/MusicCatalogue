@@ -227,9 +227,19 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 ### Reports
 
+#### Artists Statistics Report
+
+- To view a summary report by artist, jobs, click on the "Reports > Artist Statistics" menu bar item:
+
+<img src="diagrams/reports-artist-statistics.png" alt="Artist Statistics Report" width="600">
+
+- Use the drop down to select the catalogue to report on, either the main catalogue or the wish list
+- If no selection is made, the report is generated for the main catalogue
+- Click on the "Search" button to view the results
+
 #### Genre Statistics Report
 
-- To view a summary report by genre, jobs, click on the "Reports > Genre Statistics" menu bar item:
+- To view a summary report by genre, click on the "Reports > Genre Statistics" menu bar item:
 
 <img src="diagrams/reports-genre-statistics.png" alt="Genre Statistics Report" width="600">
 

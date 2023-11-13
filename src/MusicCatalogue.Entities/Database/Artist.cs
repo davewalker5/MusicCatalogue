@@ -12,12 +12,6 @@ namespace MusicCatalogue.Entities.Database
         [Required]
         public string Name { get; set; } = "";
 
-        public int? AlbumCount { get; set; }
-
-        public int? TrackCount { get; set; }
-
-        public decimal TotalAlbumSpend { get; set; }
-
 #pragma warning disable CS8618
         public ICollection<Album> Albums { get; set; }
 #pragma warning restore CS8618

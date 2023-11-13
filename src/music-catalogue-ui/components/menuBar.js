@@ -33,6 +33,13 @@ const MenuBar = ({ navigate, logout }) => {
           <div className={styles.dropdownContent}>
             <a
               onClick={() =>
+                navigate(pages.artistStatisticsReport, null, null, false)
+              }
+            >
+              Artist Statistics
+            </a>
+            <a
+              onClick={() =>
                 navigate(pages.genreStatisticsReport, null, null, false)
               }
             >

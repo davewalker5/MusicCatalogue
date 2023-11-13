@@ -66,4 +66,28 @@ const apiGenreStatisticsReport = async (wishlist, logout) => {
   return records;
 };
 
-export { apiJobStatusReport, apiGenreStatisticsReport };
+/**
+ * Call the API to retrieve the artist statistics report
+ * @param {*} wishlist
+ * @param {*} logout
+ * @returns
+ */
+const apiArtistStatisticsReport = async (wishlist, logout) => {
+  // Construct the route
+  const url = `${config.api.baseUrl}/reports/artists/${wishlist}`;
+
+  // Call the API to get content for the report
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const records = await apiReadResponseData(response, logout);
+  return records;
+};
+
+export {
+  apiJobStatusReport,
+  apiGenreStatisticsReport,
+  apiArtistStatisticsReport,
+};
