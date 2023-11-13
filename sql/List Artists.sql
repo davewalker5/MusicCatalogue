@@ -1,0 +1,3 @@
+SELECT ar.Name
+FROM ARTISTS ar
+ORDER BY ar.Name ASC;
