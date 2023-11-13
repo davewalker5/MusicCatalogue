@@ -200,7 +200,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 <img src="diagrams/album-search.png" alt="Album Search" width="600">
 
-- Enter the artist name and album title and select the target directory (wish list or main catalogue) then click on "Lookup" to search for the album
+- Enter the artist name and album title and select the catalogue to save the album to, either the main catalogue or the wish list
+- Click on "Lookup" to search for the album
 - If the album is found, the track list for the album is displayed
 - The album lookup facility uses the algorithm described under "Album Lookup", below
 - Consequently, searching for an album that's not currently in the catalogue will add it to the local database
@@ -226,13 +227,25 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 ### Reports
 
+#### Genre Statistics Report
+
+- To view a summary report by genre, jobs, click on the "Reports > Genre Statistics" menu bar item:
+
+<img src="diagrams/reports-genre-statistics.png" alt="Genre Statistics Report" width="600">
+
+- Use the drop down to select the catalogue to report on, either the main catalogue or the wish list
+- If no selection is made, the report is generated for the main catalogue
+- Click on the "Search" button to view the results
+
 #### Job Status Report
 
 - To view a report on the status of background export jobs, click on the "Reports > Job Status" menu bar item:
 
 <img src="diagrams/reports-job-status.png" alt="Job Status Report" width="600">
 
-- Use the date pickers to select the start and end dates for the report and click on the "Search" button to view the results
+- Use the date pickers to select the start and end dates for the report
+- If no dates are selected, all job status records will be returned
+- Click on the "Search" button to view the results
 - Records are included from 00:00 on the start date up to and including 23:59 on the end date
 
 [^ top](#musiccatalogue)
