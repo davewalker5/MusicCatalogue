@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
@@ -61,10 +60,31 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("genres/{wishlist}")]
-        public async Task<ActionResult<List<GenreStatistics>>> GetGenresReportAsync(bool wishlist)
+        public async Task<ActionResult<List<GenreStatistics>>> GetGenreStatisticsReportAsync(bool wishlist)
         {
             // Get the report content
             var results = await _factory.GenreStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
+
+            if (!results.Any())
+            {
+                return NoContent();
+            }
+
+            // Convert to a list and return the results
+            return results.ToList();
+        }
+
+        /// <summary>
+        /// Generate the artist statistics report
+        /// </summary>
+        /// <param name="wishlist"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("artists/{wishlist}")]
+        public async Task<ActionResult<List<ArtistStatistics>>> GetArtistStatisticsReportAsync(bool wishlist)
+        {
+            // Get the report content
+            var results = await _factory.ArtistStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
 
             if (!results.Any())
             {
