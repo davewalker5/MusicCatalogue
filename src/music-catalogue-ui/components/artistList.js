@@ -23,9 +23,6 @@ const ArtistList = ({ isWishList, navigate, logout }) => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Albums</th>
-            <th>Tracks</th>
-            <th>Total Spend</th>
           </tr>
         </thead>
         {artists != null && (
