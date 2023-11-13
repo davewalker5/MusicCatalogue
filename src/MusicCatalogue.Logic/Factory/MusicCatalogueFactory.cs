@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Reporting;
 using MusicCatalogue.Logic.Database;
 using MusicCatalogue.Logic.DataExchange;
+using MusicCatalogue.Logic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Logic.Factory
@@ -19,6 +21,10 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IExporter> _xlsxExporter;
         private readonly Lazy<IStatisticsManager> _statistics;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
+        private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
+
+        [ExcludeFromCodeCoverage]
+        public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
 
         public DbContext Context { get; private set; }
         public IArtistManager Artists { get { return _artists.Value; } }
@@ -51,6 +57,7 @@ namespace MusicCatalogue.Logic.Factory
             _csvExporter = new Lazy<IExporter>(() => new CsvExporter(this));
             _xlsxExporter = new Lazy<IExporter>(() => new XlsxExporter(this));
             _statistics = new Lazy<IStatisticsManager>(() => new StatisticsManager(this));
+            _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
         }
     }
 }

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import styles from "./jobStatusReport.module.css";
+import styles from "./reports.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { apiJobStatusReport } from "@/helpers/apiReports";
@@ -16,10 +16,21 @@ const JobStatusReport = ({ logout }) => {
   const [records, setRecords] = useState(null);
 
   // Callback to request the job status report from the API
-  const getReportCallback = useCallback(async () => {
-    const fetchedRecords = await apiJobStatusReport(startDate, endDate, logout);
-    setRecords(fetchedRecords);
-  }, [startDate, endDate, logout]);
+  const getReportCallback = useCallback(
+    async (e) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Fetch the report
+      const fetchedRecords = await apiJobStatusReport(
+        startDate,
+        endDate,
+        logout
+      );
+      setRecords(fetchedRecords);
+    },
+    [startDate, endDate, logout]
+  );
 
   return (
     <>
@@ -46,7 +57,7 @@ const JobStatusReport = ({ logout }) => {
               </div>
               <button
                 className="btn btn-primary"
-                onClick={() => getReportCallback()}
+                onClick={(e) => getReportCallback(e)}
               >
                 Search
               </button>

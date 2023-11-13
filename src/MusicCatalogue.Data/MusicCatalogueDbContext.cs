@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Reporting;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Data
@@ -13,6 +14,7 @@ namespace MusicCatalogue.Data
         public virtual DbSet<Retailer> Retailers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<JobStatus> JobStatuses { get; set; }
+        public virtual DbSet<GenreStatistics> GenreStatistics { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
