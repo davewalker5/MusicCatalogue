@@ -163,6 +163,9 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 <img src="diagrams/artist-list.png" alt="Artist List" width="600">
 
+- When first opened, the page shows artists with names beginning with "A"
+- Clicking on a letter in the alphabet at the top of the page filters the view to show artists with names beginning with that letter
+- Clicking on "All" shows all artists
 - As the mouse pointer is moved up and down the table, the current row is highlighted
 - Clicking on a row opens the album list for the artist shown in that row:
 
@@ -185,7 +188,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 - To view the wish list, click on the "Wish List" menu item
 - A page identical in layout to the "Artists" page is displayed, but with a title indicating that it is the wish list
-- The page operates in an identical manner to the "Artists" page and clicking on a row in the table navigates to the wish list for that artist:
+- The page operates in an identical manner to the "Artists" page, using the same alphabet filter
+- Clicking on a row in the table navigates to the wish list for that artist:
 
 <img src="diagrams/wish-list-album-list.png" alt="Wish List Album List" width="600">
 
