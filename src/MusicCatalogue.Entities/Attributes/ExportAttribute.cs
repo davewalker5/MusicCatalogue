@@ -1,5 +1,8 @@
-﻿namespace MusicCatalogue.Entities.Attributes
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace MusicCatalogue.Entities.Attributes
 {
+    [ExcludeFromCodeCoverage]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class ExportAttribute : Attribute
     {

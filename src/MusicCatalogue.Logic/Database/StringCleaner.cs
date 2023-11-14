@@ -5,6 +5,7 @@ namespace MusicCatalogue.Logic.Database
     public static class StringCleaner
     {
         private readonly static TextInfo _textInfo = new CultureInfo("en-GB", false).TextInfo;
+        private readonly static List<string> _removeLeading = new() { "A", "The" };
 
         /// <summary>
         /// Ensure a string is converted to a consistent case for storage in the database and
@@ -45,6 +46,32 @@ namespace MusicCatalogue.Logic.Database
             }
 
             return clean;
+        }
+
+        /// <summary>
+        /// Return a searchable name given an initial string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string? SearchableName(string? s)
+        {
+            var searchable = Clean(s);
+
+            // Check the string isn't null or empty
+            if (!string.IsNullOrEmpty(s))
+            {
+                // Iterate over the removable leading words
+                foreach (string word in _removeLeading)
+                {
+                    var prefix = $"{word} ";
+                    if (searchable!.StartsWith(word, StringComparison.OrdinalIgnoreCase))
+                    {
+                        searchable = searchable.Substring(prefix.Length);
+                    }
+                }
+            }
+
+            return searchable;
         }
     }
 }

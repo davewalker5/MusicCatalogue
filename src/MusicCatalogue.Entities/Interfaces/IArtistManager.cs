@@ -7,6 +7,7 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         Task<Artist> AddAsync(string name);
         Task<Artist> GetAsync(Expression<Func<Artist, bool>> predicate);
+        Task<List<Artist>> ListByNameAsync(string prefix);
         Task<List<Artist>> ListAsync(Expression<Func<Artist, bool>> predicate);
     }
 }
