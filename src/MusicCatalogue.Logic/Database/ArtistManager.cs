@@ -27,6 +27,16 @@ namespace MusicCatalogue.Logic.Database
         }
 
         /// <summary>
+        /// List artists with a name beginning with the specified prefix. Preferentially use the searchable
+        /// name, if available
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
+        public async Task<List<Artist>> ListByNameAsync(string prefix)
+            => await ListAsync(x => ((x.SearchableName != null) && x.SearchableName.StartsWith(prefix)) ||
+                                    ((x.SearchableName == null) && x.Name.StartsWith(prefix)));
+
+        /// <summary>
         /// Return all artists matching the specified criteria
         /// </summary>
         /// <param name="predicate"></param>
@@ -51,9 +61,12 @@ namespace MusicCatalogue.Logic.Database
 
             if (artist == null)
             {
+                // Get a serchable name
+                var searchableName = StringCleaner.SearchableName(clean) ?? "";
                 artist = new Artist
                 {
-                    Name = clean
+                    Name = clean,
+                    SearchableName = clean != searchableName ? searchableName : null,
                 };
                 await _context.Artists.AddAsync(artist);
                 await _context.SaveChangesAsync();

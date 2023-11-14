@@ -34,7 +34,7 @@ namespace MusicCatalogue.Api.Controllers
             }
             else
             {
-                artists = await _factory.Artists.ListAsync(x => x.Name.StartsWith(filter));
+                artists = await _factory.Artists.ListByNameAsync(filter);
             }    
 
             // The artist list includes the albums by that artist, so where an artist has any albums
