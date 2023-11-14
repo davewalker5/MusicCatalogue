@@ -35,6 +35,7 @@ const LookupAlbum = ({ navigate, logout }) => {
         storeInWishList,
         logout
       );
+
       if (album != null) {
         // The album only contains the artist ID, not the full artist details, but
         // they will now be stored locally, so fetch them
@@ -100,7 +101,7 @@ const LookupAlbum = ({ navigate, logout }) => {
             </div>
             <div className="d-grid gap-2 mt-3"></div>
             <div className={styles.lookupButton}>
-              <button className="btn btn-primary" onClick={() => lookup()}>
+              <button className="btn btn-primary" onClick={(e) => lookup(e)}>
                 Lookup
               </button>
             </div>

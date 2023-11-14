@@ -14,18 +14,26 @@ const Login = ({ login }) => {
   const [password, setPassword] = useState("");
 
   // Callback to attempt to login
-  const tryLogin = useCallback(async () => {
-    const token = await apiAuthenticate(username, password);
-    if (token != null) {
-      apiSetToken(token);
-      login(true);
-    }
-  }, [username, password, login]);
+  const tryLogin = useCallback(
+    async (e) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Attempt to authenticate using the service
+      const token = await apiAuthenticate(username, password);
+      if (token != null) {
+        // Successful, so store the token
+        apiSetToken(token);
+        login(true);
+      }
+    },
+    [username, password, login]
+  );
 
   return (
     <>
       <div className={styles.authFormContainer}>
-        <div className={styles.authForm}>
+        <form className={styles.authForm}>
           <div className={styles.authFormContent}>
             <h3 className={styles.authFormTitle}>Log In</h3>
             <div className="form-group mt-3">
@@ -52,12 +60,12 @@ const Login = ({ login }) => {
               />
             </div>
             <div className="d-grid gap-2 mt-3">
-              <button className="btn btn-primary" onClick={tryLogin}>
+              <button className="btn btn-primary" onClick={(e) => tryLogin(e)}>
                 Log In
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );
