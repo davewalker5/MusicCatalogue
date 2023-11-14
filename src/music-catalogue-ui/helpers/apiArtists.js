@@ -4,13 +4,14 @@ import { apiGetHeaders } from "./apiHeaders";
 
 /**
  * Fetch a list of all artists from the Music Catalogue REST API
+ * @param {*} filter
  * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const apiFetchAllArtists = async (isWishList, logout) => {
+const apiFetchArtists = async (filter, isWishList, logout) => {
   // Call the API to get a list of all artists
-  const url = `${config.api.baseUrl}/artists/${isWishList}`;
+  const url = `${config.api.baseUrl}/artists/${filter}/${isWishList}`;
   const response = await fetch(url, {
     method: "GET",
     headers: apiGetHeaders(),
@@ -39,4 +40,4 @@ const apiFetchArtistById = async (artistId, logout) => {
   return artist;
 };
 
-export { apiFetchAllArtists, apiFetchArtistById };
+export { apiFetchArtists, apiFetchArtistById };

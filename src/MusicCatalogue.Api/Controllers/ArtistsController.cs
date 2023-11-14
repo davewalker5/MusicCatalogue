@@ -23,11 +23,19 @@ namespace MusicCatalogue.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("{wishlist:bool}")]
-        public async Task<ActionResult<List<Artist>>> GetArtistsAsync(bool wishlist)
+        [Route("{filter}/{wishlist:bool}")]
+        public async Task<ActionResult<List<Artist>>> GetArtistsAsync(string filter, bool wishlist)
         {
-            // Get a list of all artists in the catalogue
-            List<Artist> artists = await _factory.Artists.ListAsync(x => true);
+            // Get a list of artists mathing the filtering criteria
+            List<Artist> artists;
+            if (filter == "*")
+            {
+                artists = await _factory.Artists.ListAsync(x => true);
+            }
+            else
+            {
+                artists = await _factory.Artists.ListAsync(x => x.Name.StartsWith(filter));
+            }    
 
             // The artist list includes the albums by that artist, so where an artist has any albums
             // filter them according to the wish list filter

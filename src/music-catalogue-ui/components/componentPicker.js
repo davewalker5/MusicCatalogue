@@ -22,6 +22,7 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.artists:
       return (
         <ArtistList
+          filter={"A"}
           isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}
