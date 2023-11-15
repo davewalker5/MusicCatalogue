@@ -70,7 +70,7 @@ namespace MusicCatalogue.Logic.DataExchange
                         {
                             ArtistName = artist.Name,
                             AlbumTitle = album.Title,
-                            Genre = album.Genre,
+                            Genre = album.Genre?.Name ?? "",
                             Released = album.Released,
                             CoverUrl = album.CoverUrl,
                             TrackNumber = track.Number,

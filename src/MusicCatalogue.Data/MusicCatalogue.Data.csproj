@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>MusicCatalogue.Data</PackageId>
-    <PackageVersion>1.13.0.0</PackageVersion>
+    <PackageVersion>1.14.0.0</PackageVersion>
     <Authors>Dave Walker</Authors>
     <Copyright>Copyright (c) Dave Walker 2023</Copyright>
     <Owners>Dave Walker</Owners>
@@ -17,8 +17,16 @@
     <PackageProjectUrl>https://github.com/davewalker5/MusicCatalogue</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ReleaseVersion>1.13.0.0</ReleaseVersion>
+    <ReleaseVersion>1.14.0.0</ReleaseVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Sql\GenreDataMigration.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Sql\GenreDataMigration.sql" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />

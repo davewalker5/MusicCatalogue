@@ -21,6 +21,7 @@ namespace MusicCatalogue.Tests
 
         private IMusicCatalogueFactory? _factory;
         private int _retailerId;
+        private int _genreId;
         private int _artistId;
         private int _albumId;
 
@@ -32,15 +33,16 @@ namespace MusicCatalogue.Tests
 
             // Add the test entities to the database
             _retailerId = Task.Run(() => _factory.Retailers.AddAsync(RetailerName)).Result.Id;
+            _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre)).Result.Id;
             _artistId = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result.Id;
-            _albumId = Task.Run(() => _factory.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl, false, null, null, null)).Result.Id;
+            _albumId = Task.Run(() => _factory.Albums.AddAsync(_artistId, _genreId, AlbumTitle, Released, CoverUrl, false, null, null, null)).Result.Id;
             Task.Run(() => _factory.Tracks.AddAsync(_albumId, TrackTitle, TrackNumber, TrackDuration)).Wait();
         }
 
         [TestMethod]
         public async Task AddDuplicateTest()
         {
-            await _factory!.Albums.AddAsync(_artistId, AlbumTitle, Released, Genre, CoverUrl, false, null, null, null);
+            await _factory!.Albums.AddAsync(_artistId, _genreId, AlbumTitle, Released, CoverUrl, false, null, null, null);
             var albums = await _factory!.Albums.ListAsync(x => true);
             Assert.AreEqual(1, albums.Count);
         }
@@ -54,7 +56,7 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(_artistId, album.ArtistId);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre);
+            Assert.AreEqual(Genre, album.Genre.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
             Assert.IsFalse(album.IsWishListItem);
             Assert.IsNull(album.Purchased);
@@ -65,25 +67,25 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task UpdateTest()
         {
-            var album = await _factory!.Albums.UpdateAsync(_albumId, _artistId, AlbumTitle, Released, Genre, CoverUrl, true, Purchased, Price, _retailerId);
+            var album = await _factory!.Albums.UpdateAsync(_albumId, _artistId, _genreId, AlbumTitle, Released, CoverUrl, true, Purchased, Price, _retailerId);
             Assert.IsNotNull(album);
             Assert.IsTrue(album.Id > 0);
             Assert.AreEqual(_artistId, album.ArtistId);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre);
+            Assert.AreEqual(Genre, album.Genre.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
             Assert.IsTrue(album.IsWishListItem);
             Assert.AreEqual(Purchased, album.Purchased);
             Assert.AreEqual(Price, album.Price);
             Assert.AreEqual(_retailerId, album.RetailerId);
-            Assert.AreEqual(RetailerName, album.Retailer.Name);
+            Assert.AreEqual(RetailerName, album.Retailer!.Name);
         }
 
         [TestMethod]
         public async Task UpdateMissingTest()
         {
-            var album = await _factory!.Albums.UpdateAsync(-1, _artistId, AlbumTitle, Released, Genre, CoverUrl, true, null, null, null);
+            var album = await _factory!.Albums.UpdateAsync(-1, _artistId, _genreId, AlbumTitle, Released, CoverUrl, true, null, null, null);
             Assert.IsNull(album);
         }
 

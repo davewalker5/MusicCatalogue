@@ -33,7 +33,8 @@ namespace MusicCatalogue.Tests
             // Add an artist, an album and one track
             var retailer = Task.Run(() => _factory.Retailers.AddAsync(RetailerName)).Result;
             var artist = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result;
-            var album = Task.Run(() => _factory.Albums.AddAsync(artist.Id, AlbumName, Released, Genre, CoverUrl, false, Purchased, Price, retailer.Id)).Result;
+            var genre = Task.Run(() => _factory.Genres.AddAsync(Genre)).Result;
+            var album = Task.Run(() => _factory.Albums.AddAsync(artist.Id, genre.Id, AlbumName, Released, CoverUrl, false, Purchased, Price, retailer.Id)).Result;
             Task.Run(() => _factory.Tracks.AddAsync(album.Id, TrackName, TrackNumber, Duration)).Wait();
         }
 
@@ -94,7 +95,7 @@ namespace MusicCatalogue.Tests
 
             Assert.AreEqual(1, albums.Count);
             Assert.AreEqual(AlbumName, albums[0].Title);
-            Assert.AreEqual(Genre, albums[0].Genre);
+            Assert.AreEqual(Genre, albums[0].Genre.Name);
             Assert.AreEqual(Released, albums[0].Released);
             Assert.AreEqual(CoverUrl, albums[0].CoverUrl);
 

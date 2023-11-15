@@ -77,15 +77,16 @@ namespace MusicCatalogue.Logic.Collection
         private async Task<Album> StoreAlbumLocally(string artistName, Album template, bool storeAlbumInWishlist)
         {
             // Save the artist details, first. As with all the database calls in this method, the
-            // logic to prevent duplication of artists is in the management class
+            // logic to prevent duplication of artistsand genres is in the management class
             var artist = await _factory.Artists.AddAsync(artistName);
+            var genre = await _factory.Genres.AddAsync(template.Genre.Name);
 
             // Save the album details
             var album = await _factory.Albums.AddAsync(
                 artist.Id,
+                genre.Id,
                 template.Title, 
                 template.Released,
-                template.Genre,
                 template.CoverUrl,
                 storeAlbumInWishlist,
                 template.Purchased,
@@ -184,7 +185,10 @@ namespace MusicCatalogue.Logic.Collection
             {
                 Title = GetPropertyValue(properties, ApiProperty.Title),
                 Released = releasedIsValid ? released : null,
-                Genre = GetPropertyValue(properties, ApiProperty.Genre),
+                Genre = new Genre
+                {
+                    Name = GetPropertyValue(properties, ApiProperty.Genre)
+                },
                 CoverUrl = GetPropertyValue(properties, ApiProperty.CoverImageUrl)
             };
         }

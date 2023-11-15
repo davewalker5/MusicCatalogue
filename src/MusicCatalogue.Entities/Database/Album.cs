@@ -13,12 +13,13 @@ namespace MusicCatalogue.Entities.Database
         [ForeignKey("Artist.Id")]
         public int ArtistId { get; set; }
 
+        [ForeignKey("Genre.Id")]
+        public int? GenreId { get; set; }
+
         [Required]
         public string Title { get; set; } = "";
 
         public int? Released { get; set; }
-
-        public string? Genre { get; set; } = "";
 
         public string? CoverUrl { get; set; } = "";
 
@@ -31,6 +32,8 @@ namespace MusicCatalogue.Entities.Database
         public int? RetailerId { get; set; }
 
 #pragma warning disable CS8618
+        public Genre Genre { get; set; }
+
         public Retailer? Retailer { get; set; }
 
         public ICollection<Track>? Tracks { get; set; }

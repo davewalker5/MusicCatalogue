@@ -6,6 +6,7 @@ namespace MusicCatalogue.Entities.Interfaces
     public interface IMusicCatalogueFactory
     {
         DbContext Context { get; }
+        IGenreManager Genres { get; }
         IAlbumManager Albums { get; }
         IArtistManager Artists { get; }
         ITrackManager Tracks { get; }

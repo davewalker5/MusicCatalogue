@@ -11,6 +11,7 @@ namespace MusicCatalogue.Logic.Factory
 {
     public class MusicCatalogueFactory : IMusicCatalogueFactory
     {
+        private readonly Lazy<IGenreManager> _genres;
         private readonly Lazy<IArtistManager> _artists;
         private readonly Lazy<IAlbumManager> _albums;
         private readonly Lazy<ITrackManager> _tracks;
@@ -23,33 +24,29 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
         private readonly Lazy<IWishListBasedReport<ArtistStatistics>> _artistStatistics;
 
-        [ExcludeFromCodeCoverage]
-        public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
-
-        [ExcludeFromCodeCoverage]
-        public IWishListBasedReport<ArtistStatistics> ArtistStatistics { get { return _artistStatistics.Value; } }
-
         public DbContext Context { get; private set; }
+        public IGenreManager Genres { get { return _genres.Value; } }
         public IArtistManager Artists { get { return _artists.Value; } }
         public IAlbumManager Albums { get { return _albums.Value; } }
         public ITrackManager Tracks { get { return _tracks.Value; } }
         public IRetailerManager Retailers { get { return _retailers.Value; } }
         public IJobStatusManager JobStatuses { get { return _jobStatuses.Value; } }
         public IUserManager Users { get { return _users.Value; } }
-
-        [ExcludeFromCodeCoverage]
         public IImporter Importer { get {  return _importer.Value; } }
-
-        [ExcludeFromCodeCoverage]
         public IExporter CsvExporter { get { return _csvExporter.Value; } }
+        public IExporter XlsxExporter { get { return _xlsxExporter.Value; } }
 
         [ExcludeFromCodeCoverage]
-        public IExporter XlsxExporter { get { return _xlsxExporter.Value; } }
+        public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
+
+        [ExcludeFromCodeCoverage]
+        public IWishListBasedReport<ArtistStatistics> ArtistStatistics { get { return _artistStatistics.Value; } }
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
             Context = context;
-            _artists = new Lazy<IArtistManager>(() => new ArtistManager(context));
+            _genres = new Lazy<IGenreManager>(() => new GenreManager(context));
+            _artists = new Lazy<IArtistManager>(() => new ArtistManager(this));
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(this));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(context));
             _retailers = new Lazy<IRetailerManager>(() => new RetailerManager(this));
