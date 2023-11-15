@@ -44,24 +44,30 @@ namespace MusicCatalogue.Logic.DataExchange
                         // Ignore the headers in the first line
                         if (count > 1)
                         {
-                            // Inflate the CSV record to a track and save the artist
+                            // Inflate the CSV record to a track and save the artist and genre
                             var track = FlattenedTrack.FromCsv(fields!);
                             var artist = await _factory.Artists.AddAsync(track.ArtistName);
+                            var genre = await _factory.Genres.AddAsync(track.Genre);
 
                             // Add the retailer
-                            var retailer = await _factory.Retailers.AddAsync(track.RetailerName);
+                            int? retailerId = null;
+                            if (!string.IsNullOrEmpty(track.RetailerName))
+                            {
+                                var retailer = await _factory.Retailers.AddAsync(track.RetailerName);
+                                retailerId = retailer.Id;
+                            }
 
                             // Add the album
                             var album = await _factory.Albums.AddAsync(
                                 artist.Id,
+                                genre.Id,
                                 track.AlbumTitle,
                                 track.Released,
-                                track.Genre,
                                 track.CoverUrl,
                                 track.IsWishlistItem,
                                 track.Purchased,
                                 track.Price,
-                                retailer.Id);
+                                retailerId);
 
                             // Add the track
                             await _factory.Tracks.AddAsync(album.Id, track.Title, track.TrackNumber, track.Duration);

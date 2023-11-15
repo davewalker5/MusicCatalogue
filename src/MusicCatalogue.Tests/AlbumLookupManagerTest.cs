@@ -2,7 +2,6 @@
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Logic.Api.TheAudioDB;
 using MusicCatalogue.Logic.Collection;
-using MusicCatalogue.Logic.Database;
 using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Tests.Mocks;
 
@@ -95,7 +94,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre);
+            Assert.AreEqual(Genre, album.Genre.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
             Assert.IsNotNull(album.Tracks);
@@ -118,7 +117,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre);
+            Assert.AreEqual(Genre, album.Genre.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
             Assert.IsNotNull(album.Tracks);
@@ -133,13 +132,14 @@ namespace MusicCatalogue.Tests
         public void ArtistAndAlbumInDbTest()
         {
             var artistId = Task.Run(() => _factory!.Artists.AddAsync(ArtistName)).Result.Id;
-            Task.Run(() => _factory!.Albums.AddAsync(artistId, AlbumTitle, Released, Genre, CoverUrl, false, null, null, null)).Wait();
+            var genreId = Task.Run(() => _factory!.Genres.AddAsync(Genre)).Result.Id;
+            Task.Run(() => _factory!.Albums.AddAsync(artistId, genreId, AlbumTitle, Released, CoverUrl, false, null, null, null)).Wait();
             var album = Task.Run(() => _manager!.LookupAlbum(ArtistName, AlbumTitle, false)).Result;
 
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre);
+            Assert.AreEqual(Genre, album.Genre.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
             Assert.IsNotNull(album.Tracks);

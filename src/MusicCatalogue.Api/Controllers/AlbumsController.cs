@@ -11,6 +11,8 @@ namespace MusicCatalogue.Api.Controllers
     [Route("[controller]")]
     public class AlbumsController : Controller
     {
+        private const string OtherGenre = "Other";
+
         private readonly IMusicCatalogueFactory _factory;
 
         public AlbumsController(IMusicCatalogueFactory factory)
@@ -77,13 +79,16 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Album>> UpdateAlbumAsync([FromBody] Album template)
         {
+            // Make sure the "other" Genre exists as a fallback for album updates where no genre is given
+            var otherGenre = _factory.Genres.AddAsync(OtherGenre);
+
             // Attempt the update
             var album = await _factory.Albums.UpdateAsync(
                 template.Id,
                 template.ArtistId,
+                template.GenreId ?? otherGenre.Id,
                 template.Title,
                 template.Released,
-                template.Genre,
                 template.CoverUrl,
                 template.IsWishListItem,
                 template.Purchased,

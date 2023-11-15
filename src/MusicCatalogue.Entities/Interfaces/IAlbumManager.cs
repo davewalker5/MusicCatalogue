@@ -7,9 +7,9 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         Task<Album> AddAsync(
             int artistId,
+            int genreId,
             string title,
             int? released,
-            string? genre,
             string? coverUrl,
             bool? isWishlistItem,
             DateTime? purchased,
@@ -19,9 +19,9 @@ namespace MusicCatalogue.Entities.Interfaces
         Task<Album?> UpdateAsync(
             int albumId,
             int artistId,
+            int genreId,
             string title,
             int? released,
-            string? genre,
             string? coverUrl,
             bool? isWishlistItem,
             DateTime? purchased,

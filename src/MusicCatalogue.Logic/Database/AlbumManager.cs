@@ -41,6 +41,7 @@ namespace MusicCatalogue.Logic.Database
             => await _context!.Albums
                               .Where(predicate)
                               .OrderBy(x => x.Title)
+                              .Include(x => x.Genre)
                               .Include(x => x.Retailer)
                               .Include(x => x.Tracks)
                               .ToListAsync();
@@ -49,9 +50,9 @@ namespace MusicCatalogue.Logic.Database
         /// Add an album, if it doesn't already exist
         /// </summary>
         /// <param name="artistId"></param>
+        /// <param name="genreId"></param>
         /// <param name="title"></param>
         /// <param name="released"></param>
-        /// <param name="genre"></param>
         /// <param name="coverUrl"></param>
         /// <param name="isWishlistItem"></param>
         /// <param name="purchased"></param>
@@ -60,9 +61,9 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<Album> AddAsync(
             int artistId,
+            int genreId,
             string title,
-            int? released, 
-            string? genre,
+            int? released,
             string? coverUrl,
             bool? isWishlistItem,
             DateTime? purchased,
@@ -77,9 +78,9 @@ namespace MusicCatalogue.Logic.Database
                 album = new Album
                 {
                     ArtistId = artistId,
+                    GenreId = genreId,
                     Title = clean,
                     Released = released,
-                    Genre = StringCleaner.RemoveInvalidCharacters(genre),
                     CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl),
                     IsWishListItem = isWishlistItem,
                     Purchased = purchased,
@@ -98,9 +99,9 @@ namespace MusicCatalogue.Logic.Database
         /// </summary>
         /// <param name="albumId"></param>
         /// <param name="artistId"></param>
+        /// <param name="genreId"></param>
         /// <param name="title"></param>
         /// <param name="released"></param>
-        /// <param name="genre"></param>
         /// <param name="coverUrl"></param>
         /// <param name="isWishlistItem"></param>
         /// <param name="purchased"></param>
@@ -110,9 +111,9 @@ namespace MusicCatalogue.Logic.Database
         public async Task<Album?> UpdateAsync(
             int albumId,
             int artistId,
+            int genreId,
             string title,
             int? released,
-            string? genre,
             string? coverUrl,
             bool? isWishlistItem,
             DateTime? purchased,
@@ -124,9 +125,9 @@ namespace MusicCatalogue.Logic.Database
             {
                 // Apply the changes
                 album.ArtistId = artistId;
+                album.GenreId = genreId;
                 album.Title = StringCleaner.Clean(title)!;
                 album.Released = released;
-                album.Genre = StringCleaner.RemoveInvalidCharacters(genre);
                 album.CoverUrl = StringCleaner.RemoveInvalidCharacters(coverUrl);
                 album.IsWishListItem = isWishlistItem;
                 album.Purchased = purchased;

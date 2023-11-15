@@ -8,6 +8,7 @@ namespace MusicCatalogue.Data
     [ExcludeFromCodeCoverage]
     public class MusicCatalogueDbContext : DbContext
     {
+        public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
@@ -47,6 +48,14 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
             });
 
+            modelBuilder.Entity<Genre>(entity =>
+            {
+                entity.ToTable("GENRES");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
+            });
+
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("ARTISTS");
@@ -62,9 +71,9 @@ namespace MusicCatalogue.Data
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.ArtistId).IsRequired().HasColumnName("ArtistId");
+                entity.Property(e => e.GenreId).HasColumnName("GenreId");
                 entity.Property(e => e.Title).IsRequired().HasColumnName("Title");
                 entity.Property(e => e.Released).HasColumnName("Released");
-                entity.Property(e => e.Genre).HasColumnName("Genre");
                 entity.Property(e => e.CoverUrl).HasColumnName("CoverUrl");
                 entity.Property(e => e.Purchased).HasColumnName("Purchased");
                 entity.Property(e => e.Price).HasColumnName("Price");

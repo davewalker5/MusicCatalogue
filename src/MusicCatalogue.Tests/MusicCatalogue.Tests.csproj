@@ -46,6 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicCatalogue.Data\MusicCatalogue.Data.csproj" />
     <ProjectReference Include="..\MusicCatalogue.Entities\MusicCatalogue.Entities.csproj" />
     <ProjectReference Include="..\MusicCatalogue.Logic\MusicCatalogue.Logic.csproj" />
   </ItemGroup>

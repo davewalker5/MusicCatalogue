@@ -3,13 +3,19 @@ using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Database;
 using System.Linq.Expressions;
+using MusicCatalogue.Logic.Factory;
 
 namespace MusicCatalogue.Logic.Database
 {
-    public class ArtistManager : DatabaseManagerBase, IArtistManager
+    public class ArtistManager : IArtistManager
     {
-        internal ArtistManager(MusicCatalogueDbContext context) : base(context)
+        private readonly MusicCatalogueFactory _factory;
+        private readonly MusicCatalogueDbContext? _context;
+
+        internal ArtistManager(MusicCatalogueFactory factory)
         {
+            _factory = factory;
+            _context = factory.Context as MusicCatalogueDbContext;
         }
 
         /// <summary>
@@ -42,12 +48,29 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="predicate"></param>
         /// <returns></returns>
         public async Task<List<Artist>> ListAsync(Expression<Func<Artist, bool>> predicate)
-            => await _context.Artists
-                             .Where(predicate)
-                             .OrderBy(x => x.Name)
-                             .Include(x => x.Albums)
-                             .ThenInclude(x => x.Retailer)
-                             .ToListAsync();
+        {
+            // Load artists, albums and genres
+            var artists = await _context!.Artists
+                                         .Where(predicate)
+                                         .OrderBy(x => x.Name)
+                                         .Include(x => x.Albums)
+                                         .ThenInclude(x => x.Genre)
+                                         .ToListAsync();
+
+            // ThenInclude doesn't work for this use case so load the retailers. Iterate over the artists
+            foreach (var artist in artists)
+            {
+                // Iterate over the albums for this artist
+                foreach (var album in artist.Albums)
+                {
+                    // Get the retailer
+                    album.Retailer = await _factory.Retailers.GetAsync(x => x.Id == album.RetailerId);
+                }
+            }
+
+            // Return the collection of artists
+            return artists;
+        }
 
         /// <summary>
         /// Add an artist, if they doesn't already exist
