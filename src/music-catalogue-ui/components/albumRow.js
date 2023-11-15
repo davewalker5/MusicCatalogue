@@ -37,7 +37,7 @@ const AlbumRow = ({
         {album.title}
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
-        {album.genre}
+        {album.genre["Name"]}
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
         {album.released}
