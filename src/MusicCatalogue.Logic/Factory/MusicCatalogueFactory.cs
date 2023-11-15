@@ -23,6 +23,7 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IJobStatusManager> _jobStatuses;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
         private readonly Lazy<IWishListBasedReport<ArtistStatistics>> _artistStatistics;
+        private readonly Lazy<IWishListBasedReport<MonthlySpend>> _monthlySpend;
 
         public DbContext Context { get; private set; }
         public IGenreManager Genres { get { return _genres.Value; } }
@@ -42,6 +43,9 @@ namespace MusicCatalogue.Logic.Factory
         [ExcludeFromCodeCoverage]
         public IWishListBasedReport<ArtistStatistics> ArtistStatistics { get { return _artistStatistics.Value; } }
 
+        [ExcludeFromCodeCoverage]
+        public IWishListBasedReport<MonthlySpend> MonthlySpend { get { return _monthlySpend.Value; } }
+
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
             Context = context;
@@ -57,6 +61,7 @@ namespace MusicCatalogue.Logic.Factory
             _xlsxExporter = new Lazy<IExporter>(() => new XlsxExporter(this));
             _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
             _artistStatistics = new Lazy<IWishListBasedReport<ArtistStatistics>>(() => new WishListBasedReport<ArtistStatistics>(context));
+            _monthlySpend = new Lazy<IWishListBasedReport<MonthlySpend>>(() => new WishListBasedReport<MonthlySpend>(context));
         }
     }
 }
