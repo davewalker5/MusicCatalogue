@@ -50,6 +50,13 @@ const MenuBar = ({ navigate, logout }) => {
             >
               Job Status
             </a>
+            <a
+              onClick={() =>
+                navigate(pages.monthlySpendReport, null, null, false)
+              }
+            >
+              Monthly Spend
+            </a>
           </div>
         </div>
         <a onClick={() => navigate(pages.export, null, null, false)}>Export</a>

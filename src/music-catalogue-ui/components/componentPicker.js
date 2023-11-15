@@ -8,6 +8,7 @@ import GenreStatusReport from "./genreStatisticsReport";
 import JobStatusReport from "./jobStatusReport";
 import AlbumPurchaseDetails from "./albumPurchaseDetails";
 import ArtistStatisticsReport from "./artistStatisticsReport";
+import MonthlySpendReport from "./monthlySpendReport";
 
 /**
  * Component using the current page name to render the components required
@@ -57,6 +58,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return <GenreStatusReport logout={logout} />;
     case pages.jobStatusReport:
       return <JobStatusReport logout={logout} />;
+    case pages.monthlySpendReport:
+      return <MonthlySpendReport logout={logout} />;
     case pages.albumPurchaseDetails:
       return (
         <AlbumPurchaseDetails

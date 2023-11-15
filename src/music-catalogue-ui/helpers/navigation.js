@@ -9,6 +9,7 @@ const pages = {
   artistStatisticsReport: "ArtistStatisticsReport",
   genreStatisticsReport: "GenreStatisticsReport",
   jobStatusReport: "JobStatusReport",
+  monthlySpendReport: "MonthlySpendReport",
   albumPurchaseDetails: "AlbumPurchaseDetails",
 };
 

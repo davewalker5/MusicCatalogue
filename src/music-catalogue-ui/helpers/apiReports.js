@@ -86,8 +86,28 @@ const apiArtistStatisticsReport = async (wishlist, logout) => {
   return records;
 };
 
+/**
+ * Call the API to retrieve the monthly spending report
+ * @param {*} logout
+ * @returns
+ */
+const apiMonthlySpendReport = async (logout) => {
+  // Construct the route
+  const url = `${config.api.baseUrl}/reports/spend/false`;
+
+  // Call the API to get content for the report
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const records = await apiReadResponseData(response, logout);
+  return records;
+};
+
 export {
   apiJobStatusReport,
   apiGenreStatisticsReport,
   apiArtistStatisticsReport,
+  apiMonthlySpendReport,
 };
