@@ -28,6 +28,10 @@ const AlbumRow = ({
   const retailer = album["retailer"];
   const retailerName = retailer != null ? retailer["name"] : "";
 
+  // Get the genre
+  const genre = album["genre"];
+  const genreName = genre != null ? genre["name"] : "";
+
   return (
     <tr>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
@@ -37,7 +41,7 @@ const AlbumRow = ({
         {album.title}
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
-        {album.genre["Name"]}
+        {genreName}
       </td>
       <td onClick={() => navigate(pages.tracks, artist, album, isWishList)}>
         {album.released}

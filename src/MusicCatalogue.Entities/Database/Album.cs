@@ -32,7 +32,7 @@ namespace MusicCatalogue.Entities.Database
         public int? RetailerId { get; set; }
 
 #pragma warning disable CS8618
-        public Genre Genre { get; set; }
+        public Genre? Genre { get; set; }
 
         public Retailer? Retailer { get; set; }
 

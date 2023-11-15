@@ -85,8 +85,8 @@ namespace MusicCatalogue.Api.Controllers
             // Attempt the update
             var album = await _factory.Albums.UpdateAsync(
                 template.Id,
-                template.GenreId ?? otherGenre.Id,
                 template.ArtistId,
+                template.GenreId ?? otherGenre.Id,
                 template.Title,
                 template.Released,
                 template.CoverUrl,
