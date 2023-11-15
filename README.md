@@ -262,6 +262,12 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - Click on the "Search" button to view the results
 - Records are included from 00:00 on the start date up to and including 23:59 on the end date
 
+#### Monthly Spend Report
+
+- To view a report on spending by year and month, click on the "Reports > Monthly Spend" menu bar item:
+
+<img src="diagrams/reports-monthly-spend.png" alt="Monthly Spend Report" width="600">
+
 [^ top](#musiccatalogue)
 
 ## Web Service
