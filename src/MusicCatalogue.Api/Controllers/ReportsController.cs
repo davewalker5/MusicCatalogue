@@ -94,5 +94,27 @@ namespace MusicCatalogue.Api.Controllers
             // Convert to a list and return the results
             return results.ToList();
         }
+
+        /// <summary>
+        /// Generate the monthly spending report
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("spend/{wishlist}")]
+        public async Task<ActionResult<List<MonthlySpend>>> GetMonthlySpendingReportAsync(bool wishlist)
+        {
+            // Get the report content
+            var results = await _factory.MonthlySpend.GenerateReportAsync(wishlist, 1, int.MaxValue);
+
+            if (!results.Any())
+            {
+                return NoContent();
+            }
+
+            // Convert to a list and return the results
+            return results.ToList();
+        }
     }
 }
