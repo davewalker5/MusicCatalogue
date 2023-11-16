@@ -47,7 +47,11 @@ namespace MusicCatalogue.Logic.Database
                 var artistIds = albums.Select(x => x.ArtistId).ToList();
                 artists = await Factory.Artists
                                         .ListAsync(x => artistIds.Contains(x.Id) &&
-                                                        ((prefix == null) || (x.Name.StartsWith(prefix))),
+                                                        (
+                                                            (prefix == null) ||
+                                                            ((x.SearchableName != null) && x.SearchableName.StartsWith(prefix)) ||
+                                                            ((x.SearchableName == null) && x.Name.StartsWith(prefix))
+                                                        ),
                                                    false);
 
                 // Now map the albums onto their associated artists
