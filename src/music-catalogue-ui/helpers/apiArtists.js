@@ -1,20 +1,29 @@
 import config from "../config.json";
 import { apiReadResponseData } from "./apiUtils";
-import { apiGetHeaders } from "./apiHeaders";
+import { apiGetHeaders, apiGetPostHeaders } from "./apiHeaders";
 
 /**
- * Fetch a list of all artists from the Music Catalogue REST API
+ * Fetch a list of artists from the Music Catalogue REST API
  * @param {*} filter
  * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
 const apiFetchArtists = async (filter, isWishList, logout) => {
+  // Construct the filtering criteria as the request body and convert to JSON
+  const criteria = {
+    namePrefix: filter,
+    wishList: isWishList,
+    genreId: null,
+  };
+  const body = JSON.stringify(criteria);
+
   // Call the API to get a list of all artists
-  const url = `${config.api.baseUrl}/artists/${filter}/${isWishList}`;
+  const url = `${config.api.baseUrl}/artists/search/`;
   const response = await fetch(url, {
-    method: "GET",
-    headers: apiGetHeaders(),
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
   });
 
   const artists = await apiReadResponseData(response, logout);
