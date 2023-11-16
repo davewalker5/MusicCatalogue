@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Search;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -19,40 +20,20 @@ namespace MusicCatalogue.Api.Controllers
         }
 
         /// <summary>
-        /// Return a list of all the artists in the catalogue
+        /// Return a list of all the artists in the catalogue matching the filter criteria in the request body
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        [Route("{filter}/{wishlist:bool}")]
-        public async Task<ActionResult<List<Artist>>> GetArtistsAsync(string filter, bool wishlist)
+        [HttpPost]
+        [Route("search")]
+        public async Task<ActionResult<List<Artist>>> GetArtistsAsync([FromBody] ArtistSearchCriteria criteria)
         {
-            // Get a list of artists mathing the filtering criteria
-            List<Artist> artists;
-            if (filter == "*")
-            {
-                artists = await _factory.Artists.ListAsync(x => true);
-            }
-            else
-            {
-                artists = await _factory.Artists.ListByNameAsync(filter);
-            }    
+            // Ideally, this method would use the GET verb but as more filtering criteria are added that leads
+            // to an increasing number of query string parameters and a very messy URL. So the filter criteria
+            // are POSTed in the request body, instead, and bound into a strongly typed criteria object
 
-            // The artist list includes the albums by that artist, so where an artist has any albums
-            // filter them according to the wish list filter
-            foreach (var artist in artists)
-            {
-                if ((artist.Albums != null) && artist.Albums.Any())
-                {
-                    var filtered = artist.Albums.Where(x => (x.IsWishListItem ?? false) == wishlist).ToList();
-                    artist.Albums = filtered;
-                }
-            }
+            var artists = await _factory.Search.ArtistSearchAsync(criteria);
 
-            // Remove any artists with no albums
-            artists.RemoveAll(x => (x.Albums == null) || ((x.Albums != null) && !x.Albums.Any()));
-
-            // If there are no artists, return a no content response
-            if (!artists.Any())
+            if (artists == null)
             {
                 return NoContent();
             }
@@ -69,7 +50,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Artist>> GetArtistByIdAsync(int id)
         {
-            var artist = await _factory.Artists.GetAsync(x => x.Id == id);
+            var artist = await _factory.Artists.GetAsync(x => x.Id == id, true);
 
             if (artist == null)
             {

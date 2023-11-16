@@ -1,18 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database
 {
-    public class JobStatusManager : IJobStatusManager
+    public class JobStatusManager : DatabaseManagerBase, IJobStatusManager
     {
-        private readonly MusicCatalogueDbContext _context;
-
-        internal JobStatusManager(MusicCatalogueDbContext context)
+        internal JobStatusManager(IMusicCatalogueFactory factory) : base(factory)
         {
-            _context = context;
         }
 
         /// <summary>
@@ -40,14 +36,14 @@ namespace MusicCatalogue.Logic.Database
             IAsyncEnumerable<JobStatus> results;
             if (predicate == null)
             {
-                results = _context.JobStatuses
-                                  .Skip((pageNumber - 1) * pageSize)
-                                  .Take(pageSize)
-                                  .AsAsyncEnumerable();
+                results = Context.JobStatuses
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .AsAsyncEnumerable();
             }
             else
             {
-                results = _context.JobStatuses.Where(predicate).AsAsyncEnumerable();
+                results = Context.JobStatuses.Where(predicate).AsAsyncEnumerable();
             }
 
             return results;
@@ -67,8 +63,8 @@ namespace MusicCatalogue.Logic.Database
                 Start = DateTime.Now
             };
 
-            await _context.JobStatuses.AddAsync(status);
-            await _context.SaveChangesAsync();
+            await Context.JobStatuses.AddAsync(status);
+            await Context.SaveChangesAsync();
 
             return status;
         }
@@ -79,14 +75,14 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="id"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        public async Task<JobStatus> UpdateAsync(long id, string error)
+        public async Task<JobStatus?> UpdateAsync(long id, string error)
         {
             JobStatus status = await GetAsync(x => x.Id == id);
             if (status != null)
             {
                 status.End = DateTime.Now;
                 status.Error = error;
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
 
             return status;

@@ -1,31 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Data;
-using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Interfaces;
 using System.Linq.Expressions;
-using MusicCatalogue.Logic.Factory;
 
 namespace MusicCatalogue.Logic.Database
 {
-    public class ArtistManager : IArtistManager
+    public class ArtistManager : DatabaseManagerBase, IArtistManager
     {
-        private readonly MusicCatalogueFactory _factory;
-        private readonly MusicCatalogueDbContext? _context;
-
-        internal ArtistManager(MusicCatalogueFactory factory)
+        internal ArtistManager(IMusicCatalogueFactory factory) : base(factory)
         {
-            _factory = factory;
-            _context = factory.Context as MusicCatalogueDbContext;
         }
 
         /// <summary>
         /// Return the first artist matching the specified criteria
         /// </summary>
         /// <param name="predicate"></param>
+        /// <param name="loadAlbums"></param>
         /// <returns></returns>
-        public async Task<Artist> GetAsync(Expression<Func<Artist, bool>> predicate)
+        public async Task<Artist> GetAsync(Expression<Func<Artist, bool>> predicate, bool loadAlbums)
         {
-            List<Artist> artists = await ListAsync(predicate);
+            List<Artist> artists = await ListAsync(predicate, loadAlbums);
 
 #pragma warning disable CS8603
             return artists.FirstOrDefault();
@@ -33,39 +27,23 @@ namespace MusicCatalogue.Logic.Database
         }
 
         /// <summary>
-        /// List artists with a name beginning with the specified prefix. Preferentially use the searchable
-        /// name, if available
-        /// </summary>
-        /// <param name="prefix"></param>
-        /// <returns></returns>
-        public async Task<List<Artist>> ListByNameAsync(string prefix)
-            => await ListAsync(x => ((x.SearchableName != null) && x.SearchableName.StartsWith(prefix)) ||
-                                    ((x.SearchableName == null) && x.Name.StartsWith(prefix)));
-
-        /// <summary>
         /// Return all artists matching the specified criteria
         /// </summary>
         /// <param name="predicate"></param>
+        /// <param name="loadAlbums"></param>
         /// <returns></returns>
-        public async Task<List<Artist>> ListAsync(Expression<Func<Artist, bool>> predicate)
+        public async Task<List<Artist>> ListAsync(Expression<Func<Artist, bool>> predicate, bool loadAlbums)
         {
             // Load artists, albums and genres
-            var artists = await _context!.Artists
-                                         .Where(predicate)
-                                         .OrderBy(x => x.Name)
-                                         .Include(x => x.Albums)
-                                         .ThenInclude(x => x.Genre)
-                                         .ToListAsync();
+            var artists = await Context.Artists
+                                       .Where(predicate)
+                                       .OrderBy(x => x.Name)
+                                       .ToListAsync();
 
-            // ThenInclude doesn't work for this use case so load the retailers. Iterate over the artists
+            // Load the albums for each artist
             foreach (var artist in artists)
             {
-                // Iterate over the albums for this artist
-                foreach (var album in artist.Albums)
-                {
-                    // Get the retailer
-                    album.Retailer = await _factory.Retailers.GetAsync(x => x.Id == album.RetailerId);
-                }
+                artist.Albums = await Factory.Albums.ListAsync(x => x.ArtistId == artist.Id);
             }
 
             // Return the collection of artists
@@ -80,7 +58,7 @@ namespace MusicCatalogue.Logic.Database
         public async Task<Artist> AddAsync(string name)
         {
             var clean = StringCleaner.Clean(name)!;
-            var artist = await GetAsync(a => a.Name == clean);
+            var artist = await GetAsync(a => a.Name == clean, false);
 
             if (artist == null)
             {
@@ -91,8 +69,8 @@ namespace MusicCatalogue.Logic.Database
                     Name = clean,
                     SearchableName = clean != searchableName ? searchableName : null,
                 };
-                await _context.Artists.AddAsync(artist);
-                await _context.SaveChangesAsync();
+                await Context.Artists.AddAsync(artist);
+                await Context.SaveChangesAsync();
             }
 
             return artist;

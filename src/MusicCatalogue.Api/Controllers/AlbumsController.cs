@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Search;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -46,23 +47,18 @@ namespace MusicCatalogue.Api.Controllers
         /// <param name="artistId"></param>
         /// <param name="wishlist"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("artist/{artistId}/{wishlist}")]
-        public async Task<ActionResult<IEnumerable<Album>>> GetAlbumsByArtistAsync(int artistId, bool wishlist)
+        [HttpPost]
+        [Route("search")]
+        public async Task<ActionResult<IEnumerable<Album>>> GetAlbumsAsync([FromBody] AlbumSearchCriteria criteria)
         {
-            List<Album> albums;
+            // Ideally, this method would use the GET verb but as more filtering criteria are added that leads
+            // to an increasing number of query string parameters and a very messy URL. So the filter criteria
+            // are POSTed in the request body, instead, and bound into a strongly typed criteria object
 
-            // Get the albums matching the specified criteria - the wish list flag is either null, false or true
-            if (wishlist)
-            {
-                albums = await _factory.Albums.ListAsync(x => (x.ArtistId == artistId) && (x.IsWishListItem == true));
-            }
-            else
-            {
-                albums = await _factory.Albums.ListAsync(x => (x.ArtistId == artistId) && (x.IsWishListItem != true));
-            }
+            // Retrieve a list of matching albums
+            var albums = await _factory.Search.AlbumSearchAsync(criteria);
 
-            if (!albums.Any())
+            if (albums == null)
             {
                 return NoContent();
             }

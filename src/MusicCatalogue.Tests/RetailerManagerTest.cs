@@ -13,7 +13,6 @@ namespace MusicCatalogue.Tests
         private const int Released = 1957;
         private const string Genre = "Jazz";
         private const string CoverUrl = "https://some.host/blue-train.jpg";
-        private const string TrackTitle = "Blue Train";
         private const string Name = "Dig Vinyl";
         private const string UpdatedName = "Truck Store";
 

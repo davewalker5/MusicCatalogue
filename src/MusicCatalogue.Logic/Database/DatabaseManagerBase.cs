@@ -1,14 +1,16 @@
 ﻿using MusicCatalogue.Data;
+using MusicCatalogue.Entities.Interfaces;
 
 namespace MusicCatalogue.Logic.Database
 {
     public abstract class DatabaseManagerBase
     {
-        protected readonly MusicCatalogueDbContext _context;
+        protected IMusicCatalogueFactory Factory { get; private set; }
+        protected MusicCatalogueDbContext Context { get { return (Factory.Context as MusicCatalogueDbContext)!; } }
 
-        protected DatabaseManagerBase(MusicCatalogueDbContext context)
+        protected DatabaseManagerBase(IMusicCatalogueFactory factory)
         {
-            _context = context;
+            Factory = factory;
         }
     }
 }

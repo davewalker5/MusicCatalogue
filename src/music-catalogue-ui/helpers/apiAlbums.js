@@ -33,11 +33,20 @@ const apiAlbumUpdate = async (album, logout) => {
  * @returns
  */
 const apiFetchAlbumsByArtist = async (artistId, isWishList, logout) => {
+  // Construct the filtering criteria as the request body and convert to JSON
+  const criteria = {
+    artistId: artistId,
+    wishList: isWishList,
+    genreId: null,
+  };
+  const body = JSON.stringify(criteria);
+
   // Call the API to get a list of all albums by the specified artist
-  const url = `${config.api.baseUrl}/albums/artist/${artistId}/${isWishList}`;
+  const url = `${config.api.baseUrl}/albums/search/`;
   const response = await fetch(url, {
-    method: "GET",
-    headers: apiGetHeaders(),
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
   });
 
   const albums = await apiReadResponseData(response, logout);

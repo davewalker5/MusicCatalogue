@@ -7,7 +7,7 @@ namespace MusicCatalogue.Tests
     [TestClass]
     public class ArtistManagerTest
     {
-        private const string Name = "Diana Krall";
+        private const string Name = "The Beatles";
 
         private IArtistManager? _manager = null;
 
@@ -16,22 +16,20 @@ namespace MusicCatalogue.Tests
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
             _manager = new MusicCatalogueFactory(context).Artists;
+            Task.Run(() => _manager!.AddAsync(Name)).Wait();
         }
 
         [TestMethod]
         public async Task AddDuplicateTest()
         {
-            await _manager!.AddAsync(Name);
-            await _manager!.AddAsync(Name);
-            var artists = await _manager.ListAsync(x => true);
+            var artists = await _manager!.ListAsync(x => true, false);
             Assert.AreEqual(1, artists.Count);
         }
 
         [TestMethod]
         public async Task AddAndGetTest()
         {
-            await _manager!.AddAsync(Name);
-            var artist = await _manager!.GetAsync(a => a.Name == Name);
+            var artist = await _manager!.GetAsync(a => a.Name == Name, false);
             Assert.IsNotNull(artist);
             Assert.IsTrue(artist.Id > 0);
             Assert.AreEqual(Name, artist.Name);
@@ -40,16 +38,14 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task GetMissingTest()
         {
-            await _manager!.AddAsync(Name);
-            var artist = await _manager!.GetAsync(a => a.Name == "Missing");
+            var artist = await _manager!.GetAsync(a => a.Name == "Missing", false);
             Assert.IsNull(artist);
         }
 
         [TestMethod]
         public async Task ListAllTest()
         {
-            await _manager!.AddAsync(Name);
-            var artists = await _manager!.ListAsync(x => true);
+            var artists = await _manager!.ListAsync(x => true, false);
             Assert.AreEqual(1, artists!.Count);
             Assert.AreEqual(Name, artists.First().Name);
         }
@@ -57,25 +53,14 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task ListMissingTest()
         {
-            await _manager!.AddAsync(Name);
-            var artists = await _manager!.ListAsync(e => e.Name == "Missing");
+            var artists = await _manager!.ListAsync(e => e.Name == "Missing", false);
             Assert.AreEqual(0, artists!.Count);
-        }
-
-        [TestMethod]
-        public async Task ListByNameTest()
-        {
-            await _manager!.AddAsync(Name);
-            var artists = await _manager!.ListByNameAsync(Name[..1]);
-            Assert.AreEqual(1, artists!.Count);
-            Assert.AreEqual(Name, artists[0].Name);
         }
 
         [TestMethod]
         public async Task ListBySearchableNameTest()
         {
-            await _manager!.AddAsync("The Beatles");
-            var artists = await _manager!.ListByNameAsync("B");
+            var artists = await _manager!.ListAsync(x => (x.SearchableName ?? x.Name).StartsWith("B"), false);
             Assert.AreEqual(1, artists!.Count);
             Assert.AreEqual("The Beatles", artists[0].Name);
 

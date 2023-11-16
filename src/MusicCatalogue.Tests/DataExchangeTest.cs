@@ -76,7 +76,7 @@ namespace MusicCatalogue.Tests
             var factory = new MusicCatalogueFactory(context);
 
             // Confirm the data's not there
-            var artists = Task.Run(() => factory.Artists.ListAsync(x => true)).Result;
+            var artists = Task.Run(() => factory.Artists.ListAsync(x => true, false)).Result;
             var albums = Task.Run(() => factory.Albums.ListAsync(x => true)).Result;
             var tracks = Task.Run(() => factory.Tracks.ListAsync(x => true)).Result;
 
@@ -86,7 +86,7 @@ namespace MusicCatalogue.Tests
 
             // Import the data
             Task.Run(() => factory.Importer.Import(filepath)).Wait();
-            artists = Task.Run(() => factory.Artists.ListAsync(x => true)).Result;
+            artists = Task.Run(() => factory.Artists.ListAsync(x => true, false)).Result;
             albums = Task.Run(() => factory.Albums.ListAsync(x => true)).Result;
             tracks = Task.Run(() => factory.Tracks.ListAsync(x => true)).Result;
 
@@ -95,7 +95,7 @@ namespace MusicCatalogue.Tests
 
             Assert.AreEqual(1, albums.Count);
             Assert.AreEqual(AlbumName, albums[0].Title);
-            Assert.AreEqual(Genre, albums[0].Genre.Name);
+            Assert.AreEqual(Genre, albums[0].Genre?.Name);
             Assert.AreEqual(Released, albums[0].Released);
             Assert.AreEqual(CoverUrl, albums[0].CoverUrl);
 

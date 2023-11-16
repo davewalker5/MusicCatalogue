@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using System.Linq.Expressions;
@@ -11,7 +10,7 @@ namespace MusicCatalogue.Logic.Database
     {
         private readonly Lazy<PasswordHasher<string>> _hasher;
 
-        internal UserManager(MusicCatalogueDbContext context) : base(context)
+        internal UserManager(IMusicCatalogueFactory factory) : base(factory)
         {
             _hasher = new Lazy<PasswordHasher<string>>(() => new PasswordHasher<string>());
         }
@@ -31,7 +30,7 @@ namespace MusicCatalogue.Logic.Database
         /// Get all users matching the specified criteria
         /// </summary>
         public Task<List<User>> ListAsync(Expression<Func<User, bool>> predicate)
-            => _context.Users.Where(predicate).ToListAsync();
+            => Context.Users.Where(predicate).ToListAsync();
 
         /// <summary>
         /// Add a user, if they don't already exist
@@ -51,8 +50,8 @@ namespace MusicCatalogue.Logic.Database
                     Password = _hasher.Value.HashPassword(userName, password)
                 };
 
-                await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
+                await Context.Users.AddAsync(user);
+                await Context.SaveChangesAsync();
             }
 
             return user;
@@ -78,7 +77,7 @@ namespace MusicCatalogue.Logic.Database
                 {
                     // Verified, but need to rehash the password
                     user.Password = _hasher.Value.HashPassword(userName, password);
-                    await _context.SaveChangesAsync();
+                    await Context.SaveChangesAsync();
                 }
             }
 
@@ -96,7 +95,7 @@ namespace MusicCatalogue.Logic.Database
             if (user != null)
             {
                 user.Password = _hasher.Value.HashPassword(userName, password);
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
         }
 
@@ -109,8 +108,8 @@ namespace MusicCatalogue.Logic.Database
             var user = await GetAsync(x => x.UserName == userName);
             if (user != null)
             {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                Context.Users.Remove(user);
+                await Context.SaveChangesAsync();
             }
         }
     }

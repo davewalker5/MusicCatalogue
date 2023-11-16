@@ -1,4 +1,7 @@
-﻿using MusicCatalogue.Data;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using MusicCatalogue.Data;
+using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Logic.Factory;
 using System;
@@ -12,59 +15,107 @@ namespace MusicCatalogue.Tests
     [TestClass]
     public class GenreManagerTest
     {
-        private const string Name = "Jazz";
+        private const string ArtistName = "John Coltrane";
+        private const string AlbumTitle = "Blue Train";
+        private const int Released = 1957;
+        private const string Genre = "Jazz";
+        private const string CoverUrl = "https://some.host/blue-train.jpg";
+        private const string UpdatedGenre = "Swing";
 
-        private IGenreManager? _manager = null;
+        private IMusicCatalogueFactory? _factory;
+        private int _genreId;
 
         [TestInitialize]
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _manager = new MusicCatalogueFactory(context).Genres;
+            _factory = new MusicCatalogueFactory(context);
+            _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre)).Result.Id;
         }
 
         [TestMethod]
         public async Task AddDuplicateTest()
         {
-            await _manager!.AddAsync(Name);
-            await _manager!.AddAsync(Name);
-            var genres = await _manager.ListAsync(x => true);
+            await _factory!.Genres.AddAsync(Genre);
+            var genres = await _factory!.Genres.ListAsync(x => true);
             Assert.AreEqual(1, genres.Count);
         }
 
         [TestMethod]
         public async Task AddAndGetTest()
         {
-            await _manager!.AddAsync(Name);
-            var genre = await _manager!.GetAsync(a => a.Name == Name);
+            var genre = await _factory!.Genres.GetAsync(a => a.Name == Genre);
             Assert.IsNotNull(genre);
             Assert.IsTrue(genre.Id > 0);
-            Assert.AreEqual(Name, genre.Name);
+            Assert.AreEqual(Genre, genre.Name);
         }
 
         [TestMethod]
         public async Task GetMissingTest()
         {
-            await _manager!.AddAsync(Name);
-            var genre = await _manager!.GetAsync(a => a.Name == "Missing");
+            var genre = await _factory!.Genres.GetAsync(a => a.Name == "Missing");
             Assert.IsNull(genre);
         }
 
         [TestMethod]
         public async Task ListAllTest()
         {
-            await _manager!.AddAsync(Name);
-            var genres = await _manager!.ListAsync(x => true);
+            var genres = await _factory!.Genres.ListAsync(x => true);
             Assert.AreEqual(1, genres!.Count);
-            Assert.AreEqual(Name, genres.First().Name);
+            Assert.AreEqual(Genre, genres.First().Name);
         }
 
         [TestMethod]
         public async Task ListMissingTest()
         {
-            await _manager!.AddAsync(Name);
-            var genres = await _manager!.ListAsync(e => e.Name == "Missing");
+            var genres = await _factory!.Genres.ListAsync(e => e.Name == "Missing");
             Assert.AreEqual(0, genres!.Count);
+        }
+
+        [TestMethod]
+        public async Task UpdateTest()
+        {
+            var genre = await _factory!.Genres.UpdateAsync(_genreId, UpdatedGenre);
+            Assert.IsNotNull(genre);
+            Assert.IsTrue(genre.Id > 0);
+            Assert.AreEqual(UpdatedGenre, genre.Name);
+        }
+
+        [TestMethod]
+        public async Task UpdateMissingTest()
+        {
+            var genre = await _factory!.Genres.UpdateAsync(-1, UpdatedGenre);
+            Assert.IsNull(genre);
+        }
+
+        [TestMethod]
+        public async Task DeleteTest()
+        {
+            await _factory!.Genres.DeleteAsync(_genreId);
+            var genres = await _factory!.Genres.ListAsync(x => true);
+            Assert.IsNotNull(genres);
+            Assert.IsFalse(genres.Any());
+        }
+
+        [TestMethod]
+        public async Task DeleteMissingTest()
+        {
+            await _factory!.Genres.DeleteAsync(-1);
+            var genres = await _factory!.Genres.ListAsync(x => true);
+            Assert.AreEqual(1, genres!.Count);
+            Assert.AreEqual(Genre, genres.First().Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(GenreInUseException))]
+        public async Task DeleteInUseTest()
+        {
+            // Add an album that uses the retailer
+            var artist = await _factory!.Artists.AddAsync(ArtistName);
+            await _factory.Albums.AddAsync(artist.Id, _genreId, AlbumTitle, Released, CoverUrl, false, null, null, null);
+
+            // Now try to delete the retailer - this should raise an exception
+            await _factory!.Genres.DeleteAsync(_genreId);
         }
     }
 }
