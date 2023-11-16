@@ -56,7 +56,7 @@ namespace MusicCatalogue.Logic.DataExchange
 
             // Retrieve a list of artists and their albums then iterate over the artists
             // and albums
-            var artists = await _factory.Artists.ListAsync(x => true);
+            var artists = await _factory.Artists.ListAsync(x => true, true);
             foreach (var artist in artists.OrderBy(x => x.Name))
             {
                 foreach (var album in artist.Albums.OrderBy(x => x.Title))

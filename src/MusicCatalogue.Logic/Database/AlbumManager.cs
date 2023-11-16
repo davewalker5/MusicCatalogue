@@ -1,21 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Factory;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database
 {
-    public class AlbumManager : IAlbumManager
+    public class AlbumManager : DatabaseManagerBase, IAlbumManager
     {
-        private readonly MusicCatalogueFactory _factory;
-        private readonly MusicCatalogueDbContext? _context;
-
-        internal AlbumManager(MusicCatalogueFactory factory)
+        internal AlbumManager(IMusicCatalogueFactory factory) : base(factory)
         {
-            _factory = factory;
-            _context = factory.Context as MusicCatalogueDbContext;
         }
 
         /// <summary>
@@ -38,13 +31,13 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="predicate"></param>
         /// <returns></returns>
         public async Task<List<Album>> ListAsync(Expression<Func<Album, bool>> predicate)
-            => await _context!.Albums
-                              .Where(predicate)
-                              .OrderBy(x => x.Title)
-                              .Include(x => x.Genre)
-                              .Include(x => x.Retailer)
-                              .Include(x => x.Tracks)
-                              .ToListAsync();
+            => await Context.Albums
+                            .Where(predicate)
+                            .OrderBy(x => x.Title)
+                            .Include(x => x.Genre)
+                            .Include(x => x.Retailer)
+                            .Include(x => x.Tracks)
+                            .ToListAsync();
 
         /// <summary>
         /// Add an album, if it doesn't already exist
@@ -87,8 +80,8 @@ namespace MusicCatalogue.Logic.Database
                     Price = price,
                     RetailerId = retailerId
                 };
-                await _context!.Albums.AddAsync(album);
-                await _context.SaveChangesAsync();
+                await Context.Albums.AddAsync(album);
+                await Context.SaveChangesAsync();
             }
 
             return album;
@@ -135,7 +128,7 @@ namespace MusicCatalogue.Logic.Database
                 album.RetailerId = retailerId;
 
                 // Save the changes
-                await _context!.SaveChangesAsync();
+                await Context.SaveChangesAsync();
 
                 // Reload the album to reflect changes in e.g. retailer
                 album = await GetAsync(x => x.Id == albumId);
@@ -156,11 +149,11 @@ namespace MusicCatalogue.Logic.Database
             if (album != null)
             {
                 // Delete the associated tracks
-                await _factory.Tracks.DeleteAsync(albumId);
+                await Factory.Tracks.DeleteAsync(albumId);
 
                 // Delete the album record and save changes
-                _factory.Context.Remove(album);
-                await _factory.Context.SaveChangesAsync();
+                Factory.Context.Remove(album);
+                await Factory.Context.SaveChangesAsync();
             }
         }
     }

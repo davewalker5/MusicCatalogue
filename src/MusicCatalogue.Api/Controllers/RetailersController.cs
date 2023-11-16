@@ -27,10 +27,10 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<List<Retailer>>> GetRetailersAsync()
         {
-            // Get a list of all artists in the catalogue
+            // Get a list of all retailers in the catalogue
             List<Retailer> retailers = await _factory.Retailers.ListAsync(x => true);
 
-            // If there are no artists, return a no content response
+            // If there are no retailers, return a no content response
             if (!retailers.Any())
             {
                 return NoContent();

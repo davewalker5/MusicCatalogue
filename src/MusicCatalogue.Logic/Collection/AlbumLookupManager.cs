@@ -117,7 +117,7 @@ namespace MusicCatalogue.Logic.Collection
 
             // Check the artist exists
             _logger.LogMessage(Severity.Info, $"Looking for artist '{artistName}' in the database");
-            var artist = await _factory.Artists.GetAsync(x => x.Name == artistName);
+            var artist = await _factory.Artists.GetAsync(x => x.Name == artistName, false);
             if (artist != null)
             {
                 // Look for an album with the specified title by that artist

@@ -21,6 +21,7 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IExporter> _csvExporter;
         private readonly Lazy<IExporter> _xlsxExporter;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
+        private readonly Lazy<ISearchManager> _searchManager;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
         private readonly Lazy<IWishListBasedReport<ArtistStatistics>> _artistStatistics;
         private readonly Lazy<IWishListBasedReport<MonthlySpend>> _monthlySpend;
@@ -32,6 +33,7 @@ namespace MusicCatalogue.Logic.Factory
         public ITrackManager Tracks { get { return _tracks.Value; } }
         public IRetailerManager Retailers { get { return _retailers.Value; } }
         public IJobStatusManager JobStatuses { get { return _jobStatuses.Value; } }
+        public ISearchManager Search { get { return _searchManager.Value; } }
         public IUserManager Users { get { return _users.Value; } }
         public IImporter Importer { get {  return _importer.Value; } }
         public IExporter CsvExporter { get { return _csvExporter.Value; } }
@@ -49,13 +51,14 @@ namespace MusicCatalogue.Logic.Factory
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
             Context = context;
-            _genres = new Lazy<IGenreManager>(() => new GenreManager(context));
+            _genres = new Lazy<IGenreManager>(() => new GenreManager(this));
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(this));
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(this));
-            _tracks = new Lazy<ITrackManager>(() => new TrackManager(context));
+            _tracks = new Lazy<ITrackManager>(() => new TrackManager(this));
             _retailers = new Lazy<IRetailerManager>(() => new RetailerManager(this));
-            _jobStatuses = new Lazy<IJobStatusManager>(() => new JobStatusManager(context));
-            _users = new Lazy<IUserManager>(() => new UserManager(context));
+            _jobStatuses = new Lazy<IJobStatusManager>(() => new JobStatusManager(this));
+            _searchManager = new Lazy<ISearchManager>(() => new SearchManager(this));
+            _users = new Lazy<IUserManager>(() => new UserManager(this));
             _importer = new Lazy<IImporter>(() => new CsvImporter(this));
             _csvExporter = new Lazy<IExporter>(() => new CsvExporter(this));
             _xlsxExporter = new Lazy<IExporter>(() => new XlsxExporter(this));

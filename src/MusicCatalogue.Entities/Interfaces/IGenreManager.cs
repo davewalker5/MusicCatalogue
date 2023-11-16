@@ -8,5 +8,7 @@ namespace MusicCatalogue.Entities.Interfaces
         Task<Genre> AddAsync(string name);
         Task<Genre> GetAsync(Expression<Func<Genre, bool>> predicate);
         Task<List<Genre>> ListAsync(Expression<Func<Genre, bool>> predicate);
+        Task<Genre?> UpdateAsync(int genreId, string name);
+        Task DeleteAsync(int genreId);
     }
 }

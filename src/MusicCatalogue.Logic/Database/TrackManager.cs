@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using System.Linq.Expressions;
@@ -8,7 +7,7 @@ namespace MusicCatalogue.Logic.Database
 {
     public class TrackManager : DatabaseManagerBase, ITrackManager
     {
-        internal TrackManager(MusicCatalogueDbContext context) : base(context)
+        internal TrackManager(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 
@@ -32,10 +31,10 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="predicate"></param>
         /// <returns></returns>
         public async Task<List<Track>> ListAsync(Expression<Func<Track, bool>> predicate)
-            => await _context.Tracks
-                             .Where(predicate)
-                             .OrderBy(x => x.Number)
-                             .ToListAsync();
+            => await Context.Tracks
+                            .Where(predicate)
+                            .OrderBy(x => x.Number)
+                            .ToListAsync();
 
         /// <summary>
         /// Add a track, if it doesn't already exist
@@ -59,8 +58,8 @@ namespace MusicCatalogue.Logic.Database
                     Number = number,
                     Duration = duration
                 };
-                await _context.Tracks.AddAsync(track);
-                await _context.SaveChangesAsync();
+                await Context.Tracks.AddAsync(track);
+                await Context.SaveChangesAsync();
             }
 
             return track;
@@ -76,8 +75,8 @@ namespace MusicCatalogue.Logic.Database
             List<Track> tracks = await ListAsync(x => x.AlbumId == albumId);
             if (tracks.Any())
             {
-                _context.Tracks.RemoveRange(tracks);
-                await _context.SaveChangesAsync();
+                Context.Tracks.RemoveRange(tracks);
+                await Context.SaveChangesAsync();
             }
         }
     }
