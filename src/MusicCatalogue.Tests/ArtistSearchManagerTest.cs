@@ -56,6 +56,25 @@ namespace MusicCatalogue.Tests
         }
 
         [TestMethod]
+        public async Task SearchForAllArtistsWithWildcardTest()
+        {
+            var criteria = new ArtistSearchCriteria { NamePrefix = "*" };
+            var artists = await _factory!.Search.ArtistSearchAsync(criteria);
+            Assert.IsNotNull(artists);
+            Assert.AreEqual(2, artists.Count);
+
+            var jazzArtist = artists.First(x => x.Name == JazzArtistName);
+            Assert.IsNotNull(jazzArtist.Albums);
+            Assert.AreEqual(1, jazzArtist.Albums.Count);
+            Assert.AreEqual(JazzAlbumTitle, jazzArtist.Albums.First().Title);
+
+            var popArtist = artists.First(x => x.Name == PopArtistName);
+            Assert.IsNotNull(popArtist.Albums);
+            Assert.AreEqual(1, popArtist.Albums.Count);
+            Assert.AreEqual(PopAlbumTitle, popArtist.Albums.First().Title);
+        }
+
+        [TestMethod]
         public async Task SearchForMainCatalogueTest()
         {
             var criteria = new ArtistSearchCriteria { WishList = false };

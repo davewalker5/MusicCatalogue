@@ -1,11 +1,14 @@
 ﻿using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Search;
+using System.Runtime.InteropServices;
 
 namespace MusicCatalogue.Logic.Database
 {
     public class SearchManager : DatabaseManagerBase, ISearchManager
     {
+        private const string Wildcard = "*";
+
         internal SearchManager(IMusicCatalogueFactory factory) : base(factory)
         {
         }
@@ -18,6 +21,9 @@ namespace MusicCatalogue.Logic.Database
         public async Task<List<Artist>?> ArtistSearchAsync(ArtistSearchCriteria criteria)
         {
             List<Artist>? artists = null;
+
+            // Replace a wildcard artist name prefix with null
+            var prefix = criteria.NamePrefix == Wildcard ? null : criteria.NamePrefix;
 
             // Although we're returning a list of artists, the filtering criteria tend to refer to the
             // albums by that artist. For instance, the query "return artists in the Jazz genre" translates
@@ -41,7 +47,7 @@ namespace MusicCatalogue.Logic.Database
                 var artistIds = albums.Select(x => x.ArtistId).ToList();
                 artists = await Factory.Artists
                                         .ListAsync(x => artistIds.Contains(x.Id) &&
-                                                        ((criteria.NamePrefix == null) || (x.Name.StartsWith(criteria.NamePrefix))),
+                                                        ((prefix == null) || (x.Name.StartsWith(prefix))),
                                                    false);
 
                 // Now map the albums onto their associated artists

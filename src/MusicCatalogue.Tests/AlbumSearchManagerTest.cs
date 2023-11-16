@@ -8,7 +8,7 @@ namespace MusicCatalogue.Tests
     [TestClass]
     public class AlbumSearchManagerTest
     {
-        private const string JazzAlbumTitle = "xxxLive In Paris";
+        private const string JazzAlbumTitle = "Live In Paris";
         private const string PopAlbumTitle = "Album No. 8";
 
         private IMusicCatalogueFactory? _factory;
