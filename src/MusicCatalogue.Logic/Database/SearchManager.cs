@@ -1,7 +1,6 @@
 ﻿using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Search;
-using System.Runtime.InteropServices;
 
 namespace MusicCatalogue.Logic.Database
 {
@@ -30,29 +29,29 @@ namespace MusicCatalogue.Logic.Database
             // as "return artists who have produced an album in the Jazz genre". So, start by retrieving a
             // list of albums matching the criteria then derive the artists from that
             var albums = await Factory.Albums
-                                       .ListAsync(x => (
+                                      .ListAsync(x => (
                                                             (criteria.WishList == null) ||
                                                             ((criteria.WishList == false) && (x.IsWishListItem == null)) ||
                                                             (x.IsWishListItem == criteria.WishList)
-                                                       ) &&
-                                                       (
+                                                      ) &&
+                                                      (
                                                             (criteria.GenreId == null) ||
                                                             (x.GenreId == criteria.GenreId)
-                                                       ));
+                                                      ));
 
             // If there are no albums, there can't be any matching artists
             if (albums.Any())
             {
-                // Compile a list of artist IDs and load the matching artists
-                var artistIds = albums.Select(x => x.ArtistId).ToList();
+                // Compile a list of unique artist IDs and load the matching artists
+                var artistIds = albums.Select(x => x.ArtistId).Distinct().ToList();
                 artists = await Factory.Artists
-                                        .ListAsync(x => artistIds.Contains(x.Id) &&
-                                                        (
+                                       .ListAsync(x => artistIds.Contains(x.Id) &&
+                                                       (
                                                             (prefix == null) ||
                                                             ((x.SearchableName != null) && x.SearchableName.StartsWith(prefix)) ||
                                                             ((x.SearchableName == null) && x.Name.StartsWith(prefix))
-                                                        ),
-                                                   false);
+                                                       ),
+                                                  false);
 
                 // Now map the albums onto their associated artists
                 foreach (var artist in artists)
@@ -90,5 +89,32 @@ namespace MusicCatalogue.Logic.Database
             return albums.Any() ? albums : null;
         }
 
+        /// <summary>
+        /// Return the genres matching the specified criteria
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public async Task<List<Genre>?> GenreSearchAsync(GenreSearchCriteria criteria)
+        {
+            List<Genre>? genres = null;
+
+            // Retrieve a list of albums, as they're the entity that's tagged with a genre
+            var albums = await Factory.Albums
+                                      .ListAsync(x => (
+                                                            (criteria.WishList == null) ||
+                                                            ((criteria.WishList == false) && (x.IsWishListItem == null)) ||
+                                                            (x.IsWishListItem == criteria.WishList)
+                                                      ));
+
+            // If there are no albums, there can't be any matching artists
+            if (albums.Any())
+            {
+                // Get a list of unique genre IDs and load the matching genres
+                var genreIds = albums.Select(x => x.GenreId).Distinct().ToList();
+                genres = await Factory.Genres.ListAsync(x => genreIds.Contains(x.Id));
+            }
+
+            return genres;
+        }
     }
 }

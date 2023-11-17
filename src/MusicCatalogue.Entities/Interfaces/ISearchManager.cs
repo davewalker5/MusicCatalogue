@@ -7,5 +7,6 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         Task<List<Album>?> AlbumSearchAsync(AlbumSearchCriteria criteria);
         Task<List<Artist>?> ArtistSearchAsync(ArtistSearchCriteria criteria);
+        Task<List<Genre>?> GenreSearchAsync(GenreSearchCriteria criteria);
     }
 }
