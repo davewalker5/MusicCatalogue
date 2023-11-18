@@ -1,25 +1,34 @@
-import styles from "./artistList.module.css";
+import pages from "../helpers/navigation";
 import useArtists from "@/hooks/useArtists";
 import ArtistRow from "./artistRow";
 import ArtistFilterBar from "./artistFilterBar";
 
 /**
  * Component to render a table listing all the artists in the catalogue
+ * @param {*} filter
  * @param {*} isWishList
  * @param {*} navigate
  * @param {*} logout
  * @returns
  */
-const ArtistList = ({ filter, isWishList, navigate, logout }) => {
-  const { artists, setArtists } = useArtists(filter, isWishList, logout);
+const ArtistList = ({ filter, genre, isWishList, navigate, logout }) => {
+  const { artists, setArtists } = useArtists(filter, genre, isWishList, logout);
 
   // Callback to pass to child components to set the artist list
-  const setArtistsCallback = (artists) => {
-    setArtists(artists);
+  const setFilterCallback = (updatedFilter) => {
+    navigate({
+      page: pages.artists,
+      filter: updatedFilter,
+      genre: genre,
+      isWishList: isWishList,
+    });
   };
 
   // Set the page title to reflect whether we're viewing the wish list
-  const title = isWishList ? "Wish List Artists" : "Artists";
+  let title = isWishList ? "Wish List Artists" : "Artists";
+  if (genre != null) {
+    title = `${title} - ${genre.name}`;
+  }
 
   return (
     <>
@@ -28,11 +37,7 @@ const ArtistList = ({ filter, isWishList, navigate, logout }) => {
       </div>
       <div className="row mb-2 pageTitle">
         <div align="center">
-          <ArtistFilterBar
-            isWishList={isWishList}
-            logout={logout}
-            setArtists={setArtistsCallback}
-          />
+          <ArtistFilterBar setFilter={setFilterCallback} />
         </div>
       </div>
       <table className="table table-hover">

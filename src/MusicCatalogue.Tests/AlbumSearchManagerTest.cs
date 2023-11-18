@@ -29,7 +29,7 @@ namespace MusicCatalogue.Tests
 
             // Add the artists
             _jazzArtistId = Task.Run(() => _factory.Artists.AddAsync("Diana Krall")).Result.Id;
-            _popGenreId = Task.Run(() => _factory.Artists.AddAsync("Katie Melua")).Result.Id;
+            _popArtistId = Task.Run(() => _factory.Artists.AddAsync("Katie Melua")).Result.Id;
 
             // Add the albums, one on the wishlist and one not
             Task.Run(() => _factory.Albums.AddAsync(_jazzArtistId, _jazzGenreId, JazzAlbumTitle, 2002, null, false, null, null, null)).Wait();

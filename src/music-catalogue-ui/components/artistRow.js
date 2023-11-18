@@ -9,7 +9,11 @@ import pages from "@/helpers/navigation";
  */
 const ArtistRow = ({ artist, isWishList, navigate }) => {
   return (
-    <tr onClick={() => navigate(pages.albums, artist, null, isWishList)}>
+    <tr
+      onClick={() =>
+        navigate({ page: pages.albums, artist: artist, isWishList: isWishList })
+      }
+    >
       <td>{artist.name}</td>
     </tr>
   );

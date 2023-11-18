@@ -9,10 +9,10 @@ import JobStatusReport from "./jobStatusReport";
 import AlbumPurchaseDetails from "./albumPurchaseDetails";
 import ArtistStatisticsReport from "./artistStatisticsReport";
 import MonthlySpendReport from "./monthlySpendReport";
+import GenreList from "./genreList";
 
 /**
- * Component using the current page name to render the components required
- * by that page
+ * Component using the current context to select and render the current page
  * @param {*} context
  * @param {*} navigate
  * @param {*} logout
@@ -23,12 +23,15 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.artists:
       return (
         <ArtistList
-          filter={"A"}
+          filter={context.filter}
+          genre={context.genre}
           isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}
         />
       );
+    case pages.genres:
+      return <GenreList navigate={navigate} logout={logout} />;
     case pages.albums:
       return (
         <AlbumList

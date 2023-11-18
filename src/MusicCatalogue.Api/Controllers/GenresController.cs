@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Search;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -20,18 +21,22 @@ namespace MusicCatalogue.Api.Controllers
         }
 
         /// <summary>
-        /// Return a list of all the genres in the catalogue
+        /// Return a list of genres matching the specified criteria
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        [Route("")]
-        public async Task<ActionResult<List<Genre>>> GetGenresAsync()
+        [HttpPost]
+        [Route("search")]
+        public async Task<ActionResult<List<Genre>>> GetGenresAsync(GenreSearchCriteria criteria)
         {
-            // Get a list of all artists in the catalogue
-            List<Genre> genres = await _factory.Genres.ListAsync(x => true);
+            // Ideally, this method would use the GET verb but as more filtering criteria are added that leads
+            // to an increasing number of query string parameters and a very messy URL. So the filter criteria
+            // are POSTed in the request body, instead, and bound into a strongly typed criteria object
+
+            // Retrieve a list of matching genres
+            var genres = await _factory.Search.GenreSearchAsync(criteria);
 
             // If there are no genres, return a no content response
-            if (!genres.Any())
+            if (genres == null)
             {
                 return NoContent();
             }

@@ -8,16 +8,23 @@ import { apiFetchArtists } from "@/helpers/apiArtists";
  * @param {*} logout
  * @returns
  */
-const useArtists = (filter, isWishlist, logout) => {
+const useArtists = (filter, genre, isWishlist, logout) => {
   // Current list of artists and the method to change it
   const [artists, setArtists] = useState([]);
 
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        // Get a list of artists via the service, store it in state and clear the
-        // loading status
-        var fetchedArtists = await apiFetchArtists(filter, isWishlist, logout);
+        // Get the genre Id
+        const genreId = genre != null ? genre.id : null;
+
+        // Get a list of artists via the service and store it in state
+        var fetchedArtists = await apiFetchArtists(
+          filter,
+          genreId,
+          isWishlist,
+          logout
+        );
         setArtists(fetchedArtists);
       } catch {}
     };
