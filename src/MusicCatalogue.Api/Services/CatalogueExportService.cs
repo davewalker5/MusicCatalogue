@@ -22,24 +22,23 @@ namespace MusicCatalogue.Api.Services
         }
 
         /// <summary>
-        /// Export all the sightings from the database
+        /// Export the catalogue
         /// </summary>
         /// <param name="item"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
         protected override async Task ProcessWorkItem(CatalogueExportWorkItem item, IMusicCatalogueFactory factory)
         {
-            // Get the list of sightings to export
             MessageLogger.LogInformation("Retrieving tracks for export");
 
             // Use the file extension to determine which exporter to use
             var extension = Path.GetExtension(item.FileName).ToLower();
-            IExporter? exporter = extension == ".xlsx" ? factory.XlsxExporter : factory.CsvExporter;
+            IExporter? exporter = extension == ".xlsx" ? factory.CatalogueXlsxExporter : factory.CatalogueCsvExporter;
 
             // Construct the full path to the export file
             var filePath = Path.Combine(_settings.CatalogueExportPath, item.FileName);
 
-            // Export the file
+            // Export the catalogue
             await exporter.Export(filePath);
             MessageLogger.LogInformation("Catalogue export completed");
         }

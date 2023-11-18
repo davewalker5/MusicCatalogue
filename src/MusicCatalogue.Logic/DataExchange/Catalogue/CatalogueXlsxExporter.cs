@@ -2,16 +2,16 @@
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
 
-namespace MusicCatalogue.Logic.DataExchange
+namespace MusicCatalogue.Logic.DataExchange.Catalogue
 {
-    public class XlsxExporter : DataExportBase, IExporter
+    public class CatalogueXlsxExporter : CatalogueExporterBase, IExporter
     {
         private const string WorksheetName = "Music";
 
         private IXLWorksheet? _worksheet = null;
 
 #pragma warning disable CS8618
-        internal XlsxExporter(IMusicCatalogueFactory factory) : base(factory)
+        internal CatalogueXlsxExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 #pragma warning restore CS8618

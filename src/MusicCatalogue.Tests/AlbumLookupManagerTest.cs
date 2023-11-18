@@ -94,7 +94,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre.Name);
+            Assert.AreEqual(Genre, album.Genre!.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
             Assert.IsNotNull(album.Tracks);
@@ -117,7 +117,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre.Name);
+            Assert.AreEqual(Genre, album.Genre!.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
             Assert.IsNotNull(album.Tracks);
@@ -139,7 +139,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(album);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre.Name);
+            Assert.AreEqual(Genre, album.Genre!.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
 
             Assert.IsNotNull(album.Tracks);

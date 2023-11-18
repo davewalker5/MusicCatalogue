@@ -25,7 +25,7 @@ namespace MusicCatalogue.LookupTool.Logic
 
             // Use the file extension to decide which exporter to use
             var extension = Path.GetExtension(file).ToLower();
-            IExporter? exporter = extension == ".xlsx" ? _factory.XlsxExporter : _factory.CsvExporter;
+            IExporter? exporter = extension == ".xlsx" ? _factory.CatalogueXlsxExporter : _factory.CatalogueCsvExporter;
 
             try
             {

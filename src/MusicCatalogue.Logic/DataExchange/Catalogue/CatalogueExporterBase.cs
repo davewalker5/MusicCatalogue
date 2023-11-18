@@ -1,10 +1,9 @@
 ﻿using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 
-namespace MusicCatalogue.Logic.DataExchange
+namespace MusicCatalogue.Logic.DataExchange.Catalogue
 {
-    public abstract class DataExportBase : DataExchangeBase
+    public abstract class CatalogueExporterBase : DataExchangeBase
     {
         private readonly string[] ColumnHeaders =
         {
@@ -24,9 +23,8 @@ namespace MusicCatalogue.Logic.DataExchange
 
         public event EventHandler<TrackDataExchangeEventArgs>? TrackExport;
 
-        protected DataExportBase(IMusicCatalogueFactory factory) : base(factory)
+        protected CatalogueExporterBase(IMusicCatalogueFactory factory) : base(factory)
         {
-
         }
 
         /// <summary>

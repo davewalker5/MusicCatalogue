@@ -53,7 +53,7 @@ namespace MusicCatalogue.Api.Services
                         var factory = scope.ServiceProvider.GetService<IMusicCatalogueFactory>();
 
                         // Create the job status record
-                        var status = await factory.JobStatuses.AddAsync(item.JobName, item.ToString());
+                        var status = await factory!.JobStatuses.AddAsync(item.JobName, item.ToString());
 
                         try
                         {
@@ -61,7 +61,9 @@ namespace MusicCatalogue.Api.Services
                             // no error
                             MessageLogger.LogInformation($"Processing work item {item.ToString()}");
                             await ProcessWorkItem(item, factory);
+#pragma warning disable CS8625
                             await factory.JobStatuses.UpdateAsync(status.Id, null);
+#pragma warning restore CS8625
                             MessageLogger.LogInformation($"Finished processing work item {item.ToString()}");
                         }
                         catch (Exception ex)

@@ -6,7 +6,7 @@ using MusicCatalogue.Logic.Factory;
 namespace MusicCatalogue.Tests
 {
     [TestClass]
-    public class DataExchangeTest
+    public class CatalogueDataExchangeTest
     {
         private const string ArtistName = "Nat, King Cole\r\n";
         private const string AlbumName = "After Midnight";
@@ -42,7 +42,7 @@ namespace MusicCatalogue.Tests
         public void ExportCsvTest()
         {
             var filepath = Path.ChangeExtension(Path.GetTempFileName(), "csv");
-            Task.Run(() => _factory!.CsvExporter.Export(filepath)).Wait();
+            Task.Run(() => _factory!.CatalogueCsvExporter.Export(filepath)).Wait();
 
             var info = new FileInfo(filepath);
             Assert.AreEqual(info.FullName, filepath);
@@ -55,7 +55,7 @@ namespace MusicCatalogue.Tests
         public void ExportXlsxTest()
         {
             var filepath = Path.ChangeExtension(Path.GetTempFileName(), "xlsx");
-            Task.Run(() => _factory!.XlsxExporter.Export(filepath)).Wait();
+            Task.Run(() => _factory!.CatalogueXlsxExporter.Export(filepath)).Wait();
 
             var info = new FileInfo(filepath);
             Assert.AreEqual(info.FullName, filepath);
@@ -69,7 +69,7 @@ namespace MusicCatalogue.Tests
         {
             // Export the data
             var filepath = Path.ChangeExtension(Path.GetTempFileName(), "csv");
-            Task.Run(() => _factory!.CsvExporter.Export(filepath)).Wait();
+            Task.Run(() => _factory!.CatalogueCsvExporter.Export(filepath)).Wait();
 
             // Create a new instance of the factory with a new in-memory database
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();

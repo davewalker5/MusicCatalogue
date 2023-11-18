@@ -3,7 +3,7 @@ using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Reporting;
 using MusicCatalogue.Logic.Database;
-using MusicCatalogue.Logic.DataExchange;
+using MusicCatalogue.Logic.DataExchange.Catalogue;
 using MusicCatalogue.Logic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,8 +18,8 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IRetailerManager> _retailers;
         private readonly Lazy<IUserManager> _users;
         private readonly Lazy<IImporter> _importer;
-        private readonly Lazy<IExporter> _csvExporter;
-        private readonly Lazy<IExporter> _xlsxExporter;
+        private readonly Lazy<IExporter> _catalogueCsvExporter;
+        private readonly Lazy<IExporter> _catalogueXlsxExporter;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
         private readonly Lazy<ISearchManager> _searchManager;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
@@ -36,8 +36,8 @@ namespace MusicCatalogue.Logic.Factory
         public ISearchManager Search { get { return _searchManager.Value; } }
         public IUserManager Users { get { return _users.Value; } }
         public IImporter Importer { get {  return _importer.Value; } }
-        public IExporter CsvExporter { get { return _csvExporter.Value; } }
-        public IExporter XlsxExporter { get { return _xlsxExporter.Value; } }
+        public IExporter CatalogueCsvExporter { get { return _catalogueCsvExporter.Value; } }
+        public IExporter CatalogueXlsxExporter { get { return _catalogueXlsxExporter.Value; } }
 
         [ExcludeFromCodeCoverage]
         public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
@@ -59,9 +59,9 @@ namespace MusicCatalogue.Logic.Factory
             _jobStatuses = new Lazy<IJobStatusManager>(() => new JobStatusManager(this));
             _searchManager = new Lazy<ISearchManager>(() => new SearchManager(this));
             _users = new Lazy<IUserManager>(() => new UserManager(this));
-            _importer = new Lazy<IImporter>(() => new CsvImporter(this));
-            _csvExporter = new Lazy<IExporter>(() => new CsvExporter(this));
-            _xlsxExporter = new Lazy<IExporter>(() => new XlsxExporter(this));
+            _importer = new Lazy<IImporter>(() => new CatalogueCsvImporter(this));
+            _catalogueCsvExporter = new Lazy<IExporter>(() => new CatalogueCsvExporter(this));
+            _catalogueXlsxExporter = new Lazy<IExporter>(() => new CatalogueXlsxExporter(this));
             _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
             _artistStatistics = new Lazy<IWishListBasedReport<ArtistStatistics>>(() => new WishListBasedReport<ArtistStatistics>(context));
             _monthlySpend = new Lazy<IWishListBasedReport<MonthlySpend>>(() => new WishListBasedReport<MonthlySpend>(context));

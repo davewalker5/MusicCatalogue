@@ -2,14 +2,14 @@
 using MusicCatalogue.Entities.Interfaces;
 using System.Text;
 
-namespace MusicCatalogue.Logic.DataExchange
+namespace MusicCatalogue.Logic.DataExchange.Catalogue
 {
-    public class CsvExporter : DataExportBase, IExporter
+    public class CatalogueCsvExporter : CatalogueExporterBase, IExporter
     {
         private StreamWriter? _writer = null;
 
 #pragma warning disable CS8618
-        internal CsvExporter(IMusicCatalogueFactory factory) : base(factory)
+        internal CatalogueCsvExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 #pragma warning restore CS8618
