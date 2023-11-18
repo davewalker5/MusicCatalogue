@@ -25,7 +25,10 @@ const ArtistList = ({ filter, genre, isWishList, navigate, logout }) => {
   };
 
   // Set the page title to reflect whether we're viewing the wish list
-  const title = isWishList ? "Wish List Artists" : "Artists";
+  let title = isWishList ? "Wish List Artists" : "Artists";
+  if (genre != null) {
+    title = `${title} - ${genre.name}`;
+  }
 
   return (
     <>

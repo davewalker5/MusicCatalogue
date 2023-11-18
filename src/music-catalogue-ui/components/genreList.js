@@ -1,3 +1,4 @@
+import pages from "../helpers/navigation";
 import useGenres from "@/hooks/useGenres";
 import GenreRow from "./genreRow";
 
@@ -11,9 +12,13 @@ import GenreRow from "./genreRow";
 const GenreList = ({ navigate, logout }) => {
   const { genres, setGenres } = useGenres(false, logout);
 
-  // Callback to pass to child components to set the genre list
-  const setGenresCallback = (genres) => {
-    setGenres(genres);
+  // Callback to pass to child components to set the genre
+  const setGenreCallback = (genre) => {
+    navigate({
+      page: pages.artists,
+      genre: genre,
+      filter: "*",
+    });
   };
 
   return (
@@ -30,7 +35,7 @@ const GenreList = ({ navigate, logout }) => {
         {genres != null && (
           <tbody>
             {genres.map((g) => (
-              <GenreRow key={g.id} genre={g} navigate={navigate} />
+              <GenreRow key={g.id} genre={g} setGenre={setGenreCallback} />
             ))}
           </tbody>
         )}
