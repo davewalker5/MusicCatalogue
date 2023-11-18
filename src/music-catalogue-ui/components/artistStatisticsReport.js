@@ -4,6 +4,7 @@ import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { apiArtistStatisticsReport } from "@/helpers/apiReports";
 import ArtistStatisticsRow from "./artistStatisticsRow";
+import ReportExportControls from "./reportExportControls";
 
 /**
  * Component to display the artist statistics report page and its results
@@ -33,6 +34,12 @@ const ArtistStatisticsReport = ({ logout }) => {
     [catalogue, logout]
   );
 
+  /* Callback to export the report */
+  const exportReportCallback = useCallback(async (e, fileName) => {
+    // Prevent the default action associated with the click event
+    e.preventDefault();
+  }, []);
+
   // Construct a list of select list options for the directory
   const options = [
     { value: "catalogue", label: "Main Catalogue" },
@@ -47,24 +54,36 @@ const ArtistStatisticsReport = ({ logout }) => {
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
           <div className="row" align="center">
-            <div className="mt-3">
+            <div className="mt-6">
               <div className="d-inline-flex align-items-center">
-                <label className={styles.reportFormLabel}>
-                  Generate Report For
-                </label>
-                <Select
-                  className={styles.reportCatalogueSelector}
-                  defaultValue={catalogue}
-                  onChange={setCatalogue}
-                  options={options}
-                />
+                <div className="col">
+                  <label className={styles.reportFormLabel}>Report For:</label>
+                </div>
+                <div className="col">
+                  <Select
+                    className={styles.reportCatalogueSelector}
+                    defaultValue={catalogue}
+                    onChange={setCatalogue}
+                    options={options}
+                  />
+                </div>
+                <div className="col">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => getReportCallback(e)}
+                  >
+                    Search
+                  </button>
+                </div>
+                {records != null ? (
+                  <ReportExportControls
+                    isPrimaryButton={false}
+                    exportReport={exportReportCallback}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
-              <button
-                className="btn btn-primary"
-                onClick={(e) => getReportCallback(e)}
-              >
-                Search
-              </button>
             </div>
           </div>
         </form>

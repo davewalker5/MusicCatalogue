@@ -30,7 +30,7 @@ const useArtists = (filter, genre, isWishlist, logout) => {
     };
 
     fetchArtists();
-  }, [filter, isWishlist, logout]);
+  }, [filter, genre, isWishlist, logout]);
 
   return { artists, setArtists };
 };

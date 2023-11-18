@@ -1,4 +1,4 @@
-import styles from "./exportCatalogue.module.css";
+import styles from "./export.module.css";
 import { useCallback, useState } from "react";
 import { apiRequestExport } from "@/helpers/apiDataExchange";
 
@@ -38,17 +38,18 @@ const ExportCatalogue = ({ logout }) => {
       </div>
       <div className={styles.exportFormContainer}>
         <div className={styles.exportForm}>
-          {message != "" ? (
-            <div className={styles.exportMessage}>{message}</div>
-          ) : (
-            <></>
-          )}
-          {error != "" ? (
-            <div className={styles.exportError}>{error}</div>
-          ) : (
-            <></>
-          )}
-          <div></div>
+          <div>
+            {message != "" ? (
+              <div className={styles.exportMessage}>{message}</div>
+            ) : (
+              <></>
+            )}
+            {error != "" ? (
+              <div className={styles.exportError}>{error}</div>
+            ) : (
+              <></>
+            )}
+          </div>
           <div>
             <div className="form-group mt-3">
               <label className={styles.exportFormLabel}>File Name</label>
