@@ -184,6 +184,16 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 - Clicking on the artist name in any row in the track list or clicking on the "Back" button returns to the album list for that artist
 
+#### Browsing By Genre
+
+- To browse by genre, click on the "Genres" menu item
+- A page listing the genres derived from all albums in the //main catalogue// is displayed
+
+<img src="diagrams/genre-list.png" alt="Genre List" width="600">
+
+- As the mouse pointer is moved up and down the table, the current row is highlighted
+- Clicking on a row opens the artist list for the genre shown in that row
+
 #### The Wish List
 
 - To view the wish list, click on the "Wish List" menu item
