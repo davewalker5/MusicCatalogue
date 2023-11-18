@@ -42,7 +42,12 @@ const LookupAlbum = ({ navigate, logout }) => {
         const artist = await apiFetchArtistById(album.artistId, logout);
         if (artist != null) {
           // Navigate to the track list
-          navigate(pages.tracks, artist, album, storeInWishList);
+          navigate({
+            page: pages.tracks,
+            artist: artist,
+            album: album,
+            isWishList: storeInWishList,
+          });
         } else {
           setErrorMessage(`Artist with id ${album.artistId} not found`);
         }

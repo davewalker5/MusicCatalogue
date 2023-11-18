@@ -16,8 +16,7 @@ const useAlbums = (artistId, isWishList, logout) => {
   useEffect(() => {
     const fetchAlbums = async (artistId) => {
       try {
-        // Get a list of albums via the service, store it in state and clear the
-        // loading status
+        // Get a list of albums via the service and store it in state
         var fetchedAlbums = await apiFetchAlbumsByArtist(
           artistId,
           isWishList,

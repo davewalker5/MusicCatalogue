@@ -5,16 +5,17 @@ import { apiGetHeaders, apiGetPostHeaders } from "./apiHeaders";
 /**
  * Fetch a list of artists from the Music Catalogue REST API
  * @param {*} filter
+ * @param {*} genreId
  * @param {*} isWishList
  * @param {*} logout
  * @returns
  */
-const apiFetchArtists = async (filter, isWishList, logout) => {
+const apiFetchArtists = async (filter, genreId, isWishList, logout) => {
   // Construct the filtering criteria as the request body and convert to JSON
   const criteria = {
     namePrefix: filter,
     wishList: isWishList,
-    genreId: null,
+    genreId: genreId,
   };
   const body = JSON.stringify(criteria);
 

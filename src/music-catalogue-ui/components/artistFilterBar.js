@@ -1,6 +1,6 @@
 import ArtistFilter from "./artistFilter";
 
-const ArtistFilterBar = ({ isWishList, logout, setArtists }) => {
+const ArtistFilterBar = ({ setFilter }) => {
   // Construct the filtering , starting with "All"
   let options = [{ id: 0, label: "All", filter: "*", separator: "" }];
 
@@ -21,9 +21,7 @@ const ArtistFilterBar = ({ isWishList, logout, setArtists }) => {
           label={o.label}
           separator={o.separator}
           filter={o.filter}
-          isWishList={isWishList}
-          setArtists={setArtists}
-          logout={logout}
+          setFilter={setFilter}
         />
       ))}
     </>

@@ -1,5 +1,6 @@
 const pages = {
   artists: "Artists",
+  genres: "Genres",
   wishlistArtists: "WishlistArtists",
   albums: "Albums",
   wishlistAlbums: "wishlistAlbums",

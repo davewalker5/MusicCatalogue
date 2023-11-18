@@ -64,12 +64,12 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
       // If the returned album is valid, navigate back to the albums by artist page.
       // Otherwise, show an error
       if (updatedAlbum != null) {
-        navigate(
-          pages.albums,
-          artist,
-          updatedAlbum,
-          updatedAlbum.isWishListItem
-        );
+        navigate({
+          page: pages.albums,
+          artist: artist,
+          album: updatedAlbum,
+          isWishList: updatedAlbum.isWishListItem,
+        });
       } else {
         setErrorMessage("Error updating the album purchase details");
       }
@@ -151,7 +151,12 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
               <button
                 className="btn btn-primary"
                 onClick={() =>
-                  navigate(pages.albums, artist, album, album.isWishListItem)
+                  navigate({
+                    page: pages.albums,
+                    artist: artist,
+                    album: album,
+                    isWishList: album.isWishListItem,
+                  })
                 }
               >
                 Cancel

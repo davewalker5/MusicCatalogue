@@ -12,7 +12,13 @@ const TrackRow = ({ artist, album, track, isWishList, navigate }) => {
       <td>{album.title}</td>
       <td
         className={styles.artist}
-        onClick={() => navigate(pages.albums, artist, null, isWishList)}
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
       >
         {artist.name}
       </td>

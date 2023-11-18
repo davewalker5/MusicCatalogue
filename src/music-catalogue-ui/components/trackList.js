@@ -27,7 +27,7 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
 
   // Backwards navigation callback
   const navigateBack = useCallback(() => {
-    navigate(pages.albums, artist, null, isWishList);
+    navigate({ page: pages.albums, artist: artist, isWishList: isWishList });
   }, [navigate, artist, isWishList]);
 
   return (

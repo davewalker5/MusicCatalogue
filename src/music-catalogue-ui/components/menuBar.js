@@ -18,7 +18,7 @@ const MenuBar = ({ navigate, logout }) => {
             src="./logo.png"
             alt="Music Catalogue"
             className={styles.logo}
-            onClick={() => navigate(pages.artists, null, null, false)}
+            onClick={() => navigate({ page: pages.artists })}
           />
         </div>
         <div className={styles.title}>Music Catalogue</div>
@@ -31,41 +31,32 @@ const MenuBar = ({ navigate, logout }) => {
             </div>
           </button>
           <div className={styles.dropdownContent}>
-            <a
-              onClick={() =>
-                navigate(pages.artistStatisticsReport, null, null, false)
-              }
-            >
+            <a onClick={() => navigate({ page: pages.artistStatisticsReport })}>
               Artist Statistics
             </a>
-            <a
-              onClick={() =>
-                navigate(pages.genreStatisticsReport, null, null, false)
-              }
-            >
+            <a onClick={() => navigate({ page: pages.genreStatisticsReport })}>
               Genre Statistics
             </a>
-            <a
-              onClick={() => navigate(pages.jobStatusReport, null, null, false)}
-            >
+            <a onClick={() => navigate({ page: pages.jobStatusReport })}>
               Job Status
             </a>
-            <a
-              onClick={() =>
-                navigate(pages.monthlySpendReport, null, null, false)
-              }
-            >
+            <a onClick={() => navigate({ page: pages.monthlySpendReport })}>
               Monthly Spend
             </a>
           </div>
         </div>
-        <a onClick={() => navigate(pages.export, null, null, false)}>Export</a>
+        <a onClick={() => navigate({ page: pages.export })}>Export</a>
         <a href="#">Import</a>
-        <a onClick={() => navigate(pages.lookup, null, null, false)}>Search</a>
-        <a onClick={() => navigate(pages.artists, null, null, true)}>
+        <a onClick={() => navigate({ page: pages.lookup })}>Search</a>
+        <a
+          onClick={() =>
+            navigate({ page: pages.artists, filter: "A", isWishList: true })
+          }
+        >
           Wish List
         </a>
-        <a onClick={() => navigate(pages.artists, null, null, false)}>
+        <a onClick={() => navigate({ page: pages.genres })}>Genres</a>
+        <a onClick={() => navigate({ page: pages.artists, filter: "A" })}>
           Artists
         </a>
       </div>
