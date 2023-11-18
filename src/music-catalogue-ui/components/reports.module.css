@@ -30,3 +30,21 @@
 .reportCatalogueSelector {
   width: 200px;
 }
+
+.reportExportMessage {
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 2px solid #007316;
+  background: #6bdb81;
+  color: #007316;
+  text-align: center;
+}
+
+.reportExportError {
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 2px solid red;
+  background: pink;
+  color: red;
+  text-align: center;
+}

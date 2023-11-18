@@ -1,6 +1,6 @@
 import styles from "./export.module.css";
 import { useCallback, useState } from "react";
-import { apiRequestExport } from "@/helpers/apiDataExchange";
+import { apiRequestCatalogueExport } from "@/helpers/apiDataExchange";
 
 /**
  * Component to prompt for an export file name and request an export of the catalogue
@@ -19,7 +19,7 @@ const ExportCatalogue = ({ logout }) => {
     setError("");
 
     // Request an export via the API
-    const isOK = await apiRequestExport(fileName, logout);
+    const isOK = await apiRequestCatalogueExport(fileName, logout);
 
     // If all's well, display a confirmation message. Otherwise, show an error
     if (isOK) {
@@ -38,18 +38,16 @@ const ExportCatalogue = ({ logout }) => {
       </div>
       <div className={styles.exportFormContainer}>
         <div className={styles.exportForm}>
-          <div>
-            {message != "" ? (
-              <div className={styles.exportMessage}>{message}</div>
-            ) : (
-              <></>
-            )}
-            {error != "" ? (
-              <div className={styles.exportError}>{error}</div>
-            ) : (
-              <></>
-            )}
-          </div>
+          {message != "" ? (
+            <div className={styles.exportMessage}>{message}</div>
+          ) : (
+            <></>
+          )}
+          {error != "" ? (
+            <div className={styles.exportError}>{error}</div>
+          ) : (
+            <></>
+          )}
           <div>
             <div className="form-group mt-3">
               <label className={styles.exportFormLabel}>File Name</label>
