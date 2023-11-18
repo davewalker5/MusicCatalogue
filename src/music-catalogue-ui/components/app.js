@@ -39,7 +39,6 @@ const App = () => {
     filter = "A",
     isWishList = false,
   } = {}) => {
-    console.log(`CURRENT CONTEXT = ${JSON.stringify(context)}`);
     // Set the context, applying defaults to any values that are undefined
     const updatedContext = {
       page: page,
@@ -49,7 +48,6 @@ const App = () => {
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
     };
-    console.log(`UPDATED CONTEXT = ${JSON.stringify(updatedContext)}`);
     setContext(updatedContext);
   };
 
