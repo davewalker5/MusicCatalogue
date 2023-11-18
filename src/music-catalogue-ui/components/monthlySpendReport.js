@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./reports.module.css";
 import useMonthlySpend from "@/hooks/useMonthlySpend";
 import MonthlySpendReportRow from "./monthlySpendReportRow";
 import ReportExportControls from "./reportExportControls";
+import { apiRequestMonthlySpendingExport } from "@/helpers/apiDataExchange";
 
 /**
  * Component to display the monthly spending report page and its results
@@ -11,12 +12,35 @@ import ReportExportControls from "./reportExportControls";
  */
 const MonthlySpendReport = ({ logout }) => {
   const { records, setRecords } = useMonthlySpend(logout);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   /* Callback to export the report */
-  const exportReportCallback = useCallback(async (e) => {
-    // Prevent the default action associated with the click event
-    e.preventDefault();
-  }, []);
+  const exportReportCallback = useCallback(
+    async (e, fileName) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Clear pre-existing errors and messages
+      setMessage("");
+      setError("");
+
+      // Request an export via the API
+      const isOK = await apiRequestMonthlySpendingExport(fileName, logout);
+
+      // If all's well, display a confirmation message. Otherwise, show an error
+      if (isOK) {
+        setMessage(
+          `A background export of the monthly spending report to ${fileName} has been requested`
+        );
+      } else {
+        setError(
+          "An error occurred requesting an export of the monthly spending report"
+        );
+      }
+    },
+    [logout]
+  );
 
   return (
     <>
@@ -25,6 +49,16 @@ const MonthlySpendReport = ({ logout }) => {
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
+          {message != "" ? (
+            <div className={styles.reportExportMessage}>{message}</div>
+          ) : (
+            <></>
+          )}
+          {error != "" ? (
+            <div className={styles.reportExportError}>{error}</div>
+          ) : (
+            <></>
+          )}
           <div className="row" align="center">
             <div className="mt-6">
               <div className="d-inline-flex align-items-center">
