@@ -47,8 +47,15 @@ const GenreStatisticsReport = ({ logout }) => {
       setMessage("");
       setError("");
 
+      // Set the wishlist flag from the drop-down selection
+      const forWishList = catalogue.value == "wishlist";
+
       // Request an export via the API
-      const isOK = await apiRequestGenreStatisticsExport(fileName, logout);
+      const isOK = await apiRequestGenreStatisticsExport(
+        fileName,
+        forWishList,
+        logout
+      );
 
       // If all's well, display a confirmation message. Otherwise, show an error
       if (isOK) {
@@ -61,7 +68,7 @@ const GenreStatisticsReport = ({ logout }) => {
         );
       }
     },
-    [logout]
+    [catalogue, logout]
   );
 
   // Construct a list of select list options for the directory
