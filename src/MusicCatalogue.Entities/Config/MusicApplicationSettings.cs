@@ -12,6 +12,7 @@ namespace MusicCatalogue.Entities.Config
         public string LogFile { get; set; } = "";
         public MusicCatalogueEnvironment Environment { get; set; }
         public string CatalogueExportPath { get; set; } = "";
+        public string ReportsExportPath { get; set; } = "";
         public List<ApiEndpoint> ApiEndpoints { get; set; } = new List<ApiEndpoint>();
         public List<ApiServiceKey> ApiServiceKeys { get; set; } = new List<ApiServiceKey>();
 

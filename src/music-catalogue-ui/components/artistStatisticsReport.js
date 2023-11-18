@@ -4,6 +4,8 @@ import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { apiArtistStatisticsReport } from "@/helpers/apiReports";
 import ArtistStatisticsRow from "./artistStatisticsRow";
+import ReportExportControls from "./reportExportControls";
+import { apiRequestAristStatisticsExport } from "@/helpers/apiDataExchange";
 
 /**
  * Component to display the artist statistics report page and its results
@@ -13,6 +15,8 @@ import ArtistStatisticsRow from "./artistStatisticsRow";
 const ArtistStatisticsReport = ({ logout }) => {
   const [catalogue, setCatalogue] = useState(0);
   const [records, setRecords] = useState(null);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   // Callback to request the artist statistics report from the API
   const getReportCallback = useCallback(
@@ -33,6 +37,40 @@ const ArtistStatisticsReport = ({ logout }) => {
     [catalogue, logout]
   );
 
+  /* Callback to export the report */
+  const exportReportCallback = useCallback(
+    async (e, fileName) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Clear pre-existing errors and messages
+      setMessage("");
+      setError("");
+
+      // Set the wishlist flag from the drop-down selection
+      const forWishList = catalogue.value == "wishlist";
+
+      // Request an export via the API
+      const isOK = await apiRequestAristStatisticsExport(
+        fileName,
+        forWishList,
+        logout
+      );
+
+      // If all's well, display a confirmation message. Otherwise, show an error
+      if (isOK) {
+        setMessage(
+          `A background export of the artist statistics report to ${fileName} has been requested`
+        );
+      } else {
+        setError(
+          "An error occurred requesting an export of the artist statistics report"
+        );
+      }
+    },
+    [catalogue, logout]
+  );
+
   // Construct a list of select list options for the directory
   const options = [
     { value: "catalogue", label: "Main Catalogue" },
@@ -46,25 +84,47 @@ const ArtistStatisticsReport = ({ logout }) => {
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
+          {message != "" ? (
+            <div className={styles.reportExportMessage}>{message}</div>
+          ) : (
+            <></>
+          )}
+          {error != "" ? (
+            <div className={styles.reportExportError}>{error}</div>
+          ) : (
+            <></>
+          )}
           <div className="row" align="center">
-            <div className="mt-3">
+            <div className="mt-6">
               <div className="d-inline-flex align-items-center">
-                <label className={styles.reportFormLabel}>
-                  Generate Report For
-                </label>
-                <Select
-                  className={styles.reportCatalogueSelector}
-                  defaultValue={catalogue}
-                  onChange={setCatalogue}
-                  options={options}
-                />
+                <div className="col">
+                  <label className={styles.reportFormLabel}>Report For:</label>
+                </div>
+                <div className="col">
+                  <Select
+                    className={styles.reportCatalogueSelector}
+                    defaultValue={catalogue}
+                    onChange={setCatalogue}
+                    options={options}
+                  />
+                </div>
+                <div className="col">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => getReportCallback(e)}
+                  >
+                    Search
+                  </button>
+                </div>
+                {records != null ? (
+                  <ReportExportControls
+                    isPrimaryButton={false}
+                    exportReport={exportReportCallback}
+                  />
+                ) : (
+                  <></>
+                )}
               </div>
-              <button
-                className="btn btn-primary"
-                onClick={(e) => getReportCallback(e)}
-              >
-                Search
-              </button>
             </div>
           </div>
         </form>

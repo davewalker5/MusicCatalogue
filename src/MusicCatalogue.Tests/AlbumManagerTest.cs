@@ -56,7 +56,7 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(_artistId, album.ArtistId);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre.Name);
+            Assert.AreEqual(Genre, album.Genre!.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
             Assert.IsFalse(album.IsWishListItem);
             Assert.IsNull(album.Purchased);
@@ -73,7 +73,7 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(_artistId, album.ArtistId);
             Assert.AreEqual(AlbumTitle, album.Title);
             Assert.AreEqual(Released, album.Released);
-            Assert.AreEqual(Genre, album.Genre.Name);
+            Assert.AreEqual(Genre, album.Genre!.Name);
             Assert.AreEqual(CoverUrl, album.CoverUrl);
             Assert.IsTrue(album.IsWishListItem);
             Assert.AreEqual(Purchased, album.Purchased);
@@ -116,7 +116,7 @@ namespace MusicCatalogue.Tests
         {
             var album = await _factory!.Albums.GetAsync(a => a.Title == AlbumTitle);
             Assert.IsNotNull(album);
-            Assert.AreEqual(1, album.Tracks.Count);
+            Assert.AreEqual(1, album.Tracks!.Count);
 
             await _factory!.Albums.DeleteAsync(_albumId);
             album = await _factory.Albums!.GetAsync(a => a.Title == AlbumTitle);

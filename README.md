@@ -250,6 +250,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - Use the drop down to select the catalogue to report on, either the main catalogue or the wish list
 - If no selection is made, the report is generated for the main catalogue
 - Click on the "Search" button to view the results
+- Once the search results are returned, options to export the report in CSV format will appear
+- Enter a file name and click "Export" to export it
 
 #### Genre Statistics Report
 
@@ -260,6 +262,8 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - Use the drop down to select the catalogue to report on, either the main catalogue or the wish list
 - If no selection is made, the report is generated for the main catalogue
 - Click on the "Search" button to view the results
+- Once the search results are returned, options to export the report in CSV format will appear
+- Enter a file name and click "Export" to export it
 
 #### Job Status Report
 
@@ -277,6 +281,9 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - To view a report on spending by year and month, click on the "Reports > Monthly Spend" menu bar item:
 
 <img src="diagrams/reports-monthly-spend.png" alt="Monthly Spend Report" width="600">
+
+- Once the search results are returned, options to export the report in CSV format will appear
+- Enter a file name and click "Export" to export it
 
 [^ top](#musiccatalogue)
 
@@ -343,6 +350,7 @@ Task.Run(() => factory.Users.AddAsync(userName, password)).Wait();
 | ApplicationSettings | LogFile             | Path and name of the log file. If this is blank, no log file is created |
 | ApplicationSettings | MinimumLogLevel     | Minimum message severity to log (Debug, Info, Warning or Error)         |
 | ApplicationSettings | CatalogueExportPath | Path to the folder where music catalogue exports are written            |
+| ApplicationSettings | ReportsExportPath   | Path to the folder where mreport exports are written                    |
 | ApplicationSettings | ApiEndpoints        | Set of endpoint definitions for external APIs                           |
 | ApplicationSettings | ApiServiceKeys      | Set of API key definitions for external APIs                            |
 | ConnectionStrings   | MusicCatalogueDB    | SQLite connection string for the database                               |

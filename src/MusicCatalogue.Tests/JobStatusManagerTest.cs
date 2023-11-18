@@ -11,7 +11,7 @@ namespace MusicCatalogue.Tests
         private const string Parameters = "2023-10-28 Export.csv";
         private const string Error = "Some error message";
 
-        private IMusicCatalogueFactory _factory;
+        private IMusicCatalogueFactory? _factory;
         private long _statusId;
 
         [TestInitialize]
@@ -25,7 +25,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task AddAndGetAsyncTest()
         {
-            var status = await _factory.JobStatuses.GetAsync(x => x.Id == _statusId);
+            var status = await _factory!.JobStatuses.GetAsync(x => x.Id == _statusId);
 
             Assert.IsNotNull(status);
             Assert.AreEqual(_statusId, status.Id);
@@ -39,7 +39,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task ListAsyncTest()
         {
-            var statuses = await _factory.JobStatuses.ListAsync(x => true, 1, 10).ToListAsync();
+            var statuses = await _factory!.JobStatuses.ListAsync(x => true, 1, 10).ToListAsync();
 
             Assert.IsNotNull(statuses);
             Assert.AreEqual(1, statuses.Count);
@@ -54,7 +54,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task ListAllAsyncTest()
         {
-            var statuses = await _factory.JobStatuses.ListAsync(null, 1, 10).ToListAsync();
+            var statuses = await _factory!.JobStatuses.ListAsync(x => true, 1, 10).ToListAsync();
 
             Assert.IsNotNull(statuses);
             Assert.AreEqual(1, statuses.Count);
@@ -69,7 +69,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task UpdateAsyncTest()
         {
-            var status = await _factory.JobStatuses.UpdateAsync(_statusId, Error);
+            var status = await _factory!.JobStatuses.UpdateAsync(_statusId, Error);
 
             Assert.IsNotNull(status);
             Assert.AreEqual(_statusId, status.Id);

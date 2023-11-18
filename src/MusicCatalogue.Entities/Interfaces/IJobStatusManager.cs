@@ -8,6 +8,6 @@ namespace MusicCatalogue.Entities.Interfaces
         Task<JobStatus> AddAsync(string name, string parameters);
         Task<JobStatus> GetAsync(Expression<Func<JobStatus, bool>> predicate);
         IAsyncEnumerable<JobStatus> ListAsync(Expression<Func<JobStatus, bool>> predicate, int pageNumber, int pageSize);
-        Task<JobStatus> UpdateAsync(long id, string error);
+        Task<JobStatus?> UpdateAsync(long id, string error);
     }
 }

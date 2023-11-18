@@ -13,8 +13,8 @@ namespace MusicCatalogue.Entities.Interfaces
         IRetailerManager Retailers { get; }
         IUserManager Users { get; }
         IImporter Importer { get; }
-        IExporter CsvExporter { get; }
-        IExporter XlsxExporter { get; }
+        IExporter CatalogueCsvExporter { get; }
+        IExporter CatalogueXlsxExporter { get; }
         IJobStatusManager JobStatuses { get; }
         ISearchManager Search { get; }
         IWishListBasedReport<GenreStatistics> GenreStatistics { get; }

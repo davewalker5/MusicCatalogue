@@ -16,7 +16,7 @@ namespace MusicCatalogue.Tests
         private const string Name = "Dig Vinyl";
         private const string UpdatedName = "Truck Store";
 
-        private IMusicCatalogueFactory _factory = null;
+        private IMusicCatalogueFactory? _factory = null;
         private int _retailerId;
 
         [TestInitialize]
@@ -105,7 +105,7 @@ namespace MusicCatalogue.Tests
         public async Task DeleteInUseTest()
         {
             // Add an album that uses the retailer
-            var artist = await _factory.Artists.AddAsync(ArtistName);
+            var artist = await _factory!.Artists.AddAsync(ArtistName);
             var genre = await _factory.Genres.AddAsync(Genre);
             await _factory.Albums.AddAsync(artist.Id, genre.Id, AlbumTitle, Released, CoverUrl, false, null, null, _retailerId);
 

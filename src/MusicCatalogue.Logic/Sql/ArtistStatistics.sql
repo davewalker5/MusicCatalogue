@@ -2,7 +2,7 @@ WITH ARTIST_SPEND ( Id, IsWishListItem, Spend ) AS
 (
     SELECT      al.ArtistId, IFNULL( al.IsWishListItem, 0 ), SUM( al.Price )
     FROM        ALBUMS al
-    GROUP BY    al.ArtistId, al.IsWishListItem
+    GROUP BY    al.ArtistId, IFNULL( al.IsWishListItem, 0 )
 )
 SELECT      a.Name,
             COUNT( DISTINCT al.Id ) AS "Albums",

@@ -5,15 +5,15 @@ using MusicCatalogue.Entities.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace MusicCatalogue.Logic.DataExchange
+namespace MusicCatalogue.Logic.DataExchange.Catalogue
 {
     [ExcludeFromCodeCoverage]
-    public partial class CsvImporter : DataExchangeBase, IImporter
+    public partial class CatalogueCsvImporter : DataExchangeBase, IImporter
     {
         public event EventHandler<TrackDataExchangeEventArgs>? TrackImport;
 
 #pragma warning disable CS8618
-        internal CsvImporter(IMusicCatalogueFactory factory) : base(factory)
+        internal CatalogueCsvImporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 #pragma warning restore CS8618
@@ -47,7 +47,7 @@ namespace MusicCatalogue.Logic.DataExchange
                             // Inflate the CSV record to a track and save the artist and genre
                             var track = FlattenedTrack.FromCsv(fields!);
                             var artist = await _factory.Artists.AddAsync(track.ArtistName);
-                            var genre = await _factory.Genres.AddAsync(track.Genre);
+                            var genre = await _factory.Genres.AddAsync(track.Genre!);
 
                             // Add the retailer
                             int? retailerId = null;
