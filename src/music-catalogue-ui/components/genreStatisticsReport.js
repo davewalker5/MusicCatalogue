@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { apiGenreStatisticsReport } from "@/helpers/apiReports";
 import GenreStatisticsRow from "./genreStatisticsRow";
 import ReportExportControls from "./reportExportControls";
+import { apiRequestGenreStatisticsExport } from "@/helpers/apiDataExchange";
 
 /**
  * Component to display the genre statistics report page and its results
@@ -14,6 +15,8 @@ import ReportExportControls from "./reportExportControls";
 const GenreStatisticsReport = ({ logout }) => {
   const [catalogue, setCatalogue] = useState(0);
   const [records, setRecords] = useState(null);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   // Callback to request the genre statistics report from the API
   const getReportCallback = useCallback(
@@ -35,10 +38,31 @@ const GenreStatisticsReport = ({ logout }) => {
   );
 
   /* Callback to export the report */
-  const exportReportCallback = useCallback(async (e, fileName) => {
-    // Prevent the default action associated with the click event
-    e.preventDefault();
-  }, []);
+  const exportReportCallback = useCallback(
+    async (e, fileName) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Clear pre-existing errors and messages
+      setMessage("");
+      setError("");
+
+      // Request an export via the API
+      const isOK = await apiRequestGenreStatisticsExport(fileName, logout);
+
+      // If all's well, display a confirmation message. Otherwise, show an error
+      if (isOK) {
+        setMessage(
+          `A background export of the genre statistics report to ${fileName} has been requested`
+        );
+      } else {
+        setError(
+          "An error occurred requesting an export of the genre statistics report"
+        );
+      }
+    },
+    [logout]
+  );
 
   // Construct a list of select list options for the directory
   const options = [
@@ -53,6 +77,16 @@ const GenreStatisticsReport = ({ logout }) => {
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
+          {message != "" ? (
+            <div className={styles.reportExportMessage}>{message}</div>
+          ) : (
+            <></>
+          )}
+          {error != "" ? (
+            <div className={styles.reportExportError}>{error}</div>
+          ) : (
+            <></>
+          )}
           <div className="row" align="center">
             <div className="mt-3">
               <div className="d-inline-flex align-items-center">

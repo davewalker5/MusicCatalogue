@@ -61,4 +61,41 @@ const apiRequestAristStatisticsExport = async (
   return response.ok;
 };
 
-export { apiRequestCatalogueExport, apiRequestAristStatisticsExport };
+/**
+ * Request an export of the genre statistics report
+ * @param {*} fileName
+ * @param {*} isWishList
+ * @param {*} logout
+ */
+const apiRequestGenreStatisticsExport = async (
+  fileName,
+  isWishList,
+  logout
+) => {
+  // Create a JSON body containing the file name to export to
+  const body = JSON.stringify({
+    fileName: fileName,
+    wishList: isWishList,
+  });
+
+  // Call the API to request the export
+  const url = `${config.api.baseUrl}/export/genrestatistics`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
+
+  return response.ok;
+};
+
+export {
+  apiRequestCatalogueExport,
+  apiRequestAristStatisticsExport,
+  apiRequestGenreStatisticsExport,
+};

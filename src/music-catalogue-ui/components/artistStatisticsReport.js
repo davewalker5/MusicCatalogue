@@ -87,7 +87,6 @@ const ArtistStatisticsReport = ({ logout }) => {
           ) : (
             <></>
           )}
-          <div />
           <div className="row" align="center">
             <div className="mt-6">
               <div className="d-inline-flex align-items-center">
