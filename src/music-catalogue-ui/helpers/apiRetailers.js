@@ -1,6 +1,6 @@
 import config from "../config.json";
 import { apiReadResponseData } from "./apiUtils";
-import { apiGetPostHeaders } from "./apiHeaders";
+import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
 
 /**
  * Create a retailer or return an existing retailer with the specified name
@@ -25,4 +25,21 @@ const apiCreateRetailer = async (retailerName, logout) => {
   return retailer;
 };
 
-export { apiCreateRetailer };
+/**
+ * Return a list of retailer details
+ * @param {*} logout
+ * @returns
+ */
+const apiFetchRetailers = async (logout) => {
+  // Call the API to retrieve the retailer list
+  const url = `${config.api.baseUrl}/retailers`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const retailers = await apiReadResponseData(response, logout);
+  return retailers;
+};
+
+export { apiCreateRetailer, apiFetchRetailers };

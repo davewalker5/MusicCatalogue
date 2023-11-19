@@ -10,6 +10,8 @@ import AlbumPurchaseDetails from "./albumPurchaseDetails";
 import ArtistStatisticsReport from "./artistStatisticsReport";
 import MonthlySpendReport from "./monthlySpendReport";
 import GenreList from "./genreList";
+import RetailerList from "./retailerList";
+import RetailerDetails from "./retailerDetails";
 
 /**
  * Component using the current context to select and render the current page
@@ -72,6 +74,10 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
+    case pages.retailers:
+      return <RetailerList navigate={navigate} logout={logout} />;
+    case pages.retailerDetails:
+      return <RetailerDetails retailer={context.retailer} />;
     default:
       return <span />;
   }

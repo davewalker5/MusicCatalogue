@@ -5,6 +5,8 @@ import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/apiToken";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import MenuBar from "./menuBar";
+import config from "../config.json";
+import { Helmet } from "react-helmet";
 
 /**
  * Default application state:
@@ -13,9 +15,10 @@ const defaultContext = {
   // Current page
   page: pages.artists,
 
-  // Artist and album context
+  // Artist, album and retailer context
   artist: null,
   album: null,
+  retailer: null,
 
   // Data retrieval/filering criteria
   genre: null,
@@ -35,6 +38,7 @@ const App = () => {
     page = pages.artists,
     artist = null,
     album = null,
+    retailer = null,
     genre = null,
     filter = "A",
     isWishList = false,
@@ -44,6 +48,7 @@ const App = () => {
       page: page,
       artist: typeof artist != "undefined" ? artist : null,
       album: typeof album != "undefined" ? album : null,
+      retailer: typeof retailer != "undefined" ? retailer : null,
       genre: typeof genre != "undefined" ? genre : null,
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
@@ -62,12 +67,22 @@ const App = () => {
     setIsLoggedIn(false);
   }, [setIsLoggedIn]);
 
+  // Set the script source for Google Maps
+  const googleMapsScript = `https://maps.googleapis.com/maps/api/js?key=${config.api.mapsApiKey}&callback=console.debug&libraries=maps,marker&v=beta`;
+
   // If the user's logged in, show the banner and current component. Otherwise,
   // show the login page
   return (
     <>
       {isLoggedIn ? (
         <>
+          <Helmet>
+            <script
+              src={googleMapsScript}
+              crossorigin="anonymous"
+              async
+            ></script>
+          </Helmet>
           <div>
             <MenuBar navigate={navigate} logout={logout} />
           </div>
