@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MusicCatalogue.Data;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace MusicCatalogue.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     [DbContext(typeof(MusicCatalogueDbContext))]
     partial class MusicCatalogueDbContextModelSnapshot : ModelSnapshot
     {
