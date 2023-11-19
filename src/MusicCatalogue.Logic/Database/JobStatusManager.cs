@@ -34,18 +34,10 @@ namespace MusicCatalogue.Logic.Database
         public IAsyncEnumerable<JobStatus> ListAsync(Expression<Func<JobStatus, bool>> predicate, int pageNumber, int pageSize)
         {
             IAsyncEnumerable<JobStatus> results;
-            if (predicate == null)
-            {
-                results = Context.JobStatuses
-                                 .Skip((pageNumber - 1) * pageSize)
-                                 .Take(pageSize)
-                                 .AsAsyncEnumerable();
-            }
-            else
-            {
-                results = Context.JobStatuses.Where(predicate).AsAsyncEnumerable();
-            }
-
+            results = Context.JobStatuses
+                                .Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
+                                .AsAsyncEnumerable();
             return results;
         }
 

@@ -2,6 +2,7 @@
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
+using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database
@@ -41,8 +42,27 @@ namespace MusicCatalogue.Logic.Database
         /// Add a retailer, if they doesn't already exist
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="address1"></param>
+        /// <param name="address2"></param>
+        /// <param name="town"></param>
+        /// <param name="county"></param>
+        /// <param name="postcode"></param>
+        /// <param name="country"></param>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <param name="website"></param>
         /// <returns></returns>
-        public async Task<Retailer> AddAsync(string name)
+        public async Task<Retailer> AddAsync(
+            string name,
+            string? address1 = null,
+            string? address2 = null,
+            string? town = null,
+            string? county = null,
+            string? postcode = null,
+            string? country = null,
+            decimal? latitude = null,
+            decimal? longitude = null,
+            string? website = null)
         {
             var clean = StringCleaner.Clean(name)!;
             var retailer = await GetAsync(a => a.Name == clean);
@@ -51,7 +71,16 @@ namespace MusicCatalogue.Logic.Database
             {
                 retailer = new Retailer
                 {
-                    Name = clean
+                    Name = clean,
+                    Address1 = address1,
+                    Address2 = address2,
+                    Town = town,
+                    County = county,
+                    PostCode = postcode,
+                    Country = country,
+                    Latitude = latitude,
+                    Longitude = longitude,
+                    WebSite = website
                 };
                 await Context.Retailers.AddAsync(retailer);
                 await Context.SaveChangesAsync();
@@ -65,13 +94,43 @@ namespace MusicCatalogue.Logic.Database
         /// </summary>
         /// <param name="retailerId"></param>
         /// <param name="name"></param>
+        /// <param name="address1"></param>
+        /// <param name="address2"></param>
+        /// <param name="town"></param>
+        /// <param name="county"></param>
+        /// <param name="postcode"></param>
+        /// <param name="country"></param>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
+        /// <param name="website"></param>
         /// <returns></returns>
-        public async Task<Retailer?> UpdateAsync(int retailerId, string name)
+        public async Task<Retailer?> UpdateAsync(
+            int retailerId,
+            string name,
+            string? address1 = null,
+            string? address2 = null,
+            string? town = null,
+            string? county = null,
+            string? postcode = null,
+            string? country = null,
+            decimal? latitude = null,
+            decimal? longitude = null,
+            string? website = null)
         {
             var retailer = await GetAsync(a => a.Id == retailerId);
             if (retailer != null)
             {
                 retailer.Name = StringCleaner.Clean(name)!;
+
+                retailer.Address1 = address1;
+                retailer.Address2 = address2;
+                retailer.Town = town;
+                retailer.County = county;
+                retailer.PostCode = postcode;
+                retailer.Country = country;
+                retailer.Latitude = latitude;
+                retailer.Longitude = longitude;
+                retailer.WebSite = website;
                 await Context.SaveChangesAsync();
             }
             return retailer;
