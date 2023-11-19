@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Data;
+using MusicCatalogue.Entities.Reporting;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -22,7 +23,7 @@ namespace MusicCatalogue.Logic.Reporting
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-        protected async Task<IEnumerable<T>> GenerateReportAsync<T>(string query, int pageNumber, int pageSize) where T : class
+        protected async Task<IEnumerable<T>> GenerateReportAsync<T>(string query, int pageNumber, int pageSize) where T : ReportEntityBase
         {
             // Pagination using Skip and Take causes the database query to fail with FromSqlRaw, possible
             // dependent on the DBS. To avoid this, the results are queried in two steps:
@@ -30,7 +31,7 @@ namespace MusicCatalogue.Logic.Reporting
             // 1) Query the database for all the report results and convert to a list
             // 2) Extract the required page from the in-memory list
             var all = await _context.Set<T>().FromSqlRaw(query).ToListAsync();
-            var results = all.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            var results = all.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return results;
         }
 

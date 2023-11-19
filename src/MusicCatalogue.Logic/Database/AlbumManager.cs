@@ -113,7 +113,7 @@ namespace MusicCatalogue.Logic.Database
             decimal? price,
             int? retailerId)
         {
-            var album = await GetAsync(x => x.Id == albumId);
+            var album = Context.Albums.FirstOrDefault(x => x.Id == albumId);
             if (album != null)
             {
                 // Apply the changes

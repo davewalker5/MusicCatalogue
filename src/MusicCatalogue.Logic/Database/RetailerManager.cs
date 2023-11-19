@@ -117,7 +117,7 @@ namespace MusicCatalogue.Logic.Database
             decimal? longitude = null,
             string? website = null)
         {
-            var retailer = await GetAsync(a => a.Id == retailerId);
+            var retailer = Context.Retailers.FirstOrDefault(x => x.Id == retailerId);
             if (retailer != null)
             {
                 retailer.Name = StringCleaner.Clean(name)!;

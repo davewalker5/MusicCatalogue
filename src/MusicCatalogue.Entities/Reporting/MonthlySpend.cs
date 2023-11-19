@@ -6,7 +6,7 @@ namespace MusicCatalogue.Entities.Reporting
 {
     [Keyless]
     [ExcludeFromCodeCoverage]
-    public class MonthlySpend
+    public class MonthlySpend : ReportEntityBase
     {
         [Export("Year", 1)]
         public int? Year { get; set; }

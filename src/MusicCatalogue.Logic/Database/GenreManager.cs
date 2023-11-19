@@ -68,7 +68,7 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<Genre?> UpdateAsync(int genreId, string name)
         {
-            var genre = await GetAsync(a => a.Id == genreId);
+            var genre = Context.Genres.FirstOrDefault(x => x.Id == genreId);
             if (genre != null)
             {
                 genre.Name = StringCleaner.Clean(name)!;

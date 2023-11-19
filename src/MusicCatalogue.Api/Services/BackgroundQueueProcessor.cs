@@ -1,6 +1,8 @@
 ﻿using MusicCatalogue.Api.Entities;
 using MusicCatalogue.Api.Interfaces;
+using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Logic.Factory;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Api.Services

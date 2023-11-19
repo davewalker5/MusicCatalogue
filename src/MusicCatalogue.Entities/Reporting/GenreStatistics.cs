@@ -6,7 +6,7 @@ namespace MusicCatalogue.Entities.Reporting
 {
     [Keyless]
     [ExcludeFromCodeCoverage]
-    public class GenreStatistics
+    public class GenreStatistics : ReportEntityBase
     {
         [Export("Genre", 1)]
         public string Genre { get; set; } = "";
