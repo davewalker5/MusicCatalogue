@@ -12,7 +12,9 @@ const LocationMap = ({ apiKey, latitude, longitude }) => {
           bootstrapURLKeys={{ key: apiKey }}
           defaultCenter={location}
           defaultZoom={15}
-        ></GoogleMapReact>
+        >
+          <div className={styles.locationMapMarker}></div>
+        </GoogleMapReact>
       </div>
     </>
   );

@@ -31,10 +31,6 @@ const RetailerDetails = ({ mapsApiKey, retailer, logout }) => {
         <table className={styles.retailerDetailsTable}>
           <tbody>
             <tr>
-              <th>API Key:</th>
-              <td>{mapsApiKey}</td>
-            </tr>
-            <tr>
               <th>Address:</th>
               <td>{retailer.address1}</td>
             </tr>
