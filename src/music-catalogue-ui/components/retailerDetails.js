@@ -1,17 +1,16 @@
-import { Parser } from "html-to-react";
+import LocationMap from "./locationMap";
 import styles from "./retailerDetails.module.css";
 
-const RetailerDetails = ({ retailer }) => {
+/**
+ * Component to show retailer addressing and web site details and map location
+ * @param {*} param0
+ * @returns
+ */
+const RetailerDetails = ({ mapsApiKey, retailer, logout }) => {
+  // Create map properties
   const haveCoordinates =
     retailer.latitude != null && retailer.longitude != null;
-  const position = `${retailer.latitude},${retailer.longitude}`;
   const title = `${retailer.name} - ${retailer.town}`;
-  const mapId = title.replace(/\-/g, "").replace(/ /g, "_");
-  const mapHtml = `
-  <gmp-map center="${position}" zoom="15" map-id="${mapId}">
-    <gmp-advanced-marker position="${position}" title="${title}">
-    </gmp-advanced-marker>
-  </gmp-map>`;
 
   return (
     <>
@@ -19,15 +18,22 @@ const RetailerDetails = ({ retailer }) => {
         <h5 className="themeFontColor text-center">{title}</h5>
       </div>
       {haveCoordinates == true ? (
-        <div className={styles.retailerDetailsMapContainer}>
-          {Parser().parse(mapHtml)}
-        </div>
+        <LocationMap
+          apiKey={mapsApiKey}
+          latitude={retailer.latitude}
+          longitude={retailer.longitude}
+          logout={logout}
+        />
       ) : (
         <></>
       )}
       <div className={styles.retailerDetailsContainer}>
         <table className={styles.retailerDetailsTable}>
           <tbody>
+            <tr>
+              <th>API Key:</th>
+              <td>{mapsApiKey}</td>
+            </tr>
             <tr>
               <th>Address:</th>
               <td>{retailer.address1}</td>

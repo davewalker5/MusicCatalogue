@@ -3,11 +3,12 @@ import RetailerRow from "./retailerRow";
 
 /**
  * Component to render a table listing all the retailers in the catalogue
+ * @param {*} mapsApiKey
  * @param {*} navigate
  * @param {*} logout
  * @returns
  */
-const RetailerList = ({ navigate, logout }) => {
+const RetailerList = ({ mapsApiKey, navigate, logout }) => {
   const { retailers: retailers, setRetailers } = useRetailers(logout);
 
   return (
@@ -28,7 +29,12 @@ const RetailerList = ({ navigate, logout }) => {
         {retailers != null && (
           <tbody>
             {retailers.map((r) => (
-              <RetailerRow key={r.id} retailer={r} navigate={navigate} />
+              <RetailerRow
+                key={r.id}
+                mapsApiKey={mapsApiKey}
+                retailer={r}
+                navigate={navigate}
+              />
             ))}
           </tbody>
         )}

@@ -20,7 +20,7 @@ import RetailerDetails from "./retailerDetails";
  * @param {*} logout
  * @returns
  */
-const ComponentPicker = ({ context, navigate, logout }) => {
+const ComponentPicker = ({ context, mapsApiKey, navigate, logout }) => {
   switch (context.page) {
     case pages.artists:
       return (
@@ -77,7 +77,13 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.retailers:
       return <RetailerList navigate={navigate} logout={logout} />;
     case pages.retailerDetails:
-      return <RetailerDetails retailer={context.retailer} />;
+      return (
+        <RetailerDetails
+          mapsApiKey={mapsApiKey}
+          retailer={context.retailer}
+          logout={logout}
+        />
+      );
     default:
       return <span />;
   }

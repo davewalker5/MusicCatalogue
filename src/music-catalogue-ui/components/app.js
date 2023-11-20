@@ -1,12 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Login from "./login";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/apiToken";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import MenuBar from "./menuBar";
-import config from "../config.json";
-import { Helmet } from "react-helmet";
+import { apiFetchSecret } from "@/helpers/apiSecrets";
 
 /**
  * Default application state:
@@ -32,6 +31,9 @@ const App = () => {
 
   // Application state
   const [context, setContext] = useState(defaultContext);
+
+  // Google Maps API key
+  const [mapsApiKey, setMapsApiKey] = useState(null);
 
   // Callback to set the context
   const navigate = ({
@@ -67,8 +69,17 @@ const App = () => {
     setIsLoggedIn(false);
   }, [setIsLoggedIn]);
 
-  // Set the script source for Google Maps
-  const googleMapsScript = `https://maps.googleapis.com/maps/api/js?key=${config.api.mapsApiKey}&callback=console.debug&libraries=maps,marker&v=beta`;
+  // Get the Google Maps API key and store it in state
+  useEffect(() => {
+    const fetchMapsApiKey = async () => {
+      try {
+        var fetchedKey = await apiFetchSecret("Maps API Key", logout);
+        setMapsApiKey(fetchedKey);
+      } catch {}
+    };
+
+    fetchMapsApiKey();
+  }, [logout]);
 
   // If the user's logged in, show the banner and current component. Otherwise,
   // show the login page
@@ -76,19 +87,13 @@ const App = () => {
     <>
       {isLoggedIn ? (
         <>
-          <Helmet>
-            <script
-              src={googleMapsScript}
-              crossorigin="anonymous"
-              async
-            ></script>
-          </Helmet>
           <div>
             <MenuBar navigate={navigate} logout={logout} />
           </div>
           <div>
             <ComponentPicker
               context={context}
+              mapsApiKey={mapsApiKey}
               navigate={navigate}
               logout={logout}
             />

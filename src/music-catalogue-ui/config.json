@@ -1,7 +1,6 @@
 {
   "api": {
-    "baseUrl": "http://localhost:8098",
-    "mapsApiKey": ""
+    "baseUrl": "http://localhost:8098"
   },
   "region": {
     "locale": "en-GB",
