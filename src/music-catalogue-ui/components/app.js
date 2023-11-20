@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Login from "./login";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/apiToken";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import MenuBar from "./menuBar";
+import { apiFetchSecret } from "@/helpers/apiSecrets";
 
 /**
  * Default application state:
@@ -13,9 +14,10 @@ const defaultContext = {
   // Current page
   page: pages.artists,
 
-  // Artist and album context
+  // Artist, album and retailer context
   artist: null,
   album: null,
+  retailer: null,
 
   // Data retrieval/filering criteria
   genre: null,
@@ -30,11 +32,15 @@ const App = () => {
   // Application state
   const [context, setContext] = useState(defaultContext);
 
+  // Google Maps API key
+  const [mapsApiKey, setMapsApiKey] = useState(null);
+
   // Callback to set the context
   const navigate = ({
     page = pages.artists,
     artist = null,
     album = null,
+    retailer = null,
     genre = null,
     filter = "A",
     isWishList = false,
@@ -44,6 +50,7 @@ const App = () => {
       page: page,
       artist: typeof artist != "undefined" ? artist : null,
       album: typeof album != "undefined" ? album : null,
+      retailer: typeof retailer != "undefined" ? retailer : null,
       genre: typeof genre != "undefined" ? genre : null,
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
@@ -62,6 +69,18 @@ const App = () => {
     setIsLoggedIn(false);
   }, [setIsLoggedIn]);
 
+  // Get the Google Maps API key and store it in state
+  useEffect(() => {
+    const fetchMapsApiKey = async () => {
+      try {
+        var fetchedKey = await apiFetchSecret("Maps API Key", logout);
+        setMapsApiKey(fetchedKey);
+      } catch {}
+    };
+
+    fetchMapsApiKey();
+  }, [logout]);
+
   // If the user's logged in, show the banner and current component. Otherwise,
   // show the login page
   return (
@@ -74,6 +93,7 @@ const App = () => {
           <div>
             <ComponentPicker
               context={context}
+              mapsApiKey={mapsApiKey}
               navigate={navigate}
               logout={logout}
             />

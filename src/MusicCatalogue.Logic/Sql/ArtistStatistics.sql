@@ -4,7 +4,8 @@ WITH ARTIST_SPEND ( Id, IsWishListItem, Spend ) AS
     FROM        ALBUMS al
     GROUP BY    al.ArtistId, IFNULL( al.IsWishListItem, 0 )
 )
-SELECT      a.Name,
+SELECT      RANK() OVER ( ORDER BY a.Name ASC )AS "Id",
+            a.Name,
             COUNT( DISTINCT al.Id ) AS "Albums",
             COUNT( DISTINCT t.Id ) AS "Tracks",
             asp.Spend AS "Spend"

@@ -1,4 +1,5 @@
-SELECT		STRFTIME( '%Y', al.Purchased ) AS "Year",
+SELECT		RANK() OVER ( ORDER BY al.Purchased ) AS "Id",
+			STRFTIME( '%Y', al.Purchased ) AS "Year",
 			STRFTIME( '%m', al.Purchased ) AS "Month",
 			SUM( al.Price ) AS "Spend"
 FROM		ALBUMS al

@@ -48,17 +48,33 @@ const MenuBar = ({ navigate, logout }) => {
         <a onClick={() => navigate({ page: pages.export })}>Export</a>
         <a href="#">Import</a>
         <a onClick={() => navigate({ page: pages.lookup })}>Search</a>
-        <a
-          onClick={() =>
-            navigate({ page: pages.artists, filter: "A", isWishList: true })
-          }
-        >
-          Wish List
-        </a>
-        <a onClick={() => navigate({ page: pages.genres })}>Genres</a>
-        <a onClick={() => navigate({ page: pages.artists, filter: "A" })}>
-          Artists
-        </a>
+
+        <div className={styles.dropdown}>
+          <button className={styles.dropbtn}>
+            Browse
+            <div className={styles.dropdownArrowContainer}>
+              <FontAwesomeIcon icon={faCaretDown} />
+            </div>
+          </button>
+          <div className={styles.dropdownContent}>
+            <a onClick={() => navigate({ page: pages.artists, filter: "A" })}>
+              Artists
+            </a>
+            <a onClick={() => navigate({ page: pages.genres })}>Genres</a>
+            <a
+              onClick={() =>
+                navigate({
+                  page: pages.artists,
+                  filter: "A",
+                  isWishList: true,
+                })
+              }
+            >
+              Wish List
+            </a>
+            <a onClick={() => navigate({ page: pages.retailers })}>Retailers</a>
+          </div>
+        </div>
       </div>
     </>
   );

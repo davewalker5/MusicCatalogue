@@ -18,7 +18,7 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<JobStatus> GetAsync(Expression<Func<JobStatus, bool>> predicate)
         {
-            List<JobStatus> statuses = await ListAsync(predicate, 1, 1).ToListAsync();
+            var statuses = await ListAsync(predicate, 1, 1).ToListAsync();
 #pragma warning disable CS8603
             return statuses.FirstOrDefault();
 #pragma warning restore CS8603
@@ -32,22 +32,10 @@ namespace MusicCatalogue.Logic.Database
         /// <param name="pageSize"></param>
         /// <returns></returns>
         public IAsyncEnumerable<JobStatus> ListAsync(Expression<Func<JobStatus, bool>> predicate, int pageNumber, int pageSize)
-        {
-            IAsyncEnumerable<JobStatus> results;
-            if (predicate == null)
-            {
-                results = Context.JobStatuses
-                                 .Skip((pageNumber - 1) * pageSize)
-                                 .Take(pageSize)
-                                 .AsAsyncEnumerable();
-            }
-            else
-            {
-                results = Context.JobStatuses.Where(predicate).AsAsyncEnumerable();
-            }
-
-            return results;
-        }
+            => Context.JobStatuses
+                      .Skip((pageNumber - 1) * pageSize)
+                      .Take(pageSize)
+                      .AsAsyncEnumerable();
 
         /// <summary>
         /// Create a new job status
@@ -77,7 +65,7 @@ namespace MusicCatalogue.Logic.Database
         /// <returns></returns>
         public async Task<JobStatus?> UpdateAsync(long id, string error)
         {
-            JobStatus status = await GetAsync(x => x.Id == id);
+            var status = Context.JobStatuses.FirstOrDefault(x => x.Id == id);
             if (status != null)
             {
                 status.End = DateTime.Now;

@@ -1,11 +1,12 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Reporting;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Logic.Reporting
 {
     [ExcludeFromCodeCoverage]
-    internal class WishListBasedReport<T> : ReportManagerBase, IWishListBasedReport<T> where T : class
+    internal class WishListBasedReport<T> : ReportManagerBase, IWishListBasedReport<T> where T : ReportEntityBase
     {
         private const string WishListPlaceHoder = "$wishlist";
 

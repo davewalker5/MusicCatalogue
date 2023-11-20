@@ -134,12 +134,13 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 ### Configuration
 
-- The UI uses a simple "config.json" file containing the base URL for the Music Catalogue web service and locale settings used by the UI:
+- The UI uses a simple "config.json" file containing the base URL for the Music Catalogue web service, a Google Maps API key for retailer location maps and locale settings used by the UI:
 
 ```json
 {
   "api": {
-    "baseUrl": "http://localhost:8098"
+    "baseUrl": "http://localhost:8098",
+    "mapsApiKey": ""
   },
   "region": {
     "locale": "en-GB",
@@ -159,7 +160,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 #### Main Catalogue
 
 - After logging in, the "Artists" page is displayed, listing the artists currently in the database
-- This acts as the home page for the site and clicking on the "Artists" menu item or the site logo navigates back to it
+- This acts as the home page for the site and clicking on the "Browse > Artists" menu item or the site logo navigates back to it
 
 <img src="diagrams/artist-list.png" alt="Artist List" width="600">
 
@@ -186,7 +187,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 #### Browsing By Genre
 
-- To browse by genre, click on the "Genres" menu item
+- To browse by genre, click on the "Browse > Genres" menu item
 - A page listing the genres derived from all albums in the //main catalogue// is displayed
 
 <img src="diagrams/genre-list.png" alt="Genre List" width="600">
@@ -196,7 +197,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 #### The Wish List
 
-- To view the wish list, click on the "Wish List" menu item
+- To view the wish list, click on the "Browse > Wish List" menu item
 - A page identical in layout to the "Artists" page is displayed, but with a title indicating that it is the wish list
 - The page operates in an identical manner to the "Artists" page, using the same alphabet filter
 - Clicking on a row in the table navigates to the wish list for that artist:
@@ -207,6 +208,24 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the album shown in that row along with the associated tracks
 - Clicking on the vinyl record icon moves the album from the wish list to the main catalogue then refreshes the album list
 - Clicking on the money icon opens the purchase details page and allows the price and a potential retailer to be set, but not the purchase date
+
+#### The Retailers List
+
+- To view a list of retailers in the database, click on the "Browse > Retailers" menu item
+- A page listing the retailers in the database is displayed:
+
+<img src="diagrams/retailer-list.png" alt="Retailers List" width="600">
+
+- The page operates in an identical manner to the "Artists" page, using the same alphabet filter
+- Clicking on a row in the table navigates to the details page for that retailer:
+
+<img src="diagrams/retailer-details.png" alt="Retailer Details" width="600">
+
+- The map is only displayed if:
+  - Latitude and longitude are set against the retailer's record in the database
+  - The UI configuration file contains an API key for Google Maps
+- Currently, the only way to set extended retailer details is directly on the database
+- The intention is to add retailer maintenance, including geocoding postcodes, to the next release
 
 ### Album Lookup
 

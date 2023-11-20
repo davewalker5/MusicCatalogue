@@ -11,7 +11,8 @@ WITH ALBUM_SUMMARY ( Id, ArtistId, Genre, Tracks, Price, IsWishListItem ) AS
     INNER JOIN  GENRES g ON g.Id = a.GenreId
     GROUP BY    a.Id, a.ArtistId, g.Name, a.Price
 )
-SELECT      Genre,
+SELECT      RANK() OVER ( ORDER BY Genre ASC ) AS "Id",
+            Genre,
             COUNT( DISTINCT ArtistId) AS "Artists",
             COUNT( DISTINCT Id ) AS "Albums",
             SUM( Tracks ) AS "Tracks",

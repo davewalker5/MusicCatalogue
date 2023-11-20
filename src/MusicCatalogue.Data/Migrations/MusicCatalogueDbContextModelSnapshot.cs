@@ -151,10 +151,37 @@ namespace MusicCatalogue.Data.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Id");
 
+                    b.Property<string>("Address1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Address2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("County")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Latitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Longitude")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("Name");
+
+                    b.Property<string>("PostCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Town")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -222,6 +249,9 @@ namespace MusicCatalogue.Data.Migrations
                     b.Property<int?>("Albums")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -247,6 +277,9 @@ namespace MusicCatalogue.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal?>("Spend")
                         .HasColumnType("TEXT");
 
@@ -258,6 +291,9 @@ namespace MusicCatalogue.Data.Migrations
 
             modelBuilder.Entity("MusicCatalogue.Entities.Reporting.MonthlySpend", b =>
                 {
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("Month")
                         .HasColumnType("INTEGER");
 

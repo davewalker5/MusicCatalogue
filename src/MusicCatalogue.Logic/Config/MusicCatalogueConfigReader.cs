@@ -18,6 +18,9 @@ namespace MusicCatalogue.Logic.Config
             {
                 // Resolve all the API keys for services where the key is held in a separate file
                 ApiKeyResolver.ResolveAllApiKeys(settings);
+
+                // Repeat for the secrets
+                SecretResolver.ResolveAllSecrets(settings!);
             }
 
             return settings;

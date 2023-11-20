@@ -12,6 +12,8 @@ const pages = {
   jobStatusReport: "JobStatusReport",
   monthlySpendReport: "MonthlySpendReport",
   albumPurchaseDetails: "AlbumPurchaseDetails",
+  retailers: "Retailers",
+  retailerDetails: "RetailerDetails",
 };
 
 export default pages;
