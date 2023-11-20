@@ -26,6 +26,11 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(1, settings?.ApiServiceKeys.Count);
             Assert.AreEqual(ApiServiceType.TheAudioDB, settings?.ApiServiceKeys.First().Service);
             Assert.AreEqual("my-key", settings?.ApiServiceKeys.First().Key);
+
+            Assert.IsNotNull(settings?.Secrets);
+            Assert.AreEqual(1, settings?.Secrets.Count);
+            Assert.AreEqual("Maps API Key", settings?.Secrets.First().Name);
+            Assert.AreEqual("my-maps-key", settings?.Secrets.First().Value);
         }
 
         [TestMethod]
@@ -37,6 +42,17 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(1, settings?.ApiServiceKeys.Count);
             Assert.AreEqual(ApiServiceType.TheAudioDB, settings?.ApiServiceKeys.First().Service);
             Assert.AreEqual("my-separate-key", settings?.ApiServiceKeys.First().Key);
+        }
+
+        [TestMethod]
+        public void SeparateSecretsFileTest()
+        {
+            var settings = new MusicCatalogueConfigReader().Read("separatesecretappsettings.json");
+
+            Assert.IsNotNull(settings?.Secrets);
+            Assert.AreEqual(1, settings?.Secrets.Count);
+            Assert.AreEqual("Maps API Key", settings?.Secrets.First().Name);
+            Assert.AreEqual("my-separate-maps-key", settings?.Secrets.First().Value);
         }
     }
 }

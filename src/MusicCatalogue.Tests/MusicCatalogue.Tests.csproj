@@ -16,17 +16,25 @@
   <ItemGroup>
     <None Remove="apikey.txt" />
     <None Remove="appsettings.json" />
+    <None Remove="secret.txt" />
     <None Remove="separateapikeyappsettings.json" />
+    <None Remove="separatesecretappsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="apikey.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="secret.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="separateapikeyappsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="separatesecretappsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

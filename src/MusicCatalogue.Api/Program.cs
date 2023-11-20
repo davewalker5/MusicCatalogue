@@ -1,5 +1,5 @@
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MusicCatalogue.Api.Entities;
@@ -43,6 +43,7 @@ namespace MusicCatalogue.Api
             builder.Services.Configure<MusicApplicationSettings>(section);
             var settings = section.Get<MusicApplicationSettings>();
             ApiKeyResolver.ResolveAllApiKeys(settings!);
+            SecretResolver.ResolveAllSecrets(settings!);
 
             // Configure the DB context
             builder.Services.AddScoped<MusicCatalogueDbContext>();
