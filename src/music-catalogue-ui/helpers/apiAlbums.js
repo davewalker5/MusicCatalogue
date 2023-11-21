@@ -9,7 +9,7 @@ import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
  * @returns
  */
 const apiAlbumUpdate = async (album, logout) => {
-  // Construct the body - the wish list flat needs to be updated before this
+  // Construct the body
   const body = JSON.stringify(album);
 
   // Call the API to set the wish list flag for a given album

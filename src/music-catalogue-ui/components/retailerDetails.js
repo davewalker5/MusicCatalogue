@@ -1,3 +1,4 @@
+import pages from "../helpers/navigation";
 import LocationMap from "./locationMap";
 import styles from "./retailerDetails.module.css";
 
@@ -6,18 +7,21 @@ import styles from "./retailerDetails.module.css";
  * @param {*} param0
  * @returns
  */
-const RetailerDetails = ({ mapsApiKey, retailer, logout }) => {
-  // Create map properties
-  const haveCoordinates =
-    retailer.latitude != null && retailer.longitude != null;
-  const title = `${retailer.name} - ${retailer.town}`;
+const RetailerDetails = ({ mapsApiKey, retailer, navigate, logout }) => {
+  // Set a flag indicating if we have enough data to show the map
+  const canShowMap = retailer.latitude != null && retailer.longitude != null;
+
+  const title =
+    retailer.town != null
+      ? `${retailer.name} - ${retailer.town}`
+      : retailer.name;
 
   return (
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">{title}</h5>
       </div>
-      {haveCoordinates == true ? (
+      {canShowMap == true ? (
         <LocationMap
           apiKey={mapsApiKey}
           latitude={retailer.latitude}
@@ -52,7 +56,7 @@ const RetailerDetails = ({ mapsApiKey, retailer, logout }) => {
             </tr>
             <tr>
               <th>Postcode:</th>
-              <td>{retailer.postcode}</td>
+              <td>{retailer.postCode}</td>
             </tr>
             <tr>
               <th>Country:</th>
@@ -72,6 +76,16 @@ const RetailerDetails = ({ mapsApiKey, retailer, logout }) => {
             )}
           </tbody>
         </table>
+        <div className={styles.retailerDetailsButtonContainer}>
+          <button
+            className="btn btn-primary"
+            onClick={() =>
+              navigate({ page: pages.retailerEditor, retailer: retailer })
+            }
+          >
+            Edit
+          </button>
+        </div>
       </div>
     </>
   );

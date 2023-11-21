@@ -6,6 +6,7 @@ import config from "../config.json";
 import pages from "../helpers/navigation";
 import { apiCreateRetailer } from "@/helpers/apiRetailers";
 import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
+import FormInputField from "./formInputField";
 
 /**
  * Form to set the album purchase details for an album
@@ -120,18 +121,12 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
                 />
               </div>
             </div>
-            <div className="form-group mt-3">
-              <label className={styles.purchaseDetailsFormLabel}>
-                Retailer
-              </label>
-              <input
-                className="form-control mt-1"
-                placeholder="Retailer Name"
-                name="retailer"
-                value={retailerName}
-                onChange={(e) => setRetailerName(e.target.value)}
-              />
-            </div>
+            <FormInputField
+              label="Retailer Name"
+              name="retailer"
+              value={retailerName}
+              setValue={setRetailerName}
+            />
             <div className="d-grid gap-2 mt-3">
               <span className={styles.purchaseDetailsError}>
                 {errorMessage}

@@ -12,6 +12,7 @@ import MonthlySpendReport from "./monthlySpendReport";
 import GenreList from "./genreList";
 import RetailerList from "./retailerList";
 import RetailerDetails from "./retailerDetails";
+import RetailerEditor from "./retailerEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -81,6 +82,15 @@ const ComponentPicker = ({ context, mapsApiKey, navigate, logout }) => {
         <RetailerDetails
           mapsApiKey={mapsApiKey}
           retailer={context.retailer}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.retailerEditor:
+      return (
+        <RetailerEditor
+          retailer={context.retailer}
+          navigate={navigate}
           logout={logout}
         />
       );

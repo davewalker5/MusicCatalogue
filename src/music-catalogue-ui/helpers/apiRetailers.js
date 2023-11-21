@@ -42,4 +42,59 @@ const apiFetchRetailers = async (logout) => {
   return retailers;
 };
 
-export { apiCreateRetailer, apiFetchRetailers };
+/**
+ * Update a retailer's details
+ * @param {*} id
+ * @param {*} address1
+ * @param {*} address2
+ * @param {*} town
+ * @param {*} county
+ * @param {*} postCode
+ * @param {*} country
+ * @param {*} webSite
+ * @param {*} logout
+ * @returns
+ */
+const apiUpdateRetailer = async (
+  id,
+  name,
+  address1,
+  address2,
+  town,
+  county,
+  postCode,
+  country,
+  webSite,
+  latitude,
+  longitude,
+  logout
+) => {
+  // Construct the body
+  const body = JSON.stringify({
+    id: id,
+    name: name,
+    address1: address1,
+    address2: address2,
+    town: town,
+    county: county,
+    postCode: postCode,
+    country: country,
+    webSite: webSite,
+    latitude: latitude,
+    longitude: longitude,
+  });
+  console.log(body);
+
+  // Call the API to set the wish list flag for a given album
+  const url = `${config.api.baseUrl}/retailers`;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const updatedRetailer = await apiReadResponseData(response, logout);
+  return updatedRetailer;
+};
+
+export { apiCreateRetailer, apiFetchRetailers, apiUpdateRetailer };

@@ -1,6 +1,7 @@
 import styles from "./export.module.css";
 import { useCallback, useState } from "react";
 import { apiRequestCatalogueExport } from "@/helpers/apiDataExchange";
+import FormInputField from "./formInputField";
 
 /**
  * Component to prompt for an export file name and request an export of the catalogue
@@ -49,16 +50,12 @@ const ExportCatalogue = ({ logout }) => {
             <></>
           )}
           <div>
-            <div className="form-group mt-3">
-              <label className={styles.exportFormLabel}>File Name</label>
-              <input
-                className="form-control mt-1"
-                placeholder="File name"
-                name="fileName"
-                value={fileName}
-                onChange={(e) => setFileName(e.target.value)}
-              />
-            </div>
+            <FormInputField
+              label="File Name"
+              name="fileName"
+              value={fileName}
+              setValue={setFileName}
+            />
             <br />
             <div className={styles.exportButton}>
               <button

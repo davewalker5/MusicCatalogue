@@ -24,6 +24,7 @@ const RetailerList = ({ mapsApiKey, navigate, logout }) => {
             <th>County</th>
             <th>Country</th>
             <th>Web Site</th>
+            <th />
           </tr>
         </thead>
         {retailers != null && (
