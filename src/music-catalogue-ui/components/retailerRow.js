@@ -4,12 +4,11 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component to render a row containing the details for a single retailer
- * @param {*} mapsApiKey
  * @param {*} artist
  * @param {*} navigate
  * @returns
  */
-const RetailerRow = ({ mapsApiKey, retailer, navigate }) => {
+const RetailerRow = ({ retailer, navigate }) => {
   return (
     <tr>
       <td
@@ -17,7 +16,6 @@ const RetailerRow = ({ mapsApiKey, retailer, navigate }) => {
           navigate({
             page: pages.retailerDetails,
             retailer: retailer,
-            mapsApiKey: mapsApiKey,
           })
         }
       >
@@ -28,7 +26,6 @@ const RetailerRow = ({ mapsApiKey, retailer, navigate }) => {
           navigate({
             page: pages.retailerDetails,
             retailer: retailer,
-            mapsApiKey: mapsApiKey,
           })
         }
       >
@@ -39,7 +36,6 @@ const RetailerRow = ({ mapsApiKey, retailer, navigate }) => {
           navigate({
             page: pages.retailerDetails,
             retailer: retailer,
-            mapsApiKey: mapsApiKey,
           })
         }
       >
@@ -50,7 +46,6 @@ const RetailerRow = ({ mapsApiKey, retailer, navigate }) => {
           navigate({
             page: pages.retailerDetails,
             retailer: retailer,
-            mapsApiKey: mapsApiKey,
           })
         }
       >

@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Login from "./login";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/apiToken";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import MenuBar from "./menuBar";
-import { apiFetchSecret } from "@/helpers/apiSecrets";
+import { clearStorageValue } from "@/helpers/storage";
+import secrets from "@/helpers/secrets";
 
 /**
  * Default application state:
@@ -31,9 +32,6 @@ const App = () => {
 
   // Application state
   const [context, setContext] = useState(defaultContext);
-
-  // Google Maps API key
-  const [mapsApiKey, setMapsApiKey] = useState(null);
 
   // Callback to set the context
   const navigate = ({
@@ -65,29 +63,16 @@ const App = () => {
   }, [setIsLoggedIn]);
 
   const logout = useCallback(() => {
+    clearStorageValue(secrets.mapsApiKey);
     apiClearToken();
     setIsLoggedIn(false);
   }, [setIsLoggedIn]);
-
-  // Get the Google Maps API key and store it in state
-  useEffect(() => {
-    const fetchMapsApiKey = async () => {
-      try {
-        var fetchedKey = await apiFetchSecret("Maps API Key", logout);
-        setMapsApiKey(fetchedKey);
-      } catch {}
-    };
-
-    if (mapsApiKey == null) {
-      fetchMapsApiKey();
-    }
-  }, [mapsApiKey, logout]);
 
   // If the user's logged in, show the banner and current component. Otherwise,
   // show the login page
   return (
     <>
-      {isLoggedIn && mapsApiKey != null ? (
+      {isLoggedIn ? (
         <>
           <div>
             <MenuBar navigate={navigate} logout={logout} />
@@ -95,7 +80,6 @@ const App = () => {
           <div>
             <ComponentPicker
               context={context}
-              mapsApiKey={mapsApiKey}
               navigate={navigate}
               logout={logout}
             />

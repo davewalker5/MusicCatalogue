@@ -1,13 +1,17 @@
+import { getStorageValue } from "@/helpers/storage";
 import pages from "../helpers/navigation";
 import LocationMap from "./locationMap";
 import styles from "./retailerDetails.module.css";
+import secrets from "@/helpers/secrets";
 
 /**
  * Component to show retailer addressing and web site details and map location
- * @param {*} param0
+ * @param {*} retailer
+ * @param {*} navigate
+ * @param {*} logout
  * @returns
  */
-const RetailerDetails = ({ mapsApiKey, retailer, navigate, logout }) => {
+const RetailerDetails = ({ retailer, navigate, logout }) => {
   // Set a flag indicating if we have enough data to show the map
   const canShowMap = retailer.latitude != null && retailer.longitude != null;
 
@@ -23,7 +27,6 @@ const RetailerDetails = ({ mapsApiKey, retailer, navigate, logout }) => {
       </div>
       {canShowMap == true ? (
         <LocationMap
-          apiKey={mapsApiKey}
           latitude={retailer.latitude}
           longitude={retailer.longitude}
           logout={logout}

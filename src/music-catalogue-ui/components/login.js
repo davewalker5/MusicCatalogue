@@ -1,7 +1,10 @@
 import styles from "./login.module.css";
+import secrets from "@/helpers/secrets";
 import { React, useState, useCallback } from "react";
 import { apiAuthenticate } from "@/helpers/apiAuthenticate";
 import { apiSetToken } from "@/helpers/apiToken";
+import { apiFetchSecret } from "@/helpers/apiSecrets";
+import { setStorageValue } from "@/helpers/storage";
 
 /**
  * Component to render the login page
@@ -24,6 +27,14 @@ const Login = ({ login }) => {
       if (token != null) {
         // Successful, so store the token
         apiSetToken(token);
+
+        // Now attempt to get the Google Maps API key
+        const apiKey = await apiFetchSecret(secrets.mapsApiKey);
+        if (apiKey != null) {
+          // Successful, so store it
+          setStorageValue(secrets.mapsApiKey, apiKey);
+        }
+
         login(true);
       }
     },

@@ -21,7 +21,7 @@ import RetailerEditor from "./retailerEditor";
  * @param {*} logout
  * @returns
  */
-const ComponentPicker = ({ context, mapsApiKey, navigate, logout }) => {
+const ComponentPicker = ({ context, navigate, logout }) => {
   switch (context.page) {
     case pages.artists:
       return (
@@ -80,7 +80,6 @@ const ComponentPicker = ({ context, mapsApiKey, navigate, logout }) => {
     case pages.retailerDetails:
       return (
         <RetailerDetails
-          mapsApiKey={mapsApiKey}
           retailer={context.retailer}
           navigate={navigate}
           logout={logout}
