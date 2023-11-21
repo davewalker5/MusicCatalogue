@@ -14,6 +14,7 @@ const pages = {
   albumPurchaseDetails: "AlbumPurchaseDetails",
   retailers: "Retailers",
   retailerDetails: "RetailerDetails",
+  retailerEditor: "RetailerEditor",
 };
 
 export default pages;

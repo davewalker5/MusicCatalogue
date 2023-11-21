@@ -1,6 +1,8 @@
 import GoogleMapReact from "google-map-react";
 import { useState } from "react";
 import styles from "./locationMap.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
 const LocationMap = ({ apiKey, latitude, longitude }) => {
   const [location, setLocation] = useState({ lat: latitude, lng: longitude });
@@ -13,7 +15,7 @@ const LocationMap = ({ apiKey, latitude, longitude }) => {
           defaultCenter={location}
           defaultZoom={15}
         >
-          <div className={styles.locationMapMarker}></div>
+          <FontAwesomeIcon icon={faMapMarkerAlt} size="3x" color="red" />
         </GoogleMapReact>
       </div>
     </>

@@ -216,16 +216,20 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 <img src="diagrams/retailer-list.png" alt="Retailers List" width="600">
 
-- The page operates in an identical manner to the "Artists" page, using the same alphabet filter
-- Clicking on a row in the table navigates to the details page for that retailer:
+- Clicking on the edit icon in a row navigates to the retailer details editing page for that retailer (see below)
+- Clicking on a row in the table navigates to the details viewing page for that retailer:
 
 <img src="diagrams/retailer-details.png" alt="Retailer Details" width="600">
 
 - The map is only displayed if:
   - Latitude and longitude are set against the retailer's record in the database
   - The UI configuration file contains an API key for Google Maps
-- Currently, the only way to set extended retailer details is directly on the database
-- The intention is to add retailer maintenance, including geocoding postcodes, to the next release
+- To edit the details for the current retailer, click on the "Edit" button to go to the retailer details editing page:
+
+<img src="diagrams/retailer-editor.png" alt="Retailer Details" width="600">
+
+- Currently, the latitude and longitude (required to display the map) must be derived using external resources and then entered manually
+- The intention is to add postcode geocoding to the next release
 
 ### Album Lookup
 

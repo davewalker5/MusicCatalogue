@@ -1,0 +1,21 @@
+.retailerEditorFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.retailerEditorForm {
+  width: 80%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.retailerEditorButton {
+  margin-left: 10px;
+  float: right;
+}
+
+.retailerEditorError {
+  font-weight: bold;
+  color: red;
+}
