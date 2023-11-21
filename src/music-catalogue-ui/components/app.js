@@ -78,14 +78,16 @@ const App = () => {
       } catch {}
     };
 
-    fetchMapsApiKey();
-  }, [logout]);
+    if (mapsApiKey == null) {
+      fetchMapsApiKey();
+    }
+  }, [mapsApiKey, logout]);
 
   // If the user's logged in, show the banner and current component. Otherwise,
   // show the login page
   return (
     <>
-      {isLoggedIn ? (
+      {isLoggedIn && mapsApiKey != null ? (
         <>
           <div>
             <MenuBar navigate={navigate} logout={logout} />
