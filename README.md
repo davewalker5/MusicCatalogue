@@ -134,17 +134,18 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 ### Configuration
 
-- The UI uses a simple "config.json" file containing the base URL for the Music Catalogue web service, a Google Maps API key for retailer location maps and locale settings used by the UI:
+- The UI uses a simple "config.json" file containing the base URL for the Music Catalogue web service and locale settings used by the UI and during address geocoding:
 
 ```json
 {
   "api": {
-    "baseUrl": "http://localhost:8098",
-    "mapsApiKey": ""
+    "baseUrl": "http://localhost:8098"
   },
   "region": {
     "locale": "en-GB",
-    "currency": "GBP"
+    "currency": "GBP",
+    "geocodingLanguage": "en",
+    "geocodingRegion": "GB"
   }
 }
 ```
@@ -228,8 +229,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 <img src="diagrams/retailer-editor.png" alt="Retailer Details" width="600">
 
-- Currently, the latitude and longitude (required to display the map) must be derived using external resources and then entered manually
-- The intention is to add postcode geocoding to the next release
+- Clicking on the globe icon next to the postcode entry will geocode the current address and populate the latitude and longitude with the results
 
 ### Album Lookup
 

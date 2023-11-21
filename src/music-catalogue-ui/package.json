@@ -20,6 +20,7 @@
     "react-currency-input-field": "^3.6.12",
     "react-datepicker": "^4.21.0",
     "react-dom": "^18",
+    "react-geocode": "^1.0.0-alpha.1",
     "react-select": "^5.8.0"
   },
   "devDependencies": {
