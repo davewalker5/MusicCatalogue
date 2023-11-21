@@ -1,33 +1,21 @@
+import { setStorageValue, getStorageValue, clearStorageValue } from "./storage";
+
 /**
  * Store the JWT token
  * @param {*} token
  */
-const apiSetToken = (token) => {
-  // TODO: Move to HTTP Cookie
-  localStorage.setItem("token", token);
-};
+const apiSetToken = (token) => setStorageValue("token", token);
 
 /**
  * Retrieve the current JWT token
  * @param {*} token
  * @returns
  */
-const apiGetToken = () => {
-  try {
-    // TODO: Move to HTTP Cookie
-    const token = localStorage.getItem("token");
-    return token;
-  } catch {
-    return null;
-  }
-};
+const apiGetToken = () => getStorageValue("token");
 
 /**
  * Clear the current JWT token
  */
-const apiClearToken = () => {
-  // TODO: Move to HTTP Cookie
-  localStorage.removeItem("token");
-};
+const apiClearToken = () => clearStorageValue("token");
 
 export { apiClearToken, apiSetToken, apiGetToken };
