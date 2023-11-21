@@ -17,7 +17,13 @@ const LocationMap = ({ latitude, longitude }) => {
           defaultCenter={location}
           defaultZoom={15}
         >
-          <FontAwesomeIcon icon={faMapMarkerAlt} size="3x" color="red" />
+          <FontAwesomeIcon
+            lat={latitude}
+            lng={longitude}
+            icon={faMapMarkerAlt}
+            size="3x"
+            color="red"
+          />
         </GoogleMapReact>
       </div>
     </>
