@@ -80,7 +80,18 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Retailer?>> UpdateRetailerAsync([FromBody] Retailer template)
         {
-            var retailer = await _factory.Retailers.UpdateAsync(template.Id, template.Name);
+            var retailer = await _factory.Retailers.UpdateAsync(
+                template.Id,
+                template.Name,
+                template.Address1,
+                template.Address2,
+                template.Town,
+                template.County,
+                template.PostCode,
+                template.Country,
+                template.Latitude,
+                template.Longitude,
+                template.WebSite);
             return retailer;
         }
 
