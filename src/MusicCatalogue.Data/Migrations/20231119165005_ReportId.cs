@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     /// <inheritdoc />
     public partial class ReportId : Migration
     {
