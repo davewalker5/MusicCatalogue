@@ -3,6 +3,9 @@ import pages from "../helpers/navigation";
 import { useState, useCallback } from "react";
 import { apiUpdateRetailer } from "@/helpers/apiRetailers";
 import FormInputField from "./formInputField";
+import { geocodeAddress } from "@/helpers/geocoder";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 const RetailerEditor = ({ retailer, navigate, logout }) => {
   const [name, setName] = useState(retailer.name);
@@ -16,6 +19,31 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
   const [longitude, setLongitude] = useState(retailer.longitude);
   const [webSite, setWebSite] = useState(retailer.webSite);
   const [error, setError] = useState("");
+
+  // Callback to geocode the address
+  const geocode = useCallback(
+    async (e) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Geocode the address
+      const location = await geocodeAddress(
+        address1,
+        address2,
+        town,
+        county,
+        postCode,
+        country
+      );
+
+      // If we have an address, set the latitude and longitude
+      if (location != null) {
+        setLatitude(location.lat);
+        setLongitude(location.lng);
+      }
+    },
+    [address1, address2, town, county, postCode, country]
+  );
 
   /* Callback to save retailer details */
   const saveRetailer = useCallback(
@@ -133,12 +161,23 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
           </div>
           <div className="row align-items-start">
             <div className="col">
-              <FormInputField
-                label="Postcode"
-                name="postCode"
-                value={postCode}
-                setValue={setPostCode}
-              />
+              <div className="form-group mt-3">
+                <label className={styles.retailerEditorInputLabel}>
+                  Postcode
+                </label>
+                <FontAwesomeIcon
+                  icon={faGlobe}
+                  className={styles.retailerEditorGeocode}
+                  onClick={(e) => geocode(e)}
+                />
+                <input
+                  className="form-control"
+                  placeholder="Postcode"
+                  name="postcode"
+                  value={postCode}
+                  onChange={(e) => setPostCode(e.target.value)}
+                />
+              </div>
             </div>
             <div className="col">
               <FormInputField

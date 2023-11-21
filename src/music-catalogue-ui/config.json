@@ -4,6 +4,8 @@
   },
   "region": {
     "locale": "en-GB",
-    "currency": "GBP"
+    "currency": "GBP",
+    "geocodingLanguage": "en",
+    "geocodingRegion": "GB"
   }
 }
