@@ -1,14 +1,26 @@
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import DeleteRetailerActionIcon from "./deleteRetailerActionIcon";
 
 /**
  * Component to render a row containing the details for a single retailer
- * @param {*} artist
+ * @param {*} retailer
  * @param {*} navigate
+ * @param {*} logout
+ * @param {*} clearError
+ * @param {*} setError
+ * @param {*} setRetailers
  * @returns
  */
-const RetailerRow = ({ retailer, navigate }) => {
+const RetailerRow = ({
+  retailer,
+  navigate,
+  logout,
+  clearError,
+  setError,
+  setRetailers,
+}) => {
   return (
     <tr>
       <td
@@ -55,6 +67,15 @@ const RetailerRow = ({ retailer, navigate }) => {
         <a href={retailer.webSite} target="_blank">
           {retailer.webSite}
         </a>
+      </td>
+      <td>
+        <DeleteRetailerActionIcon
+          retailer={retailer}
+          logout={logout}
+          clearError={clearError}
+          setError={setError}
+          setRetailers={setRetailers}
+        />
       </td>
       <td>
         <FontAwesomeIcon

@@ -7,6 +7,8 @@ import pages from "../helpers/navigation";
 import { apiCreateRetailer } from "@/helpers/apiRetailers";
 import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
 import FormInputField from "./formInputField";
+import Select from "react-select";
+import useRetailers from "@/hooks/useRetailers";
 
 /**
  * Form to set the album purchase details for an album
@@ -17,16 +19,18 @@ import FormInputField from "./formInputField";
  * @param {*} logout
  */
 const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
+  const { retailers: retailers, setRetailers } = useRetailers(logout);
+
   // Get the retailer name and purchase date from the album
-  const initialRetailerName =
-    album["retailer"] != null ? album["retailer"]["name"] : "";
+  const initialRetailerId =
+    album["retailer"] != null ? album["retailer"]["id"] : null;
   const initialPurchaseDate =
     album.purchased != null ? new Date(album.purchased) : new Date();
 
   // Set up state
   const [purchaseDate, setPurchaseDate] = useState(initialPurchaseDate);
   const [price, setPrice] = useState(album.price);
-  const [retailerName, setRetailerName] = useState(initialRetailerName);
+  const [retailerId, setRetailerId] = useState(initialRetailerId);
   const [errorMessage, setErrorMessage] = useState("");
 
   /* Callback to set album purchase details */
@@ -35,20 +39,7 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
-      // See if we have a retailer name. If so, create/retrieve the retailer and
-      // capture the retailer ID
-      var retailerId = null;
-      if (retailerName != "") {
-        const retailer = await apiCreateRetailer(retailerName, logout);
-        if (retailer != null) {
-          retailerId = retailer.id;
-        } else {
-          setErrorMessage(`Error creating retailer "${retailerName}"`);
-          return;
-        }
-      }
-
-      // Construct the remaining values to be passed to the API
+      // Construct the values to be passed to the API
       const updatedPurchaseDate =
         album.isWishListItem == true ? null : purchaseDate;
       const updatedPrice = price == undefined ? null : price;
@@ -58,7 +49,7 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
         album,
         updatedPurchaseDate,
         updatedPrice,
-        retailerId,
+        retailerId.value,
         logout
       );
 
@@ -75,8 +66,17 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
         setErrorMessage("Error updating the album purchase details");
       }
     },
-    [artist, album, purchaseDate, price, retailerName, logout, navigate]
+    [artist, album, price, purchaseDate, retailerId, logout, navigate]
   );
+
+  // Construct the options for the retailer drop-down
+  let options = [];
+  for (let i = 0; i < retailers.length; i++) {
+    options = [
+      ...options,
+      { value: retailers[i].id, label: retailers[i].name },
+    ];
+  }
 
   return (
     <>
@@ -121,12 +121,14 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
                 />
               </div>
             </div>
-            <FormInputField
-              label="Retailer Name"
-              name="retailer"
-              value={retailerName}
-              setValue={setRetailerName}
-            />
+            <div className="form-group mt-3">
+              <label className={styles.purchaseDetailsFormLabel}>
+                Retailer
+              </label>
+              <div>
+                <Select onChange={setRetailerId} options={options} />
+              </div>
+            </div>
             <div className="d-grid gap-2 mt-3">
               <span className={styles.purchaseDetailsError}>
                 {errorMessage}
