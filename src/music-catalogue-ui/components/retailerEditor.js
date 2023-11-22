@@ -1,7 +1,7 @@
 import styles from "./retailerEditor.module.css";
 import pages from "../helpers/navigation";
 import { useState, useCallback } from "react";
-import { apiUpdateRetailer } from "@/helpers/apiRetailers";
+import { apiCreateRetailer, apiUpdateRetailer } from "@/helpers/apiRetailers";
 import FormInputField from "./formInputField";
 import { geocodeAddress } from "@/helpers/geocoder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -54,25 +54,46 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
       // Clear pre-existing errors
       setError("");
 
-      // Update the retailer
-      const updatedRetailer = await apiUpdateRetailer(
-        retailer.id,
-        name,
-        address1,
-        address2,
-        town,
-        county,
-        postCode,
-        country,
-        webSite,
-        latitude,
-        longitude,
-        logout
-      );
+      // Either add or update the retailer, depending on whether they currently
+      // have an ID
+      let updatedRetailer = null;
+      if (retailer.id <= 0) {
+        // Invalid ID, so create a new retailer
+        updatedRetailer = await apiCreateRetailer(
+          name,
+          address1,
+          address2,
+          town,
+          county,
+          postCode,
+          country,
+          webSite,
+          latitude,
+          longitude,
+          logout
+        );
+      } else {
+        // Has a valid ID, so update an existing retailer
+        updatedRetailer = await apiUpdateRetailer(
+          retailer.id,
+          name,
+          address1,
+          address2,
+          town,
+          county,
+          postCode,
+          country,
+          webSite,
+          latitude,
+          longitude,
+          logout
+        );
+      }
 
       // If all's well, display a confirmation message. Otherwise, show an error
       if (updatedRetailer == null) {
-        setError("An error occurred updating the retailer details");
+        const action = retailer.Id <= 0 ? "adding" : "updating";
+        setError(`An error occurred ${action} the retailer`);
       } else {
         navigate({ page: pages.retailers });
       }

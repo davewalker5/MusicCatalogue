@@ -180,6 +180,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 <img src="diagrams/purchase-details.png" alt="Purchase Details" width="600">
 
+- Note that retailers must be added using the retailer list and retailer editing page (see below) before they will appear in the drop-down on the purchase details page
 - Clicking anywhere else on a row opens the track list for the album shown in that row:
 
 <img src="diagrams/track-list.png" alt="Track List" width="600">
@@ -217,6 +218,9 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 <img src="diagrams/retailer-list.png" alt="Retailers List" width="600">
 
+- Clicking on the trash can icon in a row will prompt for confirmation and then attempt to delete the retailer on the selected row
+- Retailers that are currently "in use" (associated with an album) cannot be deleted and attempting to delete them will result in an error message being displayed
+- Clicking on the "Add" button opens the retailer details editing page (see below) to add a new retailer
 - Clicking on the edit icon in a row navigates to the retailer details editing page for that retailer (see below)
 - Clicking on a row in the table navigates to the details viewing page for that retailer:
 
