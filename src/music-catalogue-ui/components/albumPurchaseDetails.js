@@ -78,15 +78,6 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
     ];
   }
 
-  // Identify the default retailer for the drop-down
-  let defaultValue = null;
-  if (retailerId != null) {
-    const retailer = retailers.find((x) => x.id == retailerId);
-    if (retailer != null) {
-      defaultValue = retailer.name;
-    }
-  }
-
   return (
     <>
       <div className="row mb-2 pageTitle">
