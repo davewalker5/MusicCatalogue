@@ -43,6 +43,7 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
             <th>No.</th>
             <th>Track</th>
             <th>Duration</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -54,6 +55,8 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
               track={t}
               isWishList={isWishList}
               navigate={navigate}
+              logout={logout}
+              setTracks={setTracks}
             />
           ))}
         </tbody>

@@ -1,3 +1,4 @@
+import DeleteTrackActionIcon from "./deleteTrackActionIcon";
 import styles from "./trackRow.module.css";
 import pages from "@/helpers/navigation";
 
@@ -6,7 +7,15 @@ import pages from "@/helpers/navigation";
  * @param {*} param0
  * @returns
  */
-const TrackRow = ({ artist, album, track, isWishList, navigate }) => {
+const TrackRow = ({
+  artist,
+  album,
+  track,
+  isWishList,
+  navigate,
+  logout,
+  setTracks,
+}) => {
   return (
     <tr>
       <td>{album.title}</td>
@@ -25,6 +34,13 @@ const TrackRow = ({ artist, album, track, isWishList, navigate }) => {
       <td>{track.number}</td>
       <td>{track.title}</td>
       <td>{track.formattedDuration}</td>
+      <td>
+        <DeleteTrackActionIcon
+          track={track}
+          logout={logout}
+          setTracks={setTracks}
+        />
+      </td>
     </tr>
   );
 };
