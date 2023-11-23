@@ -149,7 +149,7 @@ namespace MusicCatalogue.Logic.Database
             if (album != null)
             {
                 // Delete the associated tracks
-                await Factory.Tracks.DeleteAsync(albumId);
+                await Factory.Tracks.DeleteAllTracksForAlbumAsync(albumId);
 
                 // Delete the album record and save changes
                 Factory.Context.Remove(album);

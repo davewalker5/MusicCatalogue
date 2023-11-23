@@ -16,13 +16,10 @@ namespace MusicCatalogue.Logic.Database
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<Track> GetAsync(Expression<Func<Track, bool>> predicate)
+        public async Task<Track?> GetAsync(Expression<Func<Track, bool>> predicate)
         {
-            List<Track> tracks = await ListAsync(predicate);
-
-#pragma warning disable CS8603
+            var tracks = await ListAsync(predicate);
             return tracks.FirstOrDefault();
-#pragma warning restore CS8603
         }
 
         /// <summary>
@@ -66,13 +63,52 @@ namespace MusicCatalogue.Logic.Database
         }
 
         /// <summary>
+        /// Update an existing track
+        /// </summary>
+        /// <param name="trackId"></param>
+        /// <param name="albumId"></param>
+        /// <param name="title"></param>
+        /// <param name="number"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
+        public async Task<Track?> UpdateAsync(int trackId, int albumId, string title, int? number, int? duration)
+        {
+            var track = Context.Tracks.FirstOrDefault(x => x.Id == trackId);
+            if (track != null)
+            {
+                track.AlbumId = albumId;
+                track.Title = title;
+                track.Number = number;
+                track.Duration = duration;
+                await Context.SaveChangesAsync();
+            }
+
+            return track;
+        }
+
+        /// <summary>
+        /// Delete the track with the specified Id
+        /// </summary>
+        /// <param name="trackId"></param>
+        /// <returns></returns>
+        public async Task DeleteAsync(int trackId)
+        {
+            var track = Context.Tracks.FirstOrDefault(x => x.Id == trackId);
+            if (track != null)
+            {
+                Context.Tracks.Remove(track);
+                await Context.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
         /// Delete the tracks associated with an album, given its ID
         /// </summary>
         /// <param name="albumId"></param>
         /// <returns></returns>
-        public async Task DeleteAsync(int albumId)
+        public async Task DeleteAllTracksForAlbumAsync(int albumId)
         {
-            List<Track> tracks = await ListAsync(x => x.AlbumId == albumId);
+            var tracks = await ListAsync(x => x.AlbumId == albumId);
             if (tracks.Any())
             {
                 Context.Tracks.RemoveRange(tracks);
