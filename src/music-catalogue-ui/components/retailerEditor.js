@@ -90,7 +90,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
         );
       }
 
-      // If all's well, display a confirmation message. Otherwise, show an error
+      // If all's well, navigate back to the retailers page. Otherwise, show an error
       if (updatedRetailer == null) {
         const action = retailer.Id <= 0 ? "adding" : "updating";
         setError(`An error occurred ${action} the retailer`);

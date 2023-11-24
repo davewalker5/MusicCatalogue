@@ -13,6 +13,7 @@ import GenreList from "./genreList";
 import RetailerList from "./retailerList";
 import RetailerDetails from "./retailerDetails";
 import RetailerEditor from "./retailerEditor";
+import TrackEditor from "./trackEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -33,13 +34,20 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
-    case pages.genres:
-      return <GenreList navigate={navigate} logout={logout} />;
     case pages.albums:
       return (
         <AlbumList
           artist={context.artist}
           isWishList={context.isWishList}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.albumPurchaseDetails:
+      return (
+        <AlbumPurchaseDetails
+          artist={context.artist}
+          album={context.album}
           navigate={navigate}
           logout={logout}
         />
@@ -54,27 +62,18 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
-    case pages.lookup:
-      return <LookupAlbum navigate={navigate} logout={logout} />;
-    case pages.export:
-      return <ExportCatalogue logout={logout} />;
-    case pages.artistStatisticsReport:
-      return <ArtistStatisticsReport logout={logout} />;
-    case pages.genreStatisticsReport:
-      return <GenreStatusReport logout={logout} />;
-    case pages.jobStatusReport:
-      return <JobStatusReport logout={logout} />;
-    case pages.monthlySpendReport:
-      return <MonthlySpendReport logout={logout} />;
-    case pages.albumPurchaseDetails:
+    case pages.trackEditor:
       return (
-        <AlbumPurchaseDetails
+        <TrackEditor
+          track={context.track}
           artist={context.artist}
           album={context.album}
           navigate={navigate}
           logout={logout}
         />
       );
+    case pages.lookup:
+      return <LookupAlbum navigate={navigate} logout={logout} />;
     case pages.retailers:
       return <RetailerList navigate={navigate} logout={logout} />;
     case pages.retailerDetails:
@@ -93,6 +92,18 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
+    case pages.genres:
+      return <GenreList navigate={navigate} logout={logout} />;
+    case pages.export:
+      return <ExportCatalogue logout={logout} />;
+    case pages.artistStatisticsReport:
+      return <ArtistStatisticsReport logout={logout} />;
+    case pages.genreStatisticsReport:
+      return <GenreStatusReport logout={logout} />;
+    case pages.jobStatusReport:
+      return <JobStatusReport logout={logout} />;
+    case pages.monthlySpendReport:
+      return <MonthlySpendReport logout={logout} />;
     default:
       return <span />;
   }

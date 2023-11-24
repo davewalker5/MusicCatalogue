@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import useTracks from "@/hooks/useTracks";
 import TrackRow from "./trackRow";
 import pages from "@/helpers/navigation";
+import styles from "./trackList.module.css";
 
 /**
  * Component to render the list of tracks for the specified album
@@ -43,6 +44,7 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
             <th>No.</th>
             <th>Track</th>
             <th>Duration</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -54,6 +56,8 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
               track={t}
               isWishList={isWishList}
               navigate={navigate}
+              logout={logout}
+              setTracks={setTracks}
             />
           ))}
         </tbody>
@@ -61,6 +65,20 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
       <button className="btn btn-primary" onClick={() => navigateBack()}>
         &lt; {backButtonText}
       </button>
+      <div className={styles.trackListAddButton}>
+        <button
+          className="btn btn-primary"
+          onClick={() =>
+            navigate({
+              page: pages.trackEditor,
+              artist: artist,
+              album: album,
+            })
+          }
+        >
+          Add
+        </button>
+      </div>
     </>
   );
 };

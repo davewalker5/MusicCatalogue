@@ -3,8 +3,12 @@ const pages = {
   genres: "Genres",
   wishlistArtists: "WishlistArtists",
   albums: "Albums",
-  wishlistAlbums: "wishlistAlbums",
+  wishlistAlbums: "WishlistAlbums",
   tracks: "Tracks",
+  trackEditor: "TrackEditor",
+  retailers: "Retailers",
+  retailerDetails: "RetailerDetails",
+  retailerEditor: "RetailerEditor",
   lookup: "Lookup",
   export: "Export",
   artistStatisticsReport: "ArtistStatisticsReport",
@@ -12,9 +16,6 @@ const pages = {
   jobStatusReport: "JobStatusReport",
   monthlySpendReport: "MonthlySpendReport",
   albumPurchaseDetails: "AlbumPurchaseDetails",
-  retailers: "Retailers",
-  retailerDetails: "RetailerDetails",
-  retailerEditor: "RetailerEditor",
 };
 
 export default pages;

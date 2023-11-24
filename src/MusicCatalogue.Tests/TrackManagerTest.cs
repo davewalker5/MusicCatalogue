@@ -16,9 +16,14 @@ namespace MusicCatalogue.Tests
         private const int TrackNumber = 1;
         private const int TrackDuration = 643200;
 
+        private const string UpdatedTrackTitle = "Moment's Notice";
+        private const int UpdatedTrackNumber = 2;
+        private const int UpdatedTrackDuration = 550760;
+
         private ITrackManager? _manager = null;
         private int _artistId;
         private int _albumId;
+        private int _trackId;
 
         [TestInitialize]
         public void TestInitialize()
@@ -33,7 +38,7 @@ namespace MusicCatalogue.Tests
 
             // Create a track manager and add a test track
             _manager = factory.Tracks;
-            Task.Run(() => _manager.AddAsync(_albumId, TrackTitle, TrackNumber, TrackDuration)).Wait();
+            _trackId = Task.Run(() => _manager.AddAsync(_albumId, TrackTitle, TrackNumber, TrackDuration)).Result.Id;
         }
 
         [TestMethod]
@@ -47,7 +52,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task AddAndGetTest()
         {
-            var track = await _manager!.GetAsync(a => a.Title == TrackTitle);
+            var track = await _manager!.GetAsync(t => t.Title == TrackTitle);
             Assert.IsNotNull(track);
             Assert.IsTrue(track.Id > 0);
             Assert.AreEqual(_albumId, track.AlbumId);
@@ -59,7 +64,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task GetMissingTest()
         {
-            var track = await _manager!.GetAsync(a => a.Title == "Missing");
+            var track = await _manager!.GetAsync(t => t.Title == "Missing");
             Assert.IsNull(track);
         }
 
@@ -74,15 +79,36 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task ListMissingTest()
         {
-            var tracks = await _manager!.ListAsync(e => e.Title == "Missing");
+            var tracks = await _manager!.ListAsync(t => t.Title == "Missing");
             Assert.AreEqual(0, tracks!.Count);
+        }
+
+        [TestMethod]
+        public async Task UpdateTest()
+        {
+            await _manager!.UpdateAsync(_trackId, _albumId, UpdatedTrackTitle, UpdatedTrackNumber, UpdatedTrackDuration);
+            var track = await _manager!.GetAsync(t => t.Id == _trackId);
+            Assert.IsNotNull(track);
+            Assert.AreEqual(_trackId, track.Id);
+            Assert.AreEqual(_albumId, track.AlbumId);
+            Assert.AreEqual(UpdatedTrackTitle, track.Title);
+            Assert.AreEqual(UpdatedTrackNumber, track.Number);
+            Assert.AreEqual(UpdatedTrackDuration, track.Duration);
         }
 
         [TestMethod]
         public async Task DeleteTest()
         {
-            await _manager!.DeleteAsync(_albumId);
-            var tracks = await _manager!.ListAsync(e => e.AlbumId == _albumId);
+            await _manager!.DeleteAsync(_trackId);
+            var tracks = await _manager!.ListAsync(t => true);
+            Assert.AreEqual(0, tracks!.Count);
+        }
+
+        [TestMethod]
+        public async Task DeleteAllForAlbumTest()
+        {
+            await _manager!.DeleteAllTracksForAlbumAsync(_albumId);
+            var tracks = await _manager!.ListAsync(t => t.AlbumId == _albumId);
             Assert.AreEqual(0, tracks!.Count);
 
         }
