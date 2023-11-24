@@ -186,6 +186,12 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 <img src="diagrams/track-list.png" alt="Track List" width="600">
 
 - Clicking on the artist name in any row in the track list or clicking on the "Back" button returns to the album list for that artist
+- Clicking on the "Delete" icon will prompt for confirmation and, if the action is confirmed, will delete the track
+- Clicking on the "Edit" icon opens the track editor to edit the track properties:
+
+<img src="diagrams/track-editor.png" alt="Track List" width="600">
+
+- Clicking on the "Add" button at the bottom of the track list will open a blank track editor to add and save a new track
 
 #### Browsing By Genre
 

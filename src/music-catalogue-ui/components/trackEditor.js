@@ -8,7 +8,7 @@ const TrackEditor = ({ track, album, artist, navigate, logout }) => {
   // Split the track's formatted duration on the ":"
   let initialMinutes = null;
   let initialSeconds = null;
-  if (track.formattedDuration != null) {
+  if (track != null && track.formattedDuration != null) {
     const elements = track.formattedDuration.split(":");
     if (elements.length > 0) {
       initialMinutes = elements[0];
@@ -16,8 +16,12 @@ const TrackEditor = ({ track, album, artist, navigate, logout }) => {
     }
   }
 
-  const [title, setTitle] = useState(track.title);
-  const [number, setNumber] = useState(track.number);
+  // Get initial values for the other properties
+  const initialTitle = track != null ? track.title : null;
+  const initialNumber = track != null ? track.number : null;
+
+  const [title, setTitle] = useState(initialTitle);
+  const [number, setNumber] = useState(initialNumber);
   const [minutes, setMinutes] = useState(initialMinutes);
   const [seconds, setSeconds] = useState(initialSeconds);
   const [error, setError] = useState("");
@@ -38,11 +42,10 @@ const TrackEditor = ({ track, album, artist, navigate, logout }) => {
         const durationSeconds = Number(seconds);
         const duration = 1000 * (60 * durationMinutes + durationSeconds);
 
-        // Either add or update the track, depending on whether they currently
-        // have an ID
+        // Either add or update the track, depending on whether there's an
+        // existing track or not
         let updatedTrack = null;
-        if (track.id <= 0) {
-          // Invalid ID, so create a new track
+        if (track == null) {
           updatedTrack = await apiCreateTrack(
             title,
             number,
@@ -51,7 +54,6 @@ const TrackEditor = ({ track, album, artist, navigate, logout }) => {
             logout
           );
         } else {
-          // Has a valid ID, so update an existing track
           updatedTrack = await apiUpdateTrack(
             track.id,
             title,
