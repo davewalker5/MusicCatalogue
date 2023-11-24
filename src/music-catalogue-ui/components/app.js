@@ -15,9 +15,10 @@ const defaultContext = {
   // Current page
   page: pages.artists,
 
-  // Artist, album and retailer context
+  // Artist, album, track and retailer context
   artist: null,
   album: null,
+  track: null,
   retailer: null,
 
   // Data retrieval/filering criteria
@@ -38,6 +39,7 @@ const App = () => {
     page = pages.artists,
     artist = null,
     album = null,
+    track = null,
     retailer = null,
     genre = null,
     filter = "A",
@@ -48,6 +50,7 @@ const App = () => {
       page: page,
       artist: typeof artist != "undefined" ? artist : null,
       album: typeof album != "undefined" ? album : null,
+      track: typeof track != "undefined" ? track : null,
       retailer: typeof retailer != "undefined" ? retailer : null,
       genre: typeof genre != "undefined" ? genre : null,
       filter: typeof filter != "undefined" ? filter : "A",

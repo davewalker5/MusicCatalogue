@@ -1,6 +1,8 @@
 import DeleteTrackActionIcon from "./deleteTrackActionIcon";
 import styles from "./trackRow.module.css";
 import pages from "@/helpers/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component to render a row containing the details for a single track
@@ -39,6 +41,19 @@ const TrackRow = ({
           track={track}
           logout={logout}
           setTracks={setTracks}
+        />
+      </td>
+      <td>
+        <FontAwesomeIcon
+          icon={faPenToSquare}
+          onClick={() =>
+            navigate({
+              page: pages.trackEditor,
+              artist: artist,
+              album: album,
+              track: track,
+            })
+          }
         />
       </td>
     </tr>
