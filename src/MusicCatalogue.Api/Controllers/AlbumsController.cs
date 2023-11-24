@@ -71,6 +71,34 @@ namespace MusicCatalogue.Api.Controllers
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<Album>> AddAlbumAsync([FromBody] Album template)
+        {
+            // Make sure the "other" Genre exists as a fallback for album updates where no genre is given
+            var otherGenre = _factory.Genres.AddAsync(OtherGenre);
+
+            // Add the album
+            var album = await _factory.Albums.AddAsync(
+                template.ArtistId,
+                template.GenreId ?? otherGenre.Id,
+                template.Title,
+                template.Released,
+                template.CoverUrl,
+                template.IsWishListItem,
+                template.Purchased,
+                template.Price,
+                template.RetailerId);
+
+            // Return the new album
+            return album;
+        }
+
+        /// <summary>
+        /// Update an album from a template contained in the request body
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("")]
         public async Task<ActionResult<Album>> UpdateAlbumAsync([FromBody] Album template)
