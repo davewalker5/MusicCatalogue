@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using System.Linq.Expressions;
 
@@ -74,6 +75,52 @@ namespace MusicCatalogue.Logic.Database
             }
 
             return artist;
+        }
+
+        /// <summary>
+        /// Update the properties of the specified artist
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Artist?> UpdateAsync(int id, string name)
+        {
+            var artist = Context.Artists.FirstOrDefault(x => x.Id == id);
+            if (artist != null)
+            {
+                // Save the changes
+                artist.Name = StringCleaner.Clean(name)!;
+                await Context.SaveChangesAsync();
+
+                // Reload the artist to retrieve related entities
+                artist = await GetAsync(x => x.Id == id, true);
+            }
+
+            return artist;
+        }
+
+        /// <summary>
+        /// Delete the artist with the specified Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteAsync(int id)
+        {
+            // Find the artist record and check it exists
+            var artist = await GetAsync(x => x.Id == id, true);
+            if (artist != null)
+            {
+                // If they have any albums, they can't be deleted
+                if (artist.Albums!.Any())
+                {
+                    var message = $"Artist '{artist.Name} with Id {id} has albums and cannot be deleted";
+                    throw new ArtistInUseException(message);
+                }
+
+                // Delete the artist record and save changes
+                Factory.Context.Remove(artist);
+                await Factory.Context.SaveChangesAsync();
+            }
         }
     }
 }

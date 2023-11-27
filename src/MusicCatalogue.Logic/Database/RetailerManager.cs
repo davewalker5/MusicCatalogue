@@ -2,7 +2,6 @@
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
-using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
 
 namespace MusicCatalogue.Logic.Database

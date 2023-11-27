@@ -82,7 +82,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(artists);
             Assert.AreEqual(1, artists.Count);
             Assert.AreEqual(JazzArtistName, artists[0].Name);
-            Assert.AreEqual(JazzAlbumTitle, artists[0].Albums.First().Title);
+            Assert.AreEqual(JazzAlbumTitle, artists[0].Albums!.First().Title);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(artists);
             Assert.AreEqual(1, artists.Count);
             Assert.AreEqual(PopArtistName, artists[0].Name);
-            Assert.AreEqual(PopAlbumTitle, artists[0].Albums.First().Title);
+            Assert.AreEqual(PopAlbumTitle, artists[0].Albums!.First().Title);
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(artists);
             Assert.AreEqual(1, artists.Count);
             Assert.AreEqual(PopArtistName, artists[0].Name);
-            Assert.AreEqual(PopAlbumTitle, artists[0].Albums.First().Title);
+            Assert.AreEqual(PopAlbumTitle, artists[0].Albums!.First().Title);
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(artists);
             Assert.AreEqual(1, artists.Count);
             Assert.AreEqual(JazzArtistName, artists[0].Name);
-            Assert.AreEqual(JazzAlbumTitle, artists[0].Albums.First().Title);
+            Assert.AreEqual(JazzAlbumTitle, artists[0].Albums!.First().Title);
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(artists);
             Assert.AreEqual(1, artists.Count);
             Assert.AreEqual(PopArtistName, artists[0].Name);
-            Assert.AreEqual(PopAlbumTitle, artists[0].Albums.First().Title);
+            Assert.AreEqual(PopAlbumTitle, artists[0].Albums!.First().Title);
         }
 
         [TestMethod]
