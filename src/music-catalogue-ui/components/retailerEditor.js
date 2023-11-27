@@ -1,5 +1,5 @@
 import styles from "./retailerEditor.module.css";
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import { useState, useCallback } from "react";
 import { apiCreateRetailer, apiUpdateRetailer } from "@/helpers/apiRetailers";
 import FormInputField from "./formInputField";

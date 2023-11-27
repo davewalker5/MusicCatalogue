@@ -107,12 +107,16 @@ const AlbumEditor = ({ artist, album, isWishList, navigate, logout }) => {
     ]
   );
 
+  // Set the page title
+  const pageTitle =
+    album != null
+      ? `${album.title} - ${artist.name}`
+      : `New Album - ${artist.name}`;
+
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">
-          {album.title} - {artist.name}
-        </h5>
+        <h5 className="themeFontColor text-center">{pageTitle}</h5>
       </div>
       <div className={styles.albumEditorFormContainer}>
         <form className={styles.albumEditorForm}>

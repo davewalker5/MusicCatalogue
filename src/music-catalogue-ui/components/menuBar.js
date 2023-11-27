@@ -1,5 +1,5 @@
 import styles from "./menuBar.module.css";
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 

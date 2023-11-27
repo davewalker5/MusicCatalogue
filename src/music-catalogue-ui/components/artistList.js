@@ -1,4 +1,4 @@
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import useArtists from "@/hooks/useArtists";
 import ArtistRow from "./artistRow";
 import ArtistFilterBar from "./artistFilterBar";

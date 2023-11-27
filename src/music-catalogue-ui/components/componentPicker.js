@@ -1,4 +1,4 @@
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import ArtistList from "./artistList";
 import AlbumList from "./albumList";
 import TrackList from "./trackList";

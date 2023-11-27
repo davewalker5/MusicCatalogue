@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import { useState, useCallback } from "react";
 import CurrencyInput from "react-currency-input-field";
 import config from "../config.json";
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
 import Select from "react-select";
 import useRetailers from "@/hooks/useRetailers";
