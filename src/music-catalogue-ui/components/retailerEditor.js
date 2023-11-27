@@ -7,6 +7,13 @@ import { geocodeAddress } from "@/helpers/geocoder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * Component to render the retailer editor
+ * @param {*} retailer
+ * @param {*} navigate
+ * @param {*} logout
+ * @returns
+ */
 const RetailerEditor = ({ retailer, navigate, logout }) => {
   const [name, setName] = useState(retailer.name);
   const [address1, setAddress1] = useState(retailer.address1);

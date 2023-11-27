@@ -4,6 +4,15 @@ import FormInputField from "./formInputField";
 import { useState, useCallback } from "react";
 import { apiCreateTrack, apiUpdateTrack } from "@/helpers/apiTracks";
 
+/**
+ * Component to render the track details editor
+ * @param {*} track
+ * @param {*} album
+ * @param {*} artist
+ * @param {*} navigate
+ * @param {*} logout
+ * @returns
+ */
 const TrackEditor = ({ track, album, artist, navigate, logout }) => {
   // Split the track's formatted duration on the ":"
   let initialMinutes = null;
@@ -75,11 +84,8 @@ const TrackEditor = ({ track, album, artist, navigate, logout }) => {
             album: album,
           });
         }
-      } catch (e) {
-        setError(
-          e.message
-          //"Error converting the supplied minutes and seconds to a duration"
-        );
+      } catch (ex) {
+        setError(`Error saving the updated track details: ${ex.message}`);
       }
     },
     [album, artist, track, title, number, minutes, seconds, navigate, logout]

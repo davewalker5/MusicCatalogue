@@ -4,9 +4,7 @@ import { useState, useCallback } from "react";
 import CurrencyInput from "react-currency-input-field";
 import config from "../config.json";
 import pages from "../helpers/navigation";
-import { apiCreateRetailer } from "@/helpers/apiRetailers";
 import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
-import FormInputField from "./formInputField";
 import Select from "react-select";
 import useRetailers from "@/hooks/useRetailers";
 
@@ -21,16 +19,29 @@ import useRetailers from "@/hooks/useRetailers";
 const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
   const { retailers: retailers, setRetailers } = useRetailers(logout);
 
-  // Get the retailer name and purchase date from the album
-  const initialRetailerId =
-    album["retailer"] != null ? album["retailer"]["id"] : null;
-  const initialPurchaseDate =
-    album.purchased != null ? new Date(album.purchased) : new Date();
+  // Construct the options for the retailer drop-down
+  let options = [];
+  for (let i = 0; i < retailers.length; i++) {
+    options = [
+      ...options,
+      { value: retailers[i].id, label: retailers[i].name },
+    ];
+  }
+
+  // Get the initial retailer selection and purchase date
+  let initialRetailer = null;
+  let initialPurchaseDate = new Date();
+  if (album != null) {
+    initialRetailer = options.find((x) => x.value == album.retailerId);
+    if (album.purchased != null) {
+      initialPurchaseDate = new Date(album.purchased);
+    }
+  }
 
   // Set up state
   const [purchaseDate, setPurchaseDate] = useState(initialPurchaseDate);
   const [price, setPrice] = useState(album.price);
-  const [retailerId, setRetailerId] = useState(initialRetailerId);
+  const [retailer, setRetailer] = useState(initialRetailer);
   const [errorMessage, setErrorMessage] = useState("");
 
   /* Callback to set album purchase details */
@@ -41,15 +52,16 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
 
       // Construct the values to be passed to the API
       const updatedPurchaseDate =
-        album.isWishListItem == true ? null : purchaseDate;
-      const updatedPrice = price == undefined ? null : price;
+        album.isWishListItem == false ? purchaseDate : null;
+      const updatedPrice = price != undefined ? price : null;
+      const updatedRetailerId = retailer != null ? retailer.value.id : null;
 
       // Apply the updates
       const updatedAlbum = await apiSetAlbumPurchaseDetails(
         album,
         updatedPurchaseDate,
         updatedPrice,
-        retailerId.value,
+        updatedRetailerId,
         logout
       );
 
@@ -66,17 +78,8 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
         setErrorMessage("Error updating the album purchase details");
       }
     },
-    [artist, album, price, purchaseDate, retailerId, logout, navigate]
+    [artist, album, price, purchaseDate, retailer, logout, navigate]
   );
-
-  // Construct the options for the retailer drop-down
-  let options = [];
-  for (let i = 0; i < retailers.length; i++) {
-    options = [
-      ...options,
-      { value: retailers[i].id, label: retailers[i].name },
-    ];
-  }
 
   return (
     <>
@@ -126,7 +129,11 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
                 Retailer
               </label>
               <div>
-                <Select onChange={setRetailerId} options={options} />
+                <Select
+                  value={retailer}
+                  onChange={setRetailer}
+                  options={options}
+                />
               </div>
             </div>
             <div className="d-grid gap-2 mt-3">

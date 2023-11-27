@@ -12,11 +12,20 @@ import Select from "react-select";
  * @returns
  */
 const LookupAlbum = ({ navigate, logout }) => {
+  // Construct a list of select list options for the target directory
+  const options = [
+    { value: "wishlist", label: "Wish List" },
+    { value: "catalogue", label: "Main Catalogue" },
+  ];
+
+  // Get the initial catalogue
+  const initialCatalogue = options.find((x) => x.value == "wishlist");
+
   // Configure state for the controlled fields
   const [artistName, setArtistName] = useState("");
   const [albumTitle, setAlbumTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [catalogue, setCatalogue] = useState("wishlist");
+  const [catalogue, setCatalogue] = useState(initialCatalogue);
 
   // Lookup navigation callback
   const lookup = useCallback(
@@ -58,12 +67,6 @@ const LookupAlbum = ({ navigate, logout }) => {
     [artistName, albumTitle, catalogue, navigate, logout]
   );
 
-  // Construct a list of select list options for the target directory
-  const options = [
-    { value: "wishlist", label: "Wish List" },
-    { value: "catalogue", label: "Main Catalogue" },
-  ];
-
   return (
     <>
       <div className="row mb-2 pageTitle">
@@ -96,7 +99,7 @@ const LookupAlbum = ({ navigate, logout }) => {
               <label className={styles.lookupFormLabel}>Save Album To</label>
               <Select
                 className={styles.lookupCatalogueSelector}
-                defaultValue={catalogue}
+                value={catalogue}
                 onChange={setCatalogue}
                 options={options}
               />

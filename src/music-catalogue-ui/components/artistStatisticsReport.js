@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from "react";
 import styles from "./reports.module.css";
-import Select from "react-select";
+import catalogues from "@/helpers/catalogues";
 import "react-datepicker/dist/react-datepicker.css";
 import { apiArtistStatisticsReport } from "@/helpers/apiReports";
 import ArtistStatisticsRow from "./artistStatisticsRow";
 import ReportExportControls from "./reportExportControls";
 import { apiRequestAristStatisticsExport } from "@/helpers/apiDataExchange";
+import CatalogueSelector from "./catalogueSelector";
 
 /**
  * Component to display the artist statistics report page and its results
@@ -13,7 +14,8 @@ import { apiRequestAristStatisticsExport } from "@/helpers/apiDataExchange";
  * @returns
  */
 const ArtistStatisticsReport = ({ logout }) => {
-  const [catalogue, setCatalogue] = useState(0);
+  // Set up state
+  const [catalogue, setCatalogue] = useState(catalogues.main);
   const [records, setRecords] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -25,7 +27,7 @@ const ArtistStatisticsReport = ({ logout }) => {
       e.preventDefault();
 
       // Set the wishlist flag from the drop-down selection
-      const forWishList = catalogue.value == "wishlist";
+      const forWishList = catalogue == catalogues.wishlist;
 
       // Fetch the report
       const fetchedRecords = await apiArtistStatisticsReport(
@@ -71,12 +73,6 @@ const ArtistStatisticsReport = ({ logout }) => {
     [catalogue, logout]
   );
 
-  // Construct a list of select list options for the directory
-  const options = [
-    { value: "catalogue", label: "Main Catalogue" },
-    { value: "wishlist", label: "Wish List" },
-  ];
-
   return (
     <>
       <div className="row mb-2 pageTitle">
@@ -101,11 +97,9 @@ const ArtistStatisticsReport = ({ logout }) => {
                   <label className={styles.reportFormLabel}>Report For:</label>
                 </div>
                 <div className="col">
-                  <Select
-                    className={styles.reportCatalogueSelector}
-                    defaultValue={catalogue}
-                    onChange={setCatalogue}
-                    options={options}
+                  <CatalogueSelector
+                    selectedCatalogue={catalogues.main}
+                    catalogueChangedCallback={setCatalogue}
                   />
                 </div>
                 <div className="col">

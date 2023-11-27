@@ -1,5 +1,10 @@
 import styles from "./formInputField.module.css";
 
+/**
+ * Component to render a form input field
+ * @param {*} param0
+ * @returns
+ */
 const FormInputField = ({ label, name, value, setValue }) => {
   return (
     <div className="form-group mt-3">
