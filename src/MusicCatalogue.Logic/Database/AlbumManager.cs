@@ -68,6 +68,7 @@ namespace MusicCatalogue.Logic.Database
 
             if (album == null)
             {
+                // Add the album
                 album = new Album
                 {
                     ArtistId = artistId,
@@ -82,6 +83,9 @@ namespace MusicCatalogue.Logic.Database
                 };
                 await Context.Albums.AddAsync(album);
                 await Context.SaveChangesAsync();
+
+                // Now re-retrieve it to populate related entities
+                album = await GetAsync(x => x.Id == album.Id);
             }
 
             return album;

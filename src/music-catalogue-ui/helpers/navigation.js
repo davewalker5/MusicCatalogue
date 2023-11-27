@@ -3,6 +3,7 @@ const pages = {
   genres: "Genres",
   wishlistArtists: "WishlistArtists",
   albums: "Albums",
+  albumEditor: "AlbumEditor",
   wishlistAlbums: "WishlistAlbums",
   tracks: "Tracks",
   trackEditor: "TrackEditor",

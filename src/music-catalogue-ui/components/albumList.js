@@ -1,3 +1,5 @@
+import styles from "./albumList.module.css";
+import pages from "@/helpers/navigation";
 import useAlbums from "@/hooks/useAlbums";
 import AlbumRow from "./albumRow";
 
@@ -39,6 +41,7 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
             <th>Retailer</th>
             <th />
             <th />
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -56,6 +59,20 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
           ))}
         </tbody>
       </table>
+      <div className={styles.albumListAddButton}>
+        <button
+          className="btn btn-primary"
+          onClick={() =>
+            navigate({
+              page: pages.albumEditor,
+              artist: artist,
+              isWishList: isWishList,
+            })
+          }
+        >
+          Add
+        </button>
+      </div>
     </>
   );
 };

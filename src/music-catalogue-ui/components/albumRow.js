@@ -4,7 +4,7 @@ import AlbumWishListActionIcon from "./albumWishListActionIcon";
 import CurrencyFormatter from "./currencyFormatter";
 import DateFormatter from "./dateFormatter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoins } from "@fortawesome/free-solid-svg-icons";
+import { faCoins, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useCallback } from "react";
 
 /**
@@ -63,6 +63,18 @@ const AlbumRow = ({
           isWishList={isWishList}
           logout={logout}
           setAlbums={setAlbums}
+        />
+      </td>
+      <td>
+        <FontAwesomeIcon
+          icon={faPenToSquare}
+          onClick={() =>
+            navigate({
+              page: pages.albumEditor,
+              artist: artist,
+              album: album,
+            })
+          }
         />
       </td>
       <td>

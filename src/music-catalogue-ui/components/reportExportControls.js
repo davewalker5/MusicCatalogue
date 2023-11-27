@@ -1,6 +1,13 @@
 import styles from "./reports.module.css";
 import { useState } from "react";
 
+/**
+ * Component to render the report export controls consisting of an input field
+ * for the filename and an export button
+ * @param {*} isPrimaryButton
+ * @param {*} exportReport
+ * @returns
+ */
 const ReportExportControls = ({ isPrimaryButton, exportReport }) => {
   const [fileName, setFileName] = useState("");
 

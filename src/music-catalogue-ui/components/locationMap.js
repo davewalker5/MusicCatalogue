@@ -5,6 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { getStorageValue } from "@/helpers/storage";
 
+/**
+ * Component to render a location map, with pin at the specified coordinates
+ * @param {*} latitude
+ * @param {*} longitude
+ * @returns
+ */
 const LocationMap = ({ latitude, longitude }) => {
   const location = { lat: latitude, lng: longitude };
   const mapsApiKey = getStorageValue(secrets.mapsApiKey);

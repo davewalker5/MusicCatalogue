@@ -4,13 +4,96 @@ import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
 
 /**
  * POST a request to the API to update the specified album's details
- * @param {*} album
+ * @param {*} artistId
+ * @param {*} genreId
+ * @param {*} title
+ * @param {*} released
+ * @param {*} coverUrl
+ * @param {*} isWishListItem
+ * @param {*} purchased
+ * @param {*} price
+ * @param {*} retailerId
  * @param {*} logout
  * @returns
  */
-const apiAlbumUpdate = async (album, logout) => {
+const apiCreateAlbum = async (
+  artistId,
+  genreId,
+  title,
+  released,
+  coverUrl,
+  isWishListItem,
+  purchased,
+  price,
+  retailerId,
+  logout
+) => {
   // Construct the body
-  const body = JSON.stringify(album);
+  const body = JSON.stringify({
+    artistId: artistId,
+    genreId: genreId,
+    title: title,
+    released: released,
+    coverUrl: coverUrl,
+    isWishListItem: isWishListItem,
+    purchased: purchased,
+    price: price,
+    retailerId: retailerId,
+  });
+
+  // Call the API to set the wish list flag for a given album
+  const url = `${config.api.baseUrl}/albums`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const album = await apiReadResponseData(response, logout);
+  return album;
+};
+
+/**
+ * PUT a request to the API to update the specified album's details
+ * @param {*} albumId
+ * @param {*} artistId
+ * @param {*} genreId
+ * @param {*} title
+ * @param {*} released
+ * @param {*} coverUrl
+ * @param {*} isWishListItem
+ * @param {*} purchased
+ * @param {*} price
+ * @param {*} retailerId
+ * @param {*} logout
+ * @returns
+ */
+const apiUpdateAlbum = async (
+  albumId,
+  artistId,
+  genreId,
+  title,
+  released,
+  coverUrl,
+  isWishListItem,
+  purchased,
+  price,
+  retailerId,
+  logout
+) => {
+  // Construct the body
+  const body = JSON.stringify({
+    id: albumId,
+    artistId: artistId,
+    genreId: genreId,
+    title: title,
+    released: released,
+    coverUrl: coverUrl,
+    isWishListItem: isWishListItem,
+    purchased: purchased,
+    price: price,
+    retailerId: retailerId,
+  });
 
   // Call the API to set the wish list flag for a given album
   const url = `${config.api.baseUrl}/albums`;
@@ -136,7 +219,19 @@ const apiSetAlbumWishListFlag = async (album, wishListFlag, logout) => {
   album.isWishListItem = wishListFlag;
 
   // Send the update request to the API and return the response
-  const response = await apiAlbumUpdate(album, logout);
+  const response = await apiUpdateAlbum(
+    album.id,
+    album.artistId,
+    album.genreId,
+    album.title,
+    album.released,
+    album.coverUrl,
+    album.isWishListItem,
+    album.purchased,
+    album.price,
+    album.retailerId,
+    logout
+  );
   return response;
 };
 
@@ -162,14 +257,28 @@ const apiSetAlbumPurchaseDetails = async (
   album.retailerId = retailerId;
 
   // Send the update request to the API and return the response
-  const response = await apiAlbumUpdate(album, logout);
+  const response = await apiUpdateAlbum(
+    album.id,
+    album.artistId,
+    album.genreId,
+    album.title,
+    album.released,
+    album.coverUrl,
+    album.isWishListItem,
+    album.purchased,
+    album.price,
+    album.retailerId,
+    logout
+  );
   return response;
 };
 
 export {
+  apiCreateAlbum,
+  apiUpdateAlbum,
+  apiDeleteAlbum,
   apiFetchAlbumsByArtist,
   apiFetchAlbumById,
-  apiDeleteAlbum,
   apiLookupAlbum,
   apiSetAlbumWishListFlag,
   apiSetAlbumPurchaseDetails,

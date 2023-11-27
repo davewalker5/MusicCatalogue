@@ -1,4 +1,4 @@
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import useGenres from "@/hooks/useGenres";
 import GenreRow from "./genreRow";
 

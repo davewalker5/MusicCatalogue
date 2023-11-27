@@ -181,6 +181,11 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 <img src="diagrams/purchase-details.png" alt="Purchase Details" width="600">
 
 - Note that retailers must be added using the retailer list and retailer editing page (see below) before they will appear in the drop-down on the purchase details page
+- Clicking on the "Edit" icon opens the album editor to edit the album properties:
+
+<img src="diagrams/album-editor.png" alt="Track List" width="600">
+
+- Clicking on the "Add" button at the bottom of the album list will open a blank album editor to add and save a new album for the current artist
 - Clicking anywhere else on a row opens the track list for the album shown in that row:
 
 <img src="diagrams/track-list.png" alt="Track List" width="600">

@@ -1,8 +1,6 @@
-import { getStorageValue } from "@/helpers/storage";
-import pages from "../helpers/navigation";
+import pages from "@/helpers/navigation";
 import LocationMap from "./locationMap";
 import styles from "./retailerDetails.module.css";
-import secrets from "@/helpers/secrets";
 
 /**
  * Component to show retailer addressing and web site details and map location
