@@ -22,10 +22,8 @@ const GenreSelector = ({ initialGenre, genreChangedCallback, logout }) => {
 
   // Determine the initial selection
   let selectedOption = null;
-  let initialInput = null;
   if (initialGenre != null) {
     selectedOption = options.find((x) => x.value === initialGenre.id);
-    initialInput = initialGenre.name;
   }
 
   // Set up state
@@ -34,8 +32,8 @@ const GenreSelector = ({ initialGenre, genreChangedCallback, logout }) => {
   // Callback to update the genre state and notify the parent component
   // that the genre has changed
   const genreChanged = (e) => {
-    const updatedSelection = options.find((x) => x.value === e.value);
     // Update local state with the selection from the drop-down
+    const updatedSelection = options.find((x) => x.value === e.value);
     setGenre(updatedSelection);
 
     // Notify the parent component with a genre object

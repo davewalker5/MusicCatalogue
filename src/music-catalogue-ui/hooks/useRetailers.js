@@ -24,7 +24,7 @@ const useRetailers = (logout) => {
     fetchReetailers();
   }, [logout]);
 
-  return { retailers: retailers, setRetailers: setRetailers };
+  return { retailers, setRetailers };
 };
 
 export default useRetailers;
