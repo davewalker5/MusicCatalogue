@@ -169,6 +169,12 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - Clicking on a letter in the alphabet at the top of the page filters the view to show artists with names beginning with that letter
 - Clicking on "All" shows all artists
 - As the mouse pointer is moved up and down the table, the current row is highlighted
+- Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the artist shown in that row provided they do not have any albums associated with them
+- Clicking on the "Edit" icon opens the artist editor to edit the artist properties:
+
+<img src="diagrams/artist-editor.png" alt="Track List" width="600">
+
+- Clicking on the "Add" button at the bottom of the artist list will open a blank artist editor to add and save a new artist
 - Clicking on a row opens the album list for the artist shown in that row:
 
 <img src="diagrams/album-list.png" alt="Album List" width="600">
