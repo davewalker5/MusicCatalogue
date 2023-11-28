@@ -1,3 +1,9 @@
 .albumListAddButton {
   float: right;
 }
+
+.albumListError {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Search;
 
@@ -108,8 +109,17 @@ namespace MusicCatalogue.Api.Controllers
                 return NotFound();
             }
 
-            // They do, so delete them
-            await _factory.Artists.DeleteAsync(id);
+            try
+            {
+                // They do, so delete them
+                await _factory.Artists.DeleteAsync(id);
+            }
+            catch (ArtistInUseException)
+            {
+                // Artist is in use (has albums) so this is a bad request
+                return BadRequest();
+            }
+
             return Ok();
         }
     }

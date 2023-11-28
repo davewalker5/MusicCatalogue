@@ -15,6 +15,7 @@ import { useCallback } from "react";
  * @param {*} navigate
  * @param {*} logout
  * @param {*} setAlbums
+ * @param {*} setError
  * @returns
  */
 const AlbumRow = ({
@@ -24,6 +25,7 @@ const AlbumRow = ({
   navigate,
   logout,
   setAlbums,
+  setError,
 }) => {
   // Get the retailer name
   const retailer = album["retailer"];
@@ -63,6 +65,7 @@ const AlbumRow = ({
           isWishList={isWishList}
           logout={logout}
           setAlbums={setAlbums}
+          setError={setError}
         />
       </td>
       <td>

@@ -23,6 +23,7 @@ const useArtists = (filter, genre, isWishlist, logout) => {
           filter,
           genreId,
           isWishlist,
+          true,
           logout
         );
         setArtists(fetchedArtists);

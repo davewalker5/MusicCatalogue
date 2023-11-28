@@ -1,8 +1,8 @@
-.trackListAddButton {
+.artistListAddButton {
   float: right;
 }
 
-.trackListError {
+.artistListError {
   font-weight: bold;
   color: red;
   text-align: center;
