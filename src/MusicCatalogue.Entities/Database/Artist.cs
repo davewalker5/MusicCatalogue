@@ -14,8 +14,6 @@ namespace MusicCatalogue.Entities.Database
 
         public string? SearchableName { get; set; } = null;
 
-#pragma warning disable CS8618
-        public ICollection<Album> Albums { get; set; }
-#pragma warning restore CS8618
+        public ICollection<Album>? Albums { get; set; }
     }
 }

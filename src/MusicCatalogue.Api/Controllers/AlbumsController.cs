@@ -67,7 +67,7 @@ namespace MusicCatalogue.Api.Controllers
         }
 
         /// <summary>
-        /// Update an album from a template contained in the request body
+        /// Add an album from a template contained in the request body
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>

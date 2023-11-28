@@ -9,9 +9,10 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  * @param {*} track
  * @param {*} logout
  * @param {*} setTracks
+ * @param {*} setError
  * @returns
  */
-const DeleteTrackActionIcon = ({ track, logout, setTracks }) => {
+const DeleteTrackActionIcon = ({ track, logout, setTracks, setError }) => {
   /* Callback to prompt for confirmation and delete an album */
   const confirmDeleteTrack = useCallback(async (e, track) => {
     // Prevent the default action associated with the click event
@@ -23,13 +24,17 @@ const DeleteTrackActionIcon = ({ track, logout, setTracks }) => {
 
     // If they've confirmed the deletion ...
     if (result) {
-      // ... cdelete the track and confirm the API call was successful
-      const result = await apiDeleteTrack(track.id, logout);
-      if (result) {
-        // Successful, so get the album from the service and set the tracks to
-        // the appropriate member of the returned object
-        var fetchedAlbum = await apiFetchAlbumById(track.albumId, logout);
-        setTracks(fetchedAlbum.tracks);
+      try {
+        // ... cdelete the track and confirm the API call was successful
+        const result = await apiDeleteTrack(track.id, logout);
+        if (result) {
+          // Successful, so get the album from the service and set the tracks to
+          // the appropriate member of the returned object
+          var fetchedAlbum = await apiFetchAlbumById(track.albumId, logout);
+          setTracks(fetchedAlbum.tracks);
+        }
+      } catch (ex) {
+        setError(`Error deleting the track: ${ex.message}`);
       }
     }
   }, []);

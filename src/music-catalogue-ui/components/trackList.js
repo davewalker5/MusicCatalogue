@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
 import useTracks from "@/hooks/useTracks";
 import TrackRow from "./trackRow";
 import pages from "@/helpers/navigation";
@@ -15,6 +15,7 @@ import styles from "./trackList.module.css";
  */
 const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
   const { tracks, setTracks } = useTracks(album.id, logout);
+  const [error, setError] = useState("");
 
   // Set the page title to reflect whether we're viewing the wish list
   const title = isWishList
@@ -35,6 +36,13 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">{title}</h5>
+      </div>
+      <div className="row">
+        {error != "" ? (
+          <div className={styles.trackListError}>{error}</div>
+        ) : (
+          <></>
+        )}
       </div>
       <table className="table table-hover">
         <thead>
@@ -58,6 +66,7 @@ const TrackList = ({ artist, album, isWishList, navigate, logout }) => {
               navigate={navigate}
               logout={logout}
               setTracks={setTracks}
+              setError={setError}
             />
           ))}
         </tbody>

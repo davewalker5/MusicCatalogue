@@ -10,6 +10,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  * @param {*} isWishList
  * @param {*} logout
  * @param {*} setAlbums
+ * @param {*} setError
  * @returns
  */
 const DeleteAlbumActionIcon = ({
@@ -18,6 +19,7 @@ const DeleteAlbumActionIcon = ({
   isWishList,
   logout,
   setAlbums,
+  setError,
 }) => {
   /* Callback to prompt for confirmation and delete an album */
   const confirmDeleteAlbum = useCallback(
@@ -31,16 +33,20 @@ const DeleteAlbumActionIcon = ({
 
       // If they've confirmed the deletion ...
       if (result) {
-        // ... delete the album and confirm the API call was successful
-        const result = await apiDeleteAlbum(album.id, logout);
-        if (result) {
-          // Successful, so refresh the album list
-          const fetchedAlbums = await apiFetchAlbumsByArtist(
-            artistId,
-            isWishList,
-            logout
-          );
-          setAlbums(fetchedAlbums);
+        try {
+          // ... delete the album and confirm the API call was successful
+          const result = await apiDeleteAlbum(album.id, logout);
+          if (result) {
+            // Successful, so refresh the album list
+            const fetchedAlbums = await apiFetchAlbumsByArtist(
+              artistId,
+              isWishList,
+              logout
+            );
+            setAlbums(fetchedAlbums);
+          }
+        } catch (ex) {
+          setError(`Error deleting the album: ${ex.message}`);
         }
       }
     },

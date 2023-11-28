@@ -2,6 +2,7 @@ import styles from "./albumList.module.css";
 import pages from "@/helpers/navigation";
 import useAlbums from "@/hooks/useAlbums";
 import AlbumRow from "./albumRow";
+import { useState } from "react";
 
 /**
  * Component to render the table of all albums by the specified artist
@@ -13,6 +14,7 @@ import AlbumRow from "./albumRow";
  */
 const AlbumList = ({ artist, isWishList, navigate, logout }) => {
   const { albums, setAlbums } = useAlbums(artist.id, isWishList, logout);
+  const [error, setError] = useState("");
 
   // Set the page title to reflect whether we're viewing the wish list
   const title = isWishList
@@ -28,6 +30,13 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">{title}</h5>
+      </div>
+      <div className="row">
+        {error != "" ? (
+          <div className={styles.albumListError}>{error}</div>
+        ) : (
+          <></>
+        )}
       </div>
       <table className="table table-hover">
         <thead>
@@ -55,6 +64,7 @@ const AlbumList = ({ artist, isWishList, navigate, logout }) => {
               navigate={navigate}
               logout={logout}
               setAlbums={setAlbumsCallback}
+              setError={setError}
             />
           ))}
         </tbody>

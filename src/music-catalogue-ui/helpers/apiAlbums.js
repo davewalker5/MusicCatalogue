@@ -3,7 +3,7 @@ import { apiReadResponseData } from "./apiUtils";
 import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
 
 /**
- * POST a request to the API to update the specified album's details
+ * POST a request to the API to create a new album
  * @param {*} artistId
  * @param {*} genreId
  * @param {*} title
@@ -41,7 +41,7 @@ const apiCreateAlbum = async (
     retailerId: retailerId,
   });
 
-  // Call the API to set the wish list flag for a given album
+  // Call the API to create the album
   const url = `${config.api.baseUrl}/albums`;
   const response = await fetch(url, {
     method: "POST",
@@ -95,7 +95,7 @@ const apiUpdateAlbum = async (
     retailerId: retailerId,
   });
 
-  // Call the API to set the wish list flag for a given album
+  // Call the API to update the album
   const url = `${config.api.baseUrl}/albums`;
   const response = await fetch(url, {
     method: "PUT",

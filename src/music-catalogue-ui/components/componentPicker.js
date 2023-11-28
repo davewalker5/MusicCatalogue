@@ -15,6 +15,7 @@ import RetailerDetails from "./retailerDetails";
 import RetailerEditor from "./retailerEditor";
 import TrackEditor from "./trackEditor";
 import AlbumEditor from "./albumEditor";
+import ArtistEditor from "./artistEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -30,6 +31,16 @@ const ComponentPicker = ({ context, navigate, logout }) => {
         <ArtistList
           filter={context.filter}
           genre={context.genre}
+          isWishList={context.isWishList}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.artistEditor:
+      return (
+        <ArtistEditor
+          filter={context.filter}
+          artist={context.artist}
           isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}

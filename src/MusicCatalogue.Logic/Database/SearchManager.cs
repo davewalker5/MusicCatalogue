@@ -60,6 +60,26 @@ namespace MusicCatalogue.Logic.Database
                 }
             }
 
+            // If requested, include artists with no albums
+            if (criteria.IncludeArtistsWithNoAlbums ?? false)
+            {
+                // Find artists with no albums that match the artist filters 
+                var artistsWithNoAlbums = await Factory.Artists
+                                                       .ListAsync(x => !x.Albums!.Any() &&
+                                                       (
+                                                            (prefix == null) ||
+                                                            ((x.SearchableName != null) && x.SearchableName.StartsWith(prefix)) ||
+                                                            ((x.SearchableName == null) && x.Name.StartsWith(prefix))
+                                                       ),
+                                                  true);
+
+                // If there are any, add them to the returned collection
+                if (artistsWithNoAlbums.Any())
+                {
+                    artists!.AddRange(artistsWithNoAlbums);
+                }
+            }
+
             return artists;
         }
 

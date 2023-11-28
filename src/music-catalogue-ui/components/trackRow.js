@@ -6,7 +6,14 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component to render a row containing the details for a single track
- * @param {*} param0
+ * @param {*} artist
+ * @param {*} album
+ * @param {*} track
+ * @param {*} isWishList
+ * @param {*} navigate
+ * @param {*} logout
+ * @param {*} setTracks
+ * @param {*} setError
  * @returns
  */
 const TrackRow = ({
@@ -17,6 +24,7 @@ const TrackRow = ({
   navigate,
   logout,
   setTracks,
+  setError,
 }) => {
   return (
     <tr>
@@ -41,6 +49,7 @@ const TrackRow = ({
           track={track}
           logout={logout}
           setTracks={setTracks}
+          setError={setError}
         />
       </td>
       <td>

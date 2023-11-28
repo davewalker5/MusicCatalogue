@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Search;
 
@@ -58,6 +59,68 @@ namespace MusicCatalogue.Api.Controllers
             }
 
             return artist;
+        }
+
+        /// <summary>
+        /// Add an artist from a template contained in the request body
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<Artist>> AddArtistAsync([FromBody] Artist template)
+        {
+            // Add the artist
+            var artist = await _factory.Artists.AddAsync(template.Name);
+
+            // Return the new artist
+            return artist;
+        }
+
+        /// <summary>
+        /// Update an artist from a template contained in the request body
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("")]
+        public async Task<ActionResult<Artist?>> UpdateArtistAsync([FromBody] Artist template)
+        {
+            // Add the artist
+            var artist = await _factory.Artists.UpdateAsync(template.Id, template.Name);
+
+            // Return the new artist
+            return artist;
+        }
+
+        /// <summary>
+        /// Delete an artist given their ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteArtist(int id)
+        {
+            // Check the artist exists, first
+            var artist = await _factory.Artists.GetAsync(x => x.Id == id, false);
+            if (artist == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                // They do, so delete them
+                await _factory.Artists.DeleteAsync(id);
+            }
+            catch (ArtistInUseException)
+            {
+                // Artist is in use (has albums) so this is a bad request
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }

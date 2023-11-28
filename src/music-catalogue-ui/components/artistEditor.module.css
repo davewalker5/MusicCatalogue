@@ -1,0 +1,27 @@
+.artistEditorFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.artistEditorForm {
+  width: 80%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.artistEditorFormLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.artistEditorButton {
+  margin-left: 10px;
+  float: right;
+}
+
+.artistEditorError {
+  font-weight: bold;
+  color: red;
+}
