@@ -5,8 +5,7 @@ import CurrencyInput from "react-currency-input-field";
 import config from "../config.json";
 import pages from "@/helpers/navigation";
 import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
-import Select from "react-select";
-import useRetailers from "@/hooks/useRetailers";
+import RetailerSelector from "./retailerSelector";
 
 /**
  * Form to set the album purchase details for an album
@@ -17,22 +16,12 @@ import useRetailers from "@/hooks/useRetailers";
  * @param {*} logout
  */
 const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
-  const { retailers: retailers, setRetailers } = useRetailers(logout);
-
-  // Construct the options for the retailer drop-down
-  let options = [];
-  for (let i = 0; i < retailers.length; i++) {
-    options = [
-      ...options,
-      { value: retailers[i].id, label: retailers[i].name },
-    ];
-  }
-
   // Get the initial retailer selection and purchase date
   let initialRetailer = null;
   let initialPurchaseDate = new Date();
   if (album != null) {
-    initialRetailer = options.find((x) => x.value == album.retailerId);
+    initialRetailer = album.retailer;
+
     if (album.purchased != null) {
       initialPurchaseDate = new Date(album.purchased);
     }
@@ -54,7 +43,7 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
       const updatedPurchaseDate =
         album.isWishListItem == false ? purchaseDate : null;
       const updatedPrice = price != undefined ? price : null;
-      const updatedRetailerId = retailer != null ? retailer.value.id : null;
+      const updatedRetailerId = retailer != null ? retailer.id : null;
 
       // Apply the updates
       const updatedAlbum = await apiSetAlbumPurchaseDetails(
@@ -129,10 +118,10 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
                 Retailer
               </label>
               <div>
-                <Select
-                  value={retailer}
-                  onChange={setRetailer}
-                  options={options}
+                <RetailerSelector
+                  initialRetailer={retailer}
+                  retailerChangedCallback={setRetailer}
+                  logout={logout}
                 />
               </div>
             </div>

@@ -215,9 +215,6 @@ const apiLookupAlbum = async (
  * @returns
  */
 const apiSetAlbumWishListFlag = async (album, wishListFlag, logout) => {
-  // Update the album properties
-  album.isWishListItem = wishListFlag;
-
   // Send the update request to the API and return the response
   const response = await apiUpdateAlbum(
     album.id,
@@ -226,7 +223,7 @@ const apiSetAlbumWishListFlag = async (album, wishListFlag, logout) => {
     album.title,
     album.released,
     album.coverUrl,
-    album.isWishListItem,
+    wishListFlag,
     album.purchased,
     album.price,
     album.retailerId,
@@ -251,11 +248,6 @@ const apiSetAlbumPurchaseDetails = async (
   retailerId,
   logout
 ) => {
-  // Update the purchase details
-  album.purchased = purchaseDate;
-  album.price = price;
-  album.retailerId = retailerId;
-
   // Send the update request to the API and return the response
   const response = await apiUpdateAlbum(
     album.id,
@@ -265,9 +257,9 @@ const apiSetAlbumPurchaseDetails = async (
     album.released,
     album.coverUrl,
     album.isWishListItem,
-    album.purchased,
-    album.price,
-    album.retailerId,
+    purchaseDate,
+    price,
+    retailerId,
     logout
   );
   return response;
