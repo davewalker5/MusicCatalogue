@@ -10,6 +10,7 @@ namespace MusicCatalogue.Tests
     {
         private const string JazzArtistName = "Diana Krall";
         private const string PopArtistName = "Katie Melua";
+        private const string NoAlbumsArtistName = "Fleetwood Mac";
 
         private const string JazzAlbumTitle = "Live In Paris";
         private const string PopAlbumTitle = "Album No. 8";
@@ -31,6 +32,7 @@ namespace MusicCatalogue.Tests
             // Add the artists
             var jazzArtistId = Task.Run(() => _factory.Artists.AddAsync(JazzArtistName)).Result.Id;
             var popArtistId = Task.Run(() => _factory.Artists.AddAsync(PopArtistName)).Result.Id;
+            Task.Run(() => _factory.Artists.AddAsync(NoAlbumsArtistName)).Wait();
 
             // Add the albums, one on the wishlist and one not
             Task.Run(() => _factory.Albums.AddAsync(jazzArtistId, _jazzGenreId, JazzAlbumTitle, 2002, null, false, null, null, null)).Wait();
@@ -145,6 +147,18 @@ namespace MusicCatalogue.Tests
             };
             var artists = await _factory!.Search.ArtistSearchAsync(criteria);
             Assert.IsNull(artists);
+        }
+
+        [TestMethod]
+        public async Task IncludeArtistsWithNoAlbumsTest()
+        {
+            var criteria = new ArtistSearchCriteria
+            {
+                IncludeArtistsWithNoAlbums = true
+            };
+            var artists = await _factory!.Search.ArtistSearchAsync(criteria);
+            Assert.IsNotNull(artists);
+            Assert.AreEqual(3, artists.Count);
         }
     }
 }
