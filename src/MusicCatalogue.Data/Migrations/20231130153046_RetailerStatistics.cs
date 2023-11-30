@@ -5,10 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Data.Migrations
 {
+    [ExcludeFromCodeCoverage]
     /// <inheritdoc />
     public partial class RetailerStatistics : Migration
     {
-        [ExcludeFromCodeCoverage]
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
