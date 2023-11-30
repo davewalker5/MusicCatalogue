@@ -15,18 +15,20 @@ namespace MusicCatalogue.Api.Controllers
         private readonly IBackgroundQueue<ArtistStatisticsExportWorkItem> _artistStatisticsQueue;
         private readonly IBackgroundQueue<GenreStatisticsExportWorkItem> _genreStatisticsQueue;
         private readonly IBackgroundQueue<MonthlySpendExportWorkItem> _monthlySpendQueue;
+        private readonly IBackgroundQueue<RetailerStatisticsExportWorkItem> _retailerStatisticsQueue;
 
         public ExportController(
             IBackgroundQueue<CatalogueExportWorkItem> catalogueQueue,
             IBackgroundQueue<ArtistStatisticsExportWorkItem> artistStatisticsQueue,
             IBackgroundQueue<GenreStatisticsExportWorkItem> genreStatisticsQueue,
-            IBackgroundQueue<MonthlySpendExportWorkItem> monthlySpendQueue
-            )
+            IBackgroundQueue<MonthlySpendExportWorkItem> monthlySpendQueue,
+            IBackgroundQueue<RetailerStatisticsExportWorkItem> retailerStatisticsQueue)
         {
             _catalogueQueue = catalogueQueue;
             _artistStatisticsQueue = artistStatisticsQueue;
             _genreStatisticsQueue = genreStatisticsQueue;
             _monthlySpendQueue = monthlySpendQueue;
+            _retailerStatisticsQueue = retailerStatisticsQueue;
         }
 
         [HttpPost]
@@ -74,6 +76,18 @@ namespace MusicCatalogue.Api.Controllers
 
             // Queue the work item
             _monthlySpendQueue.Enqueue(item);
+            return Accepted();
+        }
+
+        [HttpPost]
+        [Route("retailerstatistics")]
+        public IActionResult ExportRetailerStatisticsReport([FromBody] RetailerStatisticsExportWorkItem item)
+        {
+            // Set the job name used in the job status record
+            item.JobName = "Retailer Statistics Export";
+
+            // Queue the work item
+            _retailerStatisticsQueue.Enqueue(item);
             return Accepted();
         }
     }
