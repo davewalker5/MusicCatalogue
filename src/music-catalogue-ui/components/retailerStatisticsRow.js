@@ -1,14 +1,15 @@
 import CurrencyFormatter from "./currencyFormatter";
 
 /**
- * Component to render a row containing the details for a single artist statistics record
+ * Component to render a row containing the details for a single retailer statistics record
  * @param {*} record
  * @returns
  */
-const ArtistStatisticsRow = ({ record }) => {
+const RetailerStatisticsRow = ({ record }) => {
   return (
     <tr>
       <td>{record.name}</td>
+      <td>{record.artists}</td>
       <td>{record.albums}</td>
       <td>{record.tracks}</td>
       <td>
@@ -18,4 +19,4 @@ const ArtistStatisticsRow = ({ record }) => {
   );
 };
 
-export default ArtistStatisticsRow;
+export default RetailerStatisticsRow;

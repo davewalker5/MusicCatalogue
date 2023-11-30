@@ -121,9 +121,43 @@ const apiRequestMonthlySpendingExport = async (fileName, logout) => {
   return response.ok;
 };
 
+/**
+ * Request an export of the retailer statistics report
+ * @param {*} fileName
+ * @param {*} isWishList
+ * @param {*} logout
+ */
+const apiRequestRetailerStatisticsExport = async (
+  fileName,
+  isWishList,
+  logout
+) => {
+  // Create a JSON body containing the file name to export to
+  const body = JSON.stringify({
+    fileName: fileName,
+    wishList: isWishList,
+  });
+
+  // Call the API to request the export
+  const url = `${config.api.baseUrl}/export/retailerstatistics`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
+
+  return response.ok;
+};
+
 export {
   apiRequestCatalogueExport,
   apiRequestAristStatisticsExport,
   apiRequestGenreStatisticsExport,
   apiRequestMonthlySpendingExport,
+  apiRequestRetailerStatisticsExport,
 };
