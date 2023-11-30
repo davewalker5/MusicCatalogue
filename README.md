@@ -287,7 +287,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 #### Artists Statistics Report
 
-- To view a summary report by artist, jobs, click on the "Reports > Artist Statistics" menu bar item:
+- To view a summary report by artist, click on the "Reports > Artist Statistics" menu bar item:
 
 <img src="diagrams/reports-artist-statistics.png" alt="Artist Statistics Report" width="600">
 
@@ -302,6 +302,18 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - To view a summary report by genre, click on the "Reports > Genre Statistics" menu bar item:
 
 <img src="diagrams/reports-genre-statistics.png" alt="Genre Statistics Report" width="600">
+
+- Use the drop down to select the catalogue to report on, either the main catalogue or the wish list
+- If no selection is made, the report is generated for the main catalogue
+- Click on the "Search" button to view the results
+- Once the search results are returned, options to export the report in CSV format will appear
+- Enter a file name and click "Export" to export it
+
+#### Retailer Statistics Report
+
+- To view a summary report by retailer, click on the "Reports > Retailer Statistics" menu bar item:
+
+<img src="diagrams/reports-retailer-statistics.png" alt="Retailer Statistics Report" width="600">
 
 - Use the drop down to select the catalogue to report on, either the main catalogue or the wish list
 - If no selection is made, the report is generated for the main catalogue

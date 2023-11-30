@@ -16,6 +16,7 @@ import RetailerEditor from "./retailerEditor";
 import TrackEditor from "./trackEditor";
 import AlbumEditor from "./albumEditor";
 import ArtistEditor from "./artistEditor";
+import RetailerStatisticsReport from "./retailerStatisticsReport";
 
 /**
  * Component using the current context to select and render the current page
@@ -122,6 +123,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return <ArtistStatisticsReport logout={logout} />;
     case pages.genreStatisticsReport:
       return <GenreStatusReport logout={logout} />;
+    case pages.retailerStatisticsReport:
+      return <RetailerStatisticsReport logout={logout} />;
     case pages.jobStatusReport:
       return <JobStatusReport logout={logout} />;
     case pages.monthlySpendReport:

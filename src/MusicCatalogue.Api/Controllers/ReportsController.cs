@@ -116,5 +116,26 @@ namespace MusicCatalogue.Api.Controllers
             // Convert to a list and return the results
             return results.ToList();
         }
+
+        /// <summary>
+        /// Generate the retailer statistics report
+        /// </summary>
+        /// <param name="wishlist"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("retailers/{wishlist}")]
+        public async Task<ActionResult<List<RetailerStatistics>>> GetRetailerStatisticsReportAsync(bool wishlist)
+        {
+            // Get the report content
+            var results = await _factory.RetailerStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
+
+            if (!results.Any())
+            {
+                return NoContent();
+            }
+
+            // Convert to a list and return the results
+            return results.ToList();
+        }
     }
 }

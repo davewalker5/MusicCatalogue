@@ -17,6 +17,7 @@ const pages = {
   genreStatisticsReport: "GenreStatisticsReport",
   jobStatusReport: "JobStatusReport",
   monthlySpendReport: "MonthlySpendReport",
+  retailerStatisticsReport: "RetailerStatisticsReport",
   albumPurchaseDetails: "AlbumPurchaseDetails",
 };
 

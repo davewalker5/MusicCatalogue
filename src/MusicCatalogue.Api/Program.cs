@@ -116,6 +116,10 @@ namespace MusicCatalogue.Api
             builder.Services.AddSingleton<IBackgroundQueue<MonthlySpendExportWorkItem>, BackgroundQueue<MonthlySpendExportWorkItem>>();
             builder.Services.AddHostedService<MonthlySpendExportService>();
 
+            // Add the retailer statistics report exporter hosted service
+            builder.Services.AddSingleton<IBackgroundQueue<RetailerStatisticsExportWorkItem>, BackgroundQueue<RetailerStatisticsExportWorkItem>>();
+            builder.Services.AddHostedService<RetailerStatisticsExportService>();
+
             // Configure JWT
             byte[] key = Encoding.ASCII.GetBytes(settings!.Secret);
             builder.Services.AddAuthentication(x =>

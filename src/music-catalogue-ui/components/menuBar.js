@@ -37,6 +37,11 @@ const MenuBar = ({ navigate, logout }) => {
             <a onClick={() => navigate({ page: pages.genreStatisticsReport })}>
               Genre Statistics
             </a>
+            <a
+              onClick={() => navigate({ page: pages.retailerStatisticsReport })}
+            >
+              Retailer Statistics
+            </a>
             <a onClick={() => navigate({ page: pages.jobStatusReport })}>
               Job Status
             </a>
