@@ -21,10 +21,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Sql\EquipmentMigration.sql" />
     <None Remove="Sql\GenreDataMigration.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Sql\EquipmentMigration.sql" />
     <EmbeddedResource Include="Sql\GenreDataMigration.sql" />
   </ItemGroup>
 

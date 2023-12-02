@@ -12,6 +12,9 @@ namespace MusicCatalogue.Data
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<EquipmentType> EquipmentTypes { get; set; }
+        public virtual DbSet<Manufacturer> Manufacturers { get; set; }
+        public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<Retailer> Retailers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<JobStatus> JobStatuses { get; set; }
@@ -45,6 +48,22 @@ namespace MusicCatalogue.Data
             modelBuilder.Entity<Retailer>(entity =>
             {
                 entity.ToTable("RETAILERS");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
+            });
+
+            modelBuilder.Entity<EquipmentType>(entity =>
+            {
+                entity.ToTable("EQUIPMENT_TYPES");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
+            });
+
+            modelBuilder.Entity<Manufacturer>(entity =>
+            {
+                entity.ToTable("MANUFACTURERS");
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
@@ -92,6 +111,21 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Title).IsRequired().HasColumnName("Title");
                 entity.Property(e => e.Duration).HasColumnName("Duration");
                 entity.Ignore(e => e.FormattedDuration);
+            });
+
+            modelBuilder.Entity<Equipment>(entity =>
+            {
+                entity.ToTable("EQUIPMENT");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.EquipmentTypeId).IsRequired().HasColumnName("EquipmentTypeId");
+                entity.Property(e => e.ManufacturerId).HasColumnName("ManufacturerId");
+                entity.Property(e => e.Description).IsRequired().HasColumnName("Description");
+                entity.Property(e => e.Model).HasColumnName("Model");
+                entity.Property(e => e.SerialNumber).HasColumnName("SerialNumber");
+                entity.Property(e => e.Purchased).HasColumnName("Purchased");
+                entity.Property(e => e.Price).HasColumnName("Price");
+                entity.Property(e => e.RetailerId).HasColumnName("RetailerId");
             });
 
             modelBuilder.Entity<JobStatus>(entity =>

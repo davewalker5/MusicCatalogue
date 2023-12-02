@@ -10,6 +10,9 @@ namespace MusicCatalogue.Entities.Interfaces
         IAlbumManager Albums { get; }
         IArtistManager Artists { get; }
         ITrackManager Tracks { get; }
+        IManufacturerManager Manufacturers { get; }
+        IEquipmentTypeManager EquipmentTypes { get; }
+        IEquipmentManager Equipment { get; }
         IRetailerManager Retailers { get; }
         IUserManager Users { get; }
         IImporter Importer { get; }

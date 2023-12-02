@@ -136,5 +136,29 @@ namespace MusicCatalogue.Logic.Database
 
             return genres;
         }
+
+        /// <summary>
+        /// Return the items of equipment matching the specified criteria
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        public async Task<List<Equipment>?> EquipmentSearchAsync(EquipmentSearchCriteria criteria)
+        {
+            var equipment = await Factory.Equipment
+                                         .ListAsync(x => (
+                                                            (criteria.WishList == null) ||
+                                                            ((criteria.WishList == false) && (x.IsWishListItem == null)) ||
+                                                            (x.IsWishListItem == criteria.WishList)
+                                                         ) &&
+                                                         (
+                                                            (criteria.EquipmentTypeId == null) ||
+                                                            (x.EquipmentTypeId == criteria.EquipmentTypeId)
+                                                         ) &&
+                                                         (
+                                                            (criteria.ManufacturerId == null) ||
+                                                            (x.ManufacturerId == criteria.ManufacturerId)
+                                                         ));
+            return equipment.Any() ? equipment : null;
+        }
     }
 }

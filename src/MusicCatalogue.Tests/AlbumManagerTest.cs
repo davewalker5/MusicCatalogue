@@ -15,7 +15,7 @@ namespace MusicCatalogue.Tests
         private const string TrackTitle = "Blue Train";
         private const int TrackNumber = 1;
         private const int TrackDuration = 643200;
-        private DateTime Purchased = new(2023, 11, 1);
+        private readonly DateTime Purchased = new(2023, 11, 1);
         private const decimal Price = 37.99M;
         private const string RetailerName = "Truck Store";
 

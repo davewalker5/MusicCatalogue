@@ -3,7 +3,7 @@
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
-    public class Genre : NamedEntity
+    public class EquipmentType : NamedEntity
     {
     }
 }
