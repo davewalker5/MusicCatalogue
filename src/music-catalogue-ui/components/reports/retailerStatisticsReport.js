@@ -1,35 +1,36 @@
 import React, { useCallback, useState } from "react";
-import styles from "./reports.module.css";
+import styles from "@/components/reports/reports.module.css";
 import catalogues from "@/helpers/catalogues";
 import "react-datepicker/dist/react-datepicker.css";
-import { apiGenreStatisticsReport } from "@/helpers/apiReports";
-import GenreStatisticsRow from "./genreStatisticsRow";
+import { apiRetailerStatisticsReport } from "@/helpers/apiReports";
+import RetailerStatisticsRow from "./retailerStatisticsRow";
 import ReportExportControls from "./reportExportControls";
-import { apiRequestGenreStatisticsExport } from "@/helpers/apiDataExchange";
-import CatalogueSelector from "./catalogueSelector";
+import { apiRequestRetailerStatisticsExport } from "@/helpers/apiDataExchange";
+import CatalogueSelector from "../common/catalogueSelector";
 
 /**
- * Component to display the genre statistics report page and its results
+ * Component to display the retailer statistics report page and its results
  * @param {*} logout
  * @returns
  */
-const GenreStatisticsReport = ({ logout }) => {
+const RetailerStatisticsReport = ({ logout }) => {
+  // Set up state
   const [catalogue, setCatalogue] = useState(catalogues.main);
   const [records, setRecords] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Callback to request the genre statistics report from the API
+  // Callback to request the retailer statistics report from the API
   const getReportCallback = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
       // Set the wishlist flag from the drop-down selection
-      const forWishList = catalogue == "wishlist";
+      const forWishList = catalogue == catalogues.wishlist;
 
       // Fetch the report
-      const fetchedRecords = await apiGenreStatisticsReport(
+      const fetchedRecords = await apiRetailerStatisticsReport(
         forWishList,
         logout
       );
@@ -52,7 +53,7 @@ const GenreStatisticsReport = ({ logout }) => {
       const forWishList = catalogue.value == "wishlist";
 
       // Request an export via the API
-      const isOK = await apiRequestGenreStatisticsExport(
+      const isOK = await apiRequestRetailerStatisticsExport(
         fileName,
         forWishList,
         logout
@@ -61,11 +62,11 @@ const GenreStatisticsReport = ({ logout }) => {
       // If all's well, display a confirmation message. Otherwise, show an error
       if (isOK) {
         setMessage(
-          `A background export of the genre statistics report to ${fileName} has been requested`
+          `A background export of the retailer statistics report to ${fileName} has been requested`
         );
       } else {
         setError(
-          "An error occurred requesting an export of the genre statistics report"
+          "An error occurred requesting an export of the retailer statistics report"
         );
       }
     },
@@ -75,7 +76,9 @@ const GenreStatisticsReport = ({ logout }) => {
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">Genre Statistics Report</h5>
+        <h5 className="themeFontColor text-center">
+          Retailer Statistics Report
+        </h5>
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
@@ -90,7 +93,7 @@ const GenreStatisticsReport = ({ logout }) => {
             <></>
           )}
           <div className="row" align="center">
-            <div className="mt-3">
+            <div className="mt-6">
               <div className="d-inline-flex align-items-center">
                 <div className="col">
                   <label className={styles.reportFormLabel}>Report For:</label>
@@ -125,7 +128,7 @@ const GenreStatisticsReport = ({ logout }) => {
       <table className="table table-hover">
         <thead>
           <tr>
-            <th>Genre</th>
+            <th>Name</th>
             <th>Artists</th>
             <th>Albums</th>
             <th>Tracks</th>
@@ -135,7 +138,7 @@ const GenreStatisticsReport = ({ logout }) => {
         {records != null && (
           <tbody>
             {records.map((r) => (
-              <GenreStatisticsRow key={r.id} record={r} />
+              <RetailerStatisticsRow key={r.id} record={r} />
             ))}
           </tbody>
         )}
@@ -144,4 +147,4 @@ const GenreStatisticsReport = ({ logout }) => {
   );
 };
 
-export default GenreStatisticsReport;
+export default RetailerStatisticsReport;

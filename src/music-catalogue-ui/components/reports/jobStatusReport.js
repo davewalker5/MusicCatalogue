@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import styles from "./reports.module.css";
+import styles from "@/components/reports/reports.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { apiJobStatusReport } from "@/helpers/apiReports";

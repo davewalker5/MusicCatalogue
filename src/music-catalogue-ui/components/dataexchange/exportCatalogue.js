@@ -1,7 +1,7 @@
 import styles from "./export.module.css";
 import { useCallback, useState } from "react";
 import { apiRequestCatalogueExport } from "@/helpers/apiDataExchange";
-import FormInputField from "./formInputField";
+import FormInputField from "../common/formInputField";
 
 /**
  * Component to prompt for an export file name and request an export of the catalogue

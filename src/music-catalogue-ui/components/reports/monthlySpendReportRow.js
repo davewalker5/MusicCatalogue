@@ -1,4 +1,4 @@
-import CurrencyFormatter from "./currencyFormatter";
+import CurrencyFormatter from "../common/currencyFormatter";
 
 /**
  * Component to render a row containing the details for a single monthly spending record

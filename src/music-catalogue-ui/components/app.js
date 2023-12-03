@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import Login from "./login";
+import Login from "./login/login";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
 import { apiClearToken } from "@/helpers/apiToken";

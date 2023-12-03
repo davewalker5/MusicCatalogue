@@ -1,5 +1,5 @@
 import pages from "@/helpers/navigation";
-import LocationMap from "./locationMap";
+import LocationMap from "../common/locationMap";
 import styles from "./retailerDetails.module.css";
 
 /**

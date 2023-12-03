@@ -1,4 +1,4 @@
-import config from "../config.json";
+import config from "@/config.json";
 import { apiReadResponseData } from "./apiUtils";
 import { apiGetHeaders, apiGetPostHeaders } from "./apiHeaders";
 

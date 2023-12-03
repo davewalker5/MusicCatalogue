@@ -1,6 +1,6 @@
 import styles from "./trackEditor.module.css";
 import pages from "@/helpers/navigation";
-import FormInputField from "./formInputField";
+import FormInputField from "../common/formInputField";
 import { useState, useCallback } from "react";
 import { apiCreateTrack, apiUpdateTrack } from "@/helpers/apiTracks";
 

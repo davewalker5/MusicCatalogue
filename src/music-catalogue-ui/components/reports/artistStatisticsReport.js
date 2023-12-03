@@ -1,26 +1,26 @@
 import React, { useCallback, useState } from "react";
-import styles from "./reports.module.css";
+import styles from "@/components/reports/reports.module.css";
 import catalogues from "@/helpers/catalogues";
 import "react-datepicker/dist/react-datepicker.css";
-import { apiRetailerStatisticsReport } from "@/helpers/apiReports";
-import RetailerStatisticsRow from "./retailerStatisticsRow";
+import { apiArtistStatisticsReport } from "@/helpers/apiReports";
+import ArtistStatisticsRow from "./artistStatisticsRow";
 import ReportExportControls from "./reportExportControls";
-import { apiRequestRetailerStatisticsExport } from "@/helpers/apiDataExchange";
-import CatalogueSelector from "./catalogueSelector";
+import { apiRequestAristStatisticsExport } from "@/helpers/apiDataExchange";
+import CatalogueSelector from "../common/catalogueSelector";
 
 /**
- * Component to display the retailer statistics report page and its results
+ * Component to display the artist statistics report page and its results
  * @param {*} logout
  * @returns
  */
-const RetailerStatisticsReport = ({ logout }) => {
+const ArtistStatisticsReport = ({ logout }) => {
   // Set up state
   const [catalogue, setCatalogue] = useState(catalogues.main);
   const [records, setRecords] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Callback to request the retailer statistics report from the API
+  // Callback to request the artist statistics report from the API
   const getReportCallback = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
@@ -30,7 +30,7 @@ const RetailerStatisticsReport = ({ logout }) => {
       const forWishList = catalogue == catalogues.wishlist;
 
       // Fetch the report
-      const fetchedRecords = await apiRetailerStatisticsReport(
+      const fetchedRecords = await apiArtistStatisticsReport(
         forWishList,
         logout
       );
@@ -53,7 +53,7 @@ const RetailerStatisticsReport = ({ logout }) => {
       const forWishList = catalogue.value == "wishlist";
 
       // Request an export via the API
-      const isOK = await apiRequestRetailerStatisticsExport(
+      const isOK = await apiRequestAristStatisticsExport(
         fileName,
         forWishList,
         logout
@@ -62,11 +62,11 @@ const RetailerStatisticsReport = ({ logout }) => {
       // If all's well, display a confirmation message. Otherwise, show an error
       if (isOK) {
         setMessage(
-          `A background export of the retailer statistics report to ${fileName} has been requested`
+          `A background export of the artist statistics report to ${fileName} has been requested`
         );
       } else {
         setError(
-          "An error occurred requesting an export of the retailer statistics report"
+          "An error occurred requesting an export of the artist statistics report"
         );
       }
     },
@@ -76,9 +76,7 @@ const RetailerStatisticsReport = ({ logout }) => {
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">
-          Retailer Statistics Report
-        </h5>
+        <h5 className="themeFontColor text-center">Artist Statistics Report</h5>
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
@@ -129,7 +127,6 @@ const RetailerStatisticsReport = ({ logout }) => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Artists</th>
             <th>Albums</th>
             <th>Tracks</th>
             <th>Total Spend</th>
@@ -138,7 +135,7 @@ const RetailerStatisticsReport = ({ logout }) => {
         {records != null && (
           <tbody>
             {records.map((r) => (
-              <RetailerStatisticsRow key={r.id} record={r} />
+              <ArtistStatisticsRow key={r.id} record={r} />
             ))}
           </tbody>
         )}
@@ -147,4 +144,4 @@ const RetailerStatisticsReport = ({ logout }) => {
   );
 };
 
-export default RetailerStatisticsReport;
+export default ArtistStatisticsReport;

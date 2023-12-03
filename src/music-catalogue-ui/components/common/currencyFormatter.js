@@ -1,4 +1,4 @@
-import config from "../config.json";
+import config from "@/config.json";
 
 /**
  * Format a value as currency using the locale from the config file

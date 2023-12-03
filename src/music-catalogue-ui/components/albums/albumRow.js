@@ -1,8 +1,8 @@
 import pages from "@/helpers/navigation";
 import DeleteAlbumActionIcon from "./deleteAlbumActionIcon";
 import AlbumWishListActionIcon from "./albumWishListActionIcon";
-import CurrencyFormatter from "./currencyFormatter";
-import DateFormatter from "./dateFormatter";
+import CurrencyFormatter from "../common/currencyFormatter";
+import DateFormatter from "../common/dateFormatter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useCallback } from "react";

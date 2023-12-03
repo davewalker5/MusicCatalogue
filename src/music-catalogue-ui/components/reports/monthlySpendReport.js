@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import styles from "./reports.module.css";
+import styles from "@/components/reports/reports.module.css";
 import useMonthlySpend from "@/hooks/useMonthlySpend";
 import MonthlySpendReportRow from "./monthlySpendReportRow";
 import ReportExportControls from "./reportExportControls";

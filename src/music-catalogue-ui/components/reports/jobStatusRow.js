@@ -1,4 +1,4 @@
-import DateAndTimeFormatter from "./dateAndTimeFormatter";
+import DateAndTimeFormatter from "../common/dateAndTimeFormatter";
 
 /**
  * Component to render a row containing the details of a single job status record

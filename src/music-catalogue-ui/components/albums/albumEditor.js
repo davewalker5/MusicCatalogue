@@ -1,11 +1,9 @@
 import styles from "./albumEditor.module.css";
 import pages from "@/helpers/navigation";
-import catalogues from "@/helpers/catalogues";
-import FormInputField from "./formInputField";
-import CatalogueSelector from "./catalogueSelector";
+import FormInputField from "../common/formInputField";
 import { apiCreateAlbum, apiUpdateAlbum } from "@/helpers/apiAlbums";
 import { useState, useCallback } from "react";
-import GenreSelector from "./genreSelector";
+import GenreSelector from "../genres/genreSelector";
 
 /**
  * Component to render an album editor, excluding purchase details that are

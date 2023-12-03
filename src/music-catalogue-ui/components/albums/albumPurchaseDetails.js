@@ -2,10 +2,10 @@ import styles from "./albumPurchaseDetails.module.css";
 import DatePicker from "react-datepicker";
 import { useState, useCallback } from "react";
 import CurrencyInput from "react-currency-input-field";
-import config from "../config.json";
+import config from "@/config.json";
 import pages from "@/helpers/navigation";
 import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
-import RetailerSelector from "./retailerSelector";
+import RetailerSelector from "../retailers/retailerSelector";
 
 /**
  * Form to set the album purchase details for an album

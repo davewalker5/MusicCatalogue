@@ -2,7 +2,7 @@ import styles from "./retailerEditor.module.css";
 import pages from "@/helpers/navigation";
 import { useState, useCallback } from "react";
 import { apiCreateRetailer, apiUpdateRetailer } from "@/helpers/apiRetailers";
-import FormInputField from "./formInputField";
+import FormInputField from "../common/formInputField";
 import { geocodeAddress } from "@/helpers/geocoder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";

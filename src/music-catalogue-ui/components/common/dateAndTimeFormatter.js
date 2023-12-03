@@ -1,15 +1,18 @@
-import config from "../config.json";
+import config from "@/config.json";
 
 /**
- * Format a value as a date using the locale from the config file
+ * Format a value as a date and time using the locale from the config file
  * @param {*} param0
  * @returns
  */
-const DateFormatter = ({ value }) => {
+const DateAndTimeFormatter = ({ value }) => {
   // Check there's a value to format
   if (value != null) {
     // Create a formatter to format the value
-    const formatter = new Intl.DateTimeFormat(config.region.locale);
+    const formatter = new Intl.DateTimeFormat(config.region.locale, {
+      dateStyle: "short",
+      timeStyle: "medium",
+    });
 
     // Format the value
     const dateToFormat = new Date(value);
@@ -21,4 +24,4 @@ const DateFormatter = ({ value }) => {
   }
 };
 
-export default DateFormatter;
+export default DateAndTimeFormatter;

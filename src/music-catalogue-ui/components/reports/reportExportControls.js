@@ -1,4 +1,4 @@
-import styles from "./reports.module.css";
+import styles from "@/components/reports/reports.module.css";
 import { useState } from "react";
 
 /**
