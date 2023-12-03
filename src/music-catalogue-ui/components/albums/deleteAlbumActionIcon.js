@@ -1,5 +1,8 @@
 import { useCallback } from "react";
-import { apiDeleteAlbum, apiFetchAlbumsByArtist } from "@/helpers/apiAlbums";
+import {
+  apiDeleteAlbum,
+  apiFetchAlbumsByArtist,
+} from "@/helpers/api/apiAlbums";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 

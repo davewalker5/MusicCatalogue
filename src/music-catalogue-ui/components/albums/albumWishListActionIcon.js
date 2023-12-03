@@ -7,7 +7,7 @@ import {
 import {
   apiSetAlbumWishListFlag,
   apiFetchAlbumsByArtist,
-} from "@/helpers/apiAlbums";
+} from "@/helpers/api/apiAlbums";
 
 /**
  * Icon and associated action to move an album between the catalogue and wish list

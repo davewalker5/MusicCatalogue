@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetchAlbumById } from "@/helpers/apiAlbums";
+import { apiFetchAlbumById } from "@/helpers/api/apiAlbums";
 
 /**
  * Hook that uses the API helpers to retrieve a list of tracks for the

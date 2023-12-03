@@ -1,4 +1,8 @@
-import { setStorageValue, getStorageValue, clearStorageValue } from "./storage";
+import {
+  setStorageValue,
+  getStorageValue,
+  clearStorageValue,
+} from "../storage";
 
 /**
  * Store the JWT token

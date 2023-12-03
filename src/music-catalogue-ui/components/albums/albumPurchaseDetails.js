@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import CurrencyInput from "react-currency-input-field";
 import config from "@/config.json";
 import pages from "@/helpers/navigation";
-import { apiSetAlbumPurchaseDetails } from "@/helpers/apiAlbums";
+import { apiSetAlbumPurchaseDetails } from "@/helpers/api/apiAlbums";
 import RetailerSelector from "../retailers/retailerSelector";
 
 /**

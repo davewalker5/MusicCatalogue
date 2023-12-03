@@ -2,7 +2,7 @@ import styles from "./trackEditor.module.css";
 import pages from "@/helpers/navigation";
 import FormInputField from "../common/formInputField";
 import { useState, useCallback } from "react";
-import { apiCreateTrack, apiUpdateTrack } from "@/helpers/apiTracks";
+import { apiCreateTrack, apiUpdateTrack } from "@/helpers/api/apiTracks";
 
 /**
  * Component to render the track details editor

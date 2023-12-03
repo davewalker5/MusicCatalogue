@@ -2,10 +2,10 @@ import React, { useCallback, useState } from "react";
 import styles from "./reports.module.css";
 import catalogues from "@/helpers/catalogues";
 import "react-datepicker/dist/react-datepicker.css";
-import { apiGenreStatisticsReport } from "@/helpers/apiReports";
+import { apiGenreStatisticsReport } from "@/helpers/api/apiReports";
 import GenreStatisticsRow from "./genreStatisticsRow";
 import ReportExportControls from "./reportExportControls";
-import { apiRequestGenreStatisticsExport } from "@/helpers/apiDataExchange";
+import { apiRequestGenreStatisticsExport } from "@/helpers/api/apiDataExchange";
 import CatalogueSelector from "../common/catalogueSelector";
 
 /**

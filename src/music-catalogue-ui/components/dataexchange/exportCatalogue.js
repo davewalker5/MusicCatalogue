@@ -1,6 +1,6 @@
 import styles from "./export.module.css";
 import { useCallback, useState } from "react";
-import { apiRequestCatalogueExport } from "@/helpers/apiDataExchange";
+import { apiRequestCatalogueExport } from "@/helpers/api/apiDataExchange";
 import FormInputField from "../common/formInputField";
 
 /**

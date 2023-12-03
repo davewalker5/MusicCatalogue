@@ -1,9 +1,9 @@
 import styles from "./login.module.css";
 import secrets from "@/helpers/secrets";
 import { React, useState, useCallback } from "react";
-import { apiAuthenticate } from "@/helpers/apiAuthenticate";
-import { apiSetToken } from "@/helpers/apiToken";
-import { apiFetchSecret } from "@/helpers/apiSecrets";
+import { apiAuthenticate } from "@/helpers/api/apiAuthenticate";
+import { apiSetToken } from "@/helpers/api/apiToken";
+import { apiFetchSecret } from "@/helpers/api/apiSecrets";
 import { setStorageValue } from "@/helpers/storage";
 
 /**

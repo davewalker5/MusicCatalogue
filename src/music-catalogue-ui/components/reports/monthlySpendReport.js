@@ -3,7 +3,7 @@ import styles from "@/components/reports/reports.module.css";
 import useMonthlySpend from "@/hooks/useMonthlySpend";
 import MonthlySpendReportRow from "./monthlySpendReportRow";
 import ReportExportControls from "./reportExportControls";
-import { apiRequestMonthlySpendingExport } from "@/helpers/apiDataExchange";
+import { apiRequestMonthlySpendingExport } from "@/helpers/api/apiDataExchange";
 
 /**
  * Component to display the monthly spending report page and its results

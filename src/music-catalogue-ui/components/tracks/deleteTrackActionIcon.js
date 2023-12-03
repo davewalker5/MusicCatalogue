@@ -1,5 +1,5 @@
-import { apiDeleteTrack } from "@/helpers/apiTracks";
-import { apiFetchAlbumById } from "@/helpers/apiAlbums";
+import { apiDeleteTrack } from "@/helpers/api/apiTracks";
+import { apiFetchAlbumById } from "@/helpers/api/apiAlbums";
 import { useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";

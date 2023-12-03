@@ -1,4 +1,4 @@
-import { apiFetchRetailers } from "@/helpers/apiRetailers";
+import { apiFetchRetailers } from "@/helpers/api/apiRetailers";
 import { useState, useEffect } from "react";
 
 /**

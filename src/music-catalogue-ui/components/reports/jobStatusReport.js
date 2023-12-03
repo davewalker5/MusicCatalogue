@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import styles from "@/components/reports/reports.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { apiJobStatusReport } from "@/helpers/apiReports";
+import { apiJobStatusReport } from "@/helpers/api/apiReports";
 import JobStatusRow from "./jobStatusRow";
 
 /**

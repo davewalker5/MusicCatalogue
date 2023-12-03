@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiMonthlySpendReport } from "@/helpers/apiReports";
+import { apiMonthlySpendReport } from "@/helpers/api/apiReports";
 
 /**
  * Hook that uses the API helpers to retrieve a list of artists from the

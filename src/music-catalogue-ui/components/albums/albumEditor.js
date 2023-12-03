@@ -1,7 +1,7 @@
 import styles from "./albumEditor.module.css";
 import pages from "@/helpers/navigation";
 import FormInputField from "../common/formInputField";
-import { apiCreateAlbum, apiUpdateAlbum } from "@/helpers/apiAlbums";
+import { apiCreateAlbum, apiUpdateAlbum } from "@/helpers/api/apiAlbums";
 import { useState, useCallback } from "react";
 import GenreSelector from "../genres/genreSelector";
 
