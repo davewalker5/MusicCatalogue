@@ -268,7 +268,7 @@ To be implemented in a future release.
 ### Equipment Types
 
 - To view a list of equipment types in the database, click on the "Equipment > Equipment Types" menu item
-- A page listing the equpiment types in the database is displayed:
+- A page listing the equipment types in the database is displayed:
 
 <img src="diagrams/equipment-types-list.png" alt="Equipment Types List" width="600">
 
@@ -281,7 +281,17 @@ To be implemented in a future release.
 
 ### Manufacturers
 
-To be implemented in a future release.
+- To view a list of manufacturers in the database, click on the "Equipment > Manufacturers" menu item
+- A page listing the manufacturers in the database is displayed:
+
+<img src="diagrams/manufacturer-list.png" alt="Equipment Types List" width="600">
+
+- Clicking on the trash can icon in a row will prompt for confirmation and then attempt to delete the manufacturer on the selected row
+- Manufacturers that are currently "in use" (associated with an item of equpiment) cannot be deleted and attempting to delete them will result in an error message being displayed
+- Clicking on the "Add" button opens the manufacturer editing page (see below) to add a new manufacturer
+- Clicking on the edit icon in a row navigates to the manufacturer editing page for that manufacturer (see below)
+
+<img src="diagrams/manufacturer-editor.png" alt="Equipment Type Editor" width="600">
 
 #### The Retailers List
 
