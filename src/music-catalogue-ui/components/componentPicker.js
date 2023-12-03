@@ -1,22 +1,24 @@
 import pages from "@/helpers/navigation";
-import ArtistList from "./artistList";
-import AlbumList from "./albumList";
-import TrackList from "./trackList";
-import LookupAlbum from "./lookupAlbum";
-import ExportCatalogue from "./exportCatalogue";
-import GenreStatusReport from "./genreStatisticsReport";
-import JobStatusReport from "./jobStatusReport";
-import AlbumPurchaseDetails from "./albumPurchaseDetails";
-import ArtistStatisticsReport from "./artistStatisticsReport";
-import MonthlySpendReport from "./monthlySpendReport";
-import GenreList from "./genreList";
-import RetailerList from "./retailerList";
-import RetailerDetails from "./retailerDetails";
-import RetailerEditor from "./retailerEditor";
-import TrackEditor from "./trackEditor";
-import AlbumEditor from "./albumEditor";
-import ArtistEditor from "./artistEditor";
-import RetailerStatisticsReport from "./retailerStatisticsReport";
+import ArtistList from "./artists/artistList";
+import AlbumList from "./albums/albumList";
+import TrackList from "./tracks/trackList";
+import LookupAlbum from "./search/lookupAlbum";
+import ExportCatalogue from "./dataexchange/exportCatalogue";
+import GenreStatusReport from "./reports/genreStatisticsReport";
+import JobStatusReport from "./reports/jobStatusReport";
+import AlbumPurchaseDetails from "./albums/albumPurchaseDetails";
+import ArtistStatisticsReport from "./reports/artistStatisticsReport";
+import MonthlySpendReport from "./reports/monthlySpendReport";
+import GenreList from "./genres/genreList";
+import RetailerList from "./retailers/retailerList";
+import RetailerDetails from "./retailers/retailerDetails";
+import RetailerEditor from "./retailers/retailerEditor";
+import TrackEditor from "./tracks/trackEditor";
+import AlbumEditor from "./albums/albumEditor";
+import ArtistEditor from "./artists/artistEditor";
+import RetailerStatisticsReport from "./reports/retailerStatisticsReport";
+import EquipmentTypeList from "./equipmentTypes/equipmentTypeList";
+import EquipmentTypeEditor from "./equipmentTypes/equipmentTypeEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -117,6 +119,16 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       );
     case pages.genres:
       return <GenreList navigate={navigate} logout={logout} />;
+    case pages.equipmentTypes:
+      return <EquipmentTypeList navigate={navigate} logout={logout} />;
+    case pages.equipmentTypeEditor:
+      return (
+        <EquipmentTypeEditor
+          equipmentType={context.equipmentType}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
     case pages.export:
       return <ExportCatalogue logout={logout} />;
     case pages.artistStatisticsReport:

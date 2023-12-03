@@ -1,0 +1,27 @@
+.equipmentTypeEditorFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.equipmentTypeEditorForm {
+  width: 80%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.equipmentTypeEditorFormLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.equipmentTypeEditorButton {
+  margin-left: 10px;
+  float: right;
+}
+
+.equipmentTypeEditorError {
+  font-weight: bold;
+  color: red;
+}

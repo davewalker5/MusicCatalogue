@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetchGenres } from "@/helpers/apiGenres";
+import { apiFetchGenres } from "@/helpers/api/apiGenres";
 
 /**
  * Hook that uses the API helpers to retrieve a list of genres from the

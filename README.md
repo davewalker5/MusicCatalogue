@@ -30,8 +30,11 @@
   - A "wish list" of albums with the ability to move albums between the main catalogue and the wish list at will
   - Album search
   - External API integration for looking up new albums
+  - An equipment register browser (equipment, equipment types, manufacturers)
+  - A "wish list" of equipment with the ability to move items between the main register and the wish list at will
   - Data import from CSV format files
   - Data export as CSV or Excel workbooks
+  - Reports and report export as CSV
 - It contains the following components:
 
 | Component    | Language | Purpose                                                            |
@@ -156,12 +159,12 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 - This authenticates with the web service (see below), so a valid login in the local database is required
 - Instructions on adding a user to the database are given in the "Database Users" section, below
 
-### Browsing the Catalogue
+### Browsing the Music Catalogue
 
 #### Main Catalogue
 
 - After logging in, the "Artists" page is displayed, listing the artists currently in the database
-- This acts as the home page for the site and clicking on the "Browse > Artists" menu item or the site logo navigates back to it
+- This acts as the home page for the site and clicking on the "Music > Artists" menu item or the site logo navigates back to it
 
 <img src="diagrams/artist-list.png" alt="Artist List" width="600">
 
@@ -206,7 +209,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 #### Browsing By Genre
 
-- To browse by genre, click on the "Browse > Genres" menu item
+- To browse by genre, click on the "Music > Genres" menu item
 - A page listing the genres derived from all albums in the //main catalogue// is displayed
 
 <img src="diagrams/genre-list.png" alt="Genre List" width="600">
@@ -216,7 +219,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 #### The Wish List
 
-- To view the wish list, click on the "Browse > Wish List" menu item
+- To view the wish list, click on the "Music > Wish List" menu item
 - A page identical in layout to the "Artists" page is displayed, but with a title indicating that it is the wish list
 - The page operates in an identical manner to the "Artists" page, using the same alphabet filter
 - Clicking on a row in the table navigates to the wish list for that artist:
@@ -230,7 +233,7 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 #### The Retailers List
 
-- To view a list of retailers in the database, click on the "Browse > Retailers" menu item
+- To view a list of retailers in the database, click on the "Music > Retailers" menu item
 - A page listing the retailers in the database is displayed:
 
 <img src="diagrams/retailer-list.png" alt="Retailers List" width="600">
@@ -251,6 +254,39 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 <img src="diagrams/retailer-editor.png" alt="Retailer Details" width="600">
 
 - Clicking on the globe icon next to the postcode entry will geocode the current address and populate the latitude and longitude with the results
+
+### Browsing the Equipment Register
+
+#### Main Catalogue
+
+To be implemented in a future release.
+
+#### Wish List
+
+To be implemented in a future release.
+
+### Equipment Types
+
+- To view a list of equipment types in the database, click on the "Equipment > Equipment Types" menu item
+- A page listing the equpiment types in the database is displayed:
+
+<img src="diagrams/equipment-types-list.png" alt="Equipment Types List" width="600">
+
+- Clicking on the trash can icon in a row will prompt for confirmation and then attempt to delete the equipment type on the selected row
+- Equipment types that are currently "in use" (associated with an item of equpiment) cannot be deleted and attempting to delete them will result in an error message being displayed
+- Clicking on the "Add" button opens the equpiment type editing page (see below) to add a new equpiment type
+- Clicking on the edit icon in a row navigates to the equpiment type editing page for that equpiment type (see below)
+
+<img src="diagrams/equipment-type-editor.png" alt="Equipment Type Editor" width="600">
+
+### Manufacturers
+
+To be implemented in a future release.
+
+#### The Retailers List
+
+- To view a list of retailers in the database, click on the "Equipment > Retailers" menu item
+- This opens the page described under "Browsing the Music Catalogue", above
 
 ### Album Lookup
 

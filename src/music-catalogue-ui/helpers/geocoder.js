@@ -1,5 +1,5 @@
 import secrets from "@/helpers/secrets";
-import config from "../config.json";
+import config from "@/config.json";
 import { setDefaults, geocode, RequestType } from "react-geocode";
 import { getStorageValue } from "./storage";
 

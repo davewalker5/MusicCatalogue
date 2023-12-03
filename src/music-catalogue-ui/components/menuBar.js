@@ -53,10 +53,26 @@ const MenuBar = ({ navigate, logout }) => {
         <a onClick={() => navigate({ page: pages.export })}>Export</a>
         <a href="#">Import</a>
         <a onClick={() => navigate({ page: pages.lookup })}>Search</a>
-
         <div className={styles.dropdown}>
           <button className={styles.dropbtn}>
-            Browse
+            Equipment
+            <div className={styles.dropdownArrowContainer}>
+              <FontAwesomeIcon icon={faCaretDown} />
+            </div>
+          </button>
+          <div className={styles.dropdownContent}>
+            <a>Equipment</a>
+            <a>Wish List</a>
+            <a onClick={() => navigate({ page: pages.equipmentTypes })}>
+              Equipment Types
+            </a>
+            <a>Manufacturers</a>
+            <a onClick={() => navigate({ page: pages.retailers })}>Retailers</a>
+          </div>
+        </div>
+        <div className={styles.dropdown}>
+          <button className={styles.dropbtn}>
+            Music
             <div className={styles.dropdownArrowContainer}>
               <FontAwesomeIcon icon={faCaretDown} />
             </div>

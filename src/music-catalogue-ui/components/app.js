@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
-import Login from "./login";
+import Login from "./login/login";
 import pages from "@/helpers/navigation";
 import ComponentPicker from "./componentPicker";
-import { apiClearToken } from "@/helpers/apiToken";
+import { apiClearToken } from "@/helpers/api/apiToken";
 import useIsLoggedIn from "@/hooks/useIsLoggedIn";
 import MenuBar from "./menuBar";
 import { clearStorageValue } from "@/helpers/storage";
@@ -42,6 +42,7 @@ const App = () => {
     track = null,
     retailer = null,
     genre = null,
+    equipmentType = null,
     filter = "A",
     isWishList = false,
   } = {}) => {
@@ -53,6 +54,7 @@ const App = () => {
       track: typeof track != "undefined" ? track : null,
       retailer: typeof retailer != "undefined" ? retailer : null,
       genre: typeof genre != "undefined" ? genre : null,
+      equipmentType: typeof equipmentType != "undefined" ? equipmentType : null,
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
     };

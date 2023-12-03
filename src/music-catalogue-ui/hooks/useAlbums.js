@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { apiFetchAlbumsByArtist } from "@/helpers/apiAlbums";
+import { apiFetchAlbumsByArtist } from "@/helpers/api/apiAlbums";
 
 /**
  * Hook that uses the API helpers to retrieve a list of albums by the specified
