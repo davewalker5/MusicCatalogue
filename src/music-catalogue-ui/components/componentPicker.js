@@ -21,6 +21,7 @@ import EquipmentTypeList from "./equipmentTypes/equipmentTypeList";
 import EquipmentTypeEditor from "./equipmentTypes/equipmentTypeEditor";
 import ManufacturerList from "./manufacturers/manufacturerList";
 import ManufacturerEditor from "./manufacturers/manufacturerEditor";
+import EquipmentList from "./equipment/equipmentList";
 
 /**
  * Component using the current context to select and render the current page
@@ -137,6 +138,14 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return (
         <ManufacturerEditor
           manufacturer={context.manufacturer}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.equipment:
+      return (
+        <EquipmentList
+          isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}
         />

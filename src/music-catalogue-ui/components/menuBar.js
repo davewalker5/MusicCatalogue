@@ -61,7 +61,7 @@ const MenuBar = ({ navigate, logout }) => {
             </div>
           </button>
           <div className={styles.dropdownContent}>
-            <a>Equipment</a>
+            <a onClick={() => navigate({ page: pages.equipment })}>Equipment</a>
             <a>Wish List</a>
             <a onClick={() => navigate({ page: pages.equipmentTypes })}>
               Equipment Types

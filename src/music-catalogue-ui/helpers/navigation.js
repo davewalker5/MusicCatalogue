@@ -15,6 +15,8 @@ const pages = {
   equipmentTypeEditor: "EquipmentTypeEditor",
   manufacturers: "Manufacturers",
   manufacturerEditor: "ManufacturerEditor",
+  equipment: "Equipment",
+  equipmentEditor: "EquipmentEditor",
   lookup: "Lookup",
   export: "Export",
   artistStatisticsReport: "ArtistStatisticsReport",

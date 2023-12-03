@@ -20,7 +20,7 @@ const DeleteManufacturerActionIcon = ({
   setManufacturers,
   setError,
 }) => {
-  /* Callback to prompt for confirmation and delete amanufacturer */
+  /* Callback to prompt for confirmation and delete avmanufacturer */
   const confirmDeleteManufacturer = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
@@ -41,7 +41,7 @@ const DeleteManufacturerActionIcon = ({
             setManufacturers(fetchedManufacturers);
           }
         } catch (ex) {
-          setError(`Error deleting the equipment type: ${ex.message}`);
+          setError(`Error deleting the manufacturer: ${ex.message}`);
         }
       }
     },

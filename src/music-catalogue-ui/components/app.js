@@ -25,6 +25,7 @@ const defaultContext = {
   // Equipment registry
   equipmentType: null,
   manufacturer: null,
+  equipment: null,
 
   // Data retrieval/filering criteria
   filter: "A",
@@ -48,6 +49,7 @@ const App = () => {
     genre = null,
     equipmentType = null,
     manufacturer = null,
+    equipment = null,
     filter = "A",
     isWishList = false,
   } = {}) => {
@@ -61,6 +63,7 @@ const App = () => {
       genre: typeof genre != "undefined" ? genre : null,
       equipmentType: typeof equipmentType != "undefined" ? equipmentType : null,
       manufacturer: typeof manufacturer != "undefined" ? manufacturer : null,
+      equipment: typeof equipment != "undefined" ? equipment : null,
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
     };
