@@ -137,7 +137,7 @@ const apiUpdateRetailer = async (
  * @returns
  */
 const apiDeleteRetailer = async (retailerId, logout) => {
-  // Call the API to delete the specified album
+  // Call the API to delete the specified retailer
   const url = `${config.api.baseUrl}/retailers/${retailerId}`;
   const response = await fetch(url, {
     method: "DELETE",
