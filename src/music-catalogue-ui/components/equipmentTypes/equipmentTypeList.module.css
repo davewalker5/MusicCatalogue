@@ -1,0 +1,9 @@
+.equipmentTypeListAddButton {
+  float: right;
+}
+
+.equipmentTypeListError {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}

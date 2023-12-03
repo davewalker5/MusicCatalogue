@@ -11,20 +11,13 @@ import {
 
 /**
  * Icon and associated action to move an album between the catalogue and wish list
- * @param {*} artistId
  * @param {*} album
  * @param {*} isWishList
  * @param {*} logout
  * @param {*} setAlbums
  * @returns
  */
-const AlbumWishListActionIcon = ({
-  artistId,
-  album,
-  isWishList,
-  logout,
-  setAlbums,
-}) => {
+const AlbumWishListActionIcon = ({ album, isWishList, logout, setAlbums }) => {
   // Set the icon depending on the direction in which the album will move
   const icon = isWishList ? faRecordVinyl : faHeartCirclePlus;
 
@@ -35,13 +28,13 @@ const AlbumWishListActionIcon = ({
     if (result) {
       // Successful, so refresh the album list
       const fetchedAlbums = await apiFetchAlbumsByArtist(
-        artistId,
+        album.artistId,
         isWishList,
         logout
       );
       setAlbums(fetchedAlbums);
     }
-  }, [artistId, album, isWishList, logout, setAlbums]);
+  }, [album, isWishList, logout, setAlbums]);
 
   return <FontAwesomeIcon icon={icon} onClick={setAlbumWishListFlag} />;
 };

@@ -8,7 +8,6 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Icon and associated action to delete an album
- * @param {*} artistId
  * @param {*} album
  * @param {*} isWishList
  * @param {*} logout
@@ -17,7 +16,6 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
  * @returns
  */
 const DeleteAlbumActionIcon = ({
-  artistId,
   album,
   isWishList,
   logout,
@@ -26,7 +24,7 @@ const DeleteAlbumActionIcon = ({
 }) => {
   /* Callback to prompt for confirmation and delete an album */
   const confirmDeleteAlbum = useCallback(
-    async (e, album) => {
+    async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
@@ -42,7 +40,7 @@ const DeleteAlbumActionIcon = ({
           if (result) {
             // Successful, so refresh the album list
             const fetchedAlbums = await apiFetchAlbumsByArtist(
-              artistId,
+              album.artistId,
               isWishList,
               logout
             );
@@ -53,14 +51,11 @@ const DeleteAlbumActionIcon = ({
         }
       }
     },
-    [artistId, isWishList, logout, setAlbums]
+    [album, isWishList, logout, setAlbums, setError]
   );
 
   return (
-    <FontAwesomeIcon
-      icon={faTrashAlt}
-      onClick={(e) => confirmDeleteAlbum(e, album)}
-    />
+    <FontAwesomeIcon icon={faTrashAlt} onClick={(e) => confirmDeleteAlbum(e)} />
   );
 };
 

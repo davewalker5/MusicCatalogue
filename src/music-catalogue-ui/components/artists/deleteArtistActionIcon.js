@@ -25,7 +25,7 @@ const DeleteArtistActionIcon = ({
 }) => {
   /* Callback to prompt for confirmation and delete an artist */
   const confirmDeleteArtist = useCallback(
-    async (e, album) => {
+    async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
@@ -63,7 +63,7 @@ const DeleteArtistActionIcon = ({
   return (
     <FontAwesomeIcon
       icon={faTrashAlt}
-      onClick={(e) => confirmDeleteArtist(e, artist)}
+      onClick={(e) => confirmDeleteArtist(e)}
     />
   );
 };

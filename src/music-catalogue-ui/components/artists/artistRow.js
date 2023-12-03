@@ -10,6 +10,7 @@ import DeleteArtistActionIcon from "./deleteArtistActionIcon";
  * @param {*} artist
  * @param {*} isWishList
  * @param {*} navigate
+ * @param {*} logout
  * @param {*} setArtists
  * @param {*} setError
  * @returns

@@ -9,6 +9,7 @@ import { apiCreateArtist, apiUpdateArtist } from "@/helpers/api/apiArtists";
  * @param {*} filter
  * @param {*} artist
  * @param {*} isWishList
+ * @param {*} navoigate
  * @param {*} logout
  */
 const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {

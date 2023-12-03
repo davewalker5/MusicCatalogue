@@ -42,6 +42,7 @@ const App = () => {
     track = null,
     retailer = null,
     genre = null,
+    equipmentType = null,
     filter = "A",
     isWishList = false,
   } = {}) => {
@@ -53,6 +54,7 @@ const App = () => {
       track: typeof track != "undefined" ? track : null,
       retailer: typeof retailer != "undefined" ? retailer : null,
       genre: typeof genre != "undefined" ? genre : null,
+      equipmentType: typeof equipmentType != "undefined" ? equipmentType : null,
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
     };

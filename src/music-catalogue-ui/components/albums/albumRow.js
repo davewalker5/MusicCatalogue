@@ -60,7 +60,6 @@ const AlbumRow = ({
       <td onClick={rowClickCallback}>{retailerName}</td>
       <td>
         <DeleteAlbumActionIcon
-          artistId={artist.id}
           album={album}
           isWishList={isWishList}
           logout={logout}
@@ -82,7 +81,6 @@ const AlbumRow = ({
       </td>
       <td>
         <AlbumWishListActionIcon
-          artistId={artist.id}
           album={album}
           isWishList={isWishList}
           logout={logout}

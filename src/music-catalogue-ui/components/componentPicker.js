@@ -17,6 +17,8 @@ import TrackEditor from "./tracks/trackEditor";
 import AlbumEditor from "./albums/albumEditor";
 import ArtistEditor from "./artists/artistEditor";
 import RetailerStatisticsReport from "./reports/retailerStatisticsReport";
+import EquipmentTypeList from "./equipmentTypes/equipmentTypeList";
+import EquipmentTypeEditor from "./equipmentTypes/equipmentTypeEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -117,6 +119,16 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       );
     case pages.genres:
       return <GenreList navigate={navigate} logout={logout} />;
+    case pages.equipmentTypes:
+      return <EquipmentTypeList navigate={navigate} logout={logout} />;
+    case pages.equipmentTypeEditor:
+      return (
+        <EquipmentTypeEditor
+          equipmentType={context.equipmentType}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
     case pages.export:
       return <ExportCatalogue logout={logout} />;
     case pages.artistStatisticsReport:

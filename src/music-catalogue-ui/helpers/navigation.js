@@ -11,6 +11,8 @@ const pages = {
   retailers: "Retailers",
   retailerDetails: "RetailerDetails",
   retailerEditor: "RetailerEditor",
+  equipmentTypes: "EquipmentTypes",
+  equipmentTypeEditor: "EquipmentTypeEditor",
   lookup: "Lookup",
   export: "Export",
   artistStatisticsReport: "ArtistStatisticsReport",
