@@ -1,25 +1,25 @@
-import styles from "./equipmentTypeEditor.module.css";
+import styles from "./manufacturerEditor.module.css";
 import pages from "@/helpers/navigation";
 import FormInputField from "../common/formInputField";
 import { useState, useCallback } from "react";
 import {
-  apiCreateEquipmentType,
-  apiUpdateEquipmentType,
-} from "@/helpers/api/apiEquipmentTypes";
+  apiCreateManufacturer,
+  apiUpdateManufacturer,
+} from "@/helpers/api/apiManufacturers";
 
 /**
- * Component to render the equipment type editor
- * @param {*} equipmentType
+ * Component to render the manufacturer editor
+ * @param {*} manufacturer
  * @param {*} navigate
  * @param {*} logout
  */
-const EquipmentTypeEditor = ({ equipmentType, navigate, logout }) => {
+const EquipmentTypeEditor = ({ manufacturer, navigate, logout }) => {
   // Set up state
-  const initialName = equipmentType != null ? equipmentType.name : null;
+  const initialName = manufacturer != null ? manufacturer.name : null;
   const [name, setName] = useState(initialName);
   const [error, setError] = useState("");
 
-  const saveEquipmentType = useCallback(
+  const saveManufacturer = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
@@ -28,48 +28,48 @@ const EquipmentTypeEditor = ({ equipmentType, navigate, logout }) => {
       setError("");
 
       try {
-        // Either add or update the equipment type, depending on whether there's an
-        // existing equipment type or not
+        // Either add or update the manufacturer, depending on whether there's an
+        // existing manufacturer or not
         let updatedEquipmentType = null;
-        if (equipmentType == null) {
-          // Create the equipment type
-          updatedEquipmentType = await apiCreateEquipmentType(name, logout);
+        if (manufacturer == null) {
+          // Create the manufacturer
+          updatedEquipmentType = await apiCreateManufacturer(name, logout);
         } else {
-          // Update the existing equipment type
-          updatedEquipmentType = await apiUpdateEquipmentType(
-            equipmentType.id,
+          // Update the existing manufacturer
+          updatedEquipmentType = await apiUpdateManufacturer(
+            manufacturer.id,
             name,
             logout
           );
         }
 
-        // Go back to the equipment type list, which should reflect the updated details
+        // Go back to the manufacturer list, which should reflect the updated details
         navigate({
-          page: pages.equipmentTypes,
+          page: pages.manufacturers,
         });
       } catch (ex) {
         setError(
-          `Error saving the updated equipment type details: ${ex.message}`
+          `Error saving the updated manufacturer details: ${ex.message}`
         );
       }
     },
-    [equipmentType, logout, name, navigate]
+    [manufacturer, logout, name, navigate]
   );
 
   // Set the page title
   const pageTitle =
-    equipmentType != null ? equipmentType.name : "New Equipment Type";
+    manufacturer != null ? manufacturer.name : "New Manufacturer";
 
   return (
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">{pageTitle}</h5>
       </div>
-      <div className={styles.equipmentTypeEditorFormContainer}>
-        <form className={styles.equipmentTypeEditorForm}>
+      <div className={styles.manufacturerEditorFormContainer}>
+        <form className={styles.manufacturerEditorForm}>
           <div className="row">
             {error != "" ? (
-              <div className={styles.equipmentTypeEditorError}>{error}</div>
+              <div className={styles.manufacturerEditorError}>{error}</div>
             ) : (
               <></>
             )}
@@ -84,20 +84,20 @@ const EquipmentTypeEditor = ({ equipmentType, navigate, logout }) => {
           </div>
           <div className="d-grid gap-2 mt-3"></div>
           <div className="d-grid gap-2 mt-3"></div>
-          <div className={styles.equipmentTypeEditorButton}>
+          <div className={styles.manufacturerEditorButton}>
             <button
               className="btn btn-primary"
-              onClick={(e) => saveEquipmentType(e)}
+              onClick={(e) => saveManufacturer(e)}
             >
               Save
             </button>
           </div>
-          <div className={styles.equipmentTypeEditorButton}>
+          <div className={styles.manufacturerEditorButton}>
             <button
               className="btn btn-primary"
               onClick={() =>
                 navigate({
-                  page: pages.equipmentTypes,
+                  page: pages.manufacturers,
                 })
               }
             >

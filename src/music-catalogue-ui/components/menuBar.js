@@ -66,7 +66,9 @@ const MenuBar = ({ navigate, logout }) => {
             <a onClick={() => navigate({ page: pages.equipmentTypes })}>
               Equipment Types
             </a>
-            <a>Manufacturers</a>
+            <a onClick={() => navigate({ page: pages.manufacturers })}>
+              Manufacturers
+            </a>
             <a onClick={() => navigate({ page: pages.retailers })}>Retailers</a>
           </div>
         </div>

@@ -15,14 +15,18 @@ const defaultContext = {
   // Current page
   page: pages.artists,
 
-  // Artist, album, track and retailer context
+  // Music catalogue
   artist: null,
   album: null,
   track: null,
+  genre: null,
   retailer: null,
 
+  // Equipment registry
+  equipmentType: null,
+  manufacturer: null,
+
   // Data retrieval/filering criteria
-  genre: null,
   filter: "A",
   isWishList: false,
 };
@@ -43,6 +47,7 @@ const App = () => {
     retailer = null,
     genre = null,
     equipmentType = null,
+    manufacturer = null,
     filter = "A",
     isWishList = false,
   } = {}) => {
@@ -55,6 +60,7 @@ const App = () => {
       retailer: typeof retailer != "undefined" ? retailer : null,
       genre: typeof genre != "undefined" ? genre : null,
       equipmentType: typeof equipmentType != "undefined" ? equipmentType : null,
+      manufacturer: typeof manufacturer != "undefined" ? manufacturer : null,
       filter: typeof filter != "undefined" ? filter : "A",
       isWishList: typeof isWishList != "undefined" ? isWishList : false,
     };

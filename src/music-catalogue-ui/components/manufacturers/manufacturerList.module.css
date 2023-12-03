@@ -1,0 +1,9 @@
+.manufacturerListAddButton {
+  float: right;
+}
+
+.manufacturerListError {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}
