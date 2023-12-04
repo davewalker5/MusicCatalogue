@@ -17,13 +17,8 @@ import GenreSelector from "../genres/genreSelector";
  * @returns
  */
 const AlbumEditor = ({ artist, album, isWishList, navigate, logout }) => {
-  // Get the initial genre selection
-  let initialGenre = null;
-  if (album != null) {
-    initialGenre = album.genre;
-  }
-
-  // Get initial values for the remaining album properties
+  // Get initial values for album properties
+  const initialGenre = album != null ? album.genre : null;
   const initialTitle = album != null ? album.title : null;
   const initialReleased = album != null ? album.released : null;
   const initialCoverUrl = album != null ? album.coverUrl : null;
@@ -173,6 +168,7 @@ const AlbumEditor = ({ artist, album, isWishList, navigate, logout }) => {
                 navigate({
                   page: pages.albums,
                   artist: artist,
+                  isWishList: isWishList,
                 })
               }
             >

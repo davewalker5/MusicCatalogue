@@ -257,13 +257,33 @@ MusicCatalogue.LookupTool --lookup "John Coltrane" "Blue Train" catalogue
 
 ### Browsing the Equipment Register
 
-#### Main Catalogue
+#### Main Register
 
-To be implemented in a future release.
+- To view the equipment register, select "Equipment > Equipment" from the menu bar:
+
+<img src="diagrams/equipment-list.png" alt="Equipment List" width="600">
+
+- As the mouse pointer is moved up and down the table, the current row is highlighted
+- Clicking on the trash icon prompts for confirmation and, if confirmed, deletes the equpiment record shown in that row
+- Clicking on the "heart" icon moves the equipment from the main register to the wish list then refreshes the equipment list
+- Clicking on the "money" icon opens a form allowing the purchase details to be set:
+
+<img src="diagrams/equipment-purchase-details.png" alt="Purchase Details" width="600">
+
+- Note that retailers must be added using the retailer list and retailer editing page (see above) before they will appear in the drop-down on the purchase details page
+- Clicking on the "Edit" icon opens the equipment editor to edit the equipment properties:
+
+<img src="diagrams/equipment-editor.png" alt="Equipment List" width="600">
+
+- Note that equipment types and manufacturers must be added using the appropriate editing page (see below) before they will appear in the drop-downs on the equipment editor page
+- Clicking on the "Add" button at the bottom of the equipment list will open a blank equipment editor to add and save a new item of equipment
 
 #### Wish List
 
-To be implemented in a future release.
+- To view the wish list, click on the "Equipment > Wish List" menu item
+- A page very similar to the main register equipment list is displayed
+- The only difference is that the "hearts" icon on each is replaced with a vinyl record icon
+- Clicking on this moves the equipment record from the wish list to the main register
 
 ### Equipment Types
 
