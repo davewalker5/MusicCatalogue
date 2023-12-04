@@ -23,8 +23,8 @@ const apiCreateManufacturer = async (name, logout) => {
     body: body,
   });
 
-  const equipmentType = await apiReadResponseData(response, logout);
-  return equipmentType;
+  const manufacturers = await apiReadResponseData(response, logout);
+  return manufacturers;
 };
 
 /**
@@ -49,19 +49,19 @@ const apiUpdateManufacturer = async (id, name, logout) => {
     body: body,
   });
 
-  const equipmentType = await apiReadResponseData(response, logout);
-  return equipmentType;
+  const manufacturers = await apiReadResponseData(response, logout);
+  return manufacturers;
 };
 
 /**
  * Delete the manufacturer with the specified ID
- * @param {*} equipmentTypeId
+ * @param {*} manufacturerId
  * @param {*} logout
  * @returns
  */
-const apiDeleteManufacturer = async (equipmentTypeId, logout) => {
+const apiDeleteManufacturer = async (manufacturerId, logout) => {
   // Call the API to delete the specified manufacturer
-  const url = `${config.api.baseUrl}/manufacturers/${equipmentTypeId}`;
+  const url = `${config.api.baseUrl}/manufacturers/${manufacturerId}`;
   const response = await fetch(url, {
     method: "DELETE",
     headers: apiGetHeaders(),
