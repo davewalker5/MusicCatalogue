@@ -1,52 +1,51 @@
-import styles from "./albumPurchaseDetails.module.css";
+import styles from "./equipmentPurchaseDetails.module.css";
 import DatePicker from "react-datepicker";
 import { useState, useCallback } from "react";
 import CurrencyInput from "react-currency-input-field";
 import config from "@/config.json";
 import pages from "@/helpers/navigation";
-import { apiSetAlbumPurchaseDetails } from "@/helpers/api/apiAlbums";
 import RetailerSelector from "../retailers/retailerSelector";
+import { apiSetEquipmentPurchaseDetails } from "@/helpers/api/apiEquipment";
 
 /**
- * Form to set the album purchase details for an album
- * @param {*} artist
- * @param {*} album
+ * Form to set the equipment purchase details for an item of equipment
+ * @param {*} equipment
  * @param {*} navigate
  * @param {*} logout
  */
-const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
+const EquipmentPurchaseDetails = ({ equipment, navigate, logout }) => {
   // Get the initial retailer selection and purchase date
   let initialRetailer = null;
   let initialPurchaseDate = new Date();
-  if (album != null) {
-    initialRetailer = album.retailer;
+  if (equipment != null) {
+    initialRetailer = equipment.retailer;
 
-    if (album.purchased != null) {
-      initialPurchaseDate = new Date(album.purchased);
+    if (equipment.purchased != null) {
+      initialPurchaseDate = new Date(equipment.purchased);
     }
   }
 
   // Set up state
   const [purchaseDate, setPurchaseDate] = useState(initialPurchaseDate);
-  const [price, setPrice] = useState(album.price);
+  const [price, setPrice] = useState(equipment.price);
   const [retailer, setRetailer] = useState(initialRetailer);
   const [errorMessage, setErrorMessage] = useState("");
 
   /* Callback to set album purchase details */
-  const setAlbumPurchaseDetails = useCallback(
+  const setEquipmentPurchaseDetails = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
       // Construct the values to be passed to the API
       const updatedPurchaseDate =
-        album.isWishListItem != true ? purchaseDate : null;
+        equipment.isWishListItem != true ? purchaseDate : null;
       const updatedPrice = price != undefined ? price : null;
       const updatedRetailerId = retailer != null ? retailer.id : null;
 
       // Apply the updates
-      const updatedAlbum = await apiSetAlbumPurchaseDetails(
-        album,
+      const updatedEquipment = await apiSetEquipmentPurchaseDetails(
+        equipment,
         updatedPurchaseDate,
         updatedPrice,
         updatedRetailerId,
@@ -55,31 +54,29 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
 
       // If the returned album is valid, navigate back to the albums by artist page.
       // Otherwise, show an error
-      if (updatedAlbum != null) {
+      if (updatedEquipment != null) {
         navigate({
-          page: pages.albums,
-          artist: artist,
-          album: updatedAlbum,
-          isWishList: updatedAlbum.isWishListItem,
+          page: pages.equipment,
+          isWishList: updatedEquipment.isWishListItem,
         });
       } else {
-        setErrorMessage("Error updating the album purchase details");
+        setErrorMessage("Error updating the equipment purchase details");
       }
     },
-    [artist, album, price, purchaseDate, retailer, logout, navigate]
+    [equipment, price, purchaseDate, retailer, logout, navigate]
   );
 
   return (
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">
-          {album.title} - {artist.name} - Purchase Details
+          {equipment.description} - Purchase Details
         </h5>
       </div>
       <div className={styles.purchaseDetailsFormContainer}>
         <form className={styles.purchaseDetailsForm}>
           <div>
-            {album.isWishListItem == true ? (
+            {equipment.isWishListItem == true ? (
               <></>
             ) : (
               <div className="form-group mt-3">
@@ -134,7 +131,7 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
             <div className={styles.purchaseDetailsButton}>
               <button
                 className="btn btn-primary"
-                onClick={(e) => setAlbumPurchaseDetails(e)}
+                onClick={(e) => setEquipmentPurchaseDetails(e)}
               >
                 Save
               </button>
@@ -146,8 +143,8 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
                   navigate({
                     page: pages.albums,
                     artist: artist,
-                    album: album,
-                    isWishList: album.isWishListItem,
+                    album: equipment,
+                    isWishList: equipment.isWishListItem,
                   })
                 }
               >
@@ -161,4 +158,4 @@ const AlbumPurchaseDetails = ({ artist, album, navigate, logout }) => {
   );
 };
 
-export default AlbumPurchaseDetails;
+export default EquipmentPurchaseDetails;

@@ -1,9 +1,10 @@
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCoins } from "@fortawesome/free-solid-svg-icons";
 import DeleteEquipmentActionIcon from "./deleteEquipmentActionIcon";
 import DateFormatter from "../common/dateFormatter";
 import CurrencyFormatter from "../common/currencyFormatter";
+import EquipmentWishListActionIcon from "./equipmentWishListActionIcon";
 
 /**
  * Component to render a row containing the details for a single item of equipment
@@ -70,24 +71,23 @@ const EquipmentRow = ({
         />
       </td>
       <td>
-        {/* <AlbumWishListActionIcon
-          album={album}
+        <EquipmentWishListActionIcon
+          equipment={equipment}
           isWishList={isWishList}
           logout={logout}
-          setAlbums={setAlbums}
-        /> */}
+          setEquipment={setEquipment}
+        />
       </td>
       <td>
-        {/* <FontAwesomeIcon
+        <FontAwesomeIcon
           icon={faCoins}
           onClick={() =>
             navigate({
-              page: pages.albumPurchaseDetails,
-              artist: artist,
-              album: album,
+              page: pages.equipmentPurchaseDetails,
+              equipment: equipment,
             })
           }
-        /> */}
+        />
       </td>
     </tr>
   );

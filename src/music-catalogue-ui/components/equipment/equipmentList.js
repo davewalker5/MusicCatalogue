@@ -12,7 +12,7 @@ import EquipmentRow from "./equipmentRow";
  * @returns
  */
 const EquipmentList = ({ isWishList, navigate, logout }) => {
-  const { equipment, setEquipment } = useEquipment(logout);
+  const { equipment, setEquipment } = useEquipment(isWishList, logout);
   const [error, setError] = useState("");
 
   return (
