@@ -1,0 +1,35 @@
+## Overview
+
+- The GUI is written using React.js
+- It provides facilities to:
+  - Browse the artists, albums and track lists in the collection
+  - Browse the register of audio equipment in the catalogue
+  - Manage wish lists of albums and audio equipment
+  - Perform album lookups, given an artist name and title
+  - Export data to Excel workbook (XLSX) and CSV format
+  - Report on the data in the catalogue
+- The GUI uses the associated web service to retrieve and lookup data
+
+## Configuration
+
+- The UI uses a simple "config.json" file containing the base URL for the Music Catalogue web service and locale settings used by the UI and during address geocoding:
+
+```json
+{
+  "api": {
+    "baseUrl": "http://localhost:8098"
+  },
+  "region": {
+    "locale": "en-GB",
+    "currency": "GBP",
+    "geocodingLanguage": "en",
+    "geocodingRegion": "GB"
+  }
+}
+```
+
+## Login
+
+- On browing to the application, the login dialog is displayed, prompting for a username and password
+- This authenticates with the web service (see below), so a valid login in the local database is required
+- Instructions on adding a user to the database are given in the "Database Users" section of the Wiki
