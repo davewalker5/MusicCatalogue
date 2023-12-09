@@ -12,6 +12,7 @@ namespace MusicCatalogue.Api.Controllers
     public class ExportController : Controller
     {
         private readonly IBackgroundQueue<CatalogueExportWorkItem> _catalogueQueue;
+        private readonly IBackgroundQueue<EquipmentExportWorkItem> _equipmentQueue;
         private readonly IBackgroundQueue<ArtistStatisticsExportWorkItem> _artistStatisticsQueue;
         private readonly IBackgroundQueue<GenreStatisticsExportWorkItem> _genreStatisticsQueue;
         private readonly IBackgroundQueue<MonthlySpendExportWorkItem> _monthlySpendQueue;
@@ -19,12 +20,14 @@ namespace MusicCatalogue.Api.Controllers
 
         public ExportController(
             IBackgroundQueue<CatalogueExportWorkItem> catalogueQueue,
+            IBackgroundQueue<EquipmentExportWorkItem> equipmentQueue,
             IBackgroundQueue<ArtistStatisticsExportWorkItem> artistStatisticsQueue,
             IBackgroundQueue<GenreStatisticsExportWorkItem> genreStatisticsQueue,
             IBackgroundQueue<MonthlySpendExportWorkItem> monthlySpendQueue,
             IBackgroundQueue<RetailerStatisticsExportWorkItem> retailerStatisticsQueue)
         {
             _catalogueQueue = catalogueQueue;
+            _equipmentQueue = equipmentQueue;
             _artistStatisticsQueue = artistStatisticsQueue;
             _genreStatisticsQueue = genreStatisticsQueue;
             _monthlySpendQueue = monthlySpendQueue;
@@ -40,6 +43,18 @@ namespace MusicCatalogue.Api.Controllers
 
             // Queue the work item
             _catalogueQueue.Enqueue(item);
+            return Accepted();
+        }
+
+        [HttpPost]
+        [Route("equipment")]
+        public IActionResult ExportEquipment([FromBody] EquipmentExportWorkItem item)
+        {
+            // Set the job name used in the job status record
+            item.JobName = "Equipment Export";
+
+            // Queue the work item
+            _equipmentQueue.Enqueue(item);
             return Accepted();
         }
 
