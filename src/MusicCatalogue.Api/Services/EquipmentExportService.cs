@@ -8,12 +8,12 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicCatalogue.Api.Services
 {
     [ExcludeFromCodeCoverage]
-    public class CatalogueExportService : BackgroundQueueProcessor<CatalogueExportWorkItem>
+    public class EquipmentExportService : BackgroundQueueProcessor<EquipmentExportWorkItem>
     {
         private readonly MusicApplicationSettings _settings;
-        public CatalogueExportService(
-            ILogger<BackgroundQueueProcessor<CatalogueExportWorkItem>> logger,
-            IBackgroundQueue<CatalogueExportWorkItem> queue,
+        public EquipmentExportService(
+            ILogger<BackgroundQueueProcessor<EquipmentExportWorkItem>> logger,
+            IBackgroundQueue<EquipmentExportWorkItem> queue,
             IServiceScopeFactory serviceScopeFactory,
             IOptions<MusicApplicationSettings> settings)
             : base(logger, queue, serviceScopeFactory)
@@ -22,25 +22,25 @@ namespace MusicCatalogue.Api.Services
         }
 
         /// <summary>
-        /// Export the catalogue
+        /// Export the equipment register
         /// </summary>
         /// <param name="item"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
-        protected override async Task ProcessWorkItem(CatalogueExportWorkItem item, IMusicCatalogueFactory factory)
+        protected override async Task ProcessWorkItem(EquipmentExportWorkItem item, IMusicCatalogueFactory factory)
         {
-            MessageLogger.LogInformation("Retrieving tracks for export");
+            MessageLogger.LogInformation("Retrieving equipment records for export");
 
             // Use the file extension to determine which exporter to use
             var extension = Path.GetExtension(item.FileName).ToLower();
-            ITrackExporter? exporter = extension == ".xlsx" ? factory.CatalogueXlsxExporter : factory.CatalogueCsvExporter;
+            IEquipmentExporter? exporter = extension == ".xlsx" ? factory.EquipmentXlsxExporter : factory.EquipmentCsvExporter;
 
             // Construct the full path to the export file
             var filePath = Path.Combine(_settings.CatalogueExportPath, item.FileName);
 
-            // Export the catalogue
+            // Export the equipment register
             await exporter.Export(filePath);
-            MessageLogger.LogInformation("Catalogue export completed");
+            MessageLogger.LogInformation("Equipment register export completed");
         }
     }
 }

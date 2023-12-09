@@ -3,7 +3,7 @@ import ArtistList from "./artists/artistList";
 import AlbumList from "./albums/albumList";
 import TrackList from "./tracks/trackList";
 import LookupAlbum from "./search/lookupAlbum";
-import ExportCatalogue from "./dataexchange/exportCatalogue";
+import ExportData from "./dataexchange/exportData";
 import GenreStatusReport from "./reports/genreStatisticsReport";
 import JobStatusReport from "./reports/jobStatusReport";
 import AlbumPurchaseDetails from "./albums/albumPurchaseDetails";
@@ -170,7 +170,7 @@ const ComponentPicker = ({ context, navigate, logout }) => {
         />
       );
     case pages.export:
-      return <ExportCatalogue logout={logout} />;
+      return <ExportData logout={logout} />;
     case pages.artistStatisticsReport:
       return <ArtistStatisticsReport logout={logout} />;
     case pages.genreStatisticsReport:

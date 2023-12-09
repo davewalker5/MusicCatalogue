@@ -1,12 +1,14 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.CommandLine;
 using MusicCatalogue.Entities.Config;
+using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
 using MusicCatalogue.Logic.CommandLine;
 using MusicCatalogue.Logic.Config;
 using MusicCatalogue.Logic.Factory;
 using MusicCatalogue.Logic.Logging;
 using MusicCatalogue.LookupTool.Entities;
+using MusicCatalogue.LookupTool.Interfaces;
 using MusicCatalogue.LookupTool.Logic;
 using System.Diagnostics;
 using System.Reflection;
@@ -45,12 +47,12 @@ namespace MusicCatalogue.LookupPoC
                 CommandLineParser parser = new();
                 parser.Add(CommandLineOptionType.Lookup, true, "--lookup", "-l", "Lookup an album and display its details", 3, 3);
                 parser.Add(CommandLineOptionType.Import, true, "--import", "-i", "Import data from a CSV format file", 1, 1);
-                parser.Add(CommandLineOptionType.Export, true, "--export", "-e", "Export the collection to a CSV file or Excel Workbook", 1, 1);
+                parser.Add(CommandLineOptionType.Export, true, "--export", "-e", "Export the collection or equipment register to a CSV file or Excel Workbook", 2, 2);
                 parser.Parse(args);
 
                 // Configure the business logic factory
                 var context = new MusicCatalogueDbContextFactory().CreateDbContext(Array.Empty<string>());
-                MusicCatalogueFactory factory = new MusicCatalogueFactory(context);
+                var factory = new MusicCatalogueFactory(context);
 
                 // If this is a lookup, look up the album details
                 var values = parser.GetValues(CommandLineOptionType.Lookup);
@@ -73,7 +75,9 @@ namespace MusicCatalogue.LookupPoC
                 values = parser.GetValues(CommandLineOptionType.Export);
                 if (values != null)
                 {
-                    new DataExport(logger, factory).Export(values[0]);
+                    var exportType = (ExportType)Enum.Parse(typeof(ExportType), values[0]);
+                    IDataExporter exporter = exportType == ExportType.music ? new CatalogueExporter(logger, factory) : new EquipmentExporter(logger, factory);
+                    exporter.Export(values[1]);
                 }
             }
             catch (Exception ex)

@@ -10,6 +10,9 @@ namespace MusicCatalogue.Entities.Database
 
         public int? Duration { get; set; }
 
+        /// <summary>
+        /// Duration formatted as MM:SS
+        /// </summary>
         public string? FormattedDuration
         {
             get
@@ -30,6 +33,9 @@ namespace MusicCatalogue.Entities.Database
 
         public DateTime? Purchased { get; set; }
 
+        /// <summary>
+        /// Purchase date formatted per the DateTimeFormat
+        /// </summary>
         public string FormattedPurchaseDate
         {
             get

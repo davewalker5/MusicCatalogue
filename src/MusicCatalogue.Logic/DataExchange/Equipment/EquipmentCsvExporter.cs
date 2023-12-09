@@ -2,20 +2,20 @@
 using MusicCatalogue.Entities.Interfaces;
 using System.Text;
 
-namespace MusicCatalogue.Logic.DataExchange.Catalogue
+namespace MusicCatalogue.Logic.DataExchange.Equipment
 {
-    public class CatalogueCsvExporter : CatalogueExporterBase, ITrackExporter
+    public class EquipmentCsvExporter : EquipmentExporterBase, IEquipmentExporter
     {
         private StreamWriter? _writer = null;
 
 #pragma warning disable CS8618
-        internal CatalogueCsvExporter(IMusicCatalogueFactory factory) : base(factory)
+        internal EquipmentCsvExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 #pragma warning restore CS8618
 
         /// <summary>
-        /// Export the collection to a CSV file
+        /// Export the register to a CSV file
         /// </summary>
         /// <param name="file"></param>
         public async Task Export(string file)
@@ -23,8 +23,8 @@ namespace MusicCatalogue.Logic.DataExchange.Catalogue
             // Open the CSV file
             using (_writer = new(file, false, Encoding.UTF8))
             {
-                // Iterate over the collection, calling the row addition methods
-                await IterateOverCollection();
+                // Iterate over the equipment register, calling the row addition methods
+                await IterateOverRegister();
             }
         }
 
@@ -39,13 +39,13 @@ namespace MusicCatalogue.Logic.DataExchange.Catalogue
         }
 
         /// <summary>
-        /// Add a track to the CSV file
+        /// Add an item of equipment to the CSV file
         /// </summary>
-        /// <param name="track"></param>
+        /// <param name="equipment"></param>
         /// <param name="_"></param>
-        protected override void AddTrack(FlattenedTrack track, int _)
+        protected override void AddEquipment(FlattenedEquipment equipment, int _)
         {
-            _writer!.WriteLine(track.ToCsv());
+            _writer!.WriteLine(equipment.ToCsv());
         }
     }
 }

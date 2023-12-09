@@ -2,7 +2,7 @@
   "profiles": {
     "MusicCatalogue.LookupTool": {
       "commandName": "Project",
-      "commandLineArgs": "--lookup Rush \"Permanent Waves\" wishlist"
+      "commandLineArgs": "--export equipment C:\\MyApps\\MusicCatalogue\\Export\\equipment.xlsx"
     }
   }
 }

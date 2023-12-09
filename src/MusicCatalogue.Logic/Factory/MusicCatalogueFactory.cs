@@ -4,6 +4,7 @@ using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Reporting;
 using MusicCatalogue.Logic.Database;
 using MusicCatalogue.Logic.DataExchange.Catalogue;
+using MusicCatalogue.Logic.DataExchange.Equipment;
 using MusicCatalogue.Logic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 
@@ -21,8 +22,10 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IRetailerManager> _retailers;
         private readonly Lazy<IUserManager> _users;
         private readonly Lazy<IImporter> _importer;
-        private readonly Lazy<IExporter> _catalogueCsvExporter;
-        private readonly Lazy<IExporter> _catalogueXlsxExporter;
+        private readonly Lazy<ITrackExporter> _catalogueCsvExporter;
+        private readonly Lazy<ITrackExporter> _catalogueXlsxExporter;
+        private readonly Lazy<IEquipmentExporter> _equipmentCsvExporter;
+        private readonly Lazy<IEquipmentExporter> _equipmentXlsxExporter;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
         private readonly Lazy<ISearchManager> _searchManager;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
@@ -43,8 +46,10 @@ namespace MusicCatalogue.Logic.Factory
         public ISearchManager Search { get { return _searchManager.Value; } }
         public IUserManager Users { get { return _users.Value; } }
         public IImporter Importer { get {  return _importer.Value; } }
-        public IExporter CatalogueCsvExporter { get { return _catalogueCsvExporter.Value; } }
-        public IExporter CatalogueXlsxExporter { get { return _catalogueXlsxExporter.Value; } }
+        public ITrackExporter CatalogueCsvExporter { get { return _catalogueCsvExporter.Value; } }
+        public ITrackExporter CatalogueXlsxExporter { get { return _catalogueXlsxExporter.Value; } }
+        public IEquipmentExporter EquipmentCsvExporter { get { return _equipmentCsvExporter.Value; } }
+        public IEquipmentExporter EquipmentXlsxExporter { get { return _equipmentXlsxExporter.Value; } }
 
         [ExcludeFromCodeCoverage]
         public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
@@ -73,8 +78,10 @@ namespace MusicCatalogue.Logic.Factory
             _searchManager = new Lazy<ISearchManager>(() => new SearchManager(this));
             _users = new Lazy<IUserManager>(() => new UserManager(this));
             _importer = new Lazy<IImporter>(() => new CatalogueCsvImporter(this));
-            _catalogueCsvExporter = new Lazy<IExporter>(() => new CatalogueCsvExporter(this));
-            _catalogueXlsxExporter = new Lazy<IExporter>(() => new CatalogueXlsxExporter(this));
+            _catalogueCsvExporter = new Lazy<ITrackExporter>(() => new CatalogueCsvExporter(this));
+            _catalogueXlsxExporter = new Lazy<ITrackExporter>(() => new CatalogueXlsxExporter(this));
+            _equipmentCsvExporter = new Lazy<IEquipmentExporter>(() => new EquipmentCsvExporter(this));
+            _equipmentXlsxExporter = new Lazy<IEquipmentExporter>(() => new EquipmentXlsxExporter(this));
             _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
             _artistStatistics = new Lazy<IWishListBasedReport<ArtistStatistics>>(() => new WishListBasedReport<ArtistStatistics>(context));
             _monthlySpend = new Lazy<IWishListBasedReport<MonthlySpend>>(() => new WishListBasedReport<MonthlySpend>(context));
