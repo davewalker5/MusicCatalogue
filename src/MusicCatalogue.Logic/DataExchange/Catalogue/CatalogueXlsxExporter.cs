@@ -4,7 +4,7 @@ using MusicCatalogue.Entities.Interfaces;
 
 namespace MusicCatalogue.Logic.DataExchange.Catalogue
 {
-    public class CatalogueXlsxExporter : CatalogueExporterBase, IExporter
+    public class CatalogueXlsxExporter : CatalogueExporterBase, ITrackExporter
     {
         private const string WorksheetName = "Music";
 
@@ -19,7 +19,6 @@ namespace MusicCatalogue.Logic.DataExchange.Catalogue
         /// <summary>
         /// Export the collection to a CSV file
         /// </summary>
-        /// <param name="sightings"></param>
         /// <param name="file"></param>
         public async Task Export(string file)
         {

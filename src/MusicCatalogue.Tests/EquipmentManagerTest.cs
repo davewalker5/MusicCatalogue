@@ -9,7 +9,7 @@ namespace MusicCatalogue.Tests
     {
         private const string EquipmentType = "Turntable";
         private const string Manufacturer = "Audio-Technica";
-        private const string Description = " Turntable and Edifier R1280T Active Speaker Package";
+        private const string Description = "Turntable and Edifier R1280T Active Speaker Package";
         private const string Model = "AT-LP60X";
         private const string SerialNumber = "872364012";
         private readonly DateTime Purchased = new(2023, 1, 1, 0, 0, 0);

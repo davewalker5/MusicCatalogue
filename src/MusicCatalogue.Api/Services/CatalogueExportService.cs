@@ -33,7 +33,7 @@ namespace MusicCatalogue.Api.Services
 
             // Use the file extension to determine which exporter to use
             var extension = Path.GetExtension(item.FileName).ToLower();
-            IExporter? exporter = extension == ".xlsx" ? factory.CatalogueXlsxExporter : factory.CatalogueCsvExporter;
+            ITrackExporter? exporter = extension == ".xlsx" ? factory.CatalogueXlsxExporter : factory.CatalogueCsvExporter;
 
             // Construct the full path to the export file
             var filePath = Path.Combine(_settings.CatalogueExportPath, item.FileName);
