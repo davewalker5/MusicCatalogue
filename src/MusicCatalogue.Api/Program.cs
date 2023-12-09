@@ -104,6 +104,10 @@ namespace MusicCatalogue.Api
             builder.Services.AddSingleton<IBackgroundQueue<CatalogueExportWorkItem>, BackgroundQueue<CatalogueExportWorkItem>>();
             builder.Services.AddHostedService<CatalogueExportService>();
 
+            // Add the equipment exporter hosted service
+            builder.Services.AddSingleton<IBackgroundQueue<EquipmentExportWorkItem>, BackgroundQueue<EquipmentExportWorkItem>>();
+            builder.Services.AddHostedService<EquipmentExportService>();
+
             // Add the artist statistics exporter hosted service
             builder.Services.AddSingleton<IBackgroundQueue<ArtistStatisticsExportWorkItem>, BackgroundQueue<ArtistStatisticsExportWorkItem>>();
             builder.Services.AddHostedService<ArtistStatisticsExportService>();
