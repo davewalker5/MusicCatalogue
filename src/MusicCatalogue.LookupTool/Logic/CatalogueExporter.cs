@@ -1,31 +1,27 @@
 ﻿using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
+using MusicCatalogue.LookupTool.Entities;
 
 namespace MusicCatalogue.LookupTool.Logic
 {
-    internal class DataExport
+    internal class CatalogueExporter : DataExportBase
     {
-        private readonly IMusicLogger _logger;
-        private readonly IMusicCatalogueFactory _factory;
-
-        public DataExport(IMusicLogger logger, IMusicCatalogueFactory factory)
+        public CatalogueExporter(IMusicLogger logger, IMusicCatalogueFactory factory) : base(logger, factory)
         {
-            _logger = logger;
-            _factory = factory;
         }
 
         /// <summary>
-        /// Export the collection to the specified file
+        /// Export the music collection to the specified file
         /// </summary>
-        /// <param name="albumName"></param>
-        public void Export(string file)
+        /// <param name="file"></param>
+        public override void Export(string file)
         {
-            _logger.LogMessage(Severity.Info, $"Exporting {file} ...");
+            Console.WriteLine($"Exporting the music catalogue to {file} ...");
 
             // Use the file extension to decide which exporter to use
             var extension = Path.GetExtension(file).ToLower();
-            ITrackExporter? exporter = extension == ".xlsx" ? _factory.CatalogueXlsxExporter : _factory.CatalogueCsvExporter;
+            ITrackExporter? exporter = extension == ".xlsx" ? Factory.CatalogueXlsxExporter : Factory.CatalogueCsvExporter;
 
             try
             {
@@ -36,8 +32,8 @@ namespace MusicCatalogue.LookupTool.Logic
             catch (Exception ex)
             {
                 Console.WriteLine($"Export error: {ex.Message}");
-                _logger.LogMessage(Severity.Info, $"Export error: {ex.Message}");
-                _logger.LogException(ex);
+                Logger.LogMessage(Severity.Info, $"Export error: {ex.Message}");
+                Logger.LogException(ex);
             }
             finally
             {
