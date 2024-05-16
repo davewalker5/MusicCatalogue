@@ -18,14 +18,5 @@ namespace MusicCatalogue.Entities.Exceptions
         public MalformedCommandLineException(string message, Exception inner) : base(message, inner)
         {
         }
-
-        protected MalformedCommandLineException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
-        {
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-        }
     }
 }
