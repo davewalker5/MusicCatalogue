@@ -137,5 +137,21 @@ namespace MusicCatalogue.Api.Controllers
             // Convert to a list and return the results
             return results.ToList();
         }
+
+        [HttpGet]
+        [Route("genreAlbums/{genreId}")]
+        public async Task<ActionResult<List<GenreAlbum>>> GetGenreAlbumsReportAsync(int genreId)
+        {
+            // Get the report content
+            var results = await _factory.GenreAlbums.GenerateReportAsync(genreId, 1, int.MaxValue);
+
+            if (!results.Any())
+            {
+                return NoContent();
+            }
+
+            // Convert to a list and return the results
+            return results.ToList();
+        }
     }
 }
