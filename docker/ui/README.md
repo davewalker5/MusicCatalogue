@@ -24,22 +24,20 @@ In order to run this image you'll need docker installed.
 
 The following "docker run" parameters are recommended when running the musiccatalogueui image:
 
-| Parameter | Value                                                                       | Purpose                                                   |
-| --------- | --------------------------------------------------------------------------- | --------------------------------------------------------- |
-| -d        | -                                                                           | Run as a background process                               |
-| -v        | /local/config/ui-config.json:/var/opt/musiccatalogue.ui-1.0.0.0/config.json | Mount the file containing the UI config                   |
-| -p        | 8086:3000                                                                   | Expose the container's port 3000 as port 8086 on the host |
-| --rm      | -                                                                           | Remove the container automatically when it stops          |
+| Parameter | Value                                                               | Purpose                                                   |
+| --------- | ------------------------------------------------------------------- | --------------------------------------------------------- |
+| -d        | -                                                                   | Run as a background process                               |
+| -v        | /local/config/ui-config.json:/var/opt/musiccatalogue.ui/config.json | Mount the file containing the UI config                   |
+| -p        | 8086:3000                                                           | Expose the container's port 3000 as port 8086 on the host |
+| --rm      | -                                                                   | Remove the container automatically when it stops          |
 
 For example:
 
 ```shell
-docker run -d -v /local/config/ui-config.json:/var/opt/musiccatalogue.ui-1.0.0.0/config.json -p 8086:3000 --rm  davewalker5/musiccatalogueui:latest
+docker run -d -v /local/config/ui-config.json:/var/opt/musiccatalogue.ui/config.json -p 8086:3000 --rm  davewalker5/musiccatalogueui:latest
 ```
 
 The local path given to the -v argument is described, below, and should be replaced with a value appropriate for the host running the container.
-
-The version (1.0.0.0) should also be replaced with the version number for the version of the image being run.
 
 Similarly, the port number "8086" can be replaced with any available port on the host.
 
@@ -67,8 +65,6 @@ As the UI needs to be run in concert with the web service, it's recommended to r
 it using Docker Compose. The following is an example compose file:
 
 ```yml
-version: "3.7"
-
 services:
   music-ui:
     container_name: musiccatalogueui
@@ -77,7 +73,7 @@ services:
     ports:
       - "8086:3000"
     volumes:
-      - /local/config/ui-config.json:/opt/musiccatalogue.ui-1.4.0.0/config.json
+      - /local/config/ui-config.json:/opt/musiccatalogue.ui/config.json
 
   music-api:
     container_name: musiccatalogueservice
@@ -86,23 +82,13 @@ services:
     ports:
       - "8098:80"
     volumes:
-      - /local/data:/var/opt/musiccatalogue.api-1.4.0.0/
+      - /local/data:/var/opt/musiccatalogue.api/
 ```
 
 The local path to the config file and the local data path and port for the service should be set per the
 instructions, above, and the instructions for the [musiccatalogueapisqlite](https://hub.docker.com/repository/docker/davewalker5/musiccatalogueapisqlite/) image.
 
 The port for the UI, 8086, should be set to an available local port.
-
-## Built With
-
-The musiccatalogueui image was been built with the following:
-
-| Aspect         | Version         |
-| -------------- | --------------- |
-| Node           | 20.6.0          |
-| Target Runtime | linux-x64       |
-| Docker Desktop | 4.23.0 (120376) |
 
 ## Find Us
 

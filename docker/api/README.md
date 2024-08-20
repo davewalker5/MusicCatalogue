@@ -24,22 +24,20 @@ In order to run this image you'll need docker installed.
 
 The following "docker run" parameters are recommended when running the musiccatalogueapisqlite image:
 
-| Parameter | Value                                      | Purpose                                                               |
-| --------- | ------------------------------------------ | --------------------------------------------------------------------- |
-| -d        | -                                          | Run as a background process                                           |
-| -v        | /local:/var/opt/musiccatalogue.api-1.0.0.0 | Mount the host folder containing the SQLite database and API key file |
-| -p        | 7295:80                                    | Expose the container's port 80 as port 7295 on the host               |
-| --rm      | -                                          | Remove the container automatically when it stops                      |
+| Parameter | Value                              | Purpose                                                               |
+| --------- | ---------------------------------- | --------------------------------------------------------------------- |
+| -d        | -                                  | Run as a background process                                           |
+| -v        | /local:/var/opt/musiccatalogue.api | Mount the host folder containing the SQLite database and API key file |
+| -p        | 7295:80                            | Expose the container's port 80 as port 7295 on the host               |
+| --rm      | -                                  | Remove the container automatically when it stops                      |
 
 For example:
 
 ```shell
-docker run -d -v  /local:/var/opt/musiccatalogue.api-1.0.0.0 -p 7295:80 --rm  davewalker5/musiccatalogueapisqlite:latest
+docker run -d -v  /local:/var/opt/musiccatalogue.api -p 7295:80 --rm  davewalker5/musiccatalogueapisqlite:latest
 ```
 
 The "/local" path given to the -v argument is described, below, and should be replaced with a value appropriate for the host running the container.
-
-The version (1.0.0.0) should also be replaced with the version number for the version of the image being run.
 
 Similarly, the port number "7295" can be replaced with any available port on the host.
 
@@ -53,10 +51,10 @@ The key file should be a plain text file called "radpidapi.key" and should conta
 
 #### Running the Image
 
-To run the image, enter the following command, substituting "/local" for the host folder containing the SQLite database and the version (1.0.0.0) with the version number for the version of the image being run, as described:
+To run the image, enter the following command, substituting "/local" for the host folder containing the SQLite database, as described:
 
 ```shell
-docker run -d -v  /local:/var/opt/musiccatalogue.api-1.0.0.0 -p 7295:80 --rm  davewalker5/musiccatalogueapisqlite:latest
+docker run -d -v  /local:/var/opt/musiccatalogue.api -p 7295:80 --rm  davewalker5/musiccatalogueapisqlite:latest
 ```
 
 Once the container is running, browse to the following URL on the host:
@@ -64,16 +62,6 @@ Once the container is running, browse to the following URL on the host:
 http://localhost:7295
 
 You should see the Swagger API documentation for the API.
-
-## Built With
-
-The musiccatalogueapisqlite image was been built with the following:
-
-| Aspect         | Version         |
-| -------------- | --------------- |
-| .NET           | 7.0.401         |
-| Target Runtime | linux-x64       |
-| Docker Desktop | 4.23.0 (120376) |
 
 ## Find Us
 
