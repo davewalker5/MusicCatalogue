@@ -17,6 +17,7 @@ namespace MusicCatalogue.Api.Controllers
         private readonly IBackgroundQueue<GenreStatisticsExportWorkItem> _genreStatisticsQueue;
         private readonly IBackgroundQueue<MonthlySpendExportWorkItem> _monthlySpendQueue;
         private readonly IBackgroundQueue<RetailerStatisticsExportWorkItem> _retailerStatisticsQueue;
+        private readonly IBackgroundQueue<GenreAlbumsExportWorkItem> _genreAlbumsQueue;
 
         public ExportController(
             IBackgroundQueue<CatalogueExportWorkItem> catalogueQueue,
@@ -24,7 +25,8 @@ namespace MusicCatalogue.Api.Controllers
             IBackgroundQueue<ArtistStatisticsExportWorkItem> artistStatisticsQueue,
             IBackgroundQueue<GenreStatisticsExportWorkItem> genreStatisticsQueue,
             IBackgroundQueue<MonthlySpendExportWorkItem> monthlySpendQueue,
-            IBackgroundQueue<RetailerStatisticsExportWorkItem> retailerStatisticsQueue)
+            IBackgroundQueue<RetailerStatisticsExportWorkItem> retailerStatisticsQueue,
+            IBackgroundQueue<GenreAlbumsExportWorkItem> genreAlbumsQueue)
         {
             _catalogueQueue = catalogueQueue;
             _equipmentQueue = equipmentQueue;
@@ -32,6 +34,7 @@ namespace MusicCatalogue.Api.Controllers
             _genreStatisticsQueue = genreStatisticsQueue;
             _monthlySpendQueue = monthlySpendQueue;
             _retailerStatisticsQueue = retailerStatisticsQueue;
+            _genreAlbumsQueue = genreAlbumsQueue;
         }
 
         [HttpPost]
@@ -103,6 +106,18 @@ namespace MusicCatalogue.Api.Controllers
 
             // Queue the work item
             _retailerStatisticsQueue.Enqueue(item);
+            return Accepted();
+        }
+
+        [HttpPost]
+        [Route("genrealbums")]
+        public IActionResult ExportGenreAlbumsReport([FromBody] GenreAlbumsExportWorkItem item)
+        {
+            // Set the job name used in the job status record
+            item.JobName = "Albums by Genre Export";
+
+            // Queue the work item
+            _genreAlbumsQueue.Enqueue(item);
             return Accepted();
         }
     }

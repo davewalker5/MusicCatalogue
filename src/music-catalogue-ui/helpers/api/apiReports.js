@@ -125,10 +125,30 @@ const apiRetailerStatisticsReport = async (wishlist, logout) => {
   return records;
 };
 
+/**
+ * Call the API to retrieve the albums by genre report
+ * @param {*} genreId
+ * @param {*} logout
+ */
+const apiGenreAlbumsReport = async (genreId, logout) => {
+  // Construct the route
+  const url = `${config.api.baseUrl}/reports/genreAlbums/${genreId}`;
+
+  // Call the API to get content for the report
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const records = await apiReadResponseData(response, logout);
+  return records;
+};
+
 export {
   apiJobStatusReport,
   apiGenreStatisticsReport,
   apiArtistStatisticsReport,
   apiMonthlySpendReport,
   apiRetailerStatisticsReport,
+  apiGenreAlbumsReport,
 };

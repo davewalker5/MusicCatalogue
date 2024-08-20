@@ -23,6 +23,7 @@ const pages = {
   export: "Export",
   artistStatisticsReport: "ArtistStatisticsReport",
   genreStatisticsReport: "GenreStatisticsReport",
+  genreAlbumsReport: "GenreAlbumsReport",
   jobStatusReport: "JobStatusReport",
   monthlySpendReport: "MonthlySpendReport",
   retailerStatisticsReport: "RetailerStatisticsReport",

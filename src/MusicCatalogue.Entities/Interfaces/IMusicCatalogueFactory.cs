@@ -26,5 +26,6 @@ namespace MusicCatalogue.Entities.Interfaces
         IWishListBasedReport<ArtistStatistics> ArtistStatistics { get; }
         IWishListBasedReport<MonthlySpend> MonthlySpend { get; }
         IWishListBasedReport<RetailerStatistics> RetailerStatistics { get; }
+        IGenreBasedReport<GenreAlbum> GenreAlbums { get; }
     }
 }

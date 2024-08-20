@@ -181,6 +181,35 @@ const apiRequestRetailerStatisticsExport = async (
   return response.ok;
 };
 
+/**
+ * Request an export of the albums by genre report
+ * @param {*} fileName
+ * @param {*} genreId
+ * @param {*} logout
+ */
+const apiRequestGenreAlbumsExport = async (fileName, genreId, logout) => {
+  // Create a JSON body containing the file name to export to
+  const body = JSON.stringify({
+    fileName: fileName,
+    genreId: genreId,
+  });
+
+  // Call the API to request the export
+  const url = `${config.api.baseUrl}/export/genrealbums`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
+
+  return response.ok;
+};
+
 export {
   apiRequestCatalogueExport,
   apiRequestEquipmentExport,
@@ -188,4 +217,5 @@ export {
   apiRequestGenreStatisticsExport,
   apiRequestMonthlySpendingExport,
   apiRequestRetailerStatisticsExport,
+  apiRequestGenreAlbumsExport,
 };
