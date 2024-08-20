@@ -118,20 +118,32 @@ namespace MusicCatalogue.Logic.Database
         {
             List<Genre>? genres = null;
 
-            // Retrieve a list of albums, as they're the entity that's tagged with a genre
-            var albums = await Factory.Albums
-                                      .ListAsync(x => (
-                                                            (criteria.WishList == null) ||
-                                                            ((criteria.WishList == false) && (x.IsWishListItem == null)) ||
-                                                            (x.IsWishListItem == criteria.WishList)
-                                                      ));
-
-            // If there are no albums, there can't be any matching artists
-            if (albums.Any())
+            // The criteria specify a wish list flag which may be one of:
+            // 1. true  - return the genres associated with albums in the main catalogue
+            // 2. false - return the genres associated with albums in the wish list
+            // 3. null  - return all genres, whether or not they're associated with an album
+            if (criteria.WishList != null)
             {
-                // Get a list of unique genre IDs and load the matching genres
-                var genreIds = albums.Select(x => x.GenreId).Distinct().ToList();
-                genres = await Factory.Genres.ListAsync(x => genreIds.Contains(x.Id));
+                // Return a list of albums from either the main catalogue or wish list
+                var albums = await Factory.Albums
+                                          .ListAsync(x => (
+                                                                (criteria.WishList == null) ||
+                                                                ((criteria.WishList == false) && (x.IsWishListItem == null)) ||
+                                                                (x.IsWishListItem == criteria.WishList)
+                                                          ));
+
+                // If there are no albums, there can't be any matching genres
+                if (albums.Any())
+                {
+                    // Get a list of unique genre IDs and load the matching genres
+                    var genreIds = albums.Select(x => x.GenreId).Distinct().ToList();
+                    genres = await Factory.Genres.ListAsync(x => genreIds.Contains(x.Id));
+                }
+            }
+            else
+            {
+                // Just list the genres, irrespective of album associations
+                genres = await Factory.Genres.ListAsync(x => true);
             }
 
             return genres;

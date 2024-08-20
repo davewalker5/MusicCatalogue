@@ -15,7 +15,7 @@ const useGenres = (logout) => {
     const fetchGenres = async () => {
       try {
         // Get a list of genres via the service and store it in state
-        var fetchedGenres = await apiFetchGenres(logout);
+        var fetchedGenres = await apiFetchGenres(null, logout);
         setGenres(fetchedGenres);
       } catch {}
     };
