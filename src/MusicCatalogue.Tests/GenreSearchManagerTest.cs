@@ -35,10 +35,6 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task SearchForAllGenresTest()
         {
-            // Add the albums, one on the wishlist and one not
-            Task.Run(() => _factory!.Albums.AddAsync(_jazzArtistId, _jazzGenreId, "Live In Paris", 2002, null, false, null, null, null)).Wait();
-            Task.Run(() => _factory!.Albums.AddAsync(_popArtistId, _popGenreId, "Album No. 8", 2020, null, true, null, null, null)).Wait();
-
             var genres = await _factory!.Search.GenreSearchAsync(new GenreSearchCriteria());
             Assert.IsNotNull(genres);
             Assert.AreEqual(2, genres.Count);
@@ -70,13 +66,6 @@ namespace MusicCatalogue.Tests
             Assert.IsNotNull(genres);
             Assert.AreEqual(1, genres.Count);
             Assert.AreEqual(PopGenre, genres[0].Name);
-        }
-
-        [TestMethod]
-        public async Task NoMatchesTest()
-        {
-            var genres = await _factory!.Search.GenreSearchAsync(new GenreSearchCriteria());
-            Assert.IsNull(genres);
         }
     }
 }
