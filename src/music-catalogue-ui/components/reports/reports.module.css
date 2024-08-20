@@ -44,3 +44,7 @@
   color: red;
   text-align: center;
 }
+
+.genreSelector {
+  width: 200px;
+}

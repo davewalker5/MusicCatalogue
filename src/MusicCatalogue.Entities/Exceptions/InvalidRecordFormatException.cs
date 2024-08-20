@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 
 namespace MusicCatalogue.Entities.Exceptions
 {
@@ -16,10 +15,6 @@ namespace MusicCatalogue.Entities.Exceptions
         }
 
         public InvalidRecordFormatException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected InvalidRecordFormatException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }

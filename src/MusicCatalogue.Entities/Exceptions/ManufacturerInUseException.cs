@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 
 namespace MusicCatalogue.Entities.Exceptions
 {
@@ -17,10 +16,6 @@ namespace MusicCatalogue.Entities.Exceptions
         }
 
         public ManufacturerInUseException(string message, Exception inner) : base(message, inner)
-        {
-        }
-
-        protected ManufacturerInUseException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
         {
         }
     }

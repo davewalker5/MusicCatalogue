@@ -9,6 +9,7 @@ import JobStatusReport from "./reports/jobStatusReport";
 import AlbumPurchaseDetails from "./albums/albumPurchaseDetails";
 import ArtistStatisticsReport from "./reports/artistStatisticsReport";
 import MonthlySpendReport from "./reports/monthlySpendReport";
+import GenreAlbumsReport from "./reports/genreAlbumsReport";
 import GenreList from "./genres/genreList";
 import RetailerList from "./retailers/retailerList";
 import RetailerDetails from "./retailers/retailerDetails";
@@ -175,6 +176,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return <ArtistStatisticsReport logout={logout} />;
     case pages.genreStatisticsReport:
       return <GenreStatusReport logout={logout} />;
+    case pages.genreAlbumsReport:
+      return <GenreAlbumsReport logout={logout} />;
     case pages.retailerStatisticsReport:
       return <RetailerStatisticsReport logout={logout} />;
     case pages.jobStatusReport:

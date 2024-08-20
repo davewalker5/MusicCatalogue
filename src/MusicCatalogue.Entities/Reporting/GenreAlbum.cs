@@ -17,13 +17,16 @@ namespace MusicCatalogue.Entities.Reporting
         [Export("Genre", 3)]
         public string Genre { get; set; } = "";
 
-        [Export("Purchased", 4)]
+        [Export("Released", 4)]
+        public int Released { get; set; }
+
+        [Export("Purchased", 5)]
         public DateTime Purchased { get; set; }
 
-        [Export("Price", 5)]
+        [Export("Price", 6)]
         public Decimal Price { get; set; }
 
-        [Export("Retailer", 6)]
+        [Export("Retailer", 7)]
         public string Retailer { get; set; } = "";
     }
 }
