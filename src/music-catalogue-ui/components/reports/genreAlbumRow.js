@@ -9,7 +9,7 @@ import DateFormatter from "../common/dateFormatter";
  */
 const GenreAlbumRow = ({ record }) => {
   const purchaseDate = new Date(record.purchased);
-  console.log(purchaseDate.getFullYear());
+
   return (
     <tr>
       <td>{record.artist}</td>
