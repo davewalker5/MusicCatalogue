@@ -1,12 +1,19 @@
 ﻿using MusicCatalogue.Entities.CommandLine;
 using MusicCatalogue.Entities.Exceptions;
+using MusicCatalogue.Entities.Interfaces;
 
 namespace MusicCatalogue.Logic.CommandLine
 {
-    public class CommandLineParser
+    public class CommandLineParser : ICommandLineParser
     {
         private readonly List<CommandLineOption> _options = new List<CommandLineOption>();
         private readonly Dictionary<CommandLineOptionType, CommandLineOptionValue> _values = new Dictionary<CommandLineOptionType, CommandLineOptionValue>();
+        private readonly IHelpGenerator? _helpGenerator = null;
+
+        public CommandLineParser() { }
+
+        public CommandLineParser(IHelpGenerator generator)
+            => _helpGenerator = generator;
 
         /// <summary>
         /// Add an option to the available command line options
@@ -71,6 +78,14 @@ namespace MusicCatalogue.Logic.CommandLine
         }
 
         /// <summary>
+        /// Return true if a command line option has been specified
+        /// </summary>
+        /// <param name="optionType"></param>
+        /// <returns></returns>
+        public bool IsPresent(CommandLineOptionType optionType)
+            => _values.ContainsKey(optionType);
+
+        /// <summary>
         /// Return the valus for the specified option type
         /// </summary>
         /// <param name="optionType"></param>
@@ -79,13 +94,19 @@ namespace MusicCatalogue.Logic.CommandLine
         {
             List<string>? values = null;
 
-            if (_values.ContainsKey(optionType))
+            if (IsPresent(optionType))
             {
                 values = _values[optionType].Values;
             }
 
             return values;
         }
+
+        /// <summary>
+        /// Generate help
+        /// </summary>
+        public void Help()
+            => _helpGenerator?.Generate(_options);
 
         /// <summary>
         /// Check that each supplied option has sufficient values with it

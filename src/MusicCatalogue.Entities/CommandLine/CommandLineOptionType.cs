@@ -3,6 +3,7 @@
     public enum CommandLineOptionType
     {
         Unknown,
+        Help,
         Lookup,
         Import,
         Export,
