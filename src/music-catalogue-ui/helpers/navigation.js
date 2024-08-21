@@ -2,6 +2,7 @@ const pages = {
   artists: "Artists",
   artistEditor: "ArtistEditor",
   genres: "Genres",
+  genreEditor: "GenreEditor",
   wishlistArtists: "WishlistArtists",
   albums: "Albums",
   albumEditor: "AlbumEditor",

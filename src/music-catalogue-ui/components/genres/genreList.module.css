@@ -1,0 +1,9 @@
+.genreListAddButton {
+  float: right;
+}
+
+.genreListError {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}

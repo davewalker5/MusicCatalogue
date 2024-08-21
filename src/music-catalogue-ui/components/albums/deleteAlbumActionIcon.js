@@ -45,6 +45,8 @@ const DeleteAlbumActionIcon = ({
               logout
             );
             setAlbums(fetchedAlbums);
+          } else {
+            setError(`Failed to delete album ${album.title}`);
           }
         } catch (ex) {
           setError(`Error deleting the album: ${ex.message}`);
