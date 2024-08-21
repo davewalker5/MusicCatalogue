@@ -3,9 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <ReleaseVersion>1.24.0.0</ReleaseVersion>
-    <FileVersion>1.24.0.0</FileVersion>
-    <ProductVersion>1.24.0</ProductVersion>
+    <ReleaseVersion>1.25.0.0</ReleaseVersion>
+    <FileVersion>1.25.0.0</FileVersion>
+    <ProductVersion>1.25.0</ProductVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -26,6 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
   </ItemGroup>
 
   <ItemGroup>
