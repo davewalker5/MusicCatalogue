@@ -1,6 +1,6 @@
 import config from "@/config.json";
 import { apiReadResponseData } from "./apiUtils";
-import { apiGetPostHeaders } from "./apiHeaders";
+import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
 
 /**
  * Fetch a list of genres from the Music Catalogue REST API
@@ -27,4 +27,77 @@ const apiFetchGenres = async (isWishList, logout) => {
   return genres;
 };
 
-export { apiFetchGenres };
+/**
+ * Create a new genre
+ * @param {*} name
+ * @param {*} logout
+ * @returns
+ */
+const apiCreateGenre = async (name, logout) => {
+  // Construct the body
+  const body = JSON.stringify({
+    name: name,
+  });
+
+  // Call the API to create the genre
+  const url = `${config.api.baseUrl}/genres`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const genre = await apiReadResponseData(response, logout);
+  return genre;
+};
+
+/**
+ * Update an existing genre
+ * @param {*} genreId
+ * @param {*} name
+ * @param {*} logout
+ * @returns
+ */
+const apiUpdateGenre = async (genreId, name, logout) => {
+  // Construct the body
+  const body = JSON.stringify({
+    id: genreId,
+    name: name,
+  });
+
+  // Call the API to update the genre
+  const url = `${config.api.baseUrl}/genres`;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const genre = await apiReadResponseData(response, logout);
+  return genre;
+};
+
+/**
+ * Delete an existing genre
+ * @param {*} genreId
+ * @param {*} logout
+ * @returns
+ */
+const apiDeleteGenre = async (genreId, logout) => {
+  // Call the API to delete the genre
+  const url = `${config.api.baseUrl}/genres/${genreId}`;
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: apiGetHeaders(),
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  } else {
+    // Return the response status code
+    return response.ok;
+  }
+};
+
+export { apiFetchGenres, apiCreateGenre, apiUpdateGenre, apiDeleteGenre };

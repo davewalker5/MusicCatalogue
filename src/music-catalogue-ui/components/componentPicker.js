@@ -11,6 +11,7 @@ import ArtistStatisticsReport from "./reports/artistStatisticsReport";
 import MonthlySpendReport from "./reports/monthlySpendReport";
 import GenreAlbumsReport from "./reports/genreAlbumsReport";
 import GenreList from "./genres/genreList";
+import GenreEditor from "./genres/genreEditor";
 import RetailerList from "./retailers/retailerList";
 import RetailerDetails from "./retailers/retailerDetails";
 import RetailerEditor from "./retailers/retailerEditor";
@@ -99,6 +100,14 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           track={context.track}
           artist={context.artist}
           album={context.album}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.genreEditor:
+      return (
+        <GenreEditor
+          genre={context.genre}
           navigate={navigate}
           logout={logout}
         />
