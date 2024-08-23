@@ -7,6 +7,7 @@ const pages = {
   albums: "Albums",
   albumEditor: "AlbumEditor",
   albumPurchaseDetails: "AlbumPurchaseDetails",
+  albumPicker: "AlbumPicker",
   wishlistAlbums: "WishlistAlbums",
   tracks: "Tracks",
   trackEditor: "TrackEditor",

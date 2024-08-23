@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styles from "./reports.module.css";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import { apiGenreAlbumsReport } from "@/helpers/api/apiReports";
 import GenreAlbumRow from "./genreAlbumRow";
 import ReportExportControls from "./reportExportControls";
@@ -91,7 +91,7 @@ const GenreAlbumsReport = ({ logout }) => {
                   <label className={styles.reportFormLabel}>Report For:</label>
                 </div>
                 <div className="col">
-                  <div className={styles.genreSelector}>
+                  <div className={styles.reportGenreSelector}>
                     <GenreSelector
                       initialGenre={genre}
                       genreChangedCallback={setGenre}

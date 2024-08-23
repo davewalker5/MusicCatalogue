@@ -26,6 +26,7 @@ import ManufacturerEditor from "./manufacturers/manufacturerEditor";
 import EquipmentList from "./equipment/equipmentList";
 import EquipmentPurchaseDetails from "./equipment/equpimentPurchaseDetails";
 import EquipmentEditor from "./equipment/equipmentEditor";
+import AlbumPicker from "./albums/albumPicker";
 
 /**
  * Component using the current context to select and render the current page
@@ -84,6 +85,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
+    case pages.albumPicker:
+      return <AlbumPicker navigate={navigate} logout={logout} />;
     case pages.tracks:
       return (
         <TrackList
