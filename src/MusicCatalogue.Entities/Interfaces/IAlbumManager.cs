@@ -29,6 +29,7 @@ namespace MusicCatalogue.Entities.Interfaces
             int? retailerId);
 
         Task<Album> GetAsync(Expression<Func<Album, bool>> predicate);
+        Task<Album?> GetRandomAsync(Expression<Func<Album, bool>> predicate);
         Task<List<Album>> ListAsync(Expression<Func<Album, bool>> predicate);
         Task DeleteAsync(int albumId);
     }

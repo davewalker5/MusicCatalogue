@@ -95,6 +95,9 @@ const MenuBar = ({ navigate, logout }) => {
             </div>
           </button>
           <div className={styles.dropdownContent}>
+            <a onClick={() => navigate({ page: pages.albumPicker })}>
+              Album Picker
+            </a>
             <a onClick={() => navigate({ page: pages.artists, filter: "A" })}>
               Artists
             </a>

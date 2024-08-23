@@ -265,6 +265,26 @@ const apiSetAlbumPurchaseDetails = async (
   return response;
 };
 
+/**
+ * Return the album details for a randomly selected album from the
+ * Music Catalogue REST API
+ * @param {*} albumId
+ * @param {*} logout
+ * @returns
+ */
+const apiFetchRandomAlbum = async (genreId, logout) => {
+  // Call the API to get the details for a randomly selected album
+  const baseUrl = `${config.api.baseUrl}/albums/random`;
+  const url = genreId != null ? `${baseUrl}/${genreId}` : baseUrl;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const album = await apiReadResponseData(response, logout);
+  return album;
+};
+
 export {
   apiCreateAlbum,
   apiUpdateAlbum,
@@ -274,4 +294,5 @@ export {
   apiLookupAlbum,
   apiSetAlbumWishListFlag,
   apiSetAlbumPurchaseDetails,
+  apiFetchRandomAlbum,
 };
