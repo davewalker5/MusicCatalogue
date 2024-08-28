@@ -106,7 +106,7 @@ namespace MusicCatalogue.Tests
         {
             // Add an album that uses the retailer
             var artist = await _factory!.Artists.AddAsync(ArtistName);
-            var genre = await _factory.Genres.AddAsync(Genre);
+            var genre = await _factory.Genres.AddAsync(Genre, false);
             await _factory.Albums.AddAsync(artist.Id, genre.Id, AlbumTitle, Released, CoverUrl, false, null, null, _retailerId);
 
             // Now try to delete the retailer - this should raise an exception

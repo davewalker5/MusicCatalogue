@@ -79,7 +79,7 @@ namespace MusicCatalogue.Logic.Collection
             // Save the artist details, first. As with all the database calls in this method, the
             // logic to prevent duplication of artistsand genres is in the management class
             var artist = await _factory.Artists.AddAsync(artistName);
-            var genre = await _factory.Genres.AddAsync(template.Genre!.Name);
+            var genre = await _factory.Genres.AddAsync(template.Genre!.Name, false);
 
             // Save the album details
             var album = await _factory.Albums.AddAsync(

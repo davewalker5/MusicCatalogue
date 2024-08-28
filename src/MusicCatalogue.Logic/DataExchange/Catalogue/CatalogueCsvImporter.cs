@@ -47,7 +47,7 @@ namespace MusicCatalogue.Logic.DataExchange.Catalogue
                             // Inflate the CSV record to a track and save the artist and genre
                             var track = FlattenedTrack.FromCsv(fields!);
                             var artist = await _factory.Artists.AddAsync(track.ArtistName);
-                            var genre = await _factory.Genres.AddAsync(track.Genre!);
+                            var genre = await _factory.Genres.AddAsync(track.Genre!, false);
 
                             // Add the retailer
                             int? retailerId = null;

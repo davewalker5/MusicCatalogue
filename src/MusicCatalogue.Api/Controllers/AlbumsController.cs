@@ -92,7 +92,7 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<Album>> AddAlbumAsync([FromBody] Album template)
         {
             // Make sure the "other" Genre exists as a fallback for album updates where no genre is given
-            var otherGenre = _factory.Genres.AddAsync(OtherGenre);
+            var otherGenre = _factory.Genres.AddAsync(OtherGenre, false);
 
             // Add the album
             var album = await _factory.Albums.AddAsync(
@@ -120,7 +120,7 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<Album>> UpdateAlbumAsync([FromBody] Album template)
         {
             // Make sure the "other" Genre exists as a fallback for album updates where no genre is given
-            var otherGenre = _factory.Genres.AddAsync(OtherGenre);
+            var otherGenre = _factory.Genres.AddAsync(OtherGenre, false);
 
             // Attempt the update
             var album = await _factory.Albums.UpdateAsync(

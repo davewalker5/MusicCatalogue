@@ -33,7 +33,7 @@ namespace MusicCatalogue.Tests
 
             // Add the test entities to the database
             _retailerId = Task.Run(() => _factory.Retailers.AddAsync(RetailerName)).Result.Id;
-            _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre)).Result.Id;
+            _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre, false)).Result.Id;
             _artistId = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result.Id;
             _albumId = Task.Run(() => _factory.Albums.AddAsync(_artistId, _genreId, AlbumTitle, Released, CoverUrl, false, null, null, null)).Result.Id;
             Task.Run(() => _factory.Tracks.AddAsync(_albumId, TrackTitle, TrackNumber, TrackDuration)).Wait();
