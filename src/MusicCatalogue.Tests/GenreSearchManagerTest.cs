@@ -24,8 +24,8 @@ namespace MusicCatalogue.Tests
             _factory = new MusicCatalogueFactory(context);
 
             // Add the genres
-            _jazzGenreId = Task.Run(() => _factory.Genres.AddAsync("Jazz")).Result.Id;
-            _popGenreId = Task.Run(() => _factory.Genres.AddAsync("Pop")).Result.Id;
+            _jazzGenreId = Task.Run(() => _factory.Genres.AddAsync("Jazz", false)).Result.Id;
+            _popGenreId = Task.Run(() => _factory.Genres.AddAsync("Pop", false)).Result.Id;
 
             // Add the artists
             _jazzArtistId = Task.Run(() => _factory.Artists.AddAsync("Diana Krall")).Result.Id;

@@ -72,7 +72,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Genre>> AddGenreAsync([FromBody] Genre template)
         {
-            var genre = await _factory.Genres.AddAsync(template.Name);
+            var genre = await _factory.Genres.AddAsync(template.Name, true);
             return genre;
         }
 

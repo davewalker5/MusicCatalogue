@@ -41,8 +41,9 @@ namespace MusicCatalogue.Logic.Database
         /// Add a genre, if it doesn't already exist
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="raiseErrorIfExists"></param>
         /// <returns></returns>
-        public async Task<Genre> AddAsync(string name)
+        public async Task<Genre> AddAsync(string name, bool raiseErrorIfExists)
         {
             var clean = StringCleaner.Clean(name)!;
             var genre = await GetAsync(a => a.Name == clean);
@@ -55,6 +56,11 @@ namespace MusicCatalogue.Logic.Database
                 };
                 await Context.Genres.AddAsync(genre);
                 await Context.SaveChangesAsync();
+            }
+            else if (raiseErrorIfExists)
+            {
+                var message = $"Cannot create duplicate genre {genre.Name}";
+                throw new DuplicateGenreException(message);
             }
 
             return genre;
@@ -73,6 +79,11 @@ namespace MusicCatalogue.Logic.Database
             {
                 genre.Name = StringCleaner.Clean(name)!;
                 await Context.SaveChangesAsync();
+            }
+            else
+            {
+                var message = $"Genre '{name}' not found";
+                throw new GenreNotFoundException(message);
             }
             return genre;
         }

@@ -30,13 +30,21 @@ namespace MusicCatalogue.Tests
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
             _factory = new MusicCatalogueFactory(context);
-            _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre)).Result.Id;
+            _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre, false)).Result.Id;
         }
 
         [TestMethod]
-        public async Task AddDuplicateTest()
+        [ExpectedException(typeof(DuplicateGenreException))]
+        public async Task AddDuplicateWithErrorTest()
         {
-            await _factory!.Genres.AddAsync(Genre);
+            await _factory!.Genres.AddAsync(Genre, true);
+        }
+
+        [TestMethod]
+
+        public async Task AddDuplicateWithNoErrorTest()
+        {
+            await _factory!.Genres.AddAsync(Genre, false);
             var genres = await _factory!.Genres.ListAsync(x => true);
             Assert.AreEqual(1, genres.Count);
         }
@@ -82,10 +90,10 @@ namespace MusicCatalogue.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(GenreNotFoundException))]
         public async Task UpdateMissingTest()
         {
-            var genre = await _factory!.Genres.UpdateAsync(-1, UpdatedGenre);
-            Assert.IsNull(genre);
+            _ = await _factory!.Genres.UpdateAsync(-1, UpdatedGenre);
         }
 
         [TestMethod]

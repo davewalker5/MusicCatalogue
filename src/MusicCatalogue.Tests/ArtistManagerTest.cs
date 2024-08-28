@@ -94,7 +94,7 @@ namespace MusicCatalogue.Tests
         [ExpectedException(typeof(ArtistInUseException))]
         public async Task CannotDeleteWithAlbumTest()
         {
-            var genreId = Task.Run(() => _factory!.Genres.AddAsync(Genre)).Result.Id;
+            var genreId = Task.Run(() => _factory!.Genres.AddAsync(Genre, false)).Result.Id;
             Task.Run(() => _factory!.Albums.AddAsync(_artistId, genreId, AlbumTitle, Released, null, false, null, null, null)).Wait();
             await _factory!.Artists.DeleteAsync(_artistId);
         }
