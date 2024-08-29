@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import styles from "./reports.module.css";
-import { apiGenreAlbumsReport } from "@/helpers/api/apiReports";
+import DatePicker from "react-datepicker";
+import { apiAlbumsByPurchaseDateReport } from "@/helpers/api/apiReports";
 import ReportExportControls from "./reportExportControls";
-import { apiRequestGenreAlbumsExport } from "@/helpers/api/apiDataExchange";
-import GenreSelector from "../genres/genreSelector";
+import { apiRequestAlbumsByPurchaseDateExport } from "@/helpers/api/apiDataExchange";
 import AlbumsTable from "./albumsTable";
 
 /**
@@ -11,13 +11,13 @@ import AlbumsTable from "./albumsTable";
  * @param {*} logout
  * @returns
  */
-const GenreAlbumsReport = ({ logout }) => {
-  const [genre, setGenre] = useState(null);
+const AlbumsByPurchaseDateReport = ({ logout }) => {
+  const [purchaseDate, setPurchaseDate] = useState(null);
   const [records, setRecords] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  // Callback to request the albums by genre report from the API
+  // Callback to request the albums by purchase date report from the API
   const getReportCallback = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
@@ -27,13 +27,19 @@ const GenreAlbumsReport = ({ logout }) => {
       setMessage("");
       setError("");
 
-      // If there's a genre selected, request the report
-      if (genre != null) {
-        const fetchedRecords = await apiGenreAlbumsReport(genre.id, logout);
+      // If there's a date selected, request the report
+      if (purchaseDate != null) {
+        const year = purchaseDate.getFullYear();
+        const month = 1 + purchaseDate.getMonth();
+        const fetchedRecords = await apiAlbumsByPurchaseDateReport(
+          year,
+          month,
+          logout
+        );
         setRecords(fetchedRecords);
       }
     },
-    [genre, logout]
+    [purchaseDate, logout]
   );
 
   /* Callback to export the report */
@@ -46,30 +52,36 @@ const GenreAlbumsReport = ({ logout }) => {
       setMessage("");
       setError("");
 
-      // Set the genre from the drop-down selection
-      const genreId = genre != null ? genre.id : null;
-
       // Request an export via the API
-      const isOK = await apiRequestGenreAlbumsExport(fileName, genreId, logout);
+      const year = purchaseDate.getFullYear();
+      const month = 1 + purchaseDate.getMonth();
+      const isOK = await apiRequestAlbumsByPurchaseDateExport(
+        fileName,
+        year,
+        month,
+        logout
+      );
 
       // If all's well, display a confirmation message. Otherwise, show an error
       if (isOK) {
         setMessage(
-          `A background export of the albums by genre report to ${fileName} has been requested`
+          `A background export of the albums by purchase date report to ${fileName} has been requested`
         );
       } else {
         setError(
-          "An error occurred requesting an export of the albums by genre report"
+          "An error occurred requesting an export of the albums by purchase date report"
         );
       }
     },
-    [genre, logout]
+    [purchaseDate, logout]
   );
 
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">Albums by Genre Report</h5>
+        <h5 className="themeFontColor text-center">
+          Albums by Purchase Date Report
+        </h5>
       </div>
       <div className={styles.reportFormContainer}>
         <form className={styles.reportForm}>
@@ -87,13 +99,17 @@ const GenreAlbumsReport = ({ logout }) => {
             <div className="mt-3">
               <div className="d-inline-flex align-items-center">
                 <div className="col">
-                  <label className={styles.reportFormLabel}>Report For:</label>
+                  <label className={styles.reportFormLabel}>
+                    Purchase Date:
+                  </label>
                 </div>
                 <div className="col">
-                  <div className={styles.reportGenreSelector}>
-                    <GenreSelector
-                      initialGenre={genre}
-                      genreChangedCallback={setGenre}
+                  <div>
+                    <DatePicker
+                      dateFormat="MMMM yyyy"
+                      showMonthYearPicker
+                      selected={purchaseDate}
+                      onChange={(date) => setPurchaseDate(date)}
                     />
                   </div>
                 </div>
@@ -123,4 +139,4 @@ const GenreAlbumsReport = ({ logout }) => {
   );
 };
 
-export default GenreAlbumsReport;
+export default AlbumsByPurchaseDateReport;

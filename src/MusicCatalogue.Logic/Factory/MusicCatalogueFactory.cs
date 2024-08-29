@@ -33,6 +33,7 @@ namespace MusicCatalogue.Logic.Factory
         private readonly Lazy<IWishListBasedReport<MonthlySpend>> _monthlySpend;
         private readonly Lazy<IWishListBasedReport<RetailerStatistics>> _retailerStatistics;
         private readonly Lazy<IGenreBasedReport<GenreAlbum>> _genreAlbums;
+        private readonly Lazy<IDateBasedReport<AlbumByPurchaseDate>> _albumsByPurchaseDate;
 
         public DbContext Context { get; private set; }
         public IGenreManager Genres { get { return _genres.Value; } }
@@ -67,6 +68,9 @@ namespace MusicCatalogue.Logic.Factory
         [ExcludeFromCodeCoverage]
         public IGenreBasedReport<GenreAlbum> GenreAlbums { get { return _genreAlbums.Value; } }
 
+        [ExcludeFromCodeCoverage]
+        public IDateBasedReport<AlbumByPurchaseDate> AlbumsByPurchaseDate { get { return _albumsByPurchaseDate.Value; } }
+
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
             Context = context;
@@ -91,6 +95,7 @@ namespace MusicCatalogue.Logic.Factory
             _monthlySpend = new Lazy<IWishListBasedReport<MonthlySpend>>(() => new WishListBasedReport<MonthlySpend>(context));
             _retailerStatistics = new Lazy<IWishListBasedReport<RetailerStatistics>>(() => new WishListBasedReport<RetailerStatistics>(context));
             _genreAlbums = new Lazy<IGenreBasedReport<GenreAlbum>>(() => new GenreBasedReport<GenreAlbum>(context));
+            _albumsByPurchaseDate = new Lazy<IDateBasedReport<AlbumByPurchaseDate>>(() => new DateBasedReport<AlbumByPurchaseDate>(context));
         }
     }
 }

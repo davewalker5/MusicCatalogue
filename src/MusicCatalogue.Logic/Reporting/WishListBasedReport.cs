@@ -27,7 +27,7 @@ namespace MusicCatalogue.Logic.Reporting
             var sqlFile = $"{typeof(T).Name}.sql";
 
             // Load the SQL file and perform date range place-holder replacements
-            var query = ReadWishListSqlReportResource(sqlFile, wishlist);
+            var query = ReadWishListBasedSqlReportResource(sqlFile, wishlist);
 
             // Run the query and return the results
             var results = await GenerateReportAsync<T>(query, pageNumber, pageSize);
@@ -35,12 +35,12 @@ namespace MusicCatalogue.Logic.Reporting
         }
 
         /// <summary>
-        /// Read the SQL report file for a sightings-based report with a wish list flag in it
+        /// Read the SQL report file for a wish list-based report
         /// </summary>
         /// <param name="reportFile"></param>
         /// <param name="wishlist"></param>
         /// <returns></returns>
-        private static string ReadWishListSqlReportResource(string reportFile, bool wishlist)
+        private static string ReadWishListBasedSqlReportResource(string reportFile, bool wishlist)
         {
             // Read and return the query, replacing the date range parameters
             var query = ReadSqlResource(reportFile, new Dictionary<string, string>

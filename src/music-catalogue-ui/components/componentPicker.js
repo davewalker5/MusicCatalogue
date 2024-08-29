@@ -27,6 +27,7 @@ import EquipmentList from "./equipment/equipmentList";
 import EquipmentPurchaseDetails from "./equipment/equpimentPurchaseDetails";
 import EquipmentEditor from "./equipment/equipmentEditor";
 import AlbumPicker from "./albums/albumPicker";
+import AlbumsByPurchaseDateReport from "./reports/albumsByPurchaseDateReport";
 
 /**
  * Component using the current context to select and render the current page
@@ -196,6 +197,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return <JobStatusReport logout={logout} />;
     case pages.monthlySpendReport:
       return <MonthlySpendReport logout={logout} />;
+    case pages.albumsByPurchaseDateReport:
+      return <AlbumsByPurchaseDateReport logout={logout} />;
     default:
       return <span />;
   }

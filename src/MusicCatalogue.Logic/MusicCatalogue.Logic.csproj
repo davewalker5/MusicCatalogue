@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>MusicCatalogue.Logic</PackageId>
-    <PackageVersion>1.25.0.0</PackageVersion>
+    <PackageVersion>1.26.0.0</PackageVersion>
     <Authors>Dave Walker</Authors>
     <Copyright>Copyright (c) Dave Walker 2023</Copyright>
     <Owners>Dave Walker</Owners>
@@ -17,10 +17,11 @@
     <PackageProjectUrl>https://github.com/davewalker5/MusicCatalogue</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ReleaseVersion>1.25.0.0</ReleaseVersion>
+    <ReleaseVersion>1.26.0.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Sql\AlbumByPurchaseDate.sql" />
     <None Remove="Sql\ArtistStatistics.sql" />
     <None Remove="Sql\GenreAlbum.sql" />
     <None Remove="Sql\GenreStatistics.sql" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Sql\AlbumByPurchaseDate.sql" />
     <EmbeddedResource Include="Sql\ArtistStatistics.sql" />
     <EmbeddedResource Include="Sql\GenreAlbum.sql" />
     <EmbeddedResource Include="Sql\GenreStatistics.sql" />

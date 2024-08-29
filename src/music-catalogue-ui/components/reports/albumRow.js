@@ -2,12 +2,11 @@ import CurrencyFormatter from "../common/currencyFormatter";
 import DateFormatter from "../common/dateFormatter";
 
 /**
- * Component to render a row containing the details of a single album in a
- * genre
+ * Component to render a row containing the details of a single album
  * @param {*} record
  * @returns
  */
-const GenreAlbumRow = ({ record }) => {
+const AlbumRow = ({ record }) => {
   const purchaseDate = new Date(record.purchased);
 
   return (
@@ -35,4 +34,4 @@ const GenreAlbumRow = ({ record }) => {
   );
 };
 
-export default GenreAlbumRow;
+export default AlbumRow;

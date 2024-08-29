@@ -7,7 +7,7 @@ import { apiGetPostHeaders } from "./apiHeaders";
  * @param {*} logout
  */
 const apiRequestCatalogueExport = async (fileName, logout) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
   });
@@ -34,7 +34,7 @@ const apiRequestCatalogueExport = async (fileName, logout) => {
  * @param {*} logout
  */
 const apiRequestEquipmentExport = async (fileName, logout) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
   });
@@ -66,7 +66,7 @@ const apiRequestAristStatisticsExport = async (
   isWishList,
   logout
 ) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
     wishList: isWishList,
@@ -99,7 +99,7 @@ const apiRequestGenreStatisticsExport = async (
   isWishList,
   logout
 ) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
     wishList: isWishList,
@@ -127,7 +127,7 @@ const apiRequestGenreStatisticsExport = async (
  * @param {*} logout
  */
 const apiRequestMonthlySpendingExport = async (fileName, logout) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
   });
@@ -159,7 +159,7 @@ const apiRequestRetailerStatisticsExport = async (
   isWishList,
   logout
 ) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
     wishList: isWishList,
@@ -188,7 +188,7 @@ const apiRequestRetailerStatisticsExport = async (
  * @param {*} logout
  */
 const apiRequestGenreAlbumsExport = async (fileName, genreId, logout) => {
-  // Create a JSON body containing the file name to export to
+  // Create a JSON body containing the export parameters
   const body = JSON.stringify({
     fileName: fileName,
     genreId: genreId,
@@ -196,6 +196,42 @@ const apiRequestGenreAlbumsExport = async (fileName, genreId, logout) => {
 
   // Call the API to request the export
   const url = `${config.api.baseUrl}/export/genrealbums`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
+
+  return response.ok;
+};
+
+/**
+ * Request an export of the albums by purchase date report
+ * @param {*} fileName
+ * @param {*} year
+ * @param {*} month
+ * @param {*} logout
+ */
+const apiRequestAlbumsByPurchaseDateExport = async (
+  fileName,
+  year,
+  month,
+  logout
+) => {
+  // Create a JSON body containing the export parameters
+  const body = JSON.stringify({
+    fileName: fileName,
+    year: year,
+    month: month,
+  });
+
+  // Call the API to request the export
+  const url = `${config.api.baseUrl}/export/albumsByPurchaseDate`;
   const response = await fetch(url, {
     method: "POST",
     headers: apiGetPostHeaders(),
@@ -218,4 +254,5 @@ export {
   apiRequestMonthlySpendingExport,
   apiRequestRetailerStatisticsExport,
   apiRequestGenreAlbumsExport,
+  apiRequestAlbumsByPurchaseDateExport,
 };
