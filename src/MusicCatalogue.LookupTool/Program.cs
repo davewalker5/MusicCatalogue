@@ -1,7 +1,7 @@
-﻿using MusicCatalogue.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicCatalogue.Data;
 using MusicCatalogue.Entities.CommandLine;
 using MusicCatalogue.Entities.Config;
-using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
 using MusicCatalogue.Logic.CommandLine;
 using MusicCatalogue.Logic.Config;
@@ -33,6 +33,7 @@ namespace MusicCatalogue.LookupTool
                 parser.Add(CommandLineOptionType.Lookup, true, "--lookup", "-l", "Lookup an album and display its details", 3, 3);
                 parser.Add(CommandLineOptionType.Import, true, "--import", "-i", "Import data from a CSV format file", 1, 1);
                 parser.Add(CommandLineOptionType.Export, true, "--export", "-e", "Export the collection or equipment register to a CSV file or Excel Workbook", 2, 2);
+                parser.Add(CommandLineOptionType.Update, true, "--update", "-u", "Apply the latest database migrations", 0, 0);
                 parser.Parse(args);
 
                 // If help's been requested, show help and exit
@@ -60,31 +61,38 @@ namespace MusicCatalogue.LookupTool
                     logger.LogMessage(Severity.Info, title);
 
                     // Configure the business logic factory
-                    var context = new MusicCatalogueDbContextFactory().CreateDbContext(Array.Empty<string>());
+                    var context = new MusicCatalogueDbContextFactory().CreateDbContext([]);
                     var factory = new MusicCatalogueFactory(context);
 
+                    // If this is an update, apply the latest migrations
+                    if (parser.IsPresent(CommandLineOptionType.Update))
+                    {
+                        context.Database.Migrate();
+                        Console.WriteLine($"Applied the latest database migrations");
+                    }
+
                     // If this is a lookup, look up the album details
-                    var values = parser.GetValues(CommandLineOptionType.Lookup);
-                    if (values != null)
+                    if (parser.IsPresent(CommandLineOptionType.Lookup))
                     {
                         // Determine the target for new albums (catalogue or wish list) and lookup the album
-                        var targetType = (TargetType)Enum.Parse(typeof(TargetType), values[2]);
+                        var values = parser.GetValues(CommandLineOptionType.Lookup);
+                        var targetType = (TargetType)Enum.Parse(typeof(TargetType), values![2]);
                         var storeInWishList = targetType == TargetType.wishlist;
                         await new AlbumLookup(logger, factory, settings!).LookupAlbum(values[0], values[1], storeInWishList);
                     }
 
                     // If this is an import, import data from the specified CSV file
-                    values = parser.GetValues(CommandLineOptionType.Import);
-                    if (values != null)
+                    if (parser.IsPresent(CommandLineOptionType.Import))
                     {
-                        new DataImport(logger, factory).Import(values[0]);
+                        var values = parser.GetValues(CommandLineOptionType.Import);
+                        new DataImport(logger, factory).Import(values![0]);
                     }
 
                     // If this is an export, export the collection to the specified file
-                    values = parser.GetValues(CommandLineOptionType.Export);
-                    if (values != null)
+                    if (parser.IsPresent(CommandLineOptionType.Export))
                     {
-                        var exportType = (ExportType)Enum.Parse(typeof(ExportType), values[0]);
+                        var values = parser.GetValues(CommandLineOptionType.Export);
+                        var exportType = (ExportType)Enum.Parse(typeof(ExportType), values![0]);
                         IDataExporter exporter = exportType == ExportType.music ? new CatalogueExporter(logger, factory) : new EquipmentExporter(logger, factory);
                         exporter.Export(values[1]);
                     }
@@ -95,6 +103,5 @@ namespace MusicCatalogue.LookupTool
                 Console.WriteLine(ex.Message);
             }
         }
-
     }
 }

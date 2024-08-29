@@ -18,6 +18,7 @@ namespace MusicCatalogue.Api.Controllers
         private readonly IBackgroundQueue<MonthlySpendExportWorkItem> _monthlySpendQueue;
         private readonly IBackgroundQueue<RetailerStatisticsExportWorkItem> _retailerStatisticsQueue;
         private readonly IBackgroundQueue<GenreAlbumsExportWorkItem> _genreAlbumsQueue;
+        private readonly IBackgroundQueue<AlbumsByPurchaseDateExportWorkItem> _albumsByPurchaseDateQueue;
 
         public ExportController(
             IBackgroundQueue<CatalogueExportWorkItem> catalogueQueue,
@@ -26,7 +27,8 @@ namespace MusicCatalogue.Api.Controllers
             IBackgroundQueue<GenreStatisticsExportWorkItem> genreStatisticsQueue,
             IBackgroundQueue<MonthlySpendExportWorkItem> monthlySpendQueue,
             IBackgroundQueue<RetailerStatisticsExportWorkItem> retailerStatisticsQueue,
-            IBackgroundQueue<GenreAlbumsExportWorkItem> genreAlbumsQueue)
+            IBackgroundQueue<GenreAlbumsExportWorkItem> genreAlbumsQueue,
+            IBackgroundQueue<AlbumsByPurchaseDateExportWorkItem> albumsByPurchaseDateQueue)
         {
             _catalogueQueue = catalogueQueue;
             _equipmentQueue = equipmentQueue;
@@ -35,6 +37,7 @@ namespace MusicCatalogue.Api.Controllers
             _monthlySpendQueue = monthlySpendQueue;
             _retailerStatisticsQueue = retailerStatisticsQueue;
             _genreAlbumsQueue = genreAlbumsQueue;
+            _albumsByPurchaseDateQueue = albumsByPurchaseDateQueue;
         }
 
         [HttpPost]
@@ -118,6 +121,18 @@ namespace MusicCatalogue.Api.Controllers
 
             // Queue the work item
             _genreAlbumsQueue.Enqueue(item);
+            return Accepted();
+        }
+
+        [HttpPost]
+        [Route("albumsByPurchaseDate")]
+        public IActionResult ExportAlbumsByPurchaseDateReport([FromBody] AlbumsByPurchaseDateExportWorkItem item)
+        {
+            // Set the job name used in the job status record
+            item.JobName = "Albums by Purchase Date Export";
+
+            // Queue the work item
+            _albumsByPurchaseDateQueue.Enqueue(item);
             return Accepted();
         }
     }

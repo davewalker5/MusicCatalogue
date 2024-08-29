@@ -7,5 +7,6 @@
         Lookup,
         Import,
         Export,
+        Update,
     }
 }

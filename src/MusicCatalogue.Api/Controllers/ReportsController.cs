@@ -153,5 +153,21 @@ namespace MusicCatalogue.Api.Controllers
             // Convert to a list and return the results
             return results.ToList();
         }
+
+        [HttpGet]
+        [Route("albumsByPurchaseDate/{year}/{month}")]
+        public async Task<ActionResult<List<AlbumByPurchaseDate>>> GetAlbumsByPurchaseDateReportAsync(int year, int month)
+        {
+            // Get the report content
+            var results = await _factory.AlbumsByPurchaseDate.GenerateReportAsync(year, month, 1, 1, int.MaxValue);
+
+            if (!results.Any())
+            {
+                return NoContent();
+            }
+
+            // Convert to a list and return the results
+            return results.ToList();
+        }
     }
 }

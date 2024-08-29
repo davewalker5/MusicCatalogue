@@ -23,12 +23,12 @@ namespace MusicCatalogue.Data
         public virtual DbSet<MonthlySpend> MonthlySpend { get; set; }
         public virtual DbSet<RetailerStatistics> RetailerStatistics { get; set; }
         public virtual DbSet<GenreAlbum> GenreAlbums { get; set; }
+        public virtual DbSet<AlbumByPurchaseDate> AlbumsByPurchaseDate { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
-
 
         /// <summary>
         /// Initialise the aircraft tracker model
