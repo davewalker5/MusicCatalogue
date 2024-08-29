@@ -144,6 +144,26 @@ const apiGenreAlbumsReport = async (genreId, logout) => {
   return records;
 };
 
+/**
+ * Call the API to retrieve the albums by purchase date report
+ * @param {*} year
+ * @param {*} month
+ * @param {*} logout
+ */
+const apiAlbumsByPurchaseDateReport = async (year, month, logout) => {
+  // Construct the route
+  const url = `${config.api.baseUrl}/reports/albumsByPurchaseDate/${year}/${month}`;
+
+  // Call the API to get content for the report
+  const response = await fetch(url, {
+    method: "GET",
+    headers: apiGetHeaders(),
+  });
+
+  const records = await apiReadResponseData(response, logout);
+  return records;
+};
+
 export {
   apiJobStatusReport,
   apiGenreStatisticsReport,
@@ -151,4 +171,5 @@ export {
   apiMonthlySpendReport,
   apiRetailerStatisticsReport,
   apiGenreAlbumsReport,
+  apiAlbumsByPurchaseDateReport,
 };

@@ -31,25 +31,32 @@ const MenuBar = ({ navigate, logout }) => {
             </div>
           </button>
           <div className={styles.dropdownContent}>
+            <a onClick={() => navigate({ page: pages.genreAlbumsReport })}>
+              Albums By Genre
+            </a>
+            <a
+              onClick={() =>
+                navigate({ page: pages.albumsByPurchaseDateReport })
+              }
+            >
+              Albums By Purchase Date
+            </a>
             <a onClick={() => navigate({ page: pages.artistStatisticsReport })}>
               Artist Statistics
             </a>
             <a onClick={() => navigate({ page: pages.genreStatisticsReport })}>
               Genre Statistics
             </a>
-            <a
-              onClick={() => navigate({ page: pages.retailerStatisticsReport })}
-            >
-              Retailer Statistics
-            </a>
-            <a onClick={() => navigate({ page: pages.genreAlbumsReport })}>
-              Albums By Genre
-            </a>
             <a onClick={() => navigate({ page: pages.jobStatusReport })}>
               Job Status
             </a>
             <a onClick={() => navigate({ page: pages.monthlySpendReport })}>
               Monthly Spend
+            </a>
+            <a
+              onClick={() => navigate({ page: pages.retailerStatisticsReport })}
+            >
+              Retailer Statistics
             </a>
           </div>
         </div>
