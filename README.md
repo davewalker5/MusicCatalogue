@@ -27,7 +27,6 @@
   - Data export as CSV or Excel workbooks
   - Reports and report export as CSV
 
-- NuGet packages are available for the entities, data and logic
 - Docker builds of the REST API and GUI are also available
 
 ## Getting Started
