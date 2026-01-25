@@ -405,3 +405,8 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+published/
+Published/
+venv/
+exported/
