@@ -36,6 +36,10 @@ const RetailerDetails = ({ retailer, navigate, logout }) => {
         <table className={styles.retailerDetailsTable}>
           <tbody>
             <tr>
+              <th>Artist Direct:</th>
+              <td>{retailer.artistDirect ? "Yes" : "No"}</td>
+            </tr>
+            <tr>
               <th>Address:</th>
               <td>{retailer.address1}</td>
             </tr>

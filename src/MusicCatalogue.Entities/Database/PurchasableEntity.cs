@@ -3,7 +3,7 @@
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
-    public abstract class PurchasableEntity
+    public abstract class PurchasableEntity : MusicCatalogueEntityBase
     {
         public bool? IsWishListItem { get; set; }
 

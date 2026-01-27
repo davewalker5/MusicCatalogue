@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 using System.Web;
 
 namespace MusicCatalogue.Api.Controllers
@@ -13,10 +14,12 @@ namespace MusicCatalogue.Api.Controllers
     public class SearchController : Controller
     {
         private readonly IAlbumLookupManager _manager;
+        private readonly IMusicLogger _logger;
 
-        public SearchController(IAlbumLookupManager manager)
+        public SearchController(IAlbumLookupManager manager, IMusicLogger logger)
         {
             _manager = manager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -34,6 +37,9 @@ namespace MusicCatalogue.Api.Controllers
             // Decode the search criteria
             var decodedArtistName = HttpUtility.UrlDecode(artistName);
             var decodedAlbumTitle = HttpUtility.UrlDecode(albumTitle);
+
+            var catalogue = storeInWishList ? "wish list" : "main catalogue";
+            _logger.LogMessage(Severity.Debug, $"Searching for '{albumTitle}' by {artistName} - results will be stored in the {catalogue}");
 
             // Perform the lookup
             var album = await _manager.LookupAlbum(decodedArtistName, decodedAlbumTitle, storeInWishList);

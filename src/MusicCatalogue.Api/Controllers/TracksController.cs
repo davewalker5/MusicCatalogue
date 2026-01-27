@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -12,10 +13,13 @@ namespace MusicCatalogue.Api.Controllers
     public class TracksController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
+        private readonly IMusicLogger _logger;
 
-        public TracksController(IMusicCatalogueFactory factory)
+
+        public TracksController(IMusicCatalogueFactory factory, IMusicLogger logger)
         {
             _factory = factory;
+            _logger = logger;
         }
 
         /// <summary>
@@ -27,6 +31,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Track>> AddTrackAsync([FromBody] Track template)
         {
+            _logger.LogMessage(Severity.Debug, $"Adding track {template}");
             var track = await _factory.Tracks.AddAsync(template.AlbumId, template.Title, template.Number, template.Duration);
             return track;
         }
@@ -40,6 +45,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Track?>> UpdateTrackAsync([FromBody] Track template)
         {
+            _logger.LogMessage(Severity.Debug, $"Updating track {template}");
             var track = await _factory.Tracks.UpdateAsync(
                 template.Id,
                 template.AlbumId,
@@ -58,12 +64,15 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteTrackAsync(int id)
         {
+            _logger.LogMessage(Severity.Debug, $"Deleting track with ID {id}");
+
             // Make sure the track exists
             var track = await _factory.Tracks.GetAsync(x => x.Id == id);
 
             // If the track doesn't exist, return a 404
             if (track == null)
             {
+                _logger.LogMessage(Severity.Error, $"Track with ID {id} not found");
                 return NotFound();
             }
 

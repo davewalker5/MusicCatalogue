@@ -5,6 +5,7 @@ import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
 /**
  * Create a retailer
  * @param {*} name
+ * @param {*} artistDirect
  * @param {*} address1
  * @param {*} address2
  * @param {*} town
@@ -19,6 +20,7 @@ import { apiGetPostHeaders, apiGetHeaders } from "./apiHeaders";
  */
 const apiCreateRetailer = async (
   name,
+  artistDirect,
   address1,
   address2,
   town,
@@ -42,6 +44,7 @@ const apiCreateRetailer = async (
     webSite: webSite,
     latitude: latitude,
     longitude: longitude,
+    artistDirect: artistDirect
   });
 
   // Call the API to create the retailer. This will just return the current
@@ -77,6 +80,8 @@ const apiFetchRetailers = async (logout) => {
 /**
  * Update a retailer's details
  * @param {*} id
+ * @param {*} name
+ * @param {*} artistDirect
  * @param {*} address1
  * @param {*} address2
  * @param {*} town
@@ -92,6 +97,7 @@ const apiFetchRetailers = async (logout) => {
 const apiUpdateRetailer = async (
   id,
   name,
+  artistDirect,
   address1,
   address2,
   town,
@@ -116,6 +122,7 @@ const apiUpdateRetailer = async (
     webSite: webSite,
     latitude: latitude,
     longitude: longitude,
+    artistDirect: artistDirect
   });
 
   // Call the API to set the wish list flag for a given album

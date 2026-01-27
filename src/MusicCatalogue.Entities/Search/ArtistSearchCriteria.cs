@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using MusicCatalogue.Entities.Database;
 
 namespace MusicCatalogue.Entities.Search
 {
     [ExcludeFromCodeCoverage]
-    public class ArtistSearchCriteria
+    public class ArtistSearchCriteria : MusicCatalogueEntityBase
     {
         public string? NamePrefix { get; set; }
         public bool? WishList { get; set; }

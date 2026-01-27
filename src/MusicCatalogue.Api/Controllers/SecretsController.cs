@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MusicCatalogue.Entities.Config;
 using MusicCatalogue.BusinessLogic.Config;
+using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -13,10 +15,12 @@ namespace MusicCatalogue.Api.Controllers
     public class SecretsController : Controller
     {
         private readonly MusicApplicationSettings _settings;
+        private readonly IMusicLogger _logger;
 
-        public SecretsController(IOptions<MusicApplicationSettings> settings)
+        public SecretsController(IOptions<MusicApplicationSettings> settings, IMusicLogger logger)
         {
             _settings = settings.Value;
+            _logger = logger;
             SecretResolver.ResolveAllSecrets(_settings);
         }
 
@@ -29,15 +33,19 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{name}")]
         public ActionResult<string?> GetSecret(string name)
         {
+            _logger.LogMessage(Severity.Debug, $"Retrieving named secret '{name}'");
+
             var secret = _settings.Secrets.FirstOrDefault(x => x.Name == name); 
 
             if (secret == null)
             {
+                _logger.LogMessage(Severity.Error, $"No matching secret found");
                 return NotFound();
             }
 
             if (string.IsNullOrEmpty(secret.Value))
             {
+                _logger.LogMessage(Severity.Warning, $"Secret is blank/empty");
                 return NoContent();
             }
 

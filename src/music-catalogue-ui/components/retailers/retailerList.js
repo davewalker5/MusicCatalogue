@@ -38,6 +38,7 @@ const RetailerList = ({ navigate, logout }) => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Direct</th>
             <th>Town</th>
             <th>County</th>
             <th>Country</th>
