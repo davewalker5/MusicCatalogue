@@ -1,6 +1,12 @@
 FROM node:20-alpine
-COPY musiccatalogue.ui-1.36.0.0 /opt/musiccatalogue.ui
 WORKDIR /opt/musiccatalogue.ui
-RUN npm install
+
+# Copy manifests first for better caching
+COPY musiccatalogue.ui-1.36.0.0/package*.json ./
+RUN npm ci
+
+# Then copy the rest and build
+COPY musiccatalogue.ui-1.36.0.0/ ./
 RUN npm run build
-ENTRYPOINT [ "npm", "start" ]
+
+ENTRYPOINT ["npm", "start"]
