@@ -1,8 +1,8 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Api.TheAudioDB;
-using MusicCatalogue.Logic.Collection;
-using MusicCatalogue.Logic.Factory;
+using MusicCatalogue.BusinessLogic.Api.TheAudioDB;
+using MusicCatalogue.BusinessLogic.Collection;
+using MusicCatalogue.BusinessLogic.Factory;
 using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests

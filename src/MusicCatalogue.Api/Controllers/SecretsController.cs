@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MusicCatalogue.Entities.Config;
-using MusicCatalogue.Logic.Config;
+using MusicCatalogue.BusinessLogic.Config;
 
 namespace MusicCatalogue.Api.Controllers
 {

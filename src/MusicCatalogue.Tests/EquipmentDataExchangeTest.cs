@@ -1,6 +1,6 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Factory;
+using MusicCatalogue.BusinessLogic.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;

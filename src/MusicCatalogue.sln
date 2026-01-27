@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.LookupTool",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.Entities", "MusicCatalogue.Entities\MusicCatalogue.Entities.csproj", "{9FD5C4A3-D265-4495-B3C5-C367E90E7F46}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.Logic", "MusicCatalogue.Logic\MusicCatalogue.Logic.csproj", "{0A749AFE-95E9-42AC-8E71-D3EC75DB26B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.BusinessLogic", "MusicCatalogue.BusinessLogic\MusicCatalogue.BusinessLogic.csproj", "{0A749AFE-95E9-42AC-8E71-D3EC75DB26B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicCatalogue.Tests", "MusicCatalogue.Tests\MusicCatalogue.Tests.csproj", "{DDDA8422-23AF-4D77-A002-C65AF5D8C060}"
 EndProject

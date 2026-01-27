@@ -1,6 +1,6 @@
 ﻿using MusicCatalogue.Entities.Config;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Logic.Config;
+using MusicCatalogue.BusinessLogic.Config;
 
 namespace MusicCatalogue.Tests
 {

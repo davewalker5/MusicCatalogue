@@ -1,9 +1,9 @@
 ﻿using MusicCatalogue.Entities.Config;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Api;
-using MusicCatalogue.Logic.Api.TheAudioDB;
-using MusicCatalogue.Logic.Collection;
-using MusicCatalogue.Logic.Database;
+using MusicCatalogue.BusinessLogic.Api;
+using MusicCatalogue.BusinessLogic.Api.TheAudioDB;
+using MusicCatalogue.BusinessLogic.Collection;
+using MusicCatalogue.BusinessLogic.Database;
 
 namespace MusicCatalogue.LookupTool.Logic
 {

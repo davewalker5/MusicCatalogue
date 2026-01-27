@@ -1,6 +1,6 @@
 ﻿using MusicCatalogue.Entities.CommandLine;
 using MusicCatalogue.Entities.Exceptions;
-using MusicCatalogue.Logic.CommandLine;
+using MusicCatalogue.BusinessLogic.CommandLine;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MusicCatalogue.Tests

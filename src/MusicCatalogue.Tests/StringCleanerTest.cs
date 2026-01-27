@@ -1,4 +1,4 @@
-﻿using MusicCatalogue.Logic.Database;
+﻿using MusicCatalogue.BusinessLogic.Database;
 
 namespace MusicCatalogue.Tests
 {

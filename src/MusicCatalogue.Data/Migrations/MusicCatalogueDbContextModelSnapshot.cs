@@ -10,8 +10,8 @@ using MusicCatalogue.Data;
 
 namespace MusicCatalogue.Data.Migrations
 {
-    [ExcludeFromCodeCoverage]
     [DbContext(typeof(MusicCatalogueDbContext))]
+    [ExcludeFromCodeCoverage]
     partial class MusicCatalogueDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -244,6 +244,9 @@ namespace MusicCatalogue.Data.Migrations
 
                     b.Property<string>("Address2")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("ArtistDirect")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Country")
                         .HasColumnType("TEXT");
