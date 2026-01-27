@@ -6,6 +6,7 @@ import {
   apiUpdateRetailer,
 } from "@/helpers/api/apiRetailers";
 import FormInputField from "../common/formInputField";
+import FormCheckBox from "../common/formCheckBox";
 import { geocodeAddress } from "@/helpers/geocoder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +20,7 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
  */
 const RetailerEditor = ({ retailer, navigate, logout }) => {
   const [name, setName] = useState(retailer.name);
+  const [artistDirect, setArtistDirect] = useState(retailer.artistDirect);
   const [address1, setAddress1] = useState(retailer.address1);
   const [address2, setAddress2] = useState(retailer.address2);
   const [town, setTown] = useState(retailer.town);
@@ -71,6 +73,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
         // Invalid ID, so create a new retailer
         updatedRetailer = await apiCreateRetailer(
           name,
+          artistDirect,
           address1,
           address2,
           town,
@@ -87,6 +90,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
         updatedRetailer = await apiUpdateRetailer(
           retailer.id,
           name,
+          artistDirect,
           address1,
           address2,
           town,
@@ -113,6 +117,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
       latitude,
       longitude,
       name,
+      artistDirect,
       address1,
       address2,
       town,
@@ -144,7 +149,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
               <></>
             )}
           </div>
-          <div className="row align-items-start">
+          <div className="row align-items-center">
             <div className="col">
               <FormInputField
                 label="Name"
@@ -153,7 +158,16 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
                 setValue={setName}
               />
             </div>
+            <div className="col">
+              <FormCheckBox
+                label="Direct From Artist"
+                name="artistDirect"
+                value={artistDirect}
+                setValue={setArtistDirect}
+              />
+            </div>
           </div>
+
           <div className="row align-items-start">
             <div className="col">
               <FormInputField

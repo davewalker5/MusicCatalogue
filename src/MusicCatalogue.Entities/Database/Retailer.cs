@@ -14,5 +14,6 @@ namespace MusicCatalogue.Entities.Database
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set;}
         public string? WebSite { get; set; }
+        public bool ArtistDirect { get; set; } = false;
     }
 }

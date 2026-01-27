@@ -41,6 +41,16 @@ const RetailerRow = ({
           })
         }
       >
+        {retailer.artistDirect ? "Yes" : "No"}
+      </td>
+      <td
+        onClick={() =>
+          navigate({
+            page: pages.retailerDetails,
+            retailer: retailer,
+          })
+        }
+      >
         {retailer.town}
       </td>
       <td

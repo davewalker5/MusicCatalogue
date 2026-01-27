@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
-    public class JobStatus
+    public class JobStatus : MusicCatalogueEntityBase
     {
         [Key]
         public long Id { get; set; }

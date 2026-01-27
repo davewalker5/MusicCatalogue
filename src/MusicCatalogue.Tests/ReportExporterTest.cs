@@ -1,5 +1,5 @@
 ﻿using MusicCatalogue.Entities.Reporting;
-using MusicCatalogue.Logic.DataExchange.Generic;
+using MusicCatalogue.BusinessLogic.DataExchange.Generic;
 
 namespace MusicCatalogue.Tests
 {

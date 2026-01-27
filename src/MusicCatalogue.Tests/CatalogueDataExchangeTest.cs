@@ -1,7 +1,7 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Logic.Database;
-using MusicCatalogue.Logic.Factory;
+using MusicCatalogue.BusinessLogic.Database;
+using MusicCatalogue.BusinessLogic.Factory;
 
 namespace MusicCatalogue.Tests
 {

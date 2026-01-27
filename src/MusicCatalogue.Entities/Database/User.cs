@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
-    public class User
+    public class User : MusicCatalogueEntityBase
     {
         [Key]
         public int Id { get; set; }

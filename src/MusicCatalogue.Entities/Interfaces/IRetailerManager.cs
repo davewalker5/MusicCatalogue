@@ -15,7 +15,8 @@ namespace MusicCatalogue.Entities.Interfaces
             string? country = null,
             decimal? latitude = null,
             decimal? longitude = null,
-            string? website = null);
+            string? website = null,
+            bool artistDirect = false);
 
         Task<Retailer> GetAsync(Expression<Func<Retailer, bool>> predicate);
         Task<List<Retailer>> ListAsync(Expression<Func<Retailer, bool>> predicate);
@@ -30,7 +31,8 @@ namespace MusicCatalogue.Entities.Interfaces
             string? country = null,
             decimal? latitude = null,
             decimal? longitude = null,
-            string? website = null);
+            string? website = null,
+            bool artistDirect = false);
 
         Task DeleteAsync(int retailerId);
     }

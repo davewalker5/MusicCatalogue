@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 
 namespace MusicCatalogue.Entities.Database
 {
     [ExcludeFromCodeCoverage]
-    public abstract class TrackBase
+    public abstract class TrackBase : MusicCatalogueEntityBase
     {
         protected const string DateTimeFormat = "dd/MM/yyyy";
 

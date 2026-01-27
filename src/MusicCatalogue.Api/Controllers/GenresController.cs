@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 using MusicCatalogue.Entities.Search;
 
 namespace MusicCatalogue.Api.Controllers
@@ -14,10 +15,12 @@ namespace MusicCatalogue.Api.Controllers
     public class GenresController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
+        private readonly IMusicLogger _logger;
 
-        public GenresController(IMusicCatalogueFactory factory)
+        public GenresController(IMusicCatalogueFactory factory, IMusicLogger logger)
         {
             _factory = factory;
+            _logger = logger;
         }
 
         /// <summary>
@@ -32,12 +35,15 @@ namespace MusicCatalogue.Api.Controllers
             // to an increasing number of query string parameters and a very messy URL. So the filter criteria
             // are POSTed in the request body, instead, and bound into a strongly typed criteria object
 
+            _logger.LogMessage(Severity.Debug, $"Retrieving genres matching criteria {criteria}");
+
             // Retrieve a list of matching genres
             var genres = await _factory.Search.GenreSearchAsync(criteria);
 
             // If there are no genres, return a no content response
             if (genres == null)
             {
+                _logger.LogMessage(Severity.Error, $"No matching genres found");
                 return NoContent();
             }
 
@@ -53,13 +59,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Genre>> GetGenreByIdAsync(int id)
         {
+            _logger.LogMessage(Severity.Debug, $"Retrieving genre with ID {id}");
+
             var genre = await _factory.Genres.GetAsync(x => x.Id == id);
 
             if (genre == null)
             {
+                _logger.LogMessage(Severity.Error, $"Genre with ID {id} not found");
                 return NotFound();
             }
 
+            _logger.LogMessage(Severity.Debug, $"Retrieved genre {genre}");
             return genre;
         }
 
@@ -72,6 +82,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Genre>> AddGenreAsync([FromBody] Genre template)
         {
+            _logger.LogMessage(Severity.Debug, $"Adding genre {template}");
             var genre = await _factory.Genres.AddAsync(template.Name, true);
             return genre;
         }
@@ -83,8 +94,9 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("")]
-        public async Task<ActionResult<Genre?>> UpdateRetailerAsync([FromBody] Genre template)
+        public async Task<ActionResult<Genre?>> UpdateGenreAsync([FromBody] Genre template)
         {
+            _logger.LogMessage(Severity.Debug, $"Updating genre {template}");
             var genre = await _factory.Genres.UpdateAsync(template.Id, template.Name);
             return genre;
         }
@@ -98,12 +110,15 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteGenreAsync(int id)
         {
+            _logger.LogMessage(Severity.Debug, $"Deleting genre with ID {id}");
+
             // Make sure the genre exists
             var genre = await _factory.Genres.GetAsync(x => x.Id == id);
 
             // If the genre doesn't exist, return a 404
             if (genre == null)
             {
+                _logger.LogMessage(Severity.Error, $"Genre with ID {id} not found");
                 return NotFound();
             }
 
@@ -115,6 +130,7 @@ namespace MusicCatalogue.Api.Controllers
             catch (GenreInUseException)
             {
                 // Genre is in use so this is a bad request
+                _logger.LogMessage(Severity.Error, $"Genre with ID {id} has albums associated with it and cannot be deleted");
                 return BadRequest();
             }
 

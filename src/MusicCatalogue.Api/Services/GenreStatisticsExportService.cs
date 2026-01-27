@@ -4,7 +4,7 @@ using MusicCatalogue.Api.Interfaces;
 using MusicCatalogue.Entities.Config;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Reporting;
-using MusicCatalogue.Logic.DataExchange.Generic;
+using MusicCatalogue.BusinessLogic.DataExchange.Generic;
 
 namespace MusicCatalogue.Api.Services
 {

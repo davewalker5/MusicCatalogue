@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 
 namespace MusicCatalogue.Api.Controllers
 {
@@ -13,10 +14,12 @@ namespace MusicCatalogue.Api.Controllers
     public class ManufacturersController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
+        private readonly IMusicLogger _logger;
 
-        public ManufacturersController(IMusicCatalogueFactory factory)
+        public ManufacturersController(IMusicCatalogueFactory factory, IMusicLogger logger)
         {
             _factory = factory;
+            _logger = logger;
         }
 
         /// <summary>
@@ -27,6 +30,8 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<List<Manufacturer>>> GetManufacturersAsync()
         {
+            _logger.LogMessage(Severity.Debug, $"Retrieving list of manufacturers");
+
             var manufacturers = await _factory.Manufacturers.ListAsync(x => true);
 
             if (manufacturers == null)
@@ -46,13 +51,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Manufacturer>> GetManufacturerByIdAsync(int id)
         {
+            _logger.LogMessage(Severity.Debug, $"Retrieving manufacturer with ID {id}");
+
             var manufacturer = await _factory.Manufacturers.GetAsync(x => x.Id == id);
 
             if (manufacturer == null)
             {
+                _logger.LogMessage(Severity.Error, $"Manufacturer with ID {id} not found");
                 return NotFound();
             }
 
+            _logger.LogMessage(Severity.Debug, $"Retrieved manufacturer {manufacturer}");
             return manufacturer;
         }
 
@@ -65,6 +74,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Manufacturer>> AddManufacturerAsync([FromBody] Manufacturer template)
         {
+            _logger.LogMessage(Severity.Debug, $"Adding manufacturer {template}");
             var manufacturer = await _factory.Manufacturers.AddAsync(template.Name);
             return manufacturer;
         }
@@ -78,6 +88,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Manufacturer?>> UpdateManufacturerAsync([FromBody] Manufacturer template)
         {
+            _logger.LogMessage(Severity.Debug, $"Updating manufacturer {template}");
             var manufacturer = await _factory.Manufacturers.UpdateAsync(template.Id, template.Name);
             return manufacturer;
         }
@@ -91,10 +102,13 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteManufacturer(int id)
         {
+            _logger.LogMessage(Severity.Debug, $"Deleting manufacturer with ID {id}");
+
             // Check the manufacturer exists, first
             var manufacturer = await _factory.Manufacturers.GetAsync(x => x.Id == id);
             if (manufacturer == null)
             {
+                _logger.LogMessage(Severity.Error, $"Manufacturer with ID {id} not found");
                 return NotFound();
             }
 
@@ -106,6 +120,7 @@ namespace MusicCatalogue.Api.Controllers
             catch (ManufacturerInUseException)
             {
                 // Manufacturer is in use (have equipment associated with them) so this is a bad request
+                _logger.LogMessage(Severity.Error, $"Manufacturer with ID {id} has equipment associated with it and cannot be deleted");
                 return BadRequest();
             }
 
