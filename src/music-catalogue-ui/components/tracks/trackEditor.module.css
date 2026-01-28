@@ -1,0 +1,25 @@
+.trackEditorFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trackEditorForm {
+  width: 80%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.trackEditorButton {
+  margin-left: 10px;
+  float: right;
+}
+
+.trackEditorError {
+  font-weight: bold;
+  color: red;
+}
+
+.trackEditorGeocode {
+  margin-left: 10px;
+}

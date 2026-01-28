@@ -1,0 +1,9 @@
+.trackListAddButton {
+  float: right;
+}
+
+.trackListError {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}

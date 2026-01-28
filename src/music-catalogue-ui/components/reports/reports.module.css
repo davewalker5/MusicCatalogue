@@ -1,0 +1,50 @@
+.reportFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reportForm {
+  width: 100vw;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.reportFormLabel {
+  margin-right: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.reportForm * input {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.reportForm * button {
+  margin-left: 40px;
+  margin-right: 20px;
+}
+
+.reportExportMessage {
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 2px solid #007316;
+  background: #6bdb81;
+  color: #007316;
+  text-align: center;
+}
+
+.reportExportError {
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 2px solid red;
+  background: pink;
+  color: red;
+  text-align: center;
+}
+
+.reportGenreSelector {
+  width: 200px;
+}

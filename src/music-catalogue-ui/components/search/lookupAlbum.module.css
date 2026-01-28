@@ -1,0 +1,30 @@
+.lookupFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lookupForm {
+  width: 420px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.lookupFormLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.lookupError {
+  font-weight: bold;
+  color: red;
+}
+
+.lookupButton {
+  float: right;
+}
+
+.lookupCatalogueSelector {
+  width: 300px;
+}

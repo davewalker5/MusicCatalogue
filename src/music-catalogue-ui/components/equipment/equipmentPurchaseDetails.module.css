@@ -1,0 +1,27 @@
+.purchaseDetailsFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.purchaseDetailsForm {
+  width: 420px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.purchaseDetailsFormLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.purchaseDetailsButton {
+  margin-left: 10px;
+  float: right;
+}
+
+.purchaseDetailsError {
+  font-weight: bold;
+  color: red;
+}
