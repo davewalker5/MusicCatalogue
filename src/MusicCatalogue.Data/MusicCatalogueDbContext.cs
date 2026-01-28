@@ -11,6 +11,7 @@ namespace MusicCatalogue.Data
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Mood> Moods { get; set; }
         public virtual DbSet<Artist> Artists { get; set; }
+        public virtual DbSet<ArtistMood> ArtistMoods { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
         public virtual DbSet<EquipmentType> EquipmentTypes { get; set; }
@@ -151,6 +152,15 @@ namespace MusicCatalogue.Data
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
+            });
+
+            modelBuilder.Entity<ArtistMood>(entity =>
+            {
+                entity.ToTable("ARTIST_MOODS");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.HasOne(am => am.Mood).WithMany().HasForeignKey(am => am.MoodId);
+                entity.HasOne<Artist>().WithMany(a => a.Moods).HasForeignKey(am => am.ArtistId);
             });
         }
     }

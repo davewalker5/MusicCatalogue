@@ -13,6 +13,7 @@ namespace MusicCatalogue.Entities.Database
         public VocalPresence Vocals { get; set; } = VocalPresence.Unknown;
         public EnsembleType Ensemble { get; set; } = EnsembleType.Unknown;
 
-        public ICollection<Album>? Albums { get; set; }
+        public ICollection<Album> Albums { get; set; } = [];
+        public ICollection<ArtistMood> Moods { get; set; } = [];
     }
 }
