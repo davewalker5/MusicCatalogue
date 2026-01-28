@@ -5,6 +5,7 @@ import { useState, useCallback } from "react";
 import { apiCreateArtist, apiUpdateArtist } from "@/helpers/api/apiArtists";
 import VocalPresenceSelector from "./vocalPresenceSelector";
 import EnsembleTypeSelector from "./ensembleTypeSelector";
+import Slider from "../common/slider";
 
 /**
  * Component to render the artist editor
@@ -19,11 +20,17 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
   const initialName = artist != null ? artist.name : null;
   const initialVocalPresence = artist != null ? artist.vocals : null;
   const initialEnsembleType = artist != null ? artist.ensemble : null;
+  const initialEnergy = artist != null ? artist.energy : null;
+  const initialIntimacy = artist != null ? artist.intimacy : null;
+  const initialWarmth = artist != null ? artist.warmth : null;
 
   // Set up state
   const [name, setName] = useState(initialName);
   const [vocalPresence, setVocalPresence] = useState(initialVocalPresence);
   const [ensembleType, setEnsembleType] = useState(initialEnsembleType);
+  const [energy, setEnergy] = useState(initialEnergy);
+  const [intimacy, setIntimacy] = useState(initialIntimacy);
+  const [warmth, setWarmth] = useState(initialWarmth);
   const [error, setError] = useState("");
 
   const saveArtist = useCallback(
@@ -61,6 +68,9 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
       isWishList,
       logout,
       name,
+      energy,
+      intimacy,
+      warmth,
       vocalPresence,
       ensembleType,
       navigate]
@@ -90,6 +100,42 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
               value={name}
               setValue={setName}
             />
+          </div>
+          <div className="form-group mt-3">
+            <label className={styles.artistEditorFormLabel}>Energy</label>
+            <div>
+              <Slider
+                initialValue={energy}
+                minimum={0}
+                maximum={5}
+                step={1}
+                sliderChangedCallback={setEnergy}
+              />
+            </div>
+          </div>
+          <div className="form-group mt-3">
+            <label className={styles.artistEditorFormLabel}>Intimacy</label>
+            <div>
+              <Slider
+                initialValue={intimacy}
+                minimum={0}
+                maximum={5}
+                step={1}
+                sliderChangedCallback={setIntimacy}
+              />
+            </div>
+          </div>
+          <div className="form-group mt-3">
+            <label className={styles.artistEditorFormLabel}>Warmth</label>
+            <div>
+              <Slider
+                initialValue={warmth}
+                minimum={0}
+                maximum={5}
+                step={1}
+                sliderChangedCallback={setWarmth}
+              />
+            </div>
           </div>
           <div className="form-group mt-3">
             <label className={styles.artistEditorFormLabel}>Vocal Presence</label>
