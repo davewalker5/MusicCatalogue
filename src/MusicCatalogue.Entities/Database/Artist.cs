@@ -13,10 +13,10 @@ namespace MusicCatalogue.Entities.Database
         public int Energy { get; set; } = 0;
         public int Intimacy { get; set; } = 0;
         public int Warmth { get; set; } = 0;
-
         public VocalPresence Vocals { get; set; } = VocalPresence.Unknown;
         public EnsembleType Ensemble { get; set; } = EnsembleType.Unknown;
 
         public ICollection<Album>? Albums { get; set; }
+        public Vibe? Vibe { get; set; }
     }
 }

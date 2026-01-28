@@ -38,6 +38,7 @@ namespace MusicCatalogue.BusinessLogic.Database
             // Load artists, albums and genres
             var artists = await Context.Artists
                                        .Where(predicate)
+                                       .Include(x => x.Vibe)
                                        .OrderBy(x => x.Name)
                                        .ToListAsync();
 

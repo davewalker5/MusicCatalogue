@@ -18,7 +18,13 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Catalogue
             "Wish List",
             "Purchase Date",
             "Price",
-            "Retailer"
+            "Retailer",
+            "Vibe",
+            "Energy",
+            "Intimacy",
+            "Warmth",
+            "Vocal Presence",
+            "Ensemble Type"
         };
 
         public event EventHandler<TrackDataExchangeEventArgs>? TrackExport;
@@ -77,7 +83,13 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Catalogue
                             IsWishlistItem = album.IsWishListItem,
                             Purchased = album.Purchased,
                             Price = album.Price,
-                            RetailerName = album.Retailer?.Name
+                            RetailerName = album.Retailer?.Name,
+                            Vibe = artist.Vibe?.Name ?? "",
+                            Energy = artist.Energy,
+                            Intimacy = artist.Intimacy,
+                            Warmth = artist.Warmth,
+                            Vocals = artist.Vocals,
+                            Ensemble = artist.Ensemble
                         };
 
                         // Call the method to add this track to the file

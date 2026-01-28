@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using MusicCatalogue.BusinessLogic.Database;
+using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
@@ -44,10 +46,26 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Catalogue
                         // Ignore the headers in the first line
                         if (count > 1)
                         {
-                            // Inflate the CSV record to a track and save the artist and genre
+                            // Inflate the CSV record to a track and create the "vibe" if needed
                             var track = FlattenedTrack.FromCsv(fields!);
-                            var artist = await _factory.Artists.AddAsync(track.ArtistName);
+                            var vibeName = string.IsNullOrEmpty(track.Vibe) ? null : StringCleaner.Clean(track.Vibe)!;
+                            int? vibeId = null;
+                            if (!string.IsNullOrEmpty(vibeName))
+                            {
+                                Vibe vibe = await _factory.Vibes.GetAsync(x => x.Name == vibeName) ?? await _factory.Vibes.AddAsync(vibeName);
+                                vibeId = vibe.Id;
+                            }
+
+                            // Create the genre and the artist
                             var genre = await _factory.Genres.AddAsync(track.Genre!, false);
+                            var artist = await _factory.Artists.AddAsync(
+                                track.ArtistName,
+                                vibeId,
+                                track.Energy,
+                                track.Intimacy,
+                                track.Warmth,
+                                track.Vocals,
+                                track.Ensemble);
 
                             // Add the retailer
                             int? retailerId = null;

@@ -20,9 +20,15 @@ namespace MusicCatalogue.Entities.DataExchange
         private const int PurchasedField = 9;
         private const int PriceField = 10;
         private const int RetailerField = 11;
-        private const int NumberOfFields = 12;
+        private const int VibeField = 12;
+        private const int EnergyField = 13;
+        private const int IntimacyField = 14;
+        private const int WarmthField = 15;
+        private const int VocalsField = 16;
+        private const int EnsembleField = 17;
+        private const int NumberOfFields = 18;
 
-        public string ArtistName{ get; set; } = "";
+        public string ArtistName { get; set; } = "";
         public string AlbumTitle { get; set; } = "";
         public string? Genre { get; set; } = "";
         public int? Released { get; set; }
@@ -30,9 +36,15 @@ namespace MusicCatalogue.Entities.DataExchange
         public int? TrackNumber { get; set; }
         public string Title { get; set; } = "";
         public bool? IsWishlistItem { get; set;  }
-
         public decimal? Price { get; set; }
         public string? RetailerName { get; set; } = "";
+        public string? Vibe { get; set; } = "";
+        public int Energy { get; set; } = 0;
+        public int Intimacy { get; set; } = 0;
+        public int Warmth { get; set; } = 0;
+        public VocalPresence Vocals { get; set; } = VocalPresence.Unknown;
+        public EnsembleType Ensemble { get; set; } = EnsembleType.Unknown;
+        
 
         /// <summary>
         /// Create a representation of the flattened track in CSV format
@@ -57,6 +69,12 @@ namespace MusicCatalogue.Entities.DataExchange
             AppendField(builder, purchasedDateString);
             AppendField(builder, priceString);
             AppendField(builder, RetailerName ?? "");
+            AppendField(builder, Vibe ?? "");
+            AppendField(builder, Energy);
+            AppendField(builder, Intimacy);
+            AppendField(builder, Warmth);
+            AppendField(builder, Vocals);
+            AppendField(builder, Ensemble);
 
             return builder.ToString();
         }
@@ -106,7 +124,13 @@ namespace MusicCatalogue.Entities.DataExchange
                 IsWishlistItem = bool.Parse(fields[WishlistItemField]),
                 Purchased = purchasedDate,
                 Price = price,
-                RetailerName = fields[RetailerField]
+                RetailerName = fields[RetailerField],
+                Vibe = fields[VibeField],
+                Energy = int.Parse(fields[EnergyField]),
+                Intimacy = int.Parse(fields[IntimacyField]),
+                Warmth = int.Parse(fields[WarmthField]),
+                Vocals = Enum.Parse<VocalPresence>(fields[VocalsField]),
+                Ensemble = Enum.Parse<EnsembleType>(fields[EnsembleField])
             };
         }
 
