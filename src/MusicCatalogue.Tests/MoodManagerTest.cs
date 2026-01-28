@@ -3,6 +3,7 @@ using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace MusicCatalogue.Tests
 {
@@ -80,16 +81,20 @@ namespace MusicCatalogue.Tests
             Assert.AreEqual(0, moods!.Count);
         }
 
-        // TODO
-        // [TestMethod]
-        // [ExpectedException(typeof(MoodInUseException))]
-        // public async Task CannotDeleteWithEquipmentTest()
-        // {
-        //     var context = _factory!.Context as MusicCatalogueDbContext;
-        //     var artist = new Artist { Name = "Julie London" };
-        //     await context!.Artists.AddAsync(artist);
-        //     await context!.SaveChangesAsync();
-        //     await _factory!.Moods.DeleteAsync(_moodId);
-        // }
+        [TestMethod]
+        [ExpectedException(typeof(MoodInUseException))]
+        public async Task CannotDeleteWithArtistsTest()
+        {
+            var context = _factory!.Context as MusicCatalogueDbContext;
+            var artist = new Artist { Name = "Julie London" };
+            await context!.Artists.AddAsync(artist);
+            await context!.SaveChangesAsync();
+
+            var mapping = new ArtistMood { ArtistId = artist.Id, MoodId = _moodId };
+            await context!.ArtistMoods.AddAsync(mapping);
+            await context!.SaveChangesAsync();
+
+            await _factory!.Moods.DeleteAsync(_moodId);
+        }
     }
 }

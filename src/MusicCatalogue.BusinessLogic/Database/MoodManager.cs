@@ -92,14 +92,13 @@ namespace MusicCatalogue.BusinessLogic.Database
             var mood = await GetAsync(x => x.Id == id);
             if (mood != null)
             {
-                // TODO
                 // If there are any artists associated with the mood, they can't be deleted
-                // var artistMoods = Context.ArtistMoods.Where(x => x.MoodId == id);
-                // if (artistMoods.Any())
-                // {
-                //     var message = $"Cannot delete mood '{mood.Name} with Id {id} with artists associated with it";
-                //     throw new MoodInUseException(message);
-                // }
+                var artistMoods = Context.ArtistMoods.Where(x => x.MoodId == id);
+                if (artistMoods.Any())
+                {
+                    var message = $"Cannot delete mood '{mood.Name} with Id {id} with artists associated with it";
+                    throw new MoodInUseException(message);
+                }
 
                 // Delete the mood record and save changes
                 Factory.Context.Remove(mood);
