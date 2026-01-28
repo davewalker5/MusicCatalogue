@@ -6,9 +6,6 @@ namespace MusicCatalogue.Entities.Database
     [ExcludeFromCodeCoverage]
     public class Artist : NamedEntity
     {
-
-        [ForeignKey("Vibe.Id")]
-        public int? VibeId { get; set; }
         public string? SearchableName { get; set; } = null;
         public int Energy { get; set; } = 0;
         public int Intimacy { get; set; } = 0;
@@ -17,6 +14,5 @@ namespace MusicCatalogue.Entities.Database
         public EnsembleType Ensemble { get; set; } = EnsembleType.Unknown;
 
         public ICollection<Album>? Albums { get; set; }
-        public Vibe? Vibe { get; set; }
     }
 }

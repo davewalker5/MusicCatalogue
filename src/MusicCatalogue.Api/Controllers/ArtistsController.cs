@@ -85,7 +85,6 @@ namespace MusicCatalogue.Api.Controllers
             // Add the artist
             var artist = await _factory.Artists.AddAsync(
                 template.Name,
-                template.VibeId,
                 template.Energy,
                 template.Intimacy,
                 template.Warmth,
@@ -111,7 +110,6 @@ namespace MusicCatalogue.Api.Controllers
             var artist = await _factory.Artists.UpdateAsync(
                 template.Id,
                 template.Name,
-                template.VibeId,
                 template.Energy,
                 template.Intimacy,
                 template.Warmth,

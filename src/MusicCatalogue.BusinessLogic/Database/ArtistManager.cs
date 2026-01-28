@@ -38,7 +38,6 @@ namespace MusicCatalogue.BusinessLogic.Database
             // Load artists, albums and genres
             var artists = await Context.Artists
                                        .Where(predicate)
-                                       .Include(x => x.Vibe)
                                        .OrderBy(x => x.Name)
                                        .ToListAsync();
 
@@ -56,7 +55,6 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// Add an artist, if they doesn't already exist
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="vibeId"></param>
         /// <param name="energy"></param>
         /// <param name="intimacy"></param>
         /// <param name="warmth"></param>
@@ -65,7 +63,6 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// <returns></returns>
         public async Task<Artist> AddAsync(
             string name,
-            int? vibeId = null,
             int energy = 0,
             int intimacy = 0,
             int warmth = 0,
@@ -83,7 +80,6 @@ namespace MusicCatalogue.BusinessLogic.Database
                 {
                     Name = clean,
                     SearchableName = clean != searchableName ? searchableName : null,
-                    VibeId = vibeId,
                     Energy = energy,
                     Intimacy = intimacy,
                     Warmth = warmth,
@@ -102,7 +98,6 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
-        /// <param name="vibeId"></param>
         /// <param name="energy"></param>
         /// <param name="intimacy"></param>
         /// <param name="warmth"></param>
@@ -112,7 +107,6 @@ namespace MusicCatalogue.BusinessLogic.Database
         public async Task<Artist?> UpdateAsync(
             int id,
             string name,
-            int? vibeId = null,
             int energy = 0,
             int intimacy = 0,
             int warmth = 0,
@@ -124,7 +118,6 @@ namespace MusicCatalogue.BusinessLogic.Database
             {
                 // Save the changes
                 artist.Name = StringCleaner.Clean(name)!;
-                artist.VibeId = vibeId;
                 artist.Energy = energy;
                 artist.Intimacy = intimacy;
                 artist.Warmth = warmth;

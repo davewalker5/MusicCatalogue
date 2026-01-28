@@ -11,8 +11,8 @@ using MusicCatalogue.Data;
 namespace MusicCatalogue.Data.Migrations
 {
     [DbContext(typeof(MusicCatalogueDbContext))]
-    [Migration("20260127201031_ArtistVibe")]
-    partial class ArtistVibe
+    [Migration("20260128114658_ArtistStyle")]
+    partial class ArtistStyle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,9 +98,6 @@ namespace MusicCatalogue.Data.Migrations
                     b.Property<string>("SearchableName")
                         .HasColumnType("TEXT")
                         .HasColumnName("SearchableName");
-
-                    b.Property<int?>("VibeId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Vocals")
                         .HasColumnType("INTEGER");
@@ -251,6 +248,23 @@ namespace MusicCatalogue.Data.Migrations
                     b.ToTable("MANUFACTURERS", (string)null);
                 });
 
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Mood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MOODS", (string)null);
+                });
+
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Retailer", b =>
                 {
                     b.Property<int>("Id")
@@ -352,23 +366,6 @@ namespace MusicCatalogue.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("USER", (string)null);
-                });
-
-            modelBuilder.Entity("MusicCatalogue.Entities.Database.Vibe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VIBES", (string)null);
                 });
 
             modelBuilder.Entity("MusicCatalogue.Entities.Reporting.AlbumByPurchaseDate", b =>

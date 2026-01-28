@@ -7,7 +7,6 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         Task<Artist> AddAsync(
             string name,
-            int? vibeId = null,
             int energy = 0,
             int intimacy = 0,
             int warmth = 0,
@@ -20,7 +19,6 @@ namespace MusicCatalogue.Entities.Interfaces
         Task<Artist?> UpdateAsync(
             int id,
             string name,
-            int? vibeId = null,
             int energy = 0,
             int intimacy = 0,
             int warmth = 0,

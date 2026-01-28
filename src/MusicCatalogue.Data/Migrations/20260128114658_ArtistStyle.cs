@@ -7,7 +7,7 @@ namespace MusicCatalogue.Data.Migrations
 {
     /// <inheritdoc />
     [ExcludeFromCodeCoverage]
-    public partial class ArtistVibe : Migration
+    public partial class ArtistStyle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,12 +34,6 @@ namespace MusicCatalogue.Data.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "VibeId",
-                table: "ARTISTS",
-                type: "INTEGER",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
                 name: "Vocals",
                 table: "ARTISTS",
                 type: "INTEGER",
@@ -54,7 +48,7 @@ namespace MusicCatalogue.Data.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "VIBES",
+                name: "MOODS",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -63,7 +57,7 @@ namespace MusicCatalogue.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VIBES", x => x.Id);
+                    table.PrimaryKey("PK_MOODS", x => x.Id);
                 });
         }
 
@@ -71,7 +65,7 @@ namespace MusicCatalogue.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "VIBES");
+                name: "MOODS");
 
             migrationBuilder.DropColumn(
                 name: "Energy",
@@ -83,10 +77,6 @@ namespace MusicCatalogue.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Intimacy",
-                table: "ARTISTS");
-
-            migrationBuilder.DropColumn(
-                name: "VibeId",
                 table: "ARTISTS");
 
             migrationBuilder.DropColumn(

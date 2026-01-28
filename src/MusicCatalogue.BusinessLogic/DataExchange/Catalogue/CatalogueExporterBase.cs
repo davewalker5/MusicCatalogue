@@ -84,7 +84,6 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Catalogue
                             Purchased = album.Purchased,
                             Price = album.Price,
                             RetailerName = album.Retailer?.Name,
-                            Vibe = artist.Vibe?.Name ?? "",
                             Energy = artist.Energy,
                             Intimacy = artist.Intimacy,
                             Warmth = artist.Warmth,

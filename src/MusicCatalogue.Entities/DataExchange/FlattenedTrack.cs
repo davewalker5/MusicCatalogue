@@ -20,13 +20,12 @@ namespace MusicCatalogue.Entities.DataExchange
         private const int PurchasedField = 9;
         private const int PriceField = 10;
         private const int RetailerField = 11;
-        private const int VibeField = 12;
-        private const int EnergyField = 13;
-        private const int IntimacyField = 14;
-        private const int WarmthField = 15;
-        private const int VocalsField = 16;
-        private const int EnsembleField = 17;
-        private const int NumberOfFields = 18;
+        private const int EnergyField = 12;
+        private const int IntimacyField = 13;
+        private const int WarmthField = 14;
+        private const int VocalsField = 15;
+        private const int EnsembleField = 16;
+        private const int NumberOfFields = 17;
 
         public string ArtistName { get; set; } = "";
         public string AlbumTitle { get; set; } = "";
@@ -38,7 +37,6 @@ namespace MusicCatalogue.Entities.DataExchange
         public bool? IsWishlistItem { get; set;  }
         public decimal? Price { get; set; }
         public string? RetailerName { get; set; } = "";
-        public string? Vibe { get; set; } = "";
         public int Energy { get; set; } = 0;
         public int Intimacy { get; set; } = 0;
         public int Warmth { get; set; } = 0;
@@ -69,7 +67,6 @@ namespace MusicCatalogue.Entities.DataExchange
             AppendField(builder, purchasedDateString);
             AppendField(builder, priceString);
             AppendField(builder, RetailerName ?? "");
-            AppendField(builder, Vibe ?? "");
             AppendField(builder, Energy);
             AppendField(builder, Intimacy);
             AppendField(builder, Warmth);
@@ -125,7 +122,6 @@ namespace MusicCatalogue.Entities.DataExchange
                 Purchased = purchasedDate,
                 Price = price,
                 RetailerName = fields[RetailerField],
-                Vibe = fields[VibeField],
                 Energy = int.Parse(fields[EnergyField]),
                 Intimacy = int.Parse(fields[IntimacyField]),
                 Warmth = int.Parse(fields[WarmthField]),

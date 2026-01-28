@@ -9,7 +9,7 @@ namespace MusicCatalogue.Data
     public class MusicCatalogueDbContext : DbContext
     {
         public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<Vibe> Vibes { get; set; }
+        public virtual DbSet<Mood> Moods { get; set; }
         public virtual DbSet<Artist> Artists { get; set; }
         public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
@@ -145,9 +145,9 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Error).HasColumnName("error");
             });
 
-            modelBuilder.Entity<Vibe>(entity =>
+            modelBuilder.Entity<Mood>(entity =>
             {
-                entity.ToTable("VIBES");
+                entity.ToTable("MOODS");
 
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("Name");
