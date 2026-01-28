@@ -13,6 +13,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
     public class MusicCatalogueFactory : IMusicCatalogueFactory
     {
         private readonly Lazy<IGenreManager> _genres;
+        private readonly Lazy<IVibeManager> _vibes;
         private readonly Lazy<IArtistManager> _artists;
         private readonly Lazy<IAlbumManager> _albums;
         private readonly Lazy<ITrackManager> _tracks;
@@ -37,6 +38,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
 
         public DbContext Context { get; private set; }
         public IGenreManager Genres { get { return _genres.Value; } }
+        public IVibeManager Vibes { get { return _vibes.Value; } }
         public IArtistManager Artists { get { return _artists.Value; } }
         public IAlbumManager Albums { get { return _albums.Value; } }
         public ITrackManager Tracks { get { return _tracks.Value; } }
@@ -75,6 +77,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
         {
             Context = context;
             _genres = new Lazy<IGenreManager>(() => new GenreManager(this));
+            _vibes = new Lazy<IVibeManager>(() => new VibeManager(this));
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(this));
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(this));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(this));
