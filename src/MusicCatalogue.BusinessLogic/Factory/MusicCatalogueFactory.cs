@@ -15,6 +15,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<IGenreManager> _genres;
         private readonly Lazy<IMoodManager> _moods;
         private readonly Lazy<IArtistManager> _artists;
+        private readonly Lazy<IArtistMoodManager> _artistMoods;
         private readonly Lazy<IAlbumManager> _albums;
         private readonly Lazy<ITrackManager> _tracks;
         private readonly Lazy<IManufacturerManager> _manufacturers;
@@ -40,6 +41,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
         public IGenreManager Genres { get { return _genres.Value; } }
         public IMoodManager Moods { get { return _moods.Value; } }
         public IArtistManager Artists { get { return _artists.Value; } }
+        public IArtistMoodManager ArtistMoods { get { return _artistMoods.Value; } }
         public IAlbumManager Albums { get { return _albums.Value; } }
         public ITrackManager Tracks { get { return _tracks.Value; } }
         public IManufacturerManager Manufacturers { get { return _manufacturers.Value; } }
@@ -79,6 +81,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _genres = new Lazy<IGenreManager>(() => new GenreManager(this));
             _moods = new Lazy<IMoodManager>(() => new MoodManager(this));
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(this));
+            _artistMoods = new Lazy<IArtistMoodManager>(() => new ArtistMoodManager(this));
             _albums = new Lazy<IAlbumManager>(() => new AlbumManager(this));
             _tracks = new Lazy<ITrackManager>(() => new TrackManager(this));
             _manufacturers = new Lazy<IManufacturerManager>(() => new ManufacturerManager(this));

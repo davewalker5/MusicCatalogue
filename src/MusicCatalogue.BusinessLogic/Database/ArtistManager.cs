@@ -44,9 +44,12 @@ namespace MusicCatalogue.BusinessLogic.Database
                                     .ToListAsync();
 
             // Load the albums for each artist
-            foreach (var artist in artists)
+            if (loadAlbums)
             {
-                artist.Albums = await Factory.Albums.ListAsync(x => x.ArtistId == artist.Id);
+                foreach (var artist in artists)
+                {
+                    artist.Albums = await Factory.Albums.ListAsync(x => x.ArtistId == artist.Id);
+                }
             }
 
             // Return the collection of artists
