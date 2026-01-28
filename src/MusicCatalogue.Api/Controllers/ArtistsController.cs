@@ -83,7 +83,14 @@ namespace MusicCatalogue.Api.Controllers
             _logger.LogMessage(Severity.Debug, $"Adding artist {template}");
 
             // Add the artist
-            var artist = await _factory.Artists.AddAsync(template.Name);
+            var artist = await _factory.Artists.AddAsync(
+                template.Name,
+                template.VibeId,
+                template.Energy,
+                template.Intimacy,
+                template.Warmth,
+                template.Vocals,
+                template.Ensemble);
 
             // Return the new artist
             return artist;
@@ -101,7 +108,15 @@ namespace MusicCatalogue.Api.Controllers
             _logger.LogMessage(Severity.Debug, $"Updating artist {template}");
 
             // Add the artist
-            var artist = await _factory.Artists.UpdateAsync(template.Id, template.Name);
+            var artist = await _factory.Artists.UpdateAsync(
+                template.Id,
+                template.Name,
+                template.VibeId,
+                template.Energy,
+                template.Intimacy,
+                template.Warmth,
+                template.Vocals,
+                template.Ensemble);
 
             // Return the new artist
             return artist;

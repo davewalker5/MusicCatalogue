@@ -55,8 +55,21 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// Add an artist, if they doesn't already exist
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="vibeId"></param>
+        /// <param name="energy"></param>
+        /// <param name="intimacy"></param>
+        /// <param name="warmth"></param>
+        /// <param name="vocals"></param>
+        /// <param name="ensemble"></param>
         /// <returns></returns>
-        public async Task<Artist> AddAsync(string name)
+        public async Task<Artist> AddAsync(
+            string name,
+            int? vibeId = null,
+            int energy = 0,
+            int intimacy = 0,
+            int warmth = 0,
+            VocalPresence vocals = VocalPresence.Unknown,
+            EnsembleType ensemble = EnsembleType.Unknown)
         {
             var clean = StringCleaner.Clean(name)!;
             var artist = await GetAsync(a => a.Name == clean, false);
@@ -69,6 +82,12 @@ namespace MusicCatalogue.BusinessLogic.Database
                 {
                     Name = clean,
                     SearchableName = clean != searchableName ? searchableName : null,
+                    VibeId = vibeId,
+                    Energy = energy,
+                    Intimacy = intimacy,
+                    Warmth = warmth,
+                    Vocals = vocals,
+                    Ensemble = ensemble
                 };
                 await Context.Artists.AddAsync(artist);
                 await Context.SaveChangesAsync();
@@ -82,14 +101,34 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
+        /// <param name="vibeId"></param>
+        /// <param name="energy"></param>
+        /// <param name="intimacy"></param>
+        /// <param name="warmth"></param>
+        /// <param name="vocals"></param>
+        /// <param name="ensemble"></param>
         /// <returns></returns>
-        public async Task<Artist?> UpdateAsync(int id, string name)
+        public async Task<Artist?> UpdateAsync(
+            int id,
+            string name,
+            int? vibeId = null,
+            int energy = 0,
+            int intimacy = 0,
+            int warmth = 0,
+            VocalPresence vocals = VocalPresence.Unknown,
+            EnsembleType ensemble = EnsembleType.Unknown)
         {
             var artist = Context.Artists.FirstOrDefault(x => x.Id == id);
             if (artist != null)
             {
                 // Save the changes
                 artist.Name = StringCleaner.Clean(name)!;
+                artist.VibeId = vibeId;
+                artist.Energy = energy;
+                artist.Intimacy = intimacy;
+                artist.Warmth = warmth;
+                artist.Vocals = vocals;
+                artist.Ensemble = ensemble;
                 await Context.SaveChangesAsync();
 
                 // Reload the artist to retrieve related entities
