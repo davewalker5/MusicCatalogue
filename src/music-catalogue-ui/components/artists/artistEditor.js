@@ -47,10 +47,10 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
         let updatedArtist = null;
         if (artist == null) {
           // Create the artist
-          updatedArtist = await apiCreateArtist(name, logout);
+          updatedArtist = await apiCreateArtist(name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
         } else {
           // Update the existing artist
-          updatedArtist = await apiUpdateArtist(artist.id, name, logout);
+          updatedArtist = await apiUpdateArtist(artist.id, name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
         }
 
         // Go back to the artist list, which should reflect the updated details
@@ -101,40 +101,48 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
               setValue={setName}
             />
           </div>
-          <div className="form-group mt-3">
-            <label className={styles.artistEditorFormLabel}>Energy</label>
-            <div>
-              <Slider
-                initialValue={energy}
-                minimum={0}
-                maximum={5}
-                step={1}
-                sliderChangedCallback={setEnergy}
-              />
+          <div className="row align-items-start">
+            <div class="col">
+              <div className="form-group mt-3">
+                <label className={styles.artistEditorFormLabel}>Energy</label>
+                <div>
+                  <Slider
+                    initialValue={energy}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    sliderChangedCallback={setEnergy}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="form-group mt-3">
-            <label className={styles.artistEditorFormLabel}>Intimacy</label>
-            <div>
-              <Slider
-                initialValue={intimacy}
-                minimum={0}
-                maximum={5}
-                step={1}
-                sliderChangedCallback={setIntimacy}
-              />
+            <div class="col">
+              <div className="form-group mt-3">
+                <label className={styles.artistEditorFormLabel}>Intimacy</label>
+                <div>
+                  <Slider
+                    initialValue={intimacy}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    sliderChangedCallback={setIntimacy}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="form-group mt-3">
-            <label className={styles.artistEditorFormLabel}>Warmth</label>
-            <div>
-              <Slider
-                initialValue={warmth}
-                minimum={0}
-                maximum={5}
-                step={1}
-                sliderChangedCallback={setWarmth}
-              />
+            <div class="col">
+              <div className="form-group mt-3">
+                <label className={styles.artistEditorFormLabel}>Warmth</label>
+                <div>
+                  <Slider
+                    initialValue={warmth}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    sliderChangedCallback={setWarmth}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="form-group mt-3">

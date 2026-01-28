@@ -5,13 +5,23 @@ import { apiGetHeaders, apiGetPostHeaders } from "./apiHeaders";
 /**
  * POST a request to the API to create a new artist
  * @param {*} name
+ * @param {*} energy
+ * @param {*} intimacy
+ * @param {*} warmth
+ * @param {*} vocalPresence
+ * @param {*} ensembleType
  * @param {*} logout
  * @returns
  */
-const apiCreateArtist = async (name, logout) => {
+const apiCreateArtist = async (name, energy, intimacy, warmth, vocalPresence, ensembleType, logout) => {
   // Construct the body
   const body = JSON.stringify({
     name: name,
+    energy: energy,
+    intimacy: intimacy,
+    warmth: warmth,
+    vocals: vocalPresence.id,
+    ensemble: ensembleType.id
   });
 
   // Call the API to create the artist
@@ -30,15 +40,27 @@ const apiCreateArtist = async (name, logout) => {
  * PUT a request to the API to update an existing artist
  * @param {*} artistId
  * @param {*} name
+ * @param {*} energy
+ * @param {*} intimacy
+ * @param {*} warmth
+ * @param {*} vocalPresence
+ * @param {*} ensembleType
  * @param {*} logout
  * @returns
  */
-const apiUpdateArtist = async (artistId, name, logout) => {
+const apiUpdateArtist = async (artistId, name, energy, intimacy, warmth, vocalPresence, ensembleType, logout) => {
   // Construct the body
   const body = JSON.stringify({
     id: artistId,
     name: name,
+    energy: energy,
+    intimacy: intimacy,
+    warmth: warmth,
+    vocals: vocalPresence.id,
+    ensemble: ensembleType.id
   });
+
+  console.log(JSON.stringify(body))
 
   // Call the API to update the artist
   const url = `${config.api.baseUrl}/artists`;
