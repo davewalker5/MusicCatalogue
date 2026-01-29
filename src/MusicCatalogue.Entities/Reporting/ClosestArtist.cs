@@ -6,12 +6,17 @@ namespace MusicCatalogue.Entities.Reporting
     [ExcludeFromCodeCoverage]
     public sealed class ClosestArtist
     {
-        public required Artist Artist { get; init; }
+        public required Artist Artist { get; set; }
         
         // Raw distance (Euclidean or squared)
-        public required double Distance { get; init; }
+        public double Distance { get; set; }
 
         // 0–100, higher = more similar
-        public required double Similarity { get; init; }
+        public double Similarity { get; set; }
+
+        // Internal similarity calculation results
+        public double NumericDistance { get; set; }
+        public double MoodDistance { get; set; }
+        public int SharedMoods { get; set; }
     }
 }

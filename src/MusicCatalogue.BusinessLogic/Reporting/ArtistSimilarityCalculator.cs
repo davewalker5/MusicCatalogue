@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using MusicCatalogue.BusinessLogic.Extensions;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Reporting;
@@ -68,43 +69,64 @@ namespace MusicCatalogue.BusinessLogic.Reporting
                 throw new InvalidOperationException(message);
             }
 
+            // Get the target artist moods
+            var targetMoodIds = GetMoodIds(target);
+
             // Compute raw distances between artists
-            var distances = list
+            var computed = list
                 .Where(a => !excludeTarget || a.Id != targetArtistId)
-                .Select(a => new
+                .Select(a =>
                 {
-                    Artist = a,
-                    Distance = WeightedEuclideanDistance(target, a, weights)
+                    var numeric = WeightedEuclideanDistance(target, a, weights);
+                    var moodIds = GetMoodIds(a);
+                    var (moodDist, shared) = JaccardDistanceAndSharedCount(targetMoodIds, moodIds);
+                    var combined = numeric + (weights.MoodWeight * moodDist);
+                    return new
+                    {
+                        Artist = a,
+                        NumericDistance = numeric,
+                        MoodDistance = moodDist,
+                        SharedMoods = shared,
+                        Distance = combined
+                    };
                 })
                 .ToList();
 
             // Find the maximum distance
-            var maxDistance = distances.Max(x => x.Distance);
+            var maxDistance = computed.Max(x => x.Distance);
 
-            // Unlikely edge case, but handle the case where all artists are identical
-            if (maxDistance == 0)
-            {
-                return [.. distances
-                    .Take(n)
-                    .Select(x => new ClosestArtist
-                    {
-                        Artist = x.Artist,
-                        Distance = 0,
-                        Similarity = 100
-                    })];
-            }
-
-            // Normalise the raw distances to a % similarity
-            return [.. distances
+            return computed
                 .Select(x => new ClosestArtist
                 {
                     Artist = x.Artist,
-                    Distance = x.Distance,
-                    Similarity = Math.Round((1.0 - (x.Distance / maxDistance)) * 100, 2)
+                    NumericDistance = x.NumericDistance,
+                    MoodDistance = x.MoodDistance,
+                    SharedMoods = x.SharedMoods,
+
+                    // Expose a combined Distance + Similarity for the caller, but they are NOT used for ordering. The
+                    // similarity is populated in the Let clause, below
+                    Distance = x.NumericDistance + (weights.MoodWeight * x.MoodDistance),
+                    Similarity = 0
                 })
-                .OrderByDescending(x => x.Similarity)
+                .OrderBy(x => x.NumericDistance)   // PRIMARY SORT: style profile
+                .ThenBy(x => x.MoodDistance)       // SECONDARY SORT: mood overlap
                 .ThenBy(x => x.Artist.Name)
-                .Take(n)];
+                .Take(n)
+                .Select((x, index) => x)
+                .ToList()
+                .Let(list =>
+                {
+                    var maxDistance = list.Max(x => x.Distance);
+
+                    foreach (var item in list)
+                    {
+                        item.Similarity = maxDistance == 0
+                            ? 100
+                            : Math.Round((1.0 - (item.Distance / maxDistance)) * 100, 2);
+                    }
+
+                    return list;
+                });
         }
 
         /// <summary>
@@ -127,5 +149,49 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             // to give the Euclidian distance
             return Math.Sqrt(dE * dE + dI * dI + dW * dW);
         }
+
+        /// <summary>
+        /// Jaccard similarity answers the question "How similar are two sets (of moods)?" by
+        /// calculating (number of shared items)/(number of unique items across both sets). The
+        /// value is 0 = identical sets, 1 = no overlap
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        private static (double Distance, int Shared) JaccardDistanceAndSharedCount(HashSet<int> a, HashSet<int> b)
+        {
+            // If both artists have no moods, treate them as identical
+            if (a.Count == 0 && b.Count == 0) return (0.0, 0);
+
+            // If one artist has moods and the other doesn't, treat them as maximum mismatch
+            if (a.Count == 0 || b.Count == 0) return (1.0, 0);
+
+            // Determine which is the smallest vs largest set
+            var smallest = a.Count <= b.Count ? a : b;
+            var largest = a.Count <= b.Count ? b : a;
+
+            // Iterate over the smallest set
+            int intersection = 0;
+            foreach (var x in smallest)
+            {
+                if (largest.Contains(x))
+                {
+                    intersection++;
+                }
+            }
+
+            // Compute the union size and convert to similarity
+            var union = a.Count + b.Count - intersection;
+            var similarity = intersection / (double)union;
+            return (1.0 - similarity, intersection);
+        }
+
+        /// <summary>
+        /// Get the mood IDs for a specified artist
+        /// </summary>
+        /// <param name="artist"></param>
+        /// <returns></returns>
+        private static HashSet<int> GetMoodIds(Artist artist)
+            => [.. artist.Moods.Select(am => am.MoodId)];
     }
 }
