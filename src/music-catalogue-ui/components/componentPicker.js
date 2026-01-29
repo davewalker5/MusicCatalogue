@@ -13,6 +13,7 @@ import GenreAlbumsReport from "./reports/genreAlbumsReport";
 import GenreList from "./genres/genreList";
 import GenreEditor from "./genres/genreEditor";
 import MoodList from "./moods/moodList";
+import MoodEditor from "./moods/moodEditor";
 import RetailerList from "./retailers/retailerList";
 import RetailerDetails from "./retailers/retailerDetails";
 import RetailerEditor from "./retailers/retailerEditor";
@@ -113,6 +114,14 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       return (
         <GenreEditor
           genre={context.genre}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.moodEditor:
+      return (
+        <MoodEditor
+          mood={context.mood}
           navigate={navigate}
           logout={logout}
         />

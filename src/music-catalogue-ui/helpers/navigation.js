@@ -31,6 +31,7 @@ const pages = {
   retailerStatisticsReport: "RetailerStatisticsReport",
   albumsByPurchaseDateReport: "AlbumsByPurchaseDateReport",
   moods: "Moods",
+  moodEditor: "MoodEditor",
 };
 
 export default pages;
