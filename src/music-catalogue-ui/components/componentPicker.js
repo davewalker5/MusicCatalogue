@@ -12,6 +12,7 @@ import MonthlySpendReport from "./reports/monthlySpendReport";
 import GenreAlbumsReport from "./reports/genreAlbumsReport";
 import GenreList from "./genres/genreList";
 import GenreEditor from "./genres/genreEditor";
+import MoodList from "./moods/moodList";
 import RetailerList from "./retailers/retailerList";
 import RetailerDetails from "./retailers/retailerDetails";
 import RetailerEditor from "./retailers/retailerEditor";
@@ -138,6 +139,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       );
     case pages.genres:
       return <GenreList navigate={navigate} logout={logout} />;
+    case pages.moods:
+      return <MoodList navigate={navigate} logout={logout} />;
     case pages.equipmentTypes:
       return <EquipmentTypeList navigate={navigate} logout={logout} />;
     case pages.equipmentTypeEditor:

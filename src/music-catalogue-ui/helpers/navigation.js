@@ -30,6 +30,7 @@ const pages = {
   monthlySpendReport: "MonthlySpendReport",
   retailerStatisticsReport: "RetailerStatisticsReport",
   albumsByPurchaseDateReport: "AlbumsByPurchaseDateReport",
+  moods: "Moods",
 };
 
 export default pages;

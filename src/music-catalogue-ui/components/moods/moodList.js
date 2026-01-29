@@ -1,32 +1,32 @@
-import styles from "./genreList.module.css";
+import styles from "./moodList.module.css";
 import pages from "@/helpers/navigation";
-import useGenres from "@/hooks/useGenres";
-import GenreRow from "./genreRow";
+import useMoods from "@/hooks/useMoods";
+import MoodRow from "./moodRow";
 import { useState } from "react";
 
 /**
- * Component to render a table listing all the genres in the catalogue
+ * Component to render a table listing all the moods in the catalogue
  * @param {*} navigate
  * @param {*} logout
  * @returns
  */
-const GenreList = ({ navigate, logout }) => {
-  const { genres, setGenres } = useGenres(false, logout);
+const MoodList = ({ navigate, logout }) => {
+  const { moods, setMoods } = useMoods(logout);
   const [error, setError] = useState("");
 
-  // Callback to pass to child components to set the list of genres
-  const setGenresCallback = (genres) => {
-    setGenres(genres);
+  // Callback to pass to child components to set the list of moods
+  const setMoodsCallback = (moods) => {
+    setMoods(moods);
   };
 
   return (
     <>
       <div className="row mb-2 pageTitle">
-        <h5 className="themeFontColor text-center">Genres</h5>
+        <h5 className="themeFontColor text-center">Moods</h5>
       </div>
       <div className="row">
         {error != "" ? (
-          <div className={styles.genreListError}>{error}</div>
+          <div className={styles.moodListError}>{error}</div>
         ) : (
           <></>
         )}
@@ -37,28 +37,28 @@ const GenreList = ({ navigate, logout }) => {
             <th>Name</th>
           </tr>
         </thead>
-        {genres != null && (
+        {moods != null && (
           <tbody>
-            {genres.map((g) => (
-              <GenreRow
-                key={g.id}
-                genre={g}
+            {moods.map((m) => (
+              <MoodRow
+                key={m.id}
+                mood={m}
                 navigate={navigate}
                 logout={logout}
-                setGenres={setGenresCallback}
+                setMoods={setMoodsCallback}
                 setError={setError}
               />
             ))}
           </tbody>
         )}
       </table>
-      <div className={styles.genreListAddButton}>
+      <div className={styles.moodListAddButton}>
         <button
           className="btn btn-primary"
           onClick={() =>
             navigate({
-              page: pages.genreEditor,
-              genre: null,
+              page: pages.moodEditor,
+              mood: null,
             })
           }
         >
@@ -69,4 +69,4 @@ const GenreList = ({ navigate, logout }) => {
   );
 };
 
-export default GenreList;
+export default MoodList;

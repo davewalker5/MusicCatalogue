@@ -108,7 +108,12 @@ const MenuBar = ({ navigate, logout }) => {
             <a onClick={() => navigate({ page: pages.artists, filter: "A" })}>
               Artists
             </a>
-            <a onClick={() => navigate({ page: pages.genres })}>Genres</a>
+            <a onClick={() => navigate({ page: pages.genres })}>
+              Genres
+            </a>
+            <a onClick={() => navigate({ page: pages.moods })}>
+              Moods
+            </a>
             <a
               onClick={() =>
                 navigate({
@@ -120,7 +125,9 @@ const MenuBar = ({ navigate, logout }) => {
             >
               Wish List
             </a>
-            <a onClick={() => navigate({ page: pages.retailers })}>Retailers</a>
+            <a onClick={() => navigate({ page: pages.retailers })}>
+              Retailers
+            </a>
           </div>
         </div>
       </div>
