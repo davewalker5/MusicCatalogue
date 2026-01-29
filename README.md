@@ -18,6 +18,7 @@
 - It supports the following functions:
 
   - Music catalogue collection browser (artists, albums and tracks)
+  - Artist style and mood tagging
   - A "wish list" of albums with the ability to move albums between the main catalogue and the wish list at will
   - Album search
   - External API integration for looking up new albums

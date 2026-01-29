@@ -37,14 +37,19 @@ namespace MusicCatalogue.BusinessLogic.Database
         {
             // Load artists, albums and genres
             var artists = await Context.Artists
-                                       .Where(predicate)
-                                       .OrderBy(x => x.Name)
-                                       .ToListAsync();
+                                    .Where(predicate)
+                                    .Include(x => x.Moods)
+                                        .ThenInclude(m => m.Mood)
+                                    .OrderBy(x => x.Name)
+                                    .ToListAsync();
 
             // Load the albums for each artist
-            foreach (var artist in artists)
+            if (loadAlbums)
             {
-                artist.Albums = await Factory.Albums.ListAsync(x => x.ArtistId == artist.Id);
+                foreach (var artist in artists)
+                {
+                    artist.Albums = await Factory.Albums.ListAsync(x => x.ArtistId == artist.Id);
+                }
             }
 
             // Return the collection of artists
@@ -55,8 +60,19 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// Add an artist, if they doesn't already exist
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="energy"></param>
+        /// <param name="intimacy"></param>
+        /// <param name="warmth"></param>
+        /// <param name="vocals"></param>
+        /// <param name="ensemble"></param>
         /// <returns></returns>
-        public async Task<Artist> AddAsync(string name)
+        public async Task<Artist> AddAsync(
+            string name,
+            int energy = 0,
+            int intimacy = 0,
+            int warmth = 0,
+            VocalPresence vocals = VocalPresence.Unknown,
+            EnsembleType ensemble = EnsembleType.Unknown)
         {
             var clean = StringCleaner.Clean(name)!;
             var artist = await GetAsync(a => a.Name == clean, false);
@@ -69,6 +85,11 @@ namespace MusicCatalogue.BusinessLogic.Database
                 {
                     Name = clean,
                     SearchableName = clean != searchableName ? searchableName : null,
+                    Energy = energy,
+                    Intimacy = intimacy,
+                    Warmth = warmth,
+                    Vocals = vocals,
+                    Ensemble = ensemble
                 };
                 await Context.Artists.AddAsync(artist);
                 await Context.SaveChangesAsync();
@@ -82,14 +103,31 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
+        /// <param name="energy"></param>
+        /// <param name="intimacy"></param>
+        /// <param name="warmth"></param>
+        /// <param name="vocals"></param>
+        /// <param name="ensemble"></param>
         /// <returns></returns>
-        public async Task<Artist?> UpdateAsync(int id, string name)
+        public async Task<Artist?> UpdateAsync(
+            int id,
+            string name,
+            int energy = 0,
+            int intimacy = 0,
+            int warmth = 0,
+            VocalPresence vocals = VocalPresence.Unknown,
+            EnsembleType ensemble = EnsembleType.Unknown)
         {
             var artist = Context.Artists.FirstOrDefault(x => x.Id == id);
             if (artist != null)
             {
                 // Save the changes
                 artist.Name = StringCleaner.Clean(name)!;
+                artist.Energy = energy;
+                artist.Intimacy = intimacy;
+                artist.Warmth = warmth;
+                artist.Vocals = vocals;
+                artist.Ensemble = ensemble;
                 await Context.SaveChangesAsync();
 
                 // Reload the artist to retrieve related entities

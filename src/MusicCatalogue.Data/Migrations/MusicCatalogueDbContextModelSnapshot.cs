@@ -80,6 +80,15 @@ namespace MusicCatalogue.Data.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Id");
 
+                    b.Property<int>("Energy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Ensemble")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Intimacy")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -89,9 +98,37 @@ namespace MusicCatalogue.Data.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("SearchableName");
 
+                    b.Property<int>("Vocals")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Warmth")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("ARTISTS", (string)null);
+                });
+
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.ArtistMood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Id");
+
+                    b.Property<int>("ArtistId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MoodId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArtistId");
+
+                    b.HasIndex("MoodId");
+
+                    b.ToTable("ARTIST_MOODS", (string)null);
                 });
 
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Equipment", b =>
@@ -230,6 +267,23 @@ namespace MusicCatalogue.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MANUFACTURERS", (string)null);
+                });
+
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.Mood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MOODS", (string)null);
                 });
 
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Retailer", b =>
@@ -508,6 +562,23 @@ namespace MusicCatalogue.Data.Migrations
                     b.Navigation("Retailer");
                 });
 
+            modelBuilder.Entity("MusicCatalogue.Entities.Database.ArtistMood", b =>
+                {
+                    b.HasOne("MusicCatalogue.Entities.Database.Artist", null)
+                        .WithMany("Moods")
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MusicCatalogue.Entities.Database.Mood", "Mood")
+                        .WithMany()
+                        .HasForeignKey("MoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mood");
+                });
+
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Equipment", b =>
                 {
                     b.HasOne("MusicCatalogue.Entities.Database.EquipmentType", "EquipmentType")
@@ -550,6 +621,8 @@ namespace MusicCatalogue.Data.Migrations
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Artist", b =>
                 {
                     b.Navigation("Albums");
+
+                    b.Navigation("Moods");
                 });
 #pragma warning restore 612, 618
         }

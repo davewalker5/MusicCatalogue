@@ -23,7 +23,7 @@ namespace MusicCatalogue.Api.Controllers
         }
 
         /// <summary>
-        /// Return a list of all the manufacturers in the catalogue matching the filter criteria in the request body
+        /// Return a list of all the manufacturers in the catalogue
         /// </summary>
         /// <returns></returns>
         [HttpGet]

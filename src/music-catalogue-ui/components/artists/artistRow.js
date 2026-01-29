@@ -1,6 +1,6 @@
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faMasksTheater, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteArtistActionIcon from "./deleteArtistActionIcon";
 
 /**
@@ -13,6 +13,8 @@ import DeleteArtistActionIcon from "./deleteArtistActionIcon";
  * @param {*} logout
  * @param {*} setArtists
  * @param {*} setError
+ * @param {*} vocalPresences
+ * @param {*} ensembleTypes
  * @returns
  */
 const ArtistRow = ({
@@ -24,7 +26,13 @@ const ArtistRow = ({
   logout,
   setArtists,
   setError,
+  vocalPresences,
+  ensembleTypes
 }) => {
+  const vocalPresence = vocalPresences.find(v => v.id === artist.vocals)?.name;
+  const ensembleType = ensembleTypes.find(v => v.id === artist.ensemble)?.name;
+  const moods = artist.moods.map(m => m.mood.name).sort().join(", ");
+
   return (
     <tr>
       <td
@@ -37,6 +45,69 @@ const ArtistRow = ({
         }
       >
         {artist.name}
+      </td>
+      <td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
+        {artist.energy}
+      </td><td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
+        {artist.intimacy}
+      </td><td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
+        {artist.warmth}
+      </td>
+      <td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
+        {vocalPresence}
+      </td>
+      <td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
+        {ensembleType}
+      </td><td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
+        {moods}
       </td>
       <td>
         <DeleteArtistActionIcon
@@ -56,6 +127,19 @@ const ArtistRow = ({
             navigate({
               filter: filter,
               page: pages.artistEditor,
+              artist: artist,
+              isWishList: isWishList,
+            })
+          }
+        />
+      </td>
+      <td>
+        <FontAwesomeIcon
+          icon={faMasksTheater}
+          onClick={() =>
+            navigate({
+              filter: filter,
+              page: pages.artistMoodEditor,
               artist: artist,
               isWishList: isWishList,
             })

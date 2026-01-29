@@ -3,19 +3,34 @@ import pages from "@/helpers/navigation";
 import FormInputField from "../common/formInputField";
 import { useState, useCallback } from "react";
 import { apiCreateArtist, apiUpdateArtist } from "@/helpers/api/apiArtists";
+import VocalPresenceSelector from "./vocalPresenceSelector";
+import EnsembleTypeSelector from "./ensembleTypeSelector";
+import Slider from "../common/slider";
 
 /**
  * Component to render the artist editor
  * @param {*} filter
  * @param {*} artist
  * @param {*} isWishList
- * @param {*} navoigate
+ * @param {*} navigate
  * @param {*} logout
  */
 const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
-  // Set up state
+  // Get initial values for artist properties
   const initialName = artist != null ? artist.name : null;
+  const initialVocalPresence = artist != null ? artist.vocals : null;
+  const initialEnsembleType = artist != null ? artist.ensemble : null;
+  const initialEnergy = artist != null ? artist.energy : null;
+  const initialIntimacy = artist != null ? artist.intimacy : null;
+  const initialWarmth = artist != null ? artist.warmth : null;
+
+  // Set up state
   const [name, setName] = useState(initialName);
+  const [vocalPresence, setVocalPresence] = useState(initialVocalPresence);
+  const [ensembleType, setEnsembleType] = useState(initialEnsembleType);
+  const [energy, setEnergy] = useState(initialEnergy);
+  const [intimacy, setIntimacy] = useState(initialIntimacy);
+  const [warmth, setWarmth] = useState(initialWarmth);
   const [error, setError] = useState("");
 
   const saveArtist = useCallback(
@@ -32,10 +47,10 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
         let updatedArtist = null;
         if (artist == null) {
           // Create the artist
-          updatedArtist = await apiCreateArtist(name, logout);
+          updatedArtist = await apiCreateArtist(name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
         } else {
           // Update the existing artist
-          updatedArtist = await apiUpdateArtist(artist.id, name, logout);
+          updatedArtist = await apiUpdateArtist(artist.id, name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
         }
 
         // Go back to the artist list, which should reflect the updated details
@@ -48,7 +63,17 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
         setError(`Error saving the updated artist details: ${ex.message}`);
       }
     },
-    [filter, artist, isWishList, logout, name, navigate]
+    [filter,
+      artist,
+      isWishList,
+      logout,
+      name,
+      energy,
+      intimacy,
+      warmth,
+      vocalPresence,
+      ensembleType,
+      navigate]
   );
 
   // Set the page title
@@ -75,6 +100,70 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
               value={name}
               setValue={setName}
             />
+          </div>
+          <div className="row align-items-start">
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.artistEditorFormLabel}>Energy</label>
+                <div>
+                  <Slider
+                    initialValue={energy}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    sliderChangedCallback={setEnergy}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.artistEditorFormLabel}>Intimacy</label>
+                <div>
+                  <Slider
+                    initialValue={intimacy}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    sliderChangedCallback={setIntimacy}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.artistEditorFormLabel}>Warmth</label>
+                <div>
+                  <Slider
+                    initialValue={warmth}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    sliderChangedCallback={setWarmth}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="form-group mt-3">
+            <label className={styles.artistEditorFormLabel}>Vocal Presence</label>
+            <div>
+              <VocalPresenceSelector
+                initialVocalPresence={vocalPresence}
+                vocalPresenceChangedCallback={setVocalPresence}
+                logout={logout}
+              />
+            </div>
+          </div>
+          <div className="form-group mt-3">
+            <label className={styles.artistEditorFormLabel}>Ensemble Type</label>
+            <div>
+              <EnsembleTypeSelector
+                initialEnsembleType={ensembleType}
+                ensembleTypeChangedCallback={setEnsembleType}
+                logout={logout}
+              />
+            </div>
           </div>
           <div className="d-grid gap-2 mt-3"></div>
           <div className="d-grid gap-2 mt-3"></div>

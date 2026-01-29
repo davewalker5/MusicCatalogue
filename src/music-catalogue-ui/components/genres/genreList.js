@@ -6,7 +6,6 @@ import { useState } from "react";
 
 /**
  * Component to render a table listing all the genres in the catalogue
- * @param {*} isWishList
  * @param {*} navigate
  * @param {*} logout
  * @returns

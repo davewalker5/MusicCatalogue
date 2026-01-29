@@ -3,7 +3,7 @@
   "version": "1.36.0",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "dev": "next dev",
@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "^16.1.5"
+    "eslint-config-next": "^14.2.34"
   }
 }

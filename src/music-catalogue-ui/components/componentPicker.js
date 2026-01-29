@@ -12,6 +12,8 @@ import MonthlySpendReport from "./reports/monthlySpendReport";
 import GenreAlbumsReport from "./reports/genreAlbumsReport";
 import GenreList from "./genres/genreList";
 import GenreEditor from "./genres/genreEditor";
+import MoodList from "./moods/moodList";
+import MoodEditor from "./moods/moodEditor";
 import RetailerList from "./retailers/retailerList";
 import RetailerDetails from "./retailers/retailerDetails";
 import RetailerEditor from "./retailers/retailerEditor";
@@ -28,6 +30,7 @@ import EquipmentPurchaseDetails from "./equipment/equpimentPurchaseDetails";
 import EquipmentEditor from "./equipment/equipmentEditor";
 import AlbumPicker from "./albums/albumPicker";
 import AlbumsByPurchaseDateReport from "./reports/albumsByPurchaseDateReport";
+import ArtistMoodEditor from "./artists/artistMoodEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -51,6 +54,16 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.artistEditor:
       return (
         <ArtistEditor
+          filter={context.filter}
+          artist={context.artist}
+          isWishList={context.isWishList}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.artistMoodEditor:
+      return (
+        <ArtistMoodEditor
           filter={context.filter}
           artist={context.artist}
           isWishList={context.isWishList}
@@ -116,6 +129,14 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
+    case pages.moodEditor:
+      return (
+        <MoodEditor
+          mood={context.mood}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
     case pages.lookup:
       return <LookupAlbum navigate={navigate} logout={logout} />;
     case pages.retailers:
@@ -138,6 +159,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       );
     case pages.genres:
       return <GenreList navigate={navigate} logout={logout} />;
+    case pages.moods:
+      return <MoodList navigate={navigate} logout={logout} />;
     case pages.equipmentTypes:
       return <EquipmentTypeList navigate={navigate} logout={logout} />;
     case pages.equipmentTypeEditor:

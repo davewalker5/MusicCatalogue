@@ -4,6 +4,8 @@ import useArtists from "@/hooks/useArtists";
 import ArtistRow from "./artistRow";
 import ArtistFilterBar from "./artistFilterBar";
 import { useState } from "react";
+import useVocalPresences from "@/hooks/useVocalPresences";
+import useEnsembleTypes from "@/hooks/useEnsembleTypes";
 
 /**
  * Component to render a table listing all the artists in the catalogue
@@ -15,6 +17,8 @@ import { useState } from "react";
  */
 const ArtistList = ({ filter, genre, isWishList, navigate, logout }) => {
   const { artists, setArtists } = useArtists(filter, genre, isWishList, logout);
+  const { vocalPresences, setVocalPresences } = useVocalPresences(logout);
+  const { ensembleTypes, setEnsembleTypes } = useEnsembleTypes(logout);
   const [error, setError] = useState("");
 
   // Callback to pass to child components to set the artist list
@@ -54,6 +58,12 @@ const ArtistList = ({ filter, genre, isWishList, navigate, logout }) => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Energy</th>
+            <th>Intimacy</th>
+            <th>Warmth</th>
+            <th>Vocals</th>
+            <th>Ensemble</th>
+            <th>Moods</th>
           </tr>
         </thead>
         {artists != null && (
@@ -69,6 +79,8 @@ const ArtistList = ({ filter, genre, isWishList, navigate, logout }) => {
                 logout={logout}
                 setArtists={setArtists}
                 setError={setError}
+                vocalPresences={vocalPresences}
+                ensembleTypes={ensembleTypes}
               />
             ))}
           </tbody>

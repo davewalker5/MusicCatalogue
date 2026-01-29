@@ -8,7 +8,7 @@ import { apiFetchGenres } from "@/helpers/api/apiGenres";
  * @returns
  */
 const useGenres = (logout) => {
-  // Current list of artists and the method to change it
+  // Current list of genres and the method to change it
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {

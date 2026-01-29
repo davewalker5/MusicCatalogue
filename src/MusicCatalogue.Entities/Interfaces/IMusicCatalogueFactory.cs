@@ -7,8 +7,10 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         DbContext Context { get; }
         IGenreManager Genres { get; }
+        IMoodManager Moods { get; }
         IAlbumManager Albums { get; }
         IArtistManager Artists { get; }
+        IArtistMoodManager ArtistMoods { get; }
         ITrackManager Tracks { get; }
         IManufacturerManager Manufacturers { get; }
         IEquipmentTypeManager EquipmentTypes { get; }
