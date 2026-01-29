@@ -20,8 +20,8 @@ const apiCreateArtist = async (name, energy, intimacy, warmth, vocalPresence, en
     energy: energy,
     intimacy: intimacy,
     warmth: warmth,
-    vocals: vocalPresence.id,
-    ensemble: ensembleType.id
+    vocals: vocalPresence,
+    ensemble: ensembleType
   });
 
   // Call the API to create the artist
@@ -56,11 +56,9 @@ const apiUpdateArtist = async (artistId, name, energy, intimacy, warmth, vocalPr
     energy: energy,
     intimacy: intimacy,
     warmth: warmth,
-    vocals: vocalPresence.id,
-    ensemble: ensembleType.id
+    vocals: vocalPresence,
+    ensemble: ensembleType
   });
-
-  console.log(JSON.stringify(body))
 
   // Call the API to update the artist
   const url = `${config.api.baseUrl}/artists`;
