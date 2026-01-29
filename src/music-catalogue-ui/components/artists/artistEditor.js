@@ -47,10 +47,10 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
         let updatedArtist = null;
         if (artist == null) {
           // Create the artist
-          updatedArtist = await apiCreateArtist(name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
+          updatedArtist = await apiCreateArtist(name, energy, intimacy, warmth, vocalPresence.id, ensembleType.id, logout);
         } else {
           // Update the existing artist
-          updatedArtist = await apiUpdateArtist(artist.id, name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
+          updatedArtist = await apiUpdateArtist(artist.id, name, energy, intimacy, warmth, vocalPresence.id, ensembleType.id, logout);
         }
 
         // Go back to the artist list, which should reflect the updated details
