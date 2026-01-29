@@ -1,0 +1,9 @@
+.closestArtistListAddButton {
+  float: right;
+}
+
+.closestArtistListError {
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}

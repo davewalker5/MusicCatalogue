@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MusicCatalogue.Api.Entities;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
@@ -60,11 +61,11 @@ namespace MusicCatalogue.Api.Controllers
         /// <param name="artistId"></param>
         /// <param name="topN"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("closest/{artistId}/{topN}")]
-        public async Task<ActionResult<List<ClosestArtist>>> ClosestArtistsAsync(int artistId, int topN)
+        [HttpPost]
+        [Route("closest")]
+        public async Task<ActionResult<List<ClosestArtist>>> ClosestArtistsAsync([FromBody] ClosestArtistSearchCriteria criteria)
         {
-            var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(artistId, topN, true);
+            var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(criteria, criteria.ArtistId, criteria.TopN, true);
             return closest;
         }
     }

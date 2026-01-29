@@ -17,17 +17,19 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// Calculate the distance between all artists in a collection and the target artist, returning
         /// the top N closest artists
         /// </summary>
+        /// <param name="weights"></param>
         /// <param name="targetArtistId"></param>
         /// <param name="n"></param>
         /// <param name="excludeTarget"></param>
         /// <returns></returns>
         public async Task<List<ClosestArtist>> GetClosestArtistsAsync(
+            SimilarityWeights weights,
             int targetArtistId,
             int n,
             bool excludeTarget = true)
         {
             var artists = await _factory.Artists.ListAsync(x => true, false);
-            var closest = GetClosestArtists(artists, targetArtistId, n, excludeTarget);
+            var closest = GetClosestArtists(artists, weights, targetArtistId, n, excludeTarget);
             return closest;
         }
 
@@ -36,6 +38,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// the top N closest artists
         /// </summary>
         /// <param name="artists"></param>
+        /// <param name="weights"></param>
         /// <param name="targetArtistId"></param>
         /// <param name="n"></param>
         /// <param name="excludeTarget"></param>
@@ -43,6 +46,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// <exception cref="InvalidOperationException"></exception>
         public List<ClosestArtist> GetClosestArtists(
             IEnumerable<Artist> artists,
+            SimilarityWeights weights,
             int targetArtistId,
             int n,
             bool excludeTarget = true)
@@ -70,7 +74,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
                 .Select(a => new
                 {
                     Artist = a,
-                    Distance = EuclideanDistance(target, a)
+                    Distance = WeightedEuclideanDistance(target, a, weights)
                 })
                 .ToList();
 
@@ -109,14 +113,14 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        private static double EuclideanDistance(Artist a, Artist b)
+        private static double WeightedEuclideanDistance(Artist a, Artist b, SimilarityWeights w)
         {
             // Each artist is treated as a point in 3D space with energy along the X axis, intimacy along
             // the Y axis and warmth along the Z axis. Calculate how different the two artists are along
             // each axis
-            var dE = a.Energy - b.Energy;
-            var dI = a.Intimacy - b.Intimacy;
-            var dW = a.Warmth - b.Warmth;
+            var dE = (a.Energy - b.Energy) * w.Energy;
+            var dI = (a.Intimacy - b.Intimacy) * w.Intimacy;
+            var dW = (a.Warmth - b.Warmth) * w.Warmth;
 
             // Then square and sum the squares to give the squared Euclidian distance. Using the square
             // removes negative values and amplifies larger differences and we can then take the square root

@@ -1,6 +1,6 @@
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMasksTheater, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faBullseye, faMasksTheater, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteArtistActionIcon from "./deleteArtistActionIcon";
 
 /**
@@ -140,6 +140,19 @@ const ArtistRow = ({
             navigate({
               filter: filter,
               page: pages.artistMoodEditor,
+              artist: artist,
+              isWishList: isWishList,
+            })
+          }
+        />
+      </td>
+      <td>
+        <FontAwesomeIcon
+          icon={faBullseye}
+          onClick={() =>
+            navigate({
+              filter: filter,
+              page: pages.closestArtists,
               artist: artist,
               isWishList: isWishList,
             })
