@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
+using MusicCatalogue.Entities.Reporting;
 using System.Web;
 
 namespace MusicCatalogue.Api.Controllers
@@ -13,11 +14,13 @@ namespace MusicCatalogue.Api.Controllers
     [Route("[controller]")]
     public class SearchController : Controller
     {
+        private readonly IMusicCatalogueFactory _factory;
         private readonly IAlbumLookupManager _manager;
         private readonly IMusicLogger _logger;
 
-        public SearchController(IAlbumLookupManager manager, IMusicLogger logger)
+        public SearchController(IMusicCatalogueFactory factory, IAlbumLookupManager manager, IMusicLogger logger)
         {
+            _factory = factory;
             _manager = manager;
             _logger = logger;
         }
@@ -49,6 +52,20 @@ namespace MusicCatalogue.Api.Controllers
             }
 
             return album;
+        }
+
+        /// <summary>
+        /// Return the "top N" artists closest to a target artist based on the style characteristics
+        /// </summary>
+        /// <param name="artistId"></param>
+        /// <param name="topN"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("closest/{artistId}/{topN}")]
+        public async Task<ActionResult<List<ClosestArtist>>> ClosestArtistsAsync(int artistId, int topN)
+        {
+            var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(artistId, topN, true);
+            return closest;
         }
     }
 }
