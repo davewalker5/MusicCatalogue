@@ -19,7 +19,6 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Catalogue
             "Purchase Date",
             "Price",
             "Retailer",
-            "Vibe",
             "Energy",
             "Intimacy",
             "Warmth",
