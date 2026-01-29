@@ -12,7 +12,7 @@ const FormCheckBox = ({ label, name, value, setValue }) => {
         id={name}
         name={name}
         checked={!!value}
-        onChange={(e) => setValue(e.target.checked)}
+        onChange={(e) => setValue(e, name, e.target.checked)}
       />
       <label className="form-check-label m-0" htmlFor={name}>
         {label}

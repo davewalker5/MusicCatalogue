@@ -30,6 +30,7 @@ import EquipmentPurchaseDetails from "./equipment/equpimentPurchaseDetails";
 import EquipmentEditor from "./equipment/equipmentEditor";
 import AlbumPicker from "./albums/albumPicker";
 import AlbumsByPurchaseDateReport from "./reports/albumsByPurchaseDateReport";
+import ArtistMoodEditor from "./artists/artistMoodEditor";
 
 /**
  * Component using the current context to select and render the current page
@@ -53,6 +54,16 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.artistEditor:
       return (
         <ArtistEditor
+          filter={context.filter}
+          artist={context.artist}
+          isWishList={context.isWishList}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.artistMoodEditor:
+      return (
+        <ArtistMoodEditor
           filter={context.filter}
           artist={context.artist}
           isWishList={context.isWishList}

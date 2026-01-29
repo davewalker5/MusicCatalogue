@@ -130,6 +130,14 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
     ]
   );
 
+  /* Callback to toggle the state of the "artist direct" flag */
+  const toggleArtistDirect = useCallback(
+    async (e, checkboxId, checked) => {
+      setArtistDirect(checked);
+
+    }, [artistDirect]
+  );
+
   const title =
     retailer.town != null
       ? `${retailer.name} - ${retailer.town}`
@@ -163,7 +171,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
                 label="Direct From Artist"
                 name="artistDirect"
                 value={artistDirect}
-                setValue={setArtistDirect}
+                setValue={toggleArtistDirect}
               />
             </div>
           </div>

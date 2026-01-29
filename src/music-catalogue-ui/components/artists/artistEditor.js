@@ -12,7 +12,7 @@ import Slider from "../common/slider";
  * @param {*} filter
  * @param {*} artist
  * @param {*} isWishList
- * @param {*} navoigate
+ * @param {*} navigate
  * @param {*} logout
  */
 const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
@@ -102,7 +102,7 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
             />
           </div>
           <div className="row align-items-start">
-            <div class="col">
+            <div className="col">
               <div className="form-group mt-3">
                 <label className={styles.artistEditorFormLabel}>Energy</label>
                 <div>
@@ -116,7 +116,7 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div class="col">
+            <div className="col">
               <div className="form-group mt-3">
                 <label className={styles.artistEditorFormLabel}>Intimacy</label>
                 <div>
@@ -130,7 +130,7 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div class="col">
+            <div className="col">
               <div className="form-group mt-3">
                 <label className={styles.artistEditorFormLabel}>Warmth</label>
                 <div>

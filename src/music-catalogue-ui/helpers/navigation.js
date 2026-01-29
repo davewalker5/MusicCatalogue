@@ -32,6 +32,7 @@ const pages = {
   albumsByPurchaseDateReport: "AlbumsByPurchaseDateReport",
   moods: "Moods",
   moodEditor: "MoodEditor",
+  artistMoodEditor: "ArtistMoodEditor",
 };
 
 export default pages;
