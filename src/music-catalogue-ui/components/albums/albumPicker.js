@@ -4,6 +4,7 @@ import { apiFetchRandomAlbum } from "@/helpers/api/apiAlbums";
 import AlbumPickerAlbumRow from "./albumPickerAlbumRow";
 import GenreSelector from "../genres/genreSelector";
 import { apiFetchArtistById } from "@/helpers/api/apiArtists";
+import Slider from "../common/slider";
 
 /**
  * Component to pick a random album, optionally for a specified genre
@@ -12,6 +13,9 @@ import { apiFetchArtistById } from "@/helpers/api/apiArtists";
  */
 const AlbumPicker = ({ logout }) => {
   const [genre, setGenre] = useState(null);
+  const [energy, setEnergy] = useState(50);
+  const [intimacy, setIntimacy] = useState(50);
+  const [warmth, setWarmth] = useState(50);
   const [details, setDetails] = useState({ album: null, artist: null });
 
   // Callback to request a random album from the API
@@ -23,7 +27,7 @@ const AlbumPicker = ({ logout }) => {
       // Request a random album, optionally filtering by the selected genre, and
       // retrieve the artist details
       const genreId = genre != null ? genre.id : null;
-      const fetchedAlbum = await apiFetchRandomAlbum(genreId, logout);
+      const fetchedAlbum = await apiFetchRandomAlbum(genreId, energy, intimacy, warmth, logout);
       if (fetchedAlbum != null) {
         const fetchedArtist = await apiFetchArtistById(
           fetchedAlbum.artistId,
@@ -44,23 +48,64 @@ const AlbumPicker = ({ logout }) => {
       </div>
       <div className={styles.albumPickerFormContainer}>
         <form className={styles.albumPickerForm}>
-          <div className="row" align="center">
-            <div className="mt-3">
-              <div className="d-inline-flex align-items-center">
-                <div className="col">
-                  <label className={styles.albumPickerLabel}>
-                    Genre to pick from:
-                  </label>
+          <div className="row d-flex justify-content-center">
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Genre</label>
+                <div>
+                  <GenreSelector
+                        initialGenre={genre}
+                        genreChangedCallback={setGenre}
+                      />
                 </div>
-                <div className="col">
-                  <div className={styles.alunmPickerGenreSelector}>
-                    <GenreSelector
-                      initialGenre={genre}
-                      genreChangedCallback={setGenre}
-                    />
-                  </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Energy</label>
+                <div>
+                  <Slider
+                        initialValue={energy}
+                        minimum={0}
+                        maximum={100}
+                        step={1}
+                        sliderChangedCallback={setEnergy}
+                      />
                 </div>
-                <div className="col">
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Intimacy</label>
+                <div>
+                  <Slider
+                        initialValue={intimacy}
+                        minimum={0}
+                        maximum={100}
+                        step={1}
+                        sliderChangedCallback={setIntimacy}
+                      />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Warmth</label>
+                <div>
+                  <Slider
+                        initialValue={warmth}
+                        minimum={0}
+                        maximum={100}
+                        step={1}
+                        sliderChangedCallback={setWarmth}
+                      />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}></label>
+                <div>
                   <button
                     className="btn btn-primary"
                     onClick={(e) => pickAlbumCallback(e)}

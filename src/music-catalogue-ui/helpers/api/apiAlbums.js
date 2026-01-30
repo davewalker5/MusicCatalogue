@@ -268,17 +268,29 @@ const apiSetAlbumPurchaseDetails = async (
 /**
  * Return the album details for a randomly selected album from the
  * Music Catalogue REST API
- * @param {*} albumId
+ * @param {*} genreId
+ * @param {*} energy
+ * @param {*} intimacy
+ * @param {*} warmth
  * @param {*} logout
  * @returns
  */
-const apiFetchRandomAlbum = async (genreId, logout) => {
+const apiFetchRandomAlbum = async (genreId, energy, intimacy, warmth, logout) => {
+  // Construct the filtering criteria as the request body and convert to JSON
+  const criteria = {
+    genreId: genreId,
+    energy: energy,
+    intimacy: intimacy,
+    warmth: warmth
+  };
+  const body = JSON.stringify(criteria);
+
   // Call the API to get the details for a randomly selected album
-  const baseUrl = `${config.api.baseUrl}/albums/random`;
-  const url = genreId != null ? `${baseUrl}/${genreId}` : baseUrl;
+  const url = `${config.api.baseUrl}/search/pick`;
   const response = await fetch(url, {
-    method: "GET",
-    headers: apiGetHeaders(),
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
   });
 
   const album = await apiReadResponseData(response, logout);

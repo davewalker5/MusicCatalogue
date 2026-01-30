@@ -69,5 +69,17 @@ namespace MusicCatalogue.Api.Controllers
             var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(criteria, criteria.ArtistId, criteria.TopN, true);
             return closest;
         }
+
+        [HttpPost]
+        [Route("pick")]
+        public async Task<ActionResult<Album?>> GetRandomAlbum([FromBody] AlbumSelectionCrtieria criteria)
+        {
+            _logger.LogMessage(Severity.Debug, $"Retrieving random album matching criteria {criteria}");
+            var album =  (criteria.GenreId != null) ?
+                await _factory.Albums.GetRandomAsync(x => !(x.IsWishListItem ?? false) && (x.GenreId == criteria.GenreId)) :
+                await _factory.Albums.GetRandomAsync(x => !(x.IsWishListItem ?? false));
+            _logger.LogMessage(Severity.Debug, $"Retrieved random album {album}");
+            return album;
+        }
     }
 }

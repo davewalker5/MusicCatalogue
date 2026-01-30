@@ -80,7 +80,7 @@ namespace MusicCatalogue.BusinessLogic.Database
             if (artist == null)
             {
                 // Get a serchable name
-                var searchableName = StringCleaner.SearchableName(clean) ?? "";
+                var searchableName = StringCleaner.SearchableName(clean);
                 artist = new Artist
                 {
                     Name = clean,
@@ -121,8 +121,13 @@ namespace MusicCatalogue.BusinessLogic.Database
             var artist = Context.Artists.FirstOrDefault(x => x.Id == id);
             if (artist != null)
             {
+                // Calculate a searchable name
+                var clean = StringCleaner.Clean(name)!;
+                var searchableName = StringCleaner.SearchableName(clean);
+
                 // Save the changes
-                artist.Name = StringCleaner.Clean(name)!;
+                artist.Name = clean;
+                artist.SearchableName = clean != searchableName ? searchableName : null;
                 artist.Energy = energy;
                 artist.Intimacy = intimacy;
                 artist.Warmth = warmth;
