@@ -44,6 +44,7 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
+        [Obsolete]
         public async Task<Album?> GetRandomAsync(Expression<Func<Album, bool>> predicate)
         {
             Album? album = null;

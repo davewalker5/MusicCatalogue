@@ -52,6 +52,37 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             int n,
             bool excludeTarget = true)
         {
+            // Identify the target artist
+            var target = artists.FirstOrDefault(a => a.Id == targetArtistId);
+            if (target == null)
+            {
+                var message = $"Target artist with ID {targetArtistId} not found";
+                throw new InvalidOperationException(message);
+            }
+
+            // Find and return the closest matches
+            var closest = GetClosestArtists(artists, weights, target, n, excludeTarget);
+            return closest;
+        }
+
+        /// <summary>
+        /// Calculate the distance between all artists in a collection and the target artist, returning
+        /// the top N closest artists
+        /// </summary>
+        /// <param name="artists"></param>
+        /// <param name="weights"></param>
+        /// <param name="target"></param>
+        /// <param name="n"></param>
+        /// <param name="excludeTarget"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public List<ClosestArtist> GetClosestArtists(
+            IEnumerable<Artist> artists,
+            SimilarityWeights weights,
+            Artist target,
+            int n,
+            bool excludeTarget = true)
+        {
             // Check we have some artists and the number of artists to return is valid
             if ((artists is null) || n <= 0)
             {
@@ -61,20 +92,12 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             // Materialise the artist list
             var list = artists as IList<Artist> ?? [.. artists];
 
-            // Identify the target artist
-            var target = list.FirstOrDefault(a => a.Id == targetArtistId);
-            if (target == null)
-            {
-                var message = $"Target artist with ID {targetArtistId} not found";
-                throw new InvalidOperationException(message);
-            }
-
             // Get the target artist moods
             var targetMoodIds = GetMoodIds(target);
 
             // Compute raw distances between artists
             var computed = list
-                .Where(a => !excludeTarget || a.Id != targetArtistId)
+                .Where(a => !excludeTarget || a.Id != target.Id)
                 .Select(a =>
                 {
                     var numeric = WeightedEuclideanDistance(target, a, weights);
