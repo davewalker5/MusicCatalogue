@@ -7,5 +7,12 @@
     "currency": "GBP",
     "geocodingLanguage": "en",
     "geocodingRegion": "GB"
+  },
+  "matching": {
+    "numberOfMatches": 15,
+    "energyWeight": 1.0,
+    "intimacyWeight": 1.0,
+    "warmthWeight": 1.0,
+    "moodWeight": 2.0
   }
 }
