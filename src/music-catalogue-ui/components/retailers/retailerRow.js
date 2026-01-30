@@ -2,6 +2,7 @@ import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteRetailerActionIcon from "./deleteRetailerActionIcon";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details for a single retailer
@@ -88,12 +89,18 @@ const RetailerRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({ page: pages.retailerEditor, retailer: retailer })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit retailer"
+            onClick={() =>
+              navigate({ page: pages.retailerEditor, retailer: retailer })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
     </tr>
   );

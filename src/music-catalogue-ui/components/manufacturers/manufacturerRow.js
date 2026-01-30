@@ -2,6 +2,7 @@ import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteManufacturerActionIcon from "./deleteManufacturerActionIcon";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details for a single manufacturer
@@ -31,15 +32,21 @@ const ManufacturerRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({
-              page: pages.manufacturerEditor,
-              manufacturer: manufacturer,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit manufacturer"
+            onClick={() =>
+              navigate({
+                page: pages.manufacturerEditor,
+                manufacturer: manufacturer,
+              })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
     </tr>
   );

@@ -2,6 +2,7 @@ import DeleteMoodActionIcon from "./deleteMoodActionIcon";
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details for a single mood
@@ -25,15 +26,21 @@ const MoodRow = ({ mood, navigate, logout, setMoods, setError }) => {
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({
-              page: pages.moodEditor,
-              mood: mood,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit mood"
+            onClick={() =>
+              navigate({
+                page: pages.moodEditor,
+                mood: mood,
+              })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
     </tr>
   );

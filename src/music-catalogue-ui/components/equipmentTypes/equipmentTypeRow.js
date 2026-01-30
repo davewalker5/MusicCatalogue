@@ -2,6 +2,7 @@ import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import DeleteEquipmentTypeActionIcon from "./deleteEquipmentTypeActionIcon";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details for a single equipment type
@@ -31,15 +32,21 @@ const EquipmentTypeRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({
-              page: pages.equipmentTypeEditor,
-              equipmentType: equipmentType,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit equipment type"
+            onClick={() =>
+              navigate({
+                page: pages.equipmentTypeEditor,
+                equipmentType: equipmentType,
+              })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
     </tr>
   );

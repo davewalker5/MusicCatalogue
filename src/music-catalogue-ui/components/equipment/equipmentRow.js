@@ -5,6 +5,7 @@ import DeleteEquipmentActionIcon from "./deleteEquipmentActionIcon";
 import DateFormatter from "../common/dateFormatter";
 import CurrencyFormatter from "../common/currencyFormatter";
 import EquipmentWishListActionIcon from "./equipmentWishListActionIcon";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details for a single item of equipment
@@ -60,15 +61,21 @@ const EquipmentRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({
-              page: pages.equipmentEditor,
-              equipment: equipment,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit equipment"
+            onClick={() =>
+              navigate({
+                page: pages.equipmentEditor,
+                equipment: equipment,
+              })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
       <td>
         <EquipmentWishListActionIcon
@@ -79,15 +86,21 @@ const EquipmentRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faCoins}
-          onClick={() =>
-            navigate({
-              page: pages.equipmentPurchaseDetails,
-              equipment: equipment,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faCoins}
+            data-tooltip-id="purchase-tooltip"
+            data-tooltip-content="Edit equipment purchase details"
+            onClick={() =>
+              navigate({
+                page: pages.equipmentPurchaseDetails,
+                equipment: equipment,
+              })
+            }
+          />
+
+          <Tooltip id="purchase-tooltip" />
+        </>
       </td>
     </tr>
   );

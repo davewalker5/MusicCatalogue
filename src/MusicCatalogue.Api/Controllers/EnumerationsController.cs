@@ -29,7 +29,7 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("vocalpresence")]
-        public async Task<ActionResult<List<EnumItem>>> GetVocalPresenceOptionsAsync()
+        public ActionResult<List<EnumItem>> GetVocalPresenceOptionsAsync()
         {
             _logger.LogMessage(Severity.Debug, $"Retrieving vocal presence options");
             var options = Enum.GetValues<VocalPresence>()
@@ -44,7 +44,7 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("ensembletype")]
-        public async Task<ActionResult<List<EnumItem>>> GetEnsembleTypeOptionsAsync()
+        public ActionResult<List<EnumItem>> GetEnsembleTypeOptionsAsync()
         {
             _logger.LogMessage(Severity.Debug, $"Retrieving ensemble type options");
             var options = Enum.GetValues<EnsembleType>()

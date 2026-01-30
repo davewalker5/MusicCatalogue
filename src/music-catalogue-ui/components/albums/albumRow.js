@@ -6,6 +6,7 @@ import DateFormatter from "../common/dateFormatter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useCallback } from "react";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details of a single album
@@ -68,16 +69,22 @@ const AlbumRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({
-              page: pages.albumEditor,
-              artist: artist,
-              album: album,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit album"
+            onClick={() =>
+              navigate({
+                page: pages.albumEditor,
+                artist: artist,
+                album: album,
+              })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
       <td>
         <AlbumWishListActionIcon
@@ -88,16 +95,22 @@ const AlbumRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faCoins}
-          onClick={() =>
-            navigate({
-              page: pages.albumPurchaseDetails,
-              artist: artist,
-              album: album,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faCoins}
+            data-tooltip-id="purchase-tooltip"
+            data-tooltip-content="Edit album purchase details"
+            onClick={() =>
+              navigate({
+                page: pages.albumPurchaseDetails,
+                artist: artist,
+                album: album,
+              })
+            }
+          />
+
+          <Tooltip id="purchase-tooltip" />
+        </>
       </td>
     </tr>
   );

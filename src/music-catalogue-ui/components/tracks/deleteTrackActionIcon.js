@@ -3,6 +3,7 @@ import { apiFetchAlbumById } from "@/helpers/api/apiAlbums";
 import { useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete a track
@@ -37,13 +38,19 @@ const DeleteTrackActionIcon = ({ track, logout, setTracks, setError }) => {
         setError(`Error deleting the track: ${ex.message}`);
       }
     }
-  }, []);
+  }, [logout, setTracks, setError]);
 
   return (
-    <FontAwesomeIcon
-      icon={faTrashAlt}
-      onClick={(e) => confirmDeleteTrack(e, track)}
-    />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete track"
+        onClick={(e) => confirmDeleteTrack(e, track)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 

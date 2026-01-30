@@ -33,6 +33,7 @@ const pages = {
   moods: "Moods",
   moodEditor: "MoodEditor",
   artistMoodEditor: "ArtistMoodEditor",
+  closestArtists: "ClosestArtists",
 };
 
 export default pages;

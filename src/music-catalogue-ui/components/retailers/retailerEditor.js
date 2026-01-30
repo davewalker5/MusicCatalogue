@@ -134,8 +134,7 @@ const RetailerEditor = ({ retailer, navigate, logout }) => {
   const toggleArtistDirect = useCallback(
     async (e, checkboxId, checked) => {
       setArtistDirect(checked);
-
-    }, [artistDirect]
+    }, []
   );
 
   const title =

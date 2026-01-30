@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { apiDeleteGenre, apiFetchGenres } from "@/helpers/api/apiGenres";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete a genre
@@ -43,7 +44,16 @@ const DeleteGenreActionIcon = ({ genre, logout, setGenres, setError }) => {
   );
 
   return (
-    <FontAwesomeIcon icon={faTrashAlt} onClick={(e) => confirmDeleteGenre(e)} />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete genre"
+        onClick={(e) => confirmDeleteGenre(e)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 
