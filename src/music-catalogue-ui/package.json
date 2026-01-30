@@ -24,7 +24,8 @@
     "react-datepicker": "^4.21.0",
     "react-dom": "^18",
     "react-geocode": "^1.0.0-alpha.1",
-    "react-select": "^5.8.0"
+    "react-select": "^5.8.0",
+    "react-tooltip": "^5.30.0"
   },
   "devDependencies": {
     "eslint": "^8",

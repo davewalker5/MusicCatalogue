@@ -1,22 +1,19 @@
-import pages from "@/helpers/navigation";
-import styles from "./artistList.module.css";
-import useArtists from "@/hooks/useArtists";
+import useClosestArtists from "@/hooks/useClosestArtists";
 import ClosestArtistRow from "./closestArtistRow";
-import ArtistFilterBar from "./artistFilterBar";
-import { useState } from "react";
 import useVocalPresences from "@/hooks/useVocalPresences";
 import useEnsembleTypes from "@/hooks/useEnsembleTypes";
 
 /**
  * Component to render a table listing all the artists in the catalogue
+ * @param {*} artist
  * @param {*} filter
  * @param {*} isWishList
  * @param {*} navigate
  * @param {*} logout
  * @returns
  */
-const ClosestArtistList = ({ artist, navigate, logout }) => {
-  const { artists, setArtists } = useArtists(filter, genre, isWishList, logout);
+const ClosestArtistList = ({ artist, filter, isWishList, navigate, logout }) => {
+  const { closestArtists, setClosestArtists } = useClosestArtists(artist.id, 15, 1.0, 1.0, 1.0, 2.0, logout);
   const { vocalPresences, setVocalPresences } = useVocalPresences(logout);
   const { ensembleTypes, setEnsembleTypes } = useEnsembleTypes(logout);
 
@@ -27,18 +24,6 @@ const ClosestArtistList = ({ artist, navigate, logout }) => {
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">{title}</h5>
-      </div>
-      <div className="row">
-        {error != "" ? (
-          <div className={styles.artistListError}>{error}</div>
-        ) : (
-          <></>
-        )}
-      </div>
-      <div className="row mb-2 pageTitle">
-        <div align="center">
-          <ArtistFilterBar setFilter={setFilterCallback} />
-        </div>
       </div>
       <table className="table table-hover">
         <thead>
@@ -53,19 +38,16 @@ const ClosestArtistList = ({ artist, navigate, logout }) => {
             <th>Moods</th>
           </tr>
         </thead>
-        {artists != null && (
+        {closestArtists != null && (
           <tbody>
-            {artists.map((a) => (
+            {closestArtists.map((ca) => (
               <ClosestArtistRow
-                key={a.id}
+                key={ca.artist.id}
+                artist={ca.artist}
+                similarity={ca.similarity}
                 filter={filter}
-                genre={genre}
-                artist={a}
                 isWishList={isWishList}
                 navigate={navigate}
-                logout={logout}
-                setArtists={setArtists}
-                setError={setError}
                 vocalPresences={vocalPresences}
                 ensembleTypes={ensembleTypes}
               />
@@ -73,22 +55,8 @@ const ClosestArtistList = ({ artist, navigate, logout }) => {
           </tbody>
         )}
       </table>
-      <div className={styles.artistListAddButton}>
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            navigate({
-              filter: filter,
-              page: pages.artistEditor,
-              isWishList: isWishList,
-            })
-          }
-        >
-          Add
-        </button>
-      </div>
     </>
   );
 };
 
-export default ArtistList;
+export default ClosestArtistList;

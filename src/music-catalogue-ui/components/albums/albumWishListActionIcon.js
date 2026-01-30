@@ -8,6 +8,7 @@ import {
   apiSetAlbumWishListFlag,
   apiFetchAlbumsByArtist,
 } from "@/helpers/api/apiAlbums";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to move an album between the catalogue and wish list
@@ -20,6 +21,7 @@ import {
 const AlbumWishListActionIcon = ({ album, isWishList, logout, setAlbums }) => {
   // Set the icon depending on the direction in which the album will move
   const icon = isWishList ? faRecordVinyl : faHeartCirclePlus;
+  const tooltip = isWishList ? "Add album to the main catalogue" : "Add album to the wish list"
 
   /* Callback to move an album between the wish list and catalogue */
   const setAlbumWishListFlag = useCallback(async () => {
@@ -36,7 +38,18 @@ const AlbumWishListActionIcon = ({ album, isWishList, logout, setAlbums }) => {
     }
   }, [album, isWishList, logout, setAlbums]);
 
-  return <FontAwesomeIcon icon={icon} onClick={setAlbumWishListFlag} />;
+  return (
+    <>
+      <FontAwesomeIcon
+        icon={icon}
+        data-tooltip-id="wishlist-tooltip"
+        data-tooltip-content={tooltip}
+        onClick={setAlbumWishListFlag}
+      />
+
+      <Tooltip id="wishlist-tooltip" />
+    </>
+  );
 };
 
 export default AlbumWishListActionIcon;

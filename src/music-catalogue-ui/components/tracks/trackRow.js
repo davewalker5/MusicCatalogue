@@ -3,6 +3,7 @@ import styles from "./trackRow.module.css";
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Component to render a row containing the details for a single track
@@ -53,17 +54,23 @@ const TrackRow = ({
         />
       </td>
       <td>
-        <FontAwesomeIcon
-          icon={faPenToSquare}
-          onClick={() =>
-            navigate({
-              page: pages.trackEditor,
-              artist: artist,
-              album: album,
-              track: track,
-            })
-          }
-        />
+        <>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            data-tooltip-id="edit-tooltip"
+            data-tooltip-content="Edit track"
+            onClick={() =>
+              navigate({
+                page: pages.trackEditor,
+                artist: artist,
+                album: album,
+                track: track,
+              })
+            }
+          />
+
+          <Tooltip id="edit-tooltip" />
+        </>
       </td>
     </tr>
   );

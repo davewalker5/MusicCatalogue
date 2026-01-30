@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { apiDeleteArtist, apiFetchArtists } from "@/helpers/api/apiArtists";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete an artist
@@ -61,10 +62,16 @@ const DeleteArtistActionIcon = ({
   );
 
   return (
-    <FontAwesomeIcon
-      icon={faTrashAlt}
-      onClick={(e) => confirmDeleteArtist(e)}
-    />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete artist"
+        onClick={(e) => confirmDeleteArtist(e)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 

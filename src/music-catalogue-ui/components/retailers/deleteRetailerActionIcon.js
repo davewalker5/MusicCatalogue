@@ -5,6 +5,7 @@ import {
 } from "@/helpers/api/apiRetailers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete a retailer
@@ -52,10 +53,16 @@ const DeleteRetailerActionIcon = ({
   );
 
   return (
-    <FontAwesomeIcon
-      icon={faTrashAlt}
-      onClick={(e) => confirmDeleteRetailer(e, retailer)}
-    />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete retailer"
+        onClick={(e) => confirmDeleteRetailer(e, retailer)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 

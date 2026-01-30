@@ -31,6 +31,7 @@ import EquipmentEditor from "./equipment/equipmentEditor";
 import AlbumPicker from "./albums/albumPicker";
 import AlbumsByPurchaseDateReport from "./reports/albumsByPurchaseDateReport";
 import ArtistMoodEditor from "./artists/artistMoodEditor";
+import ClosestArtistList from "./closest/closestArtistList";
 
 /**
  * Component using the current context to select and render the current page
@@ -46,6 +47,16 @@ const ComponentPicker = ({ context, navigate, logout }) => {
         <ArtistList
           filter={context.filter}
           genre={context.genre}
+          isWishList={context.isWishList}
+          navigate={navigate}
+          logout={logout}
+        />
+      );
+    case pages.closestArtists:
+      return (
+        <ClosestArtistList
+          artist={context.artist}
+          filter={context.filter}
           isWishList={context.isWishList}
           navigate={navigate}
           logout={logout}

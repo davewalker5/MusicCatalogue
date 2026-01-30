@@ -4,7 +4,9 @@ import { apiFetchArtists } from "@/helpers/api/apiArtists";
 /**
  * Hook that uses the API helpers to retrieve a list of artists from the
  * Music Catalogue REST API
- * @param {*} isWishList
+ * @param {*} filter
+ * @param {*} genre
+ * @param {*} isWishlist
  * @param {*} logout
  * @returns
  */

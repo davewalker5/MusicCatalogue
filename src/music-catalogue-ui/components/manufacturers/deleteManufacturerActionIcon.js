@@ -5,6 +5,7 @@ import {
   apiDeleteManufacturer,
   apiFetchManufacturers,
 } from "@/helpers/api/apiManufacturers";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete a manufacturer
@@ -49,10 +50,16 @@ const DeleteManufacturerActionIcon = ({
   );
 
   return (
-    <FontAwesomeIcon
-      icon={faTrashAlt}
-      onClick={(e) => confirmDeleteManufacturer(e)}
-    />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete manufacturer"
+        onClick={(e) => confirmDeleteManufacturer(e)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 

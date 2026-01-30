@@ -80,7 +80,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
                     var numeric = WeightedEuclideanDistance(target, a, weights);
                     var moodIds = GetMoodIds(a);
                     var (moodDist, shared) = JaccardDistanceAndSharedCount(targetMoodIds, moodIds);
-                    var combined = numeric + (weights.MoodWeight * moodDist);
+                    var combined = numeric + (weights.Mood * moodDist);
                     return new
                     {
                         Artist = a,
@@ -105,7 +105,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
 
                     // Expose a combined Distance + Similarity for the caller, but they are NOT used for ordering. The
                     // similarity is populated in the Let clause, below
-                    Distance = x.NumericDistance + (weights.MoodWeight * x.MoodDistance),
+                    Distance = x.NumericDistance + (weights.Mood * x.MoodDistance),
                     Similarity = 0
                 })
                 .OrderBy(x => x.NumericDistance)   // PRIMARY SORT: style profile

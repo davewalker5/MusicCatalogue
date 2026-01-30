@@ -8,6 +8,7 @@ import {
   apiFetchEquipment,
   apiSetEquipmentWishListFlag,
 } from "@/helpers/api/apiEquipment";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to move an item of equipment between the main
@@ -26,6 +27,7 @@ const EquipmentWishListActionIcon = ({
 }) => {
   // Set the icon depending on the direction in which the equipment will move
   const icon = isWishList ? faRecordVinyl : faHeartCirclePlus;
+  const tooltip = isWishList ? "Add equipment to the main equipment list" : "Add equipment to the wish list"
 
   /* Callback to move an album between the wish list and catalogue */
   const setEquipmentWishListFlag = useCallback(async () => {
@@ -42,7 +44,18 @@ const EquipmentWishListActionIcon = ({
     }
   }, [equipment, isWishList, logout, setEquipment]);
 
-  return <FontAwesomeIcon icon={icon} onClick={setEquipmentWishListFlag} />;
+  return (
+    <>
+      <FontAwesomeIcon
+        icon={icon}
+        data-tooltip-id="wishlist-tooltip"
+        data-tooltip-content={tooltip}
+        onClick={setEquipmentWishListFlag}
+      />
+
+      <Tooltip id="wishlist-tooltip" />
+    </>
+  );
 };
 
 export default EquipmentWishListActionIcon;

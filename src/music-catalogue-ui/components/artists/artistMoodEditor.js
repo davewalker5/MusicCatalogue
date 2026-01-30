@@ -41,7 +41,7 @@ const ArtistMoodEditor = ({ artist, logout }) => {
         setError(`Error saving the updated artist details: ${ex.message}`);
     }
 
-  }, [logout]);
+  }, [artist, logout]);
 
   const pageTitle = `Moods - ${artist.name}`;
 

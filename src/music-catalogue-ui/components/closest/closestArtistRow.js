@@ -1,32 +1,24 @@
 import pages from "@/helpers/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBullseye, faMasksTheater, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import DeleteArtistActionIcon from "./deleteArtistActionIcon";
-import { Tooltip } from "react-tooltip";
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component to render a row containing the details for a single artist
- * @param {*} filter
- * @param {*} genre
  * @param {*} artist
+ * @param {*} similarity
+ * @param {*} filter
  * @param {*} isWishList
  * @param {*} navigate
- * @param {*} logout
- * @param {*} setArtists
- * @param {*} setError
  * @param {*} vocalPresences
  * @param {*} ensembleTypes
  * @returns
  */
-const ArtistRow = ({
-  filter,
-  genre,
+const ClosestArtistRow = ({
   artist,
+  similarity,
+  filter,
   isWishList,
   navigate,
-  logout,
-  setArtists,
-  setError,
   vocalPresences,
   ensembleTypes
 }) => {
@@ -56,8 +48,20 @@ const ArtistRow = ({
           })
         }
       >
+        {similarity}
+      </td>
+      <td
+        onClick={() =>
+          navigate({
+            page: pages.albums,
+            artist: artist,
+            isWishList: isWishList,
+          })
+        }
+      >
         {artist.energy}
-      </td><td
+      </td>
+      <td
         onClick={() =>
           navigate({
             page: pages.albums,
@@ -111,75 +115,20 @@ const ArtistRow = ({
         {moods}
       </td>
       <td>
-        <DeleteArtistActionIcon
-          filter={filter}
-          genre={genre}
-          artist={artist}
-          isWishList={isWishList}
-          logout={logout}
-          setArtists={setArtists}
-          setError={setError}
+        <FontAwesomeIcon
+          icon={faBullseye}
+          onClick={() =>
+            navigate({
+              filter: filter,
+              page: pages.closestArtists,
+              artist: artist,
+              isWishList: isWishList,
+            })
+          }
         />
-      </td>
-      <td>
-        <>
-          <FontAwesomeIcon
-            icon={faPenToSquare}
-            data-tooltip-id="edit-tooltip"
-            data-tooltip-content="Edit artist"
-            onClick={() =>
-              navigate({
-                filter: filter,
-                page: pages.artistEditor,
-                artist: artist,
-                isWishList: isWishList,
-              })
-            }
-          />
-
-          <Tooltip id="edit-tooltip" />
-        </>
-      </td>
-      <td>
-        <>
-          <FontAwesomeIcon
-            icon={faMasksTheater}
-            data-tooltip-id="mood-tooltip"
-            data-tooltip-content="Edit artist moods"
-            onClick={() =>
-              navigate({
-                filter: filter,
-                page: pages.artistMoodEditor,
-                artist: artist,
-                isWishList: isWishList,
-              })
-            }
-          />
-
-          <Tooltip id="mood-tooltip" />
-        </>
-      </td>
-      <td>
-        <>
-          <FontAwesomeIcon
-            icon={faBullseye}
-            data-tooltip-id="closest-tooltip"
-            data-tooltip-content="Find closest artists"
-            onClick={() =>
-              navigate({
-                filter: filter,
-                page: pages.closestArtists,
-                artist: artist,
-                isWishList: isWishList,
-              })
-            }
-          />
-
-          <Tooltip id="closest-tooltip" />
-        </>
       </td>
     </tr>
   );
 };
 
-export default ArtistRow;
+export default ClosestArtistRow;

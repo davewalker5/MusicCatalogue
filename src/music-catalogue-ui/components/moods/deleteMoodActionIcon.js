@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { apiDeleteMood, apiFetchMoods } from "@/helpers/api/apiMoods";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete a mood
@@ -43,7 +44,16 @@ const DeleteMoodActionIcon = ({ mood, logout, setMoods, setError }) => {
   );
 
   return (
-    <FontAwesomeIcon icon={faTrashAlt} onClick={(e) => confirmDeleteMood(e)} />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete mood"
+        onClick={(e) => confirmDeleteMood(e)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 

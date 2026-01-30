@@ -65,6 +65,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("closest")]
         public async Task<ActionResult<List<ClosestArtist>>> ClosestArtistsAsync([FromBody] ClosestArtistSearchCriteria criteria)
         {
+            _logger.LogMessage(Severity.Debug, $"Searching closest artists using criteria {criteria}");
             var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(criteria, criteria.ArtistId, criteria.TopN, true);
             return closest;
         }

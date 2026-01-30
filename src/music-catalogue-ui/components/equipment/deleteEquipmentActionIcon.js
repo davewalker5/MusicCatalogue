@@ -5,6 +5,7 @@ import {
   apiDeleteEquipment,
   apiFetchEquipment,
 } from "@/helpers/api/apiEquipment";
+import { Tooltip } from "react-tooltip";
 
 /**
  * Icon and associated action to delete an item of equipment
@@ -54,10 +55,16 @@ const DeleteEquipmentActionIcon = ({
   );
 
   return (
-    <FontAwesomeIcon
-      icon={faTrashAlt}
-      onClick={(e) => confirmDeleteEquipment(e)}
-    />
+    <>
+      <FontAwesomeIcon
+        icon={faTrashAlt}
+        data-tooltip-id="delete-tooltip"
+        data-tooltip-content="Delete equipment"
+        onClick={(e) => confirmDeleteEquipment(e)}
+      />
+
+      <Tooltip id="delete-tooltip" />
+    </>
   );
 };
 

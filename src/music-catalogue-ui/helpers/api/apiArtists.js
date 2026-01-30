@@ -151,10 +151,53 @@ const apiDeleteArtist = async (artistId, logout) => {
   }
 };
 
+/**
+ * POST a request to the API to return the closest artists to a target artist
+ * @param {*} artistId
+ * @param {*} topN
+ * @param {*} energyWeight
+ * @param {*} intimacyWeight
+ * @param {*} warmthWeight
+ * @param {*} moodWeight
+ * @param {*} logout
+ * @returns
+ */
+const apiFetchClosestArtists = async (
+  artistId,
+  topN,
+  energyWeight,
+  intimacyWeight,
+  warmthWeight,
+  moodWeight,
+  logout
+) => {
+  // Construct the body
+  const body = JSON.stringify({
+    artistId: artistId,
+    topN: topN,
+    energy: energyWeight,
+    intimacy: intimacyWeight,
+    warmth: warmthWeight,
+    mood: moodWeight,
+  });
+
+  // Call the API to create the artist
+  const url = `${config.api.baseUrl}/search/closest/`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const closestArtists = await apiReadResponseData(response, logout);
+  return closestArtists;
+};
+
 export {
   apiCreateArtist,
   apiUpdateArtist,
   apiDeleteArtist,
   apiFetchArtists,
   apiFetchArtistById,
+  apiFetchClosestArtists,
 };
