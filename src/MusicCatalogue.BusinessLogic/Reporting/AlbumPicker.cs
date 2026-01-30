@@ -54,9 +54,9 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             criteria.IntimacyWeight = AmendWeight(criteria.TargetIntimacy, criteria.IntimacyWeight);
             criteria.WarmthWeight = AmendWeight(criteria.TargetWarmth, criteria.WarmthWeight);
 
-            // Get the closest artists, take only those with a similarity of 75% or more and randomise them
+            // Get the closest artists, take only those with a similarity of the threshold or more and randomise them
             var closest = _factory.ArtistSimilarityCalculator.GetClosestArtists(artists, criteria, artist, artists.Count, true);
-            var randomised = closest.Where(x => x.Similarity >= criteria.PickerThreshold).OrderBy(_ => Guid.NewGuid());
+            var randomised = closest.Where(x => x.Similarity >= (100 * criteria.PickerThreshold)).OrderBy(_ => Guid.NewGuid());
 
             var pickedAlbums = new List<PickedAlbum>();
 

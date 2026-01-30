@@ -16,6 +16,6 @@
     "moodWeight": 1.0,
     "numberOfAlbums": 10,
     "numberPerArtist": 3,
-    "pickerThreshold": 0.80
+    "pickerThreshold": 0.70
   }
 }
