@@ -28,7 +28,6 @@ const AlbumPickerAlbumRow = ({ match, navigate }) => {
     <tr>
       <td onClick={rowClickCallback}>{match.similarity}</td>
       <td onClick={rowClickCallback}>{artist.name}</td>
-      <td onClick={rowClickCallback}>{artist.name}</td>
       <td onClick={rowClickCallback}>{album.title}</td>
       <td onClick={rowClickCallback}>{album.genre.name}</td>
       {album.released > 0 ? <td onClick={rowClickCallback}>{album.released}</td> : <td onClick={rowClickCallback} />}
