@@ -11,7 +11,7 @@ import Slider from "../common/slider";
  * @param {*} logout
  * @returns
  */
-const AlbumPicker = ({ logout }) => {
+const AlbumPicker = ({ navigate, logout }) => {
   const [genre, setGenre] = useState(null);
   const [mood, setMood] = useState(null);
   const [energy, setEnergy] = useState(3);
@@ -142,6 +142,7 @@ const AlbumPicker = ({ logout }) => {
               key={pa.album.id}
               id={pa.album.id}
               match={pa}
+              navigate={navigate}
             />
           ))}
         </tbody>
