@@ -16,7 +16,7 @@ const AlbumPicker = ({ logout }) => {
   const [energy, setEnergy] = useState(3);
   const [intimacy, setIntimacy] = useState(3);
   const [warmth, setWarmth] = useState(3);
-  const [details, setDetails] = useState({ album: null, artist: null });
+  const [albums, setAlbums] = useState(null);
 
   // Callback to request a random album from the API
   const pickAlbumCallback = useCallback(
@@ -24,19 +24,15 @@ const AlbumPicker = ({ logout }) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
-      // Request a random album, optionally filtering by the selected genre, and
-      // retrieve the artist details
+      // Request a set of random albums matching the specified criteria
       const genreId = genre != null ? genre.id : null;
-      const fetchedAlbum = await apiFetchRandomAlbum(genreId, energy, intimacy, warmth, logout);
-      if (fetchedAlbum != null) {
-        setDetails({ album: fetchedAlbum, artist: fetchedAlbum.artist });
-      } else {
-        setDetails({ album: null, artist: null });
-      }
+      const fetchedAlbums = await apiFetchRandomAlbum(genreId, energy, intimacy, warmth, logout);
+      setAlbums(fetchedAlbums);
     },
-    [genre, logout]
+    [genre, energy, intimacy, warmth, logout]
   );
 
+      console.log(albums);
   return (
     <>
       <div className="row mb-2 pageTitle">
@@ -126,17 +122,16 @@ const AlbumPicker = ({ logout }) => {
             <th>Retailer</th>
           </tr>
         </thead>
-        {details.album != null && (
-          <tbody>
-            {
-              <AlbumPickerAlbumRow
-                key={details.album.id}
-                album={details.album}
-                artist={details.artist}
-              />
-            }
-          </tbody>
-        )}
+        <tbody>
+          {(albums ?? []).map((a) => (
+            <AlbumPickerAlbumRow
+              key={a.id}
+              id={a.id}
+              album={a}
+              artist={a.artist}
+            />
+          ))}
+        </tbody>
       </table>
     </>
   );
