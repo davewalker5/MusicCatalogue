@@ -6,6 +6,7 @@ namespace MusicCatalogue.Entities.Reporting
     public class AlbumSelectionCriteria : SimilarityWeights
     {
         public int? GenreId { get; set; }
+        public int? MoodId { get; set; }
         public int TargetEnergy { get; set; }
         public int TargetIntimacy { get; set; }
         public int TargetWarmth { get; set; }

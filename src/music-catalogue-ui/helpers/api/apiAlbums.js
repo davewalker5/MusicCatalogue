@@ -269,6 +269,7 @@ const apiSetAlbumPurchaseDetails = async (
  * Return the album details for a randomly selected album from the
  * Music Catalogue REST API
  * @param {*} genreId
+ * @param {*} moodId
  * @param {*} energyWeight
  * @param {*} intimacyWeight
  * @param {*} warmthWeight
@@ -277,6 +278,7 @@ const apiSetAlbumPurchaseDetails = async (
  */
 const apiFetchRandomAlbum = async (
   genreId,
+  moodId,
   targetEnergy,
   targetIntimacy,
   targetWarmth,
@@ -285,6 +287,7 @@ const apiFetchRandomAlbum = async (
   // Construct the filtering criteria as the request body and convert to JSON
   const criteria = {
     genreId: genreId,
+    moodId: moodId, 
     targetEnergy: targetEnergy,
     targetIntimacy: targetIntimacy,
     targetWarmth: targetWarmth,
@@ -293,6 +296,7 @@ const apiFetchRandomAlbum = async (
     energyWeight: config.matching.energyWeight,
     intimacyWeight: config.matching.intimacyWeight,
     warmthWeight: config.matching.warmthWeight,
+    moodWeight: config.matching.moodWeight,
     pickerThreshold: config.matching.pickerThreshold
   };
   const body = JSON.stringify(criteria);

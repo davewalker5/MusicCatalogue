@@ -32,12 +32,27 @@ namespace MusicCatalogue.BusinessLogic.Reporting
                 Warmth = criteria.TargetWarmth
             };
 
+            // If a mood is specified, associate it with the synthesised artist. Otherwise, set
+            // the mood weighting to 0
+            if (criteria.MoodId != null)
+            {
+                artist.Moods = [
+                    new ArtistMood
+                    {
+                        MoodId = criteria.MoodId.Value
+                    }
+                ];
+            }
+            else
+            {
+                criteria.MoodWeight = 0;
+            }
+
             // Amend the incoming matching weights : If a target is 0, the weight attached to that axis is
-            // set to 0. Mood weighting is always ignored
+            // set to 0
             criteria.EnergyWeight = AmendWeight(criteria.TargetEnergy, criteria.EnergyWeight);
             criteria.IntimacyWeight = AmendWeight(criteria.TargetIntimacy, criteria.IntimacyWeight);
             criteria.WarmthWeight = AmendWeight(criteria.TargetWarmth, criteria.WarmthWeight);
-            criteria.MoodWeight = 0;
 
             // Get the closest artists, take only those with a similarity of 75% or more and randomise them
             var closest = _factory.ArtistSimilarityCalculator.GetClosestArtists(artists, criteria, artist, artists.Count, true);

@@ -3,7 +3,7 @@ import styles from "./albumPicker.module.css";
 import { apiFetchRandomAlbum } from "@/helpers/api/apiAlbums";
 import AlbumPickerAlbumRow from "./albumPickerAlbumRow";
 import GenreSelector from "../genres/genreSelector";
-import { apiFetchArtistById } from "@/helpers/api/apiArtists";
+import MoodSelector from "../moods/moodSelector";
 import Slider from "../common/slider";
 
 /**
@@ -13,6 +13,7 @@ import Slider from "../common/slider";
  */
 const AlbumPicker = ({ logout }) => {
   const [genre, setGenre] = useState(null);
+  const [mood, setMood] = useState(null);
   const [energy, setEnergy] = useState(3);
   const [intimacy, setIntimacy] = useState(3);
   const [warmth, setWarmth] = useState(3);
@@ -26,7 +27,8 @@ const AlbumPicker = ({ logout }) => {
 
       // Request a set of random albums matching the specified criteria
       const genreId = genre != null ? genre.id : null;
-      const fetchedAlbums = await apiFetchRandomAlbum(genreId, energy, intimacy, warmth, logout);
+      const moodId = mood != null ? mood.id : null;
+      const fetchedAlbums = await apiFetchRandomAlbum(genreId, moodId, energy, intimacy, warmth, logout);
       setAlbums(fetchedAlbums);
     },
     [genre, energy, intimacy, warmth, logout]
@@ -48,6 +50,17 @@ const AlbumPicker = ({ logout }) => {
                   <GenreSelector
                         initialGenre={genre}
                         genreChangedCallback={setGenre}
+                      />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Mood</label>
+                <div>
+                  <MoodSelector
+                        initialMood={mood}
+                        moodChangedCallback={setMood}
                       />
                 </div>
               </div>
