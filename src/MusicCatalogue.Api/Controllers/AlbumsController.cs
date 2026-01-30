@@ -47,26 +47,6 @@ namespace MusicCatalogue.Api.Controllers
             return album;
         }
 
-        [HttpGet]
-        [Route("random")]
-        public async Task<ActionResult<Album?>> GetRandomAlbum()
-        {
-            _logger.LogMessage(Severity.Debug, $"Retrieving random album across all genres");
-            var album = await _factory.Albums.GetRandomAsync(x => !(x.IsWishListItem ?? false));
-            _logger.LogMessage(Severity.Debug, $"Retrieved random album {album}");
-            return album;
-        }
-
-        [HttpGet]
-        [Route("random/{genreId}")]
-        public async Task<ActionResult<Album?>> GetRandomAlbum(int genreId)
-        {
-            _logger.LogMessage(Severity.Debug, $"Retrieving random album for the genre with ID {genreId}");
-            var album = await _factory.Albums.GetRandomAsync(x => !(x.IsWishListItem ?? false) && (x.GenreId == genreId));
-            _logger.LogMessage(Severity.Debug, $"Retrieved random album {album}");
-            return album;
-        }
-
         /// <summary>
         /// Return a list of albums for the specified artist, filtering for items that are on/not on
         /// the wishlist based on the arguments

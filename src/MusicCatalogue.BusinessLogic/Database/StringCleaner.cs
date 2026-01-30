@@ -69,6 +69,15 @@ namespace MusicCatalogue.BusinessLogic.Database
                         searchable = searchable.Substring(prefix.Length);
                     }
                 }
+
+                // Trim the result - if it's empty, return null. The artist filtering/search implementation expects
+                // either a non-blank searchable name beginning with the filtering letter *or* null. If the searchable
+                // name's blank, the artist disappears!
+                searchable = searchable?.Trim();
+                if (string.IsNullOrEmpty(searchable))
+                {
+                    searchable = null;
+                }
             }
 
             return searchable;

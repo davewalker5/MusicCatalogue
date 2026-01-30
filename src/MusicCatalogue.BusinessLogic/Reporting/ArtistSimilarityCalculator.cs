@@ -52,6 +52,37 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             int n,
             bool excludeTarget = true)
         {
+            // Identify the target artist
+            var target = artists.FirstOrDefault(a => a.Id == targetArtistId);
+            if (target == null)
+            {
+                var message = $"Target artist with ID {targetArtistId} not found";
+                throw new InvalidOperationException(message);
+            }
+
+            // Find and return the closest matches
+            var closest = GetClosestArtists(artists, weights, target, n, excludeTarget);
+            return closest;
+        }
+
+        /// <summary>
+        /// Calculate the distance between all artists in a collection and the target artist, returning
+        /// the top N closest artists
+        /// </summary>
+        /// <param name="artists"></param>
+        /// <param name="weights"></param>
+        /// <param name="target"></param>
+        /// <param name="n"></param>
+        /// <param name="excludeTarget"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public List<ClosestArtist> GetClosestArtists(
+            IEnumerable<Artist> artists,
+            SimilarityWeights weights,
+            Artist target,
+            int n,
+            bool excludeTarget = true)
+        {
             // Check we have some artists and the number of artists to return is valid
             if ((artists is null) || n <= 0)
             {
@@ -61,26 +92,18 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             // Materialise the artist list
             var list = artists as IList<Artist> ?? [.. artists];
 
-            // Identify the target artist
-            var target = list.FirstOrDefault(a => a.Id == targetArtistId);
-            if (target == null)
-            {
-                var message = $"Target artist with ID {targetArtistId} not found";
-                throw new InvalidOperationException(message);
-            }
-
             // Get the target artist moods
             var targetMoodIds = GetMoodIds(target);
 
             // Compute raw distances between artists
             var computed = list
-                .Where(a => !excludeTarget || a.Id != targetArtistId)
+                .Where(a => !excludeTarget || a.Id != target.Id)
                 .Select(a =>
                 {
                     var numeric = WeightedEuclideanDistance(target, a, weights);
                     var moodIds = GetMoodIds(a);
                     var (moodDist, shared) = JaccardDistanceAndSharedCount(targetMoodIds, moodIds);
-                    var combined = numeric + (weights.Mood * moodDist);
+                    var combined = numeric + (weights.MoodWeight * moodDist);
                     return new
                     {
                         Artist = a,
@@ -105,7 +128,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
 
                     // Expose a combined Distance + Similarity for the caller, but they are NOT used for ordering. The
                     // similarity is populated in the Let clause, below
-                    Distance = x.NumericDistance + (weights.Mood * x.MoodDistance),
+                    Distance = x.NumericDistance + (weights.MoodWeight * x.MoodDistance),
                     Similarity = 0
                 })
                 .OrderBy(x => x.NumericDistance)   // PRIMARY SORT: style profile
@@ -140,9 +163,9 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             // Each artist is treated as a point in 3D space with energy along the X axis, intimacy along
             // the Y axis and warmth along the Z axis. Calculate how different the two artists are along
             // each axis
-            var dE = (a.Energy - b.Energy) * w.Energy;
-            var dI = (a.Intimacy - b.Intimacy) * w.Intimacy;
-            var dW = (a.Warmth - b.Warmth) * w.Warmth;
+            var dE = (a.Energy - b.Energy) * w.EnergyWeight;
+            var dI = (a.Intimacy - b.Intimacy) * w.IntimacyWeight;
+            var dW = (a.Warmth - b.Warmth) * w.WarmthWeight;
 
             // Then square and sum the squares to give the squared Euclidian distance. Using the square
             // removes negative values and amplifies larger differences and we can then take the square root

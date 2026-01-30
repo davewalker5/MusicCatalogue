@@ -7,5 +7,15 @@
     "currency": "GBP",
     "geocodingLanguage": "en",
     "geocodingRegion": "GB"
+  },
+  "matching": {
+    "numberOfMatches": 15,
+    "energyWeight": 1.0,
+    "intimacyWeight": 1.0,
+    "warmthWeight": 1.0,
+    "moodWeight": 1.0,
+    "numberOfAlbums": 10,
+    "numberPerArtist": 3,
+    "pickerThreshold": 0.70
   }
 }

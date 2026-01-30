@@ -1,3 +1,4 @@
+import config from "@/config.json";
 import useClosestArtists from "@/hooks/useClosestArtists";
 import ClosestArtistRow from "./closestArtistRow";
 import useVocalPresences from "@/hooks/useVocalPresences";
@@ -13,7 +14,14 @@ import useEnsembleTypes from "@/hooks/useEnsembleTypes";
  * @returns
  */
 const ClosestArtistList = ({ artist, filter, isWishList, navigate, logout }) => {
-  const { closestArtists, setClosestArtists } = useClosestArtists(artist.id, 15, 1.0, 1.0, 1.0, 2.0, logout);
+  const { closestArtists, setClosestArtists } = useClosestArtists(
+      artist.id,
+      config.matching.numberOfMatches,
+      config.matching.energyWeight,
+      config.matching.intimacyWeight,
+      config.matching.warmthWeight,
+      config.matching.moodWeight,
+      logout);
   const { vocalPresences, setVocalPresences } = useVocalPresences(logout);
   const { ensembleTypes, setEnsembleTypes } = useEnsembleTypes(logout);
 

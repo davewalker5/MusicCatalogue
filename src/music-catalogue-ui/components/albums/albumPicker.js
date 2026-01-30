@@ -3,16 +3,21 @@ import styles from "./albumPicker.module.css";
 import { apiFetchRandomAlbum } from "@/helpers/api/apiAlbums";
 import AlbumPickerAlbumRow from "./albumPickerAlbumRow";
 import GenreSelector from "../genres/genreSelector";
-import { apiFetchArtistById } from "@/helpers/api/apiArtists";
+import MoodSelector from "../moods/moodSelector";
+import Slider from "../common/slider";
 
 /**
  * Component to pick a random album, optionally for a specified genre
  * @param {*} logout
  * @returns
  */
-const AlbumPicker = ({ logout }) => {
+const AlbumPicker = ({ navigate, logout }) => {
   const [genre, setGenre] = useState(null);
-  const [details, setDetails] = useState({ album: null, artist: null });
+  const [mood, setMood] = useState(null);
+  const [energy, setEnergy] = useState(3);
+  const [intimacy, setIntimacy] = useState(3);
+  const [warmth, setWarmth] = useState(3);
+  const [pickedAlbums, setPickedAlbums] = useState(null);
 
   // Callback to request a random album from the API
   const pickAlbumCallback = useCallback(
@@ -20,23 +25,16 @@ const AlbumPicker = ({ logout }) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
-      // Request a random album, optionally filtering by the selected genre, and
-      // retrieve the artist details
+      // Request a set of random albums matching the specified criteria
       const genreId = genre != null ? genre.id : null;
-      const fetchedAlbum = await apiFetchRandomAlbum(genreId, logout);
-      if (fetchedAlbum != null) {
-        const fetchedArtist = await apiFetchArtistById(
-          fetchedAlbum.artistId,
-          logout
-        );
-        setDetails({ album: fetchedAlbum, artist: fetchedArtist });
-      } else {
-        setDetails({ album: null, artist: null });
-      }
+      const moodId = mood != null ? mood.id : null;
+      const fetchedAlbums = await apiFetchRandomAlbum(genreId, moodId, energy, intimacy, warmth, logout);
+      setPickedAlbums(fetchedAlbums);
     },
-    [genre, logout]
+    [genre, energy, intimacy, warmth, logout]
   );
 
+      console.log(pickedAlbums);
   return (
     <>
       <div className="row mb-2 pageTitle">
@@ -44,23 +42,75 @@ const AlbumPicker = ({ logout }) => {
       </div>
       <div className={styles.albumPickerFormContainer}>
         <form className={styles.albumPickerForm}>
-          <div className="row" align="center">
-            <div className="mt-3">
-              <div className="d-inline-flex align-items-center">
-                <div className="col">
-                  <label className={styles.albumPickerLabel}>
-                    Genre to pick from:
-                  </label>
+          <div className="row d-flex justify-content-center">
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Genre</label>
+                <div>
+                  <GenreSelector
+                        initialGenre={genre}
+                        genreChangedCallback={setGenre}
+                      />
                 </div>
-                <div className="col">
-                  <div className={styles.alunmPickerGenreSelector}>
-                    <GenreSelector
-                      initialGenre={genre}
-                      genreChangedCallback={setGenre}
-                    />
-                  </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Mood</label>
+                <div>
+                  <MoodSelector
+                        initialMood={mood}
+                        moodChangedCallback={setMood}
+                      />
                 </div>
-                <div className="col">
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Energy</label>
+                <div>
+                  <Slider
+                        initialValue={energy}
+                        minimum={0}
+                        maximum={5}
+                        step={1}
+                        sliderChangedCallback={setEnergy}
+                      />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Intimacy</label>
+                <div>
+                  <Slider
+                        initialValue={intimacy}
+                        minimum={0}
+                        maximum={5}
+                        step={1}
+                        sliderChangedCallback={setIntimacy}
+                      />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}>Warmth</label>
+                <div>
+                  <Slider
+                        initialValue={warmth}
+                        minimum={0}
+                        maximum={5}
+                        step={1}
+                        sliderChangedCallback={setWarmth}
+                      />
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
+              <div className="form-group mt-3">
+                <label className={styles.albumPickerLabel}></label>
+                <div>
                   <button
                     className="btn btn-primary"
                     onClick={(e) => pickAlbumCallback(e)}
@@ -76,6 +126,7 @@ const AlbumPicker = ({ logout }) => {
       <table className="table table-hover">
         <thead>
           <tr>
+            <th>Match Strength</th>
             <th>Artist</th>
             <th>Title</th>
             <th>Genre</th>
@@ -85,17 +136,16 @@ const AlbumPicker = ({ logout }) => {
             <th>Retailer</th>
           </tr>
         </thead>
-        {details.album != null && (
-          <tbody>
-            {
-              <AlbumPickerAlbumRow
-                key={details.album.id}
-                album={details.album}
-                artist={details.artist}
-              />
-            }
-          </tbody>
-        )}
+        <tbody>
+          {(pickedAlbums ?? []).map((pa) => (
+            <AlbumPickerAlbumRow
+              key={pa.album.id}
+              id={pa.album.id}
+              match={pa}
+              navigate={navigate}
+            />
+          ))}
+        </tbody>
       </table>
     </>
   );

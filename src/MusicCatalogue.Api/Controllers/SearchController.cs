@@ -69,5 +69,14 @@ namespace MusicCatalogue.Api.Controllers
             var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(criteria, criteria.ArtistId, criteria.TopN, true);
             return closest;
         }
+
+        [HttpPost]
+        [Route("pick")]
+        public async Task<ActionResult<List<PickedAlbum>>> GetRandomAlbum([FromBody] AlbumSelectionCriteria criteria)
+        {
+            _logger.LogMessage(Severity.Debug, $"Retrieving random albums matching criteria {criteria}");
+            var pickedAlbums = await _factory.AlbumPicker.PickAsync(criteria);
+            return pickedAlbums;
+        }
     }
 }

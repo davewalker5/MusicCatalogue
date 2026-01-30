@@ -37,6 +37,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<IGenreBasedReport<GenreAlbum>> _genreAlbums;
         private readonly Lazy<IDateBasedReport<AlbumByPurchaseDate>> _albumsByPurchaseDate;
         private readonly Lazy<IArtistSimilarityCalculator> _artistSimilarityCalculator;
+        private readonly Lazy<IAlbumPicker> _albumPicker;
 
         public DbContext Context { get; private set; }
         public IGenreManager Genres { get { return _genres.Value; } }
@@ -79,6 +80,9 @@ namespace MusicCatalogue.BusinessLogic.Factory
         [ExcludeFromCodeCoverage]
         public IArtistSimilarityCalculator ArtistSimilarityCalculator { get { return _artistSimilarityCalculator.Value; } }
 
+        [ExcludeFromCodeCoverage]
+        public IAlbumPicker AlbumPicker { get { return _albumPicker.Value; } }
+
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
             Context = context;
@@ -107,6 +111,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _genreAlbums = new Lazy<IGenreBasedReport<GenreAlbum>>(() => new GenreBasedReport<GenreAlbum>(context));
             _albumsByPurchaseDate = new Lazy<IDateBasedReport<AlbumByPurchaseDate>>(() => new DateBasedReport<AlbumByPurchaseDate>(context));
             _artistSimilarityCalculator = new Lazy<IArtistSimilarityCalculator>(() => new ArtistSimilarityCalculator(this));
+            _albumPicker = new Lazy<IAlbumPicker>(() => new AlbumPicker(this));
         }
     }
 }
