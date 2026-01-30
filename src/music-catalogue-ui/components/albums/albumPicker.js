@@ -128,7 +128,7 @@ const AlbumPicker = ({ navigate, logout }) => {
           <tr>
             <th>Match Strength</th>
             <th>Artist</th>
-            <th>Title</th>
+            <th>Album Title</th>
             <th>Genre</th>
             <th>Released</th>
             <th>Purchased</th>
