@@ -13,9 +13,9 @@ import Slider from "../common/slider";
  */
 const AlbumPicker = ({ logout }) => {
   const [genre, setGenre] = useState(null);
-  const [energy, setEnergy] = useState(50);
-  const [intimacy, setIntimacy] = useState(50);
-  const [warmth, setWarmth] = useState(50);
+  const [energy, setEnergy] = useState(3);
+  const [intimacy, setIntimacy] = useState(3);
+  const [warmth, setWarmth] = useState(3);
   const [details, setDetails] = useState({ album: null, artist: null });
 
   // Callback to request a random album from the API
@@ -29,11 +29,7 @@ const AlbumPicker = ({ logout }) => {
       const genreId = genre != null ? genre.id : null;
       const fetchedAlbum = await apiFetchRandomAlbum(genreId, energy, intimacy, warmth, logout);
       if (fetchedAlbum != null) {
-        const fetchedArtist = await apiFetchArtistById(
-          fetchedAlbum.artistId,
-          logout
-        );
-        setDetails({ album: fetchedAlbum, artist: fetchedArtist });
+        setDetails({ album: fetchedAlbum, artist: fetchedAlbum.artist });
       } else {
         setDetails({ album: null, artist: null });
       }
@@ -67,7 +63,7 @@ const AlbumPicker = ({ logout }) => {
                   <Slider
                         initialValue={energy}
                         minimum={0}
-                        maximum={100}
+                        maximum={5}
                         step={1}
                         sliderChangedCallback={setEnergy}
                       />
@@ -81,7 +77,7 @@ const AlbumPicker = ({ logout }) => {
                   <Slider
                         initialValue={intimacy}
                         minimum={0}
-                        maximum={100}
+                        maximum={5}
                         step={1}
                         sliderChangedCallback={setIntimacy}
                       />
@@ -95,7 +91,7 @@ const AlbumPicker = ({ logout }) => {
                   <Slider
                         initialValue={warmth}
                         minimum={0}
-                        maximum={100}
+                        maximum={5}
                         step={1}
                         sliderChangedCallback={setWarmth}
                       />

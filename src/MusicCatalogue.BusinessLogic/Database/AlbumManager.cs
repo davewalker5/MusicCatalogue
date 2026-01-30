@@ -40,30 +40,6 @@ namespace MusicCatalogue.BusinessLogic.Database
                             .ToListAsync();
 
         /// <summary>
-        /// Return a randomly selected album from those matching the predicate
-        /// </summary>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public async Task<Album?> GetRandomAsync(Expression<Func<Album, bool>> predicate)
-        {
-            Album? album = null;
-
-            // Get a list of albums matching the predicate
-            var albums = await ListAsync(predicate);
-
-            // If there are any, pick one at random
-            var numberOfAlbums = albums.Count;
-            if (numberOfAlbums > 0)
-            {
-                var index = new Random().Next(0, numberOfAlbums);
-                album = albums[index];
-            }
-
-            return album;
-        }
-
-        /// <summary>
         /// Add an album, if it doesn't already exist
         /// </summary>
         /// <param name="artistId"></param>

@@ -103,7 +103,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
                     var numeric = WeightedEuclideanDistance(target, a, weights);
                     var moodIds = GetMoodIds(a);
                     var (moodDist, shared) = JaccardDistanceAndSharedCount(targetMoodIds, moodIds);
-                    var combined = numeric + (weights.Mood * moodDist);
+                    var combined = numeric + (weights.MoodWeight * moodDist);
                     return new
                     {
                         Artist = a,
@@ -128,7 +128,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
 
                     // Expose a combined Distance + Similarity for the caller, but they are NOT used for ordering. The
                     // similarity is populated in the Let clause, below
-                    Distance = x.NumericDistance + (weights.Mood * x.MoodDistance),
+                    Distance = x.NumericDistance + (weights.MoodWeight * x.MoodDistance),
                     Similarity = 0
                 })
                 .OrderBy(x => x.NumericDistance)   // PRIMARY SORT: style profile
@@ -163,9 +163,9 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             // Each artist is treated as a point in 3D space with energy along the X axis, intimacy along
             // the Y axis and warmth along the Z axis. Calculate how different the two artists are along
             // each axis
-            var dE = (a.Energy - b.Energy) * w.Energy;
-            var dI = (a.Intimacy - b.Intimacy) * w.Intimacy;
-            var dW = (a.Warmth - b.Warmth) * w.Warmth;
+            var dE = (a.Energy - b.Energy) * w.EnergyWeight;
+            var dI = (a.Intimacy - b.Intimacy) * w.IntimacyWeight;
+            var dW = (a.Warmth - b.Warmth) * w.WarmthWeight;
 
             // Then square and sum the squares to give the squared Euclidian distance. Using the square
             // removes negative values and amplifies larger differences and we can then take the square root

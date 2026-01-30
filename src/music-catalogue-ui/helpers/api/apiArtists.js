@@ -175,10 +175,10 @@ const apiFetchClosestArtists = async (
   const body = JSON.stringify({
     artistId: artistId,
     topN: topN,
-    energy: energyWeight,
-    intimacy: intimacyWeight,
-    warmth: warmthWeight,
-    mood: moodWeight,
+    energyWeight: energyWeight,
+    intimacyWeight: intimacyWeight,
+    warmthWeight: warmthWeight,
+    moodWeight: moodWeight,
   });
 
   // Call the API to create the artist

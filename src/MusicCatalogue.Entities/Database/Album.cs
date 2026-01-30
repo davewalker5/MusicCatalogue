@@ -24,6 +24,7 @@ namespace MusicCatalogue.Entities.Database
         public string? CoverUrl { get; set; } = "";
         public Genre? Genre { get; set; }
 
+        public Artist? Artist { get; set; }
         public ICollection<Track>? Tracks { get; set; }
     }
 }

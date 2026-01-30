@@ -18,6 +18,7 @@ using MusicCatalogue.BusinessLogic.Logging;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MusicCatalogue.Api
 {
@@ -29,7 +30,10 @@ namespace MusicCatalogue.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
