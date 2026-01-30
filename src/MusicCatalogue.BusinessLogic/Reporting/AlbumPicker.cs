@@ -18,7 +18,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// </summary>
         /// <param name="criteria"></param>
         /// <returns></returns>
-        public async Task<List<Album>> PickAsync(AlbumSelectionCriteria criteria)
+        public async Task<List<PickedAlbum>> PickAsync(AlbumSelectionCriteria criteria)
         {
             // Load the candidate albums and artists
             var albums = await LoadAlbumsAsync(criteria.GenreId);
@@ -58,7 +58,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             var closest = _factory.ArtistSimilarityCalculator.GetClosestArtists(artists, criteria, artist, artists.Count, true);
             var randomised = closest.Where(x => x.Similarity >= criteria.PickerThreshold).OrderBy(_ => Guid.NewGuid());
 
-            var pickedAlbums = new List<Album>();
+            var pickedAlbums = new List<PickedAlbum>();
 
             // Now iterate over them and add albums from each artist, from closest match down, until
             // the required number of albums has been added or we've run out of albums
@@ -73,8 +73,8 @@ namespace MusicCatalogue.BusinessLogic.Reporting
                 }
 
                 // Select up to that number of albums
-                var albumsToAdd = SelectAlbumsForArtist(albums, match.Artist.Id, limit);
-                pickedAlbums.AddRange(albumsToAdd);
+                var pickedAlbumsToAdd = SelectAlbumsForArtist(match, albums, limit);
+                pickedAlbums.AddRange(pickedAlbumsToAdd);
             }
 
             return pickedAlbums;
@@ -96,8 +96,20 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// <param name="artistId"></param>
         /// <param name="numberToPick"></param>
         /// <returns></returns>
-        private static IEnumerable<Album> SelectAlbumsForArtist(List<Album> albums, int artistId, int numberToPick)
-            => albums.Where(x => x.ArtistId == artistId).OrderBy(_ => Guid.NewGuid()).Take(numberToPick);
+        private static IEnumerable<PickedAlbum> SelectAlbumsForArtist(ClosestArtist artist, List<Album> albums, int numberToPick)
+            => albums
+                .Where(x => x.ArtistId == artist.Artist.Id)
+                .Select(x => new PickedAlbum
+                {
+                    Album = x,
+                    Distance = artist.Distance,
+                    Similarity = artist.Similarity,
+                    NumericDistance = artist.NumericDistance,
+                    MoodDistance = artist.MoodDistance,
+                    SharedMoods = artist.SharedMoods
+                })
+                .OrderBy(_ => Guid.NewGuid())
+                .Take(numberToPick);
 
         /// <summary>
         /// Load the candidate albums. This will load every album but for a personal collection that

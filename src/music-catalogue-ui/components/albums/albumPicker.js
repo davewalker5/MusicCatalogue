@@ -17,7 +17,7 @@ const AlbumPicker = ({ logout }) => {
   const [energy, setEnergy] = useState(3);
   const [intimacy, setIntimacy] = useState(3);
   const [warmth, setWarmth] = useState(3);
-  const [albums, setAlbums] = useState(null);
+  const [pickedAlbums, setPickedAlbums] = useState(null);
 
   // Callback to request a random album from the API
   const pickAlbumCallback = useCallback(
@@ -29,12 +29,12 @@ const AlbumPicker = ({ logout }) => {
       const genreId = genre != null ? genre.id : null;
       const moodId = mood != null ? mood.id : null;
       const fetchedAlbums = await apiFetchRandomAlbum(genreId, moodId, energy, intimacy, warmth, logout);
-      setAlbums(fetchedAlbums);
+      setPickedAlbums(fetchedAlbums);
     },
     [genre, energy, intimacy, warmth, logout]
   );
 
-      console.log(albums);
+      console.log(pickedAlbums);
   return (
     <>
       <div className="row mb-2 pageTitle">
@@ -126,6 +126,7 @@ const AlbumPicker = ({ logout }) => {
       <table className="table table-hover">
         <thead>
           <tr>
+            <th>Match Strength</th>
             <th>Artist</th>
             <th>Title</th>
             <th>Genre</th>
@@ -136,12 +137,11 @@ const AlbumPicker = ({ logout }) => {
           </tr>
         </thead>
         <tbody>
-          {(albums ?? []).map((a) => (
+          {(pickedAlbums ?? []).map((pa) => (
             <AlbumPickerAlbumRow
-              key={a.id}
-              id={a.id}
-              album={a}
-              artist={a.artist}
+              key={pa.album.id}
+              id={pa.album.id}
+              match={pa}
             />
           ))}
         </tbody>

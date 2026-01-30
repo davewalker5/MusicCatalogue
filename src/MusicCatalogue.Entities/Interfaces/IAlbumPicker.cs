@@ -5,6 +5,6 @@ namespace MusicCatalogue.Entities.Interfaces
 {
     public interface IAlbumPicker
     {
-        Task<List<Album>> PickAsync(AlbumSelectionCriteria criteria);
+        Task<List<PickedAlbum>> PickAsync(AlbumSelectionCriteria criteria);
     }
 }

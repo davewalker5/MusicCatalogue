@@ -72,11 +72,11 @@ namespace MusicCatalogue.Api.Controllers
 
         [HttpPost]
         [Route("pick")]
-        public async Task<ActionResult<List<Album>>> GetRandomAlbum([FromBody] AlbumSelectionCriteria criteria)
+        public async Task<ActionResult<List<PickedAlbum>>> GetRandomAlbum([FromBody] AlbumSelectionCriteria criteria)
         {
             _logger.LogMessage(Severity.Debug, $"Retrieving random albums matching criteria {criteria}");
-            var albums = await _factory.AlbumPicker.PickAsync(criteria);
-            return albums;
+            var pickedAlbums = await _factory.AlbumPicker.PickAsync(criteria);
+            return pickedAlbums;
         }
     }
 }

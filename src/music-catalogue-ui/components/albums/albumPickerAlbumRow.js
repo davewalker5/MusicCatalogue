@@ -1,5 +1,6 @@
 import CurrencyFormatter from "../common/currencyFormatter";
 import DateFormatter from "../common/dateFormatter";
+import React, { useState } from "react";
 
 /**
  * Component to render a row containing the details of a single album in a
@@ -8,11 +9,15 @@ import DateFormatter from "../common/dateFormatter";
  * @param {*} artist
  * @returns
  */
-const AlbumPickerAlbumRow = ({ album, artist }) => {
+const AlbumPickerAlbumRow = ({ match }) => {
+  const album = match.album;
+  const artist = match.album.artist;
   const purchaseDate = new Date(album.purchased);
-
+  console.log(match);
   return (
     <tr>
+      <td>{match.similarity}</td>
+      <td>{artist.name}</td>
       <td>{artist.name}</td>
       <td>{album.title}</td>
       <td>{album.genre.name}</td>
