@@ -21,7 +21,7 @@ namespace MusicCatalogue.Tests
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
             _factory = new MusicCatalogueFactory(context);
             _artistId = (await _factory!.Artists.AddAsync(Artist)).Id;
-            _moodId = (await _factory!.Moods.AddAsync(Mood)).Id;
+            _moodId = (await _factory!.Moods.AddAsync(Mood, 0, 0, 0, 0)).Id;
             _mappingId = (await _factory!.ArtistMoods.AddAsync(_artistId, _moodId)).Id;
         }
 
