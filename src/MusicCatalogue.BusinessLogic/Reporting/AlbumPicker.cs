@@ -20,6 +20,16 @@ namespace MusicCatalogue.BusinessLogic.Reporting
         /// <returns></returns>
         public async Task<List<PickedAlbum>> PickAsync(AlbumSelectionCriteria criteria)
         {
+            // Make sure the criteria are valid
+            if (!criteria.HaveWeights() ||
+                (criteria.NumberOfAlbums < 1) ||
+                (criteria.NumberPerArtist < 1) ||
+                (criteria.PickerThreshold < 0) ||
+                (criteria.PickerThreshold > 1))
+            {
+                return [];
+            }
+
             // Load the candidate albums and artists
             var albums = await LoadAlbumsAsync(criteria.GenreId);
             var artists = await LoadArtistsAsync(albums);

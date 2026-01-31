@@ -83,8 +83,8 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             int n,
             bool excludeTarget = true)
         {
-            // Check we have some artists and the number of artists to return is valid
-            if ((artists is null) || n <= 0)
+            // Make sure the search criteria are valid
+            if ((artists is null) || (n <= 0) || !weights.HaveWeights())
             {
                 return [];
             }
