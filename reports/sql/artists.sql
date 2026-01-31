@@ -1,5 +1,5 @@
-SELECT  Id,
-        Name,
+SELECT  Id AS "Artist_Id",
+        Name AS "Artist_Name",
         Energy,
         Intimacy,
         Warmth,
