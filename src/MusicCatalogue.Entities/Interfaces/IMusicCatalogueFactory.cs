@@ -32,5 +32,6 @@ namespace MusicCatalogue.Entities.Interfaces
         IDateBasedReport<AlbumByPurchaseDate> AlbumsByPurchaseDate { get; }
         IArtistSimilarityCalculator ArtistSimilarityCalculator { get; }
         IAlbumPicker AlbumPicker { get; }
+        IArtistPlaylistBuilder ArtistPlaylistBuilder { get; }
     }
 }

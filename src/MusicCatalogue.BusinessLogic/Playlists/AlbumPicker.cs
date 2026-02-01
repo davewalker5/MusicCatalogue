@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Playlists;

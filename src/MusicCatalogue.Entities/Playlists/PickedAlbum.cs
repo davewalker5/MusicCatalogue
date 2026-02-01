@@ -4,7 +4,7 @@ using MusicCatalogue.Entities.Database;
 namespace MusicCatalogue.Entities.Playlists
 {
     [ExcludeFromCodeCoverage]
-    public sealed class PickedAlbum : MusicCatalogueEntityBase
+    public class PickedAlbum : MusicCatalogueEntityBase
     {
         public required Album Album { get; set; }
 

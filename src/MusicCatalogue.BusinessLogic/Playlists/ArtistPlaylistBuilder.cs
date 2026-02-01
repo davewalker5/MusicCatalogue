@@ -1,0 +1,368 @@
+using MusicCatalogue.Entities.Database;
+using MusicCatalogue.Entities.Extensions;
+using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Playlists;
+
+namespace MusicCatalogue.Prototyping
+{
+    public sealed class ArtistPlaylistBuilder : IArtistPlaylistBuilder
+    {
+        private const int MaximumStyleValue = 5;
+
+        // Style targets by time of day
+        private static readonly Dictionary<TimeOfDay, (double E, double I, double W)> _styleTargets = new()
+        {
+            { TimeOfDay.Morning,   (3.0, 2.0, 3.0) },
+            { TimeOfDay.Afternoon, (3.5, 2.0, 3.0) },
+            { TimeOfDay.Evening,   (2.5, 3.5, 3.5) },
+            { TimeOfDay.Late,      (1.8, 4.2, 3.8) },
+        };
+
+        private readonly IMusicCatalogueFactory _factory;
+
+        public ArtistPlaylistBuilder(IMusicCatalogueFactory factory)
+            => _factory = factory;
+        
+        /// <summary>
+        /// Flowing playlists with more exploration and stylistic variation
+        /// </summary>
+        /// <param name="timeOfDay"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public async Task<List<ArtistPlaylistItem>> BuildNormalArtistPlaylist(TimeOfDay timeOfDay, int n)
+            => BuildNormalArtistPlaylist(await _factory.Artists.ListAsync(x => true, false), timeOfDay, n);
+
+        /// <summary>
+        /// Flowing playlists with more exploration and stylistic variation
+        /// </summary>
+        /// <param name="artists"></param>
+        /// <param name="timeOfDay"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public List<ArtistPlaylistItem> BuildNormalArtistPlaylist(IEnumerable<Artist> artists, TimeOfDay timeOfDay, int n)
+            => BuildPlaylist(artists, NormalArtistPlaylistCreationParameters.Create(timeOfDay, n));
+
+        /// <summary>
+        /// Playlists with a curated feel
+        /// </summary>
+        /// <param name="timeOfDay"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public async Task<List<ArtistPlaylistItem>> BuildCuratedArtistPlaylist(TimeOfDay timeOfDay, int n)
+            => BuildCuratedArtistPlaylist(await _factory.Artists.ListAsync(x => true, false), timeOfDay, n);
+
+        /// <summary>
+        /// Playlists with a curated feel
+        /// </summary>
+        public List<ArtistPlaylistItem> BuildCuratedArtistPlaylist(IEnumerable<Artist> artists, TimeOfDay timeOfDay, int n)
+            => BuildPlaylist(artists, CuratedArtistPlaylistCreationParameters.Create(timeOfDay, n));
+
+        /// <summary>
+        /// Build a randomised playlist one entry at a time accounting for:
+        /// 
+        /// 1. Style match to time of day ideal
+        /// 2. Flow from the previous pick (modelled as a transition penalty)
+        /// 3. Variety / anti-repetition
+        /// 4. An element of randomness (top-K, Softmax temperature, random jitter))
+        /// 
+        /// </summary>
+        /// <param name="artists"></param>
+        /// <param name="timeOfDay"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private List<ArtistPlaylistItem> BuildPlaylist(IEnumerable<Artist> artists, ArtistPlaylistCreationParameters parameters)
+        {
+            // Materialize the artists list
+            var artistList = artists.ToList();
+            if (artistList.Count == 0)
+            {
+                return [];
+            }
+
+            // Create a random number generator - providing a seed produces repeatable playlists
+            var rng = parameters.Seed != null ? new Random(parameters.Seed.Value) : new Random();
+
+            // Build a per-artist mood score for the current time of day
+            var moodScores = artists
+                .SelectMany(a => a.Moods.Select(am => new { a.Id, am.Mood }))
+                .GroupBy(x => x.Id)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Sum(x => GetMoodWeight(x.Mood!, parameters.TimeOfDay))
+                );
+
+            // Compute style fit mood score for each artist
+            var artistScores = new List<ArtistScoringRow>(artistList.Count);
+            foreach (var a in artistList)
+            {
+                // Get the mood score and compute the style fit
+                double moodScore = moodScores.TryGetValue(a.Id, out var score) ? score : 0.0;
+                double styleFit = ComputeStyleFit(a.Energy, a.Intimacy, a.Warmth, parameters.TimeOfDay);
+
+                // Create a new score for the artist and add it to the collection
+                artistScores.Add(new ArtistScoringRow
+                {
+                    Artist = a,
+                    MoodScore = moodScore,
+                    StyleFit = styleFit
+                });
+            }
+
+            // Normalize mood score to 0..1 for fair blending with style fit
+            double minMood = artistScores.Min(r => r.MoodScore);
+            double maxMood = artistScores.Max(r => r.MoodScore);
+            foreach (var r in artistScores)
+            {
+                r.MoodScoreNorm = (maxMood > minMood)
+                    ? (r.MoodScore - minMood) / (maxMood - minMood)
+                    : 0.0;
+            }
+
+            // Compute a weighted base score with a small amount of jitter
+            foreach (var row in artistScores)
+            {
+                row.BaseScore = (parameters.StyleWeight * row.StyleFit) +
+                                (parameters.MoodWeight * row.MoodScoreNorm) +
+                                NextGaussian(rng, 0.0, parameters.RandomJitter);
+            }
+
+            // Calculate the style vector for each
+            var artistStyleVector = artistScores!.ToDictionary(
+                r => r.Artist!.Id,
+                r => (E: r.Artist!.Energy, I: r.Artist!.Intimacy, W: r.Artist!.Warmth)
+            );
+
+            // Iterative selection with top-K softmax sampling
+            var chosen = new List<ArtistPlaylistItem>(Math.Min(parameters.NumberOfEntries, artistScores!.Count));
+            var remaining = new List<ArtistScoringRow>(artistScores);
+            var recent = new Queue<int>();
+            int? prev = null;
+
+            while (chosen.Count < Math.Min(parameters.NumberOfEntries, remaining.Count))
+            {
+                // 
+                var scoredRows = remaining.Select(r =>
+                {
+                    // Calculate penalties or costs for choosing this artist next and use them to calculate
+                    // a score for the transition
+                    double recentCost = recent.Contains(r.Artist!.Id) ? 1.0 : 0.0;
+                    double transitionCost = CalculateTransitionCost(artistStyleVector, prev, r.Artist.Id);
+                    double score = r.BaseScore
+                                    - (parameters.TransitionPenalty * transitionCost)
+                                    - (0.50 * recentCost);
+
+                    return (Row: r, StepScore: score);
+                })
+                .OrderByDescending(x => x.StepScore)
+                .ToList();
+
+                // Take the top "K" entries from the scored list to form the pool of candidates to take forward
+                int k = Math.Min(parameters.TopK, scoredRows.Count);
+                var pool = scoredRows.Take(k).ToList();
+
+                // Use Softmax to pick an entry from the pool
+                var probs = Softmax([.. pool.Select(p => p.StepScore)], parameters.Temperature);
+                int pickIdx = SampleIndex(rng, probs);
+                var (Row, StepScore) = pool[pickIdx];
+
+                // Add a new artist playlist item. This includes the pick and the calculated values
+                // that illustrate why it was picked 
+                var artist = Row.Artist;
+                chosen.Add(new ArtistPlaylistItem
+                {
+                    ArtistId = artist!.Id,
+                    ArtistName = artist.Name,
+                    StepScore = StepScore,
+                    BaseScore = Row.BaseScore,
+                    StyleFit = Row.StyleFit,
+                    MoodScore = Row.MoodScore,
+                    MoodScoreNorm = Row.MoodScoreNorm,
+                    Energy = artist.Energy,
+                    Intimacy = artist.Intimacy,
+                    Warmth = artist.Warmth,
+                    VocalPresence = artist.Vocals,
+                    EnsembleType = artist.Ensemble
+                });
+
+                // Update state for the next iteration
+                prev = artist.Id;
+                recent.Enqueue(artist.Id);
+                while (recent.Count > parameters.AvoidRecent)
+                {
+                    recent.Dequeue();
+                }
+
+                // Remove the picked artist
+                remaining.Remove(Row);
+            }
+
+            return chosen;
+        }
+
+        /// <summary>
+        /// Calculate the transition cost from one artist to another
+        /// </summary>
+        /// <param name="artistStyleVector"></param>
+        /// <param name="prevArtistId"></param>
+        /// <param name="candidateId"></param>
+        /// <returns></returns>
+        private static double CalculateTransitionCost(Dictionary<int, (int, int, int)> artistStyleVector, int? prevArtistId, int candidateId)
+        {
+            // If there's no previous artist, there's no transition cose
+            if (prevArtistId == null)
+            {
+                return 0.0;
+            }
+
+            // Get the style properties for the previous and current candidate
+            var (Ep, Ip, Wp) = artistStyleVector[prevArtistId.Value];
+            var (Ec, Ic, Wc) = artistStyleVector[candidateId];
+
+            // Calculate the distances between them
+            double de = Ep - Ec;
+            double di = Ip - Ic;
+            double dw = Wp - Wc;
+
+            // Calculate the Euclidean distance between them and normalise by the maximum possible
+            // distance
+            double dist = Math.Sqrt(de * de + di * di + dw * dw);
+            double maximumDistance = Math.Sqrt(3 * MaximumStyleValue * MaximumStyleValue);
+            return dist / maximumDistance;
+        }
+
+        /// <summary>
+        /// Get the time of day weighting for a mood
+        /// </summary>
+        /// <param name="mood"></param>
+        /// <param name="timeOfDay"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        private static double GetMoodWeight(Mood mood, TimeOfDay timeOfDay)
+            => timeOfDay switch
+            {
+                TimeOfDay.Morning   => mood.MorningWeight,
+                TimeOfDay.Afternoon => mood.AfternoonWeight,
+                TimeOfDay.Evening   => mood.EveningWeight,
+                TimeOfDay.Late      => mood.LateWeight,
+                _ => throw new ArgumentOutOfRangeException(nameof(timeOfDay))
+            };
+
+        /// <summary>
+        /// Calculate a normalized Euclidean similarity measuring how well a candidate’s energy, intimacy
+        /// and warmth matches the time-of-day style target
+        /// </summary>
+        /// <param name="energy"></param>
+        /// <param name="intimacy"></param>
+        /// <param name="warmth"></param>
+        /// <param name="targetTime"></param>
+        /// <returns></returns>
+        private static double ComputeStyleFit(double energy, double intimacy, double warmth, TimeOfDay targetTime)
+        {
+            // Get the target point in 3D (E,I,W) space
+            var (E, I, W) = _styleTargets[targetTime];
+
+            // Calculate the vector from the target to the supplied point
+            double de = energy - E;
+            double di = intimacy - I;
+            double dw = warmth - W;
+
+            // Calculate the Euclidean distance between the target point and supplied point and the maximum
+            // possible distance if they were as far away as possible
+            double distance = Math.Sqrt(de * de + di * di + dw * dw);
+            double maximumDistance = Math.Sqrt(3 * MaximumStyleValue * MaximumStyleValue);
+
+            // Normalise the distance to a similarity between 0 and 1
+            double fit = 1.0 - (distance / maximumDistance);
+            return NumberRangeExtensions.Clamp(fit, 0.0, 1.0);
+        }
+
+        /// <summary>
+        /// Given a set of scores, convert them into probabilities that sum to 1.0
+        /// </summary>
+        /// <param name="scores"></param>
+        /// <param name="temperature"></param>
+        /// <returns></returns>
+        private static double[] Softmax(double[] scores, double temperature)
+        {
+            // Prevent it blowing up if temperature is very small or 0
+            temperature = Math.Max(temperature, 1e-6);
+
+            double maximum = scores.Max();
+            var exponentials = new double[scores.Length];
+            double sum = 0.0;
+
+            for (int i = 0; i < scores.Length; i++)
+            {
+                // This function uses exponentials and these can blow up very quickly. So, shift the
+                // original scores by subtract the maximum before calculating the exponential. To
+                // illustrate with an example, suppose T is 1:
+                //
+                // Original Scores: [10, 7, 3]
+                // Shifted scores:  [0, -3, -7]
+                // Exponentials:    [1, 0.05, 0.0009]
+                //
+                // The shift prevents possible overflow errors
+                double x = (scores[i] - maximum) / temperature;
+                double e = Math.Exp(x);
+                exponentials[i] = e;
+                sum += e;
+            }
+
+            // Normalise the results to probabilities in the range 0-1
+            exponentials = [.. exponentials.Select(x => x/sum)];
+
+            return exponentials;
+        }
+
+        /// <summary>
+        /// Pick a random index for a probability in the probability list, where larger probabilities
+        /// are more likely to be picked:
+        /// 
+        /// SCALE:      0 |----|----------|--------------------------------| 1
+        /// PROBABILITY:    0.1     0.3                   0.7
+        /// INDEX:           0       1                     2
+        /// 
+        /// The function walks the line until a random number in the range 0-1 falls in the cumulative
+        /// probability so far, then returns the index at that point
+        /// </summary>
+        /// <param name="rng"></param>
+        /// <param name="probabilities"></param>
+        /// <returns></returns>
+        private static int SampleIndex(Random rng, double[] probabilities)
+        {
+            // Pick a random number
+            double r = rng.NextDouble();
+
+            // Walk the array of probabilities calculating the cumulative probability until
+            // our original random number falls in the current "slice"
+            double cumulative = 0.0;
+            for (int i = 0; i < probabilities.Length; i++)
+            {
+                cumulative += probabilities[i];
+                if (r <= cumulative)
+                {
+                    return i;
+                }
+            }
+
+            // Fallback if we hit the end of the list
+            return probabilities.Length - 1;
+        }
+
+        /// <summary>
+        /// Random number generator that returns random numbers following a bell-curve (Gaussian)
+        /// distribution using the Box-Muller transformation
+        /// </summary>
+        /// <param name="rng"></param>
+        /// <param name="mean"></param>
+        /// <param name="stdDev"></param>
+        /// <returns></returns>
+        private static double NextGaussian(Random rng, double mean, double stdDev)
+        {
+            double u1 = 1.0 - rng.NextDouble();
+            double u2 = 1.0 - rng.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+            return mean + stdDev * randStdNormal;
+        }
+    }
+}
