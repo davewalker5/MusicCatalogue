@@ -7,6 +7,7 @@ using MusicCatalogue.BusinessLogic.DataExchange.Catalogue;
 using MusicCatalogue.BusinessLogic.DataExchange.Equipment;
 using MusicCatalogue.BusinessLogic.Reporting;
 using System.Diagnostics.CodeAnalysis;
+using MusicCatalogue.BusinessLogic.Playlists;
 
 namespace MusicCatalogue.BusinessLogic.Factory
 {

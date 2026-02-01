@@ -1,5 +1,5 @@
 using MusicCatalogue.Entities.Database;
-using MusicCatalogue.Entities.Reporting;
+using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.Entities.Interfaces
 {

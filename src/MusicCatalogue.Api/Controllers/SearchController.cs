@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MusicCatalogue.Api.Entities;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Entities.Reporting;
+using MusicCatalogue.Entities.Playlists;
 using System.Web;
 
 namespace MusicCatalogue.Api.Controllers
