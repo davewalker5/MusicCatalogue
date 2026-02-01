@@ -136,17 +136,17 @@ namespace MusicCatalogue.Prototyping
             var chosen = new List<ArtistPlaylistItem>(Math.Min(parameters.NumberOfEntries, artistScores!.Count));
             var remaining = new List<ArtistScoringRow>(artistScores);
             var recent = new Queue<int>();
-            int? prev = null;
+            int? previousArtistId = null;
 
             while (chosen.Count < Math.Min(parameters.NumberOfEntries, remaining.Count))
             {
-                // 
+                // Calculate a score for each of the remaining artists
                 var scoredRows = remaining.Select(r =>
                 {
                     // Calculate penalties or costs for choosing this artist next and use them to calculate
                     // a score for the transition
                     double recentCost = recent.Contains(r.Artist!.Id) ? 1.0 : 0.0;
-                    double transitionCost = CalculateTransitionCost(artistStyleVector, prev, r.Artist.Id);
+                    double transitionCost = CalculateTransitionCost(artistStyleVector, previousArtistId, r.Artist.Id);
                     double score = r.BaseScore
                                     - (parameters.TransitionPenalty * transitionCost)
                                     - (0.50 * recentCost);
@@ -157,11 +157,24 @@ namespace MusicCatalogue.Prototyping
                 .ToList();
 
                 // Take the top "K" entries from the scored list to form the pool of candidates to take forward
-                int k = Math.Min(parameters.TopK, scoredRows.Count);
+                bool isFirstPick = !previousArtistId.HasValue;
+
+                // First pick: Widen the pool a bit so we don't always start from the same "magnet" artists.
+                // After the first pick: revert to the normal curated tightness.
+                int k = Math.Min(
+                    isFirstPick ? Math.Min(scoredRows.Count, parameters.TopK + 4) : parameters.TopK,
+                    scoredRows.Count
+                );
+
                 var pool = scoredRows.Take(k).ToList();
 
+                // First pick: Slightly higher temperature so we explore within that wider pool
+                double temperature = isFirstPick
+                    ? NumberRangeExtensions.Clamp(parameters.Temperature * 1.35, 0.30, 1.15)
+                    : parameters.Temperature;
+
                 // Use Softmax to pick an entry from the pool
-                var probs = Softmax([.. pool.Select(p => p.StepScore)], parameters.Temperature);
+                var probs = Softmax([.. pool.Select(p => p.StepScore)], temperature);
                 int pickIdx = SampleIndex(rng, probs);
                 var (Row, StepScore) = pool[pickIdx];
 
@@ -185,7 +198,7 @@ namespace MusicCatalogue.Prototyping
                 });
 
                 // Update state for the next iteration
-                prev = artist.Id;
+                previousArtistId = artist.Id;
                 recent.Enqueue(artist.Id);
                 while (recent.Count > parameters.AvoidRecent)
                 {

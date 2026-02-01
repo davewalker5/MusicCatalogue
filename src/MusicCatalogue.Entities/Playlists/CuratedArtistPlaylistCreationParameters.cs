@@ -42,7 +42,7 @@ namespace MusicCatalogue.Entities.Playlists
             StyleWeight = 0.55;
             MoodWeight = 0.45;
             AvoidRecent = 10;
-            TopK = NumberRangeExtensions.ClampInteger((int)Math.Round(presets.topK + (PlaylistVariety * 2.0)), 2, 6);
+            TopK = NumberRangeExtensions.ClampInteger((int)Math.Round(presets.topK + (PlaylistVariety * 2.0)), 3, 8);
             Temperature = NumberRangeExtensions.Clamp(presets.temp * (1.0 + 0.5 * PlaylistVariety), 0.30, 0.85);
             TransitionPenalty = NumberRangeExtensions.Clamp(presets.transitionPenalty * (1.0 - 0.2 * PlaylistVariety), 0.18, 0.35);
             RandomJitter = 0.005;
