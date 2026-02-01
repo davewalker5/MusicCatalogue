@@ -5,7 +5,6 @@ using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.BusinessLogic.Playlists
 {
-    [ExcludeFromCodeCoverage]
     public class AlbumPicker : IAlbumPicker
     {
         private readonly IMusicCatalogueFactory _factory;

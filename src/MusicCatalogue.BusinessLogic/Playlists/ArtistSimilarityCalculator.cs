@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.BusinessLogic.Extensions;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
@@ -6,7 +5,6 @@ using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.BusinessLogic.Playlists
 {
-    [ExcludeFromCodeCoverage]
     public class ArtistSimilarityCalculator : IArtistSimilarityCalculator
     {
         private readonly IMusicCatalogueFactory _factory;
