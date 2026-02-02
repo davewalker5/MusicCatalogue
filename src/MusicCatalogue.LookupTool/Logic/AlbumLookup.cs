@@ -9,13 +9,11 @@ namespace MusicCatalogue.LookupTool.Logic
 {
     internal class AlbumLookup
     {
-        private readonly IMusicLogger _logger;
         private readonly MusicApplicationSettings _settings;
         private readonly IMusicCatalogueFactory _factory;
 
-        public AlbumLookup(IMusicLogger logger, IMusicCatalogueFactory factory, MusicApplicationSettings settings)
+        public AlbumLookup(IMusicCatalogueFactory factory, MusicApplicationSettings settings)
         {
-            _logger = logger;
             _settings = settings;
             _factory = factory;
         }
@@ -43,9 +41,9 @@ namespace MusicCatalogue.LookupTool.Logic
             client.AddHeader("X-RapidAPI-Host", uri.Host);
 
             // Configure the APIs
-            var albumsApi = new TheAudioDBAlbumsApi(_logger, client, albumsEndpoint);
-            var tracksApi = new TheAudioDBTracksApi(_logger, client, tracksEndpoint);
-            var lookupManager = new AlbumLookupManager(_logger, albumsApi, tracksApi, _factory);
+            var albumsApi = new TheAudioDBAlbumsApi(_factory.Logger, client, albumsEndpoint);
+            var tracksApi = new TheAudioDBTracksApi(_factory.Logger, client, tracksEndpoint);
+            var lookupManager = new AlbumLookupManager(albumsApi, tracksApi, _factory);
 
             // Lookup the album and its tracks
             var album = await lookupManager.LookupAlbum(artistName, albumTitle, storeInWishList);

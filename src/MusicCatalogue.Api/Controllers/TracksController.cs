@@ -13,14 +13,10 @@ namespace MusicCatalogue.Api.Controllers
     public class TracksController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
 
-        public TracksController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public TracksController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Add a track to the catalogue
@@ -31,7 +27,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Track>> AddTrackAsync([FromBody] Track template)
         {
-            _logger.LogMessage(Severity.Debug, $"Adding track {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Adding track {template}");
             var track = await _factory.Tracks.AddAsync(template.AlbumId, template.Title, template.Number, template.Duration);
             return track;
         }
@@ -45,7 +41,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Track?>> UpdateTrackAsync([FromBody] Track template)
         {
-            _logger.LogMessage(Severity.Debug, $"Updating track {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Updating track {template}");
             var track = await _factory.Tracks.UpdateAsync(
                 template.Id,
                 template.AlbumId,
@@ -64,7 +60,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteTrackAsync(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Deleting track with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting track with ID {id}");
 
             // Make sure the track exists
             var track = await _factory.Tracks.GetAsync(x => x.Id == id);
@@ -72,7 +68,7 @@ namespace MusicCatalogue.Api.Controllers
             // If the track doesn't exist, return a 404
             if (track == null)
             {
-                _logger.LogMessage(Severity.Error, $"Track with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Track with ID {id} not found");
                 return NotFound();
             }
 

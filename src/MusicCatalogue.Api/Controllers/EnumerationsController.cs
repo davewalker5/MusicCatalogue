@@ -16,13 +16,9 @@ namespace MusicCatalogue.Api.Controllers
     public class EnumerationsController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public EnumerationsController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public EnumerationsController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Return a list of options for "vocal presence"
@@ -32,7 +28,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("vocalpresence")]
         public ActionResult<List<EnumItem>> GetVocalPresenceOptionsAsync()
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving vocal presence options");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving vocal presence options");
             var options = Enum.GetValues<VocalPresence>()
                                 .Select(v => new EnumItem((int)v, v.ToName()))
                                 .ToList();
@@ -47,7 +43,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("ensembletype")]
         public ActionResult<List<EnumItem>> GetEnsembleTypeOptionsAsync()
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving ensemble type options");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving ensemble type options");
             var options = Enum.GetValues<EnsembleType>()
                                 .Select(v => new EnumItem((int)v, v.ToName()))
                                 .ToList();
@@ -62,7 +58,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("playlisttype")]
         public ActionResult<List<EnumItem>> GetPlaylistTypeOptionsAsync()
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving playlist type options");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving playlist type options");
             var options = Enum.GetValues<PlaylistType>()
                                 .Select(v => new EnumItem((int)v, v.ToName()))
                                 .ToList();
@@ -77,7 +73,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("timeofday")]
         public ActionResult<List<EnumItem>> GetTimeOfDayOptionsAsync()
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving time of day options");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving time of day options");
             var options = Enum.GetValues<TimeOfDay>()
                                 .Select(v => new EnumItem((int)v, v.ToName()))
                                 .ToList();

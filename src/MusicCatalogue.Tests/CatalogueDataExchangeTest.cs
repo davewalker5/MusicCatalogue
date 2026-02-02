@@ -2,6 +2,7 @@
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Database;
 using MusicCatalogue.BusinessLogic.Factory;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -28,7 +29,7 @@ namespace MusicCatalogue.Tests
         {
             // Create an instance of the factory
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
 
             // Add an artist, an album and one track
             var retailer = Task.Run(() => _factory.Retailers.AddAsync(RetailerName)).Result;
@@ -73,7 +74,7 @@ namespace MusicCatalogue.Tests
 
             // Create a new instance of the factory with a new in-memory database
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            var factory = new MusicCatalogueFactory(context);
+            var factory = new MusicCatalogueFactory(context, new MockFileLogger());
 
             // Confirm the data's not there
             var artists = Task.Run(() => factory.Artists.ListAsync(x => true, false)).Result;

@@ -14,13 +14,9 @@ namespace MusicCatalogue.Api.Controllers
     public class EquipmentTypesController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public EquipmentTypesController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public EquipmentTypesController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Return a list of all the equipment types in the catalogue
@@ -30,7 +26,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<List<EquipmentType>>> GetEquipmentTypesAsync()
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving list of equipment types");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving list of equipment types");
 
             var equipmentTypes = await _factory.EquipmentTypes.ListAsync(x => true);
 
@@ -51,17 +47,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<EquipmentType>> GetEquipmentTypeByIdAsync(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving equipment type with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving equipment type with ID {id}");
 
             var equipmentType = await _factory.EquipmentTypes.GetAsync(x => x.Id == id);
 
             if (equipmentType == null)
             {
-                _logger.LogMessage(Severity.Error, $"Equipment type with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Equipment type with ID {id} not found");
                 return NotFound();
             }
 
-            _logger.LogMessage(Severity.Debug, $"Retrieved equipment type {equipmentType}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieved equipment type {equipmentType}");
             return equipmentType;
         }
 
@@ -74,7 +70,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<EquipmentType>> AddEquipmentTypeAsync([FromBody] EquipmentType template)
         {
-            _logger.LogMessage(Severity.Debug, $"Adding equipment type {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Adding equipment type {template}");
             var equipmentType = await _factory.EquipmentTypes.AddAsync(template.Name);
             return equipmentType;
         }
@@ -88,7 +84,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<EquipmentType?>> UpdateEquipmentTypeAsync([FromBody] EquipmentType template)
         {
-            _logger.LogMessage(Severity.Debug, $"Updating equipment type {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Updating equipment type {template}");
             var equipmentType = await _factory.EquipmentTypes.UpdateAsync(template.Id, template.Name);
             return equipmentType;
         }
@@ -102,13 +98,13 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteEquipmentType(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Deleting equipment type with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting equipment type with ID {id}");
 
             // Check the equipment type exists, first
             var equipmentType = await _factory.EquipmentTypes.GetAsync(x => x.Id == id);
             if (equipmentType == null)
             {
-                _logger.LogMessage(Severity.Error, $"Equipment type with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Equipment type with ID {id} not found");
                 return NotFound();
             }
 
@@ -120,7 +116,7 @@ namespace MusicCatalogue.Api.Controllers
             catch (EquipmentTypeInUseException)
             {
                 // Equipment type is in use (has equipment associated with it) so this is a bad request
-                _logger.LogMessage(Severity.Error, $"Equiment type with ID {id} has equipment associated with it and cannot be deleted");
+                _factory.Logger.LogMessage(Severity.Error, $"Equiment type with ID {id} has equipment associated with it and cannot be deleted");
                 return BadRequest();
             }
 

@@ -2,6 +2,7 @@
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Search;
 using MusicCatalogue.BusinessLogic.Factory;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -28,7 +29,7 @@ namespace MusicCatalogue.Tests
         public void Initialise()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
 
             // Create the equipment types
             _turntableEquipmentTypeId = Task.Run(() => _factory.EquipmentTypes.AddAsync(TurntableEquipmentType)).Result.Id;

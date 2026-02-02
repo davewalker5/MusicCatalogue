@@ -47,10 +47,10 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
         let updatedArtist = null;
         if (artist == null) {
           // Create the artist
-          updatedArtist = await apiCreateArtist(name, energy, intimacy, warmth, vocalPresence.id, ensembleType.id, logout);
+          updatedArtist = await apiCreateArtist(name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
         } else {
           // Update the existing artist
-          updatedArtist = await apiUpdateArtist(artist.id, name, energy, intimacy, warmth, vocalPresence.id, ensembleType.id, logout);
+          updatedArtist = await apiUpdateArtist(artist.id, name, energy, intimacy, warmth, vocalPresence, ensembleType, logout);
         }
 
         // Go back to the artist list, which should reflect the updated details
@@ -107,11 +107,11 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
                 <label className={styles.artistEditorFormLabel}>Energy</label>
                 <div>
                   <Slider
-                    initialValue={energy}
+                    value={energy}
                     minimum={0}
                     maximum={5}
                     step={1}
-                    sliderChangedCallback={setEnergy}
+                    onChange={setEnergy}
                   />
                 </div>
               </div>
@@ -121,11 +121,11 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
                 <label className={styles.artistEditorFormLabel}>Intimacy</label>
                 <div>
                   <Slider
-                    initialValue={intimacy}
+                    value={intimacy}
                     minimum={0}
                     maximum={5}
                     step={1}
-                    sliderChangedCallback={setIntimacy}
+                    onChange={setIntimacy}
                   />
                 </div>
               </div>
@@ -135,11 +135,11 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
                 <label className={styles.artistEditorFormLabel}>Warmth</label>
                 <div>
                   <Slider
-                    initialValue={warmth}
+                    value={warmth}
                     minimum={0}
                     maximum={5}
                     step={1}
-                    sliderChangedCallback={setWarmth}
+                    onChange={setWarmth}
                   />
                 </div>
               </div>
@@ -149,7 +149,7 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
             <label className={styles.artistEditorFormLabel}>Vocal Presence</label>
             <div>
               <VocalPresenceSelector
-                initialVocalPresence={vocalPresence}
+                vocalPresence={vocalPresence}
                 vocalPresenceChangedCallback={setVocalPresence}
                 logout={logout}
               />
@@ -159,7 +159,7 @@ const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
             <label className={styles.artistEditorFormLabel}>Ensemble Type</label>
             <div>
               <EnsembleTypeSelector
-                initialEnsembleType={ensembleType}
+                ensembleType={ensembleType}
                 ensembleTypeChangedCallback={setEnsembleType}
                 logout={logout}
               />

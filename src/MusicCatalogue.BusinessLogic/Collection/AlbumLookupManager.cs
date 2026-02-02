@@ -8,18 +8,15 @@ namespace MusicCatalogue.BusinessLogic.Collection
 {
     public class AlbumLookupManager : IAlbumLookupManager
     {
-        private readonly IMusicLogger _logger;
         private readonly IAlbumsApi _albumsApi;
         private readonly ITracksApi _tracksApi;
         private readonly IMusicCatalogueFactory _factory;
 
         public AlbumLookupManager(
-            IMusicLogger logger,
             IAlbumsApi albumsApi,
             ITracksApi tracksApi,
             IMusicCatalogueFactory factory)
         {
-            _logger = logger;
             _albumsApi = albumsApi;
             _tracksApi = tracksApi;
             _factory = factory;
@@ -43,13 +40,13 @@ namespace MusicCatalogue.BusinessLogic.Collection
             if (album == null)
             {
                 // Not held locally so use the API to look up the details
-                _logger.LogMessage(Severity.Info, "Album not found locally - using the API to lookup album details");
+                _factory.Logger.LogMessage(Severity.Info, "Album not found locally - using the API to lookup album details");
                 album = await LookupAlbumUsingApi(artistName!, albumTitle!);
 
                 // An album is valid if it isn't null and it has at least 1 track. If not, then it's
                 // not valid and shouldn't be persisted to the database
                 var numberOfTracks = (album != null) && (album.Tracks != null) ? album.Tracks.Count : 0;
-                _logger.LogMessage(Severity.Info, $"Found {numberOfTracks} track(s)");
+                _factory.Logger.LogMessage(Severity.Info, $"Found {numberOfTracks} track(s)");
 
                 if (numberOfTracks > 0)
                 {
@@ -59,7 +56,7 @@ namespace MusicCatalogue.BusinessLogic.Collection
                 else
                 {
                     // Got incomplete album details so return null
-                    _logger.LogMessage(Severity.Warning, $"Incomplete album details returned by the API");
+                    _factory.Logger.LogMessage(Severity.Warning, $"Incomplete album details returned by the API");
                     album = null;
                 }
             }
@@ -116,20 +113,20 @@ namespace MusicCatalogue.BusinessLogic.Collection
             Album? album = null;
 
             // Check the artist exists
-            _logger.LogMessage(Severity.Info, $"Looking for artist '{artistName}' in the database");
+            _factory.Logger.LogMessage(Severity.Info, $"Looking for artist '{artistName}' in the database");
             var artist = await _factory.Artists.GetAsync(x => x.Name == artistName, false);
             if (artist != null)
             {
                 // Look for an album with the specified title by that artist
-                _logger.LogMessage(Severity.Info, $"Looking for album '{albumTitle}' in the database");
+                _factory.Logger.LogMessage(Severity.Info, $"Looking for album '{albumTitle}' in the database");
                 album = await _factory.Albums.GetAsync(x => (x.ArtistId == artist.Id) && (x.Title == albumTitle));
                 if (album != null)
                 {
-                    _logger.LogMessage(Severity.Info, $"Album '{album.Id} - {album.Title}' found locally");
+                    _factory.Logger.LogMessage(Severity.Info, $"Album '{album.Id} - {album.Title}' found locally");
                 }
                 else
                 {
-                    _logger.LogMessage(Severity.Info, $"Album '{albumTitle}' not found locally");
+                    _factory.Logger.LogMessage(Severity.Info, $"Album '{albumTitle}' not found locally");
 
                 }
             }

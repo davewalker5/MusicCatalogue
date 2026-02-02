@@ -35,6 +35,10 @@ const MoodList = ({ navigate, logout }) => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Morning Weight</th>
+            <th>Afternoon Weight</th>
+            <th>Evening Weight</th>
+            <th>Late Night Weight</th>
           </tr>
         </thead>
         {moods != null && (

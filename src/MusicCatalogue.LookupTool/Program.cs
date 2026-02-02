@@ -62,7 +62,7 @@ namespace MusicCatalogue.LookupTool
 
                     // Configure the business logic factory
                     var context = new MusicCatalogueDbContextFactory().CreateDbContext([]);
-                    var factory = new MusicCatalogueFactory(context);
+                    var factory = new MusicCatalogueFactory(context, logger);
 
                     // If this is an update, apply the latest migrations
                     if (parser.IsPresent(CommandLineOptionType.Update))
@@ -78,14 +78,14 @@ namespace MusicCatalogue.LookupTool
                         var values = parser.GetValues(CommandLineOptionType.Lookup);
                         var targetType = (TargetType)Enum.Parse(typeof(TargetType), values![2]);
                         var storeInWishList = targetType == TargetType.wishlist;
-                        await new AlbumLookup(logger, factory, settings!).LookupAlbum(values[0], values[1], storeInWishList);
+                        await new AlbumLookup(factory, settings!).LookupAlbum(values[0], values[1], storeInWishList);
                     }
 
                     // If this is an import, import data from the specified CSV file
                     if (parser.IsPresent(CommandLineOptionType.Import))
                     {
                         var values = parser.GetValues(CommandLineOptionType.Import);
-                        new DataImport(logger, factory).Import(values![0]);
+                        new DataImport(factory).Import(values![0]);
                     }
 
                     // If this is an export, export the collection to the specified file
@@ -93,7 +93,7 @@ namespace MusicCatalogue.LookupTool
                     {
                         var values = parser.GetValues(CommandLineOptionType.Export);
                         var exportType = (ExportType)Enum.Parse(typeof(ExportType), values![0]);
-                        IDataExporter exporter = exportType == ExportType.music ? new CatalogueExporter(logger, factory) : new EquipmentExporter(logger, factory);
+                        IDataExporter exporter = exportType == ExportType.music ? new CatalogueExporter(factory) : new EquipmentExporter(factory);
                         exporter.Export(values[1]);
                     }
                 }

@@ -22,13 +22,28 @@ const apiFetchMoods = async (logout) => {
 /**
  * Create a new mood
  * @param {*} name
+ * @param {*} morningWeight
+ * @param {*} afternoonWeight
+ * @param {*} eveningWeight
+ * @param {*} lateWeight
  * @param {*} logout
  * @returns
  */
-const apiCreateMood = async (name, logout) => {
+const apiCreateMood = async (
+  name,
+  morningWeight,
+  afternoonWeight,
+  eveningWeight,
+  lateWeight,
+  logout
+) => {
   // Construct the body
   const body = JSON.stringify({
     name: name,
+    morningWeight: morningWeight,
+    afternoonWeight: afternoonWeight,
+    eveningWeight: eveningWeight,
+    lateWeight: lateWeight,
   });
 
   // Call the API to create the mood
@@ -47,14 +62,30 @@ const apiCreateMood = async (name, logout) => {
  * Update an existing mood
  * @param {*} moodId
  * @param {*} name
+ * @param {*} morningWeight
+ * @param {*} afternoonWeight
+ * @param {*} eveningWeight
+ * @param {*} lateWeight
  * @param {*} logout
  * @returns
  */
-const apiUpdateMood = async (moodId, name, logout) => {
+const apiUpdateMood = async (
+  moodId,
+  name,
+  morningWeight,
+  afternoonWeight,
+  eveningWeight,
+  lateWeight,
+  logout
+) => {
   // Construct the body
   const body = JSON.stringify({
     id: moodId,
     name: name,
+    morningWeight: morningWeight,
+    afternoonWeight: afternoonWeight,
+    eveningWeight: eveningWeight,
+    lateWeight: lateWeight,
   });
 
   // Call the API to update the mood

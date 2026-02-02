@@ -14,13 +14,9 @@ namespace MusicCatalogue.Api.Controllers
     public class EquipmentController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public EquipmentController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public EquipmentController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Return a list of all items of equipment matching the filter criteria
@@ -34,13 +30,13 @@ namespace MusicCatalogue.Api.Controllers
             // to an increasing number of query string parameters and a very messy URL. So the filter criteria
             // are POSTed in the request body, instead, and bound into a strongly typed criteria object
 
-            _logger.LogMessage(Severity.Debug, $"Retrieving equipment matching criteria {criteria}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving equipment matching criteria {criteria}");
 
             var equipment = await _factory.Search.EquipmentSearchAsync(criteria);
 
             if (equipment == null)
             {
-                _logger.LogMessage(Severity.Error, $"No matching equipment found");
+                _factory.Logger.LogMessage(Severity.Error, $"No matching equipment found");
                 return NoContent();
             }
 
@@ -56,17 +52,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Equipment>> GetEquipmentByIdAsync(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving equipment with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving equipment with ID {id}");
 
             var equipment = await _factory.Equipment.GetAsync(x => x.Id == id);
 
             if (equipment == null)
             {
-                _logger.LogMessage(Severity.Error, $"Equipment with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Equipment with ID {id} not found");
                 return NotFound();
             }
 
-            _logger.LogMessage(Severity.Debug, $"Retrieved equipment {equipment}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieved equipment {equipment}");
             return equipment;
         }
 
@@ -79,7 +75,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Equipment>> AddEquipmentAsync([FromBody] Equipment template)
         {
-            _logger.LogMessage(Severity.Debug, $"Adding equiment {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Adding equiment {template}");
             var equipment = await _factory.Equipment.AddAsync(
                 template.EquipmentTypeId,
                 template.ManufacturerId,
@@ -102,7 +98,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Equipment?>> UpdateEquipmentAsync([FromBody] Equipment template)
         {
-            _logger.LogMessage(Severity.Debug, $"Updating equiment {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Updating equiment {template}");
             var equipment = await _factory.Equipment.UpdateAsync(
                 template.Id,
                 template.EquipmentTypeId,
@@ -126,13 +122,13 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteEquipment(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Deleting equipment with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting equipment with ID {id}");
 
             // Check the equipment exists, first
             var equipment = await _factory.Equipment.GetAsync(x => x.Id == id);
             if (equipment == null)
             {
-                _logger.LogMessage(Severity.Error, $"Equipment with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Equipment with ID {id} not found");
                 return NotFound();
             }
 

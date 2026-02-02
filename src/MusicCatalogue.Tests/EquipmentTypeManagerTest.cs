@@ -3,6 +3,7 @@ using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -19,7 +20,7 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
 
             _equipmentTypeId = Task.Run(() => _factory!.EquipmentTypes.AddAsync(Name)).Result.Id;
         }

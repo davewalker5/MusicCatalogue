@@ -24,11 +24,17 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
 
-      // Request a playlist built using the specified criteria
+      // Get the playlist builder criteria
       const playlistTypeId = playlistType != null ? playlistType.id : null;
       const timeOfDayId = timeOfDay != null ? timeOfDay.id : null;
-      const fetchedAlbums = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, logout);
-      setPlaylistAlbums(fetchedAlbums);
+
+      // Make sure they're all specified
+      if ((playlistTypeId != null) && (timeOfDayId != null) && (numberOfEntries > 0)) {
+        // Request a playlist built using the specified criteria
+        const fetchedAlbums = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, logout);
+        setPlaylistAlbums(fetchedAlbums);
+      }
+
     },
     [playlistType, timeOfDay, numberOfEntries, logout]
   );
@@ -70,11 +76,11 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 <label className={styles.playlistBuilderLabel}>Number Of Entries</label>
                 <div>
                   <Slider
-                        initialValue={numberOfEntries}
+                        value={numberOfEntries}
                         minimum={3}
                         maximum={10}
                         step={1}
-                        sliderChangedCallback={setNumberOfEntries}
+                        onChange={setNumberOfEntries}
                       />
                 </div>
               </div>

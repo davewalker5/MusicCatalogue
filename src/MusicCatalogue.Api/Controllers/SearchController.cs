@@ -16,13 +16,11 @@ namespace MusicCatalogue.Api.Controllers
     {
         private readonly IMusicCatalogueFactory _factory;
         private readonly IAlbumLookupManager _manager;
-        private readonly IMusicLogger _logger;
 
-        public SearchController(IMusicCatalogueFactory factory, IAlbumLookupManager manager, IMusicLogger logger)
+        public SearchController(IMusicCatalogueFactory factory, IAlbumLookupManager manager)
         {
             _factory = factory;
             _manager = manager;
-            _logger = logger;
         }
 
         /// <summary>
@@ -42,7 +40,7 @@ namespace MusicCatalogue.Api.Controllers
             var decodedAlbumTitle = HttpUtility.UrlDecode(albumTitle);
 
             var catalogue = storeInWishList ? "wish list" : "main catalogue";
-            _logger.LogMessage(Severity.Debug, $"Searching for '{albumTitle}' by {artistName} - results will be stored in the {catalogue}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Searching for '{albumTitle}' by {artistName} - results will be stored in the {catalogue}");
 
             // Perform the lookup
             var album = await _manager.LookupAlbum(decodedArtistName, decodedAlbumTitle, storeInWishList);
@@ -64,7 +62,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("closest")]
         public async Task<ActionResult<List<ClosestArtist>>> ClosestArtistsAsync([FromBody] ClosestArtistSearchCriteria criteria)
         {
-            _logger.LogMessage(Severity.Debug, $"Searching closest artists using criteria {criteria}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Searching closest artists using criteria {criteria}");
             var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(criteria, criteria.ArtistId, criteria.TopN, true);
             return closest;
         }
@@ -78,7 +76,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("pick")]
         public async Task<ActionResult<List<PickedAlbum>>> GetRandomAlbumsAsync([FromBody] AlbumSelectionCriteria criteria)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving random albums matching criteria {criteria}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving random albums matching criteria {criteria}");
             var pickedAlbums = await _factory.AlbumPicker.PickAsync(criteria);
             return pickedAlbums;
         }
@@ -92,7 +90,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("playlist")]
         public async Task<ActionResult<List<Album>>> GeneratePlaylistAsync([FromBody] PlaylistBuilderCriteria criteria)
         {
-            _logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
             var playlist = await _factory.ArtistPlaylistBuilder.BuildPlaylist(criteria.Type, criteria.TimeOfDay, criteria.NumberOfEntries);
             var albums = await _factory.ArtistPlaylistBuilder.PickPlaylistAlbums(playlist);
             return albums;

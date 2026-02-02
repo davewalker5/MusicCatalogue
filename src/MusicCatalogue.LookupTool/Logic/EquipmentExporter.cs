@@ -6,7 +6,7 @@ namespace MusicCatalogue.LookupTool.Logic
 {
     internal class EquipmentExporter : DataExportBase
     {
-        public EquipmentExporter(IMusicLogger logger, IMusicCatalogueFactory factory) : base(logger, factory)
+        public EquipmentExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 
@@ -31,8 +31,8 @@ namespace MusicCatalogue.LookupTool.Logic
             catch (Exception ex)
             {
                 Console.WriteLine($"Export error: {ex.Message}");
-                Logger.LogMessage(Severity.Info, $"Export error: {ex.Message}");
-                Logger.LogException(ex);
+                Factory.Logger.LogMessage(Severity.Info, $"Export error: {ex.Message}");
+                Factory.Logger.LogException(ex);
             }
             finally
             {

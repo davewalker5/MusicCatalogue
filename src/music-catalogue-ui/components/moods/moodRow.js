@@ -17,6 +17,10 @@ const MoodRow = ({ mood, navigate, logout, setMoods, setError }) => {
   return (
     <tr>
       <td>{mood.name}</td>
+      <td>{mood.morningWeight}</td>
+      <td>{mood.afternoonWeight}</td>
+      <td>{mood.eveningWeight}</td>
+      <td>{mood.lateWeight}</td>
       <td>
         <DeleteMoodActionIcon
           mood={mood}

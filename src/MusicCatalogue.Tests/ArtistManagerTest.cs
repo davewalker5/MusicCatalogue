@@ -2,6 +2,7 @@
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -22,7 +23,7 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
             _artistId = Task.Run(() => _factory.Artists.AddAsync(ArtistName)).Result.Id;
         }
 
