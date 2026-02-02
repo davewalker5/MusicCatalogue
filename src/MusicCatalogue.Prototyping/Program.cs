@@ -19,27 +19,14 @@ namespace MusicCatalogue.Prototyping
             var context = new MusicCatalogueDbContextFactory().CreateDbContext([]);
             var factory = new MusicCatalogueFactory(context);
 
-            List<string> lines = ["Playlist,Time Of Day,Type,Artist"];
+            // Create a playlist
+            var playlist = await factory.ArtistPlaylistBuilder.BuildPlaylist(PlaylistType.Curated, TimeOfDay.Evening, 5);
+            var albums = await factory.ArtistPlaylistBuilder.PickPlaylistAlbums(playlist);
 
-            // Iterate over the times of day
-            foreach (var tod in Enum.GetValues<TimeOfDay>())
+            foreach (var album in albums)
             {
-                // Playlist creation parameters
-                var numberOfEntries = new[] { TimeOfDay.Evening, TimeOfDay.Late }.Contains(tod) ? 5 : 10;
-                var numberOfPlaylists = 500;
-
-                for (int i = 0; i < numberOfPlaylists; i++)
-                {
-                    // Alternate between tightly curated and "normal" playlists
-                    var type = i %2 == 0 ? PlaylistType.Curated : PlaylistType.Normal;
-                    var number = type == PlaylistType.Curated ? 5 : 10;
-                    var playlist = await factory.ArtistPlaylistBuilder.BuildPlaylist(type, tod, number);
-                    lines.AddRange(playlist.Select(x => $"{i},{tod},{type},{x.ArtistName}"));
-                }
+                Console.WriteLine($"{album.Artist!.Name}, {album.Title}");
             }
-
-            // Write the CSV file
-            File.WriteAllLines("playlists.csv", lines!);
         }
     }
 }

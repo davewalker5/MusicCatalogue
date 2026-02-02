@@ -42,6 +42,29 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         }
 
         /// <summary>
+        /// Pick one random album for each artist in the specified playlist
+        /// </summary>
+        /// <param name="artists"></param>
+        /// <returns></returns>
+        public async Task<List<Album>> PickPlaylistAlbums(IEnumerable<PlaylistArtist> artists)
+        {
+            List<Album> pickedAlbums = [];
+
+            foreach (var playlistArtist in artists)
+            {
+                var artist = await _factory.Artists.GetAsync(x => x.Id == playlistArtist.ArtistId, true);
+                if (artist.Albums.Count > 0)
+                {
+                    var album = artist.Albums.OrderBy(_ => Guid.NewGuid()).FirstOrDefault();
+                    album!.Artist = artist;
+                    pickedAlbums.Add(album!);
+                }
+            }
+
+            return pickedAlbums;
+        }
+
+        /// <summary>
         /// Build a randomised playlist one entry at a time accounting for:
         /// 
         /// 1. Style match to time of day ideal
@@ -54,7 +77,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="timeOfDay"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistParameters parameters)
+        private static List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistParameters parameters)
         {
             // Materialize the artists list
             var artistList = artists.ToList();

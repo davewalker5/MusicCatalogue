@@ -7,5 +7,6 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         Task<List<PlaylistArtist>> BuildPlaylist(PlaylistType mode, TimeOfDay timeOfDay, int n);
         List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistType mode, TimeOfDay timeOfDay, int n);
+        Task<List<Album>> PickPlaylistAlbums(IEnumerable<PlaylistArtist> artists);
     }
 }
