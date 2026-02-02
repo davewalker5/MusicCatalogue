@@ -4,7 +4,7 @@ using MusicCatalogue.Entities.Database;
 namespace MusicCatalogue.Entities.Playlists
 {
     [ExcludeFromCodeCoverage]
-    public class ArtistPlaylistItem : MusicCatalogueEntityBase
+    public class PlaylistArtist : MusicCatalogueEntityBase
     {
         public int ArtistId { get; set; }
         public string? ArtistName { get; set; }

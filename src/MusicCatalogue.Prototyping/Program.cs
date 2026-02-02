@@ -31,10 +31,9 @@ namespace MusicCatalogue.Prototyping
                 for (int i = 0; i < numberOfPlaylists; i++)
                 {
                     // Alternate between tightly curated and "normal" playlists
-                    var type = i %2 == 0 ? "Curated" : "Normal";
-                    var playlist = i %2 == 0 ?
-                        await factory.ArtistPlaylistBuilder.BuildCuratedArtistPlaylist(tod, numberOfEntries) :
-                        await factory.ArtistPlaylistBuilder.BuildNormalArtistPlaylist(tod, numberOfEntries);
+                    var type = i %2 == 0 ? PlaylistType.Curated : PlaylistType.Normal;
+                    var number = type == PlaylistType.Curated ? 5 : 10;
+                    var playlist = await factory.ArtistPlaylistBuilder.BuildPlaylist(type, tod, number);
                     lines.AddRange(playlist.Select(x => $"{i},{tod},{type},{x.ArtistName}"));
                 }
             }

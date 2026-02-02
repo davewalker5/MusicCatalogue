@@ -3,9 +3,9 @@ using MusicCatalogue.Entities.Extensions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Playlists;
 
-namespace MusicCatalogue.Prototyping
+namespace MusicCatalogue.BusinessLogic.Playlists
 {
-    public sealed class ArtistPlaylistBuilder : IArtistPlaylistBuilder
+    public sealed class PlaylistBuilder : IPlaylistBuilder
     {
         private const int MaximumStyleValue = 5;
 
@@ -20,42 +20,26 @@ namespace MusicCatalogue.Prototyping
 
         private readonly IMusicCatalogueFactory _factory;
 
-        public ArtistPlaylistBuilder(IMusicCatalogueFactory factory)
+        public PlaylistBuilder(IMusicCatalogueFactory factory)
             => _factory = factory;
-        
+
         /// <summary>
-        /// Flowing playlists with more exploration and stylistic variation
+        /// Build a playlist using all available artists in the catalogue
         /// </summary>
         /// <param name="timeOfDay"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        public async Task<List<ArtistPlaylistItem>> BuildNormalArtistPlaylist(TimeOfDay timeOfDay, int n)
-            => BuildNormalArtistPlaylist(await _factory.Artists.ListAsync(x => true, false), timeOfDay, n);
+        public async Task<List<PlaylistArtist>> BuildPlaylist(PlaylistType mode, TimeOfDay timeOfDay, int n)
+            => BuildPlaylist(await _factory.Artists.ListAsync(x => true, false), mode, timeOfDay, n);
 
         /// <summary>
-        /// Flowing playlists with more exploration and stylistic variation
+        /// Build a playlist using the specified set of artists
         /// </summary>
-        /// <param name="artists"></param>
-        /// <param name="timeOfDay"></param>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public List<ArtistPlaylistItem> BuildNormalArtistPlaylist(IEnumerable<Artist> artists, TimeOfDay timeOfDay, int n)
-            => BuildPlaylist(artists, NormalArtistPlaylistCreationParameters.Create(timeOfDay, n));
-
-        /// <summary>
-        /// Playlists with a curated feel
-        /// </summary>
-        /// <param name="timeOfDay"></param>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public async Task<List<ArtistPlaylistItem>> BuildCuratedArtistPlaylist(TimeOfDay timeOfDay, int n)
-            => BuildCuratedArtistPlaylist(await _factory.Artists.ListAsync(x => true, false), timeOfDay, n);
-
-        /// <summary>
-        /// Playlists with a curated feel
-        /// </summary>
-        public List<ArtistPlaylistItem> BuildCuratedArtistPlaylist(IEnumerable<Artist> artists, TimeOfDay timeOfDay, int n)
-            => BuildPlaylist(artists, CuratedArtistPlaylistCreationParameters.Create(timeOfDay, n));
+        public List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistType mode, TimeOfDay timeOfDay, int n)
+        {
+            var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, n);
+            return BuildPlaylist(artists, parameters);
+        }
 
         /// <summary>
         /// Build a randomised playlist one entry at a time accounting for:
@@ -70,7 +54,7 @@ namespace MusicCatalogue.Prototyping
         /// <param name="timeOfDay"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private List<ArtistPlaylistItem> BuildPlaylist(IEnumerable<Artist> artists, ArtistPlaylistCreationParameters parameters)
+        private List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistParameters parameters)
         {
             // Materialize the artists list
             var artistList = artists.ToList();
@@ -133,7 +117,7 @@ namespace MusicCatalogue.Prototyping
             );
 
             // Iterative selection with top-K softmax sampling
-            var chosen = new List<ArtistPlaylistItem>(Math.Min(parameters.NumberOfEntries, artistScores!.Count));
+            var chosen = new List<PlaylistArtist>(Math.Min(parameters.NumberOfEntries, artistScores!.Count));
             var remaining = new List<ArtistScoringRow>(artistScores);
             var recent = new Queue<int>();
             int? previousArtistId = null;
@@ -181,7 +165,7 @@ namespace MusicCatalogue.Prototyping
                 // Add a new artist playlist item. This includes the pick and the calculated values
                 // that illustrate why it was picked 
                 var artist = Row.Artist;
-                chosen.Add(new ArtistPlaylistItem
+                chosen.Add(new PlaylistArtist
                 {
                     ArtistId = artist!.Id,
                     ArtistName = artist.Name,

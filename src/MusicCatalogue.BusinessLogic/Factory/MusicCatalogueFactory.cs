@@ -8,7 +8,6 @@ using MusicCatalogue.BusinessLogic.DataExchange.Equipment;
 using MusicCatalogue.BusinessLogic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.BusinessLogic.Playlists;
-using MusicCatalogue.Prototyping;
 
 namespace MusicCatalogue.BusinessLogic.Factory
 {
@@ -40,7 +39,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<IDateBasedReport<AlbumByPurchaseDate>> _albumsByPurchaseDate;
         private readonly Lazy<IArtistSimilarityCalculator> _artistSimilarityCalculator;
         private readonly Lazy<IAlbumPicker> _albumPicker;
-        private readonly Lazy<IArtistPlaylistBuilder> _artistPlaylistBuilder;
+        private readonly Lazy<IPlaylistBuilder> _artistPlaylistBuilder;
 
         public DbContext Context { get; private set; }
         public IGenreManager Genres { get { return _genres.Value; } }
@@ -82,7 +81,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
 
         public IArtistSimilarityCalculator ArtistSimilarityCalculator { get { return _artistSimilarityCalculator.Value; } }
         public IAlbumPicker AlbumPicker { get { return _albumPicker.Value; } }
-        public IArtistPlaylistBuilder ArtistPlaylistBuilder { get { return _artistPlaylistBuilder.Value; } }
+        public IPlaylistBuilder ArtistPlaylistBuilder { get { return _artistPlaylistBuilder.Value; } }
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context)
         {
@@ -113,7 +112,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _albumsByPurchaseDate = new Lazy<IDateBasedReport<AlbumByPurchaseDate>>(() => new DateBasedReport<AlbumByPurchaseDate>(context));
             _artistSimilarityCalculator = new Lazy<IArtistSimilarityCalculator>(() => new ArtistSimilarityCalculator(this));
             _albumPicker = new Lazy<IAlbumPicker>(() => new AlbumPicker(this));
-            _artistPlaylistBuilder = new Lazy<IArtistPlaylistBuilder>(() => new ArtistPlaylistBuilder(this));
+            _artistPlaylistBuilder = new Lazy<IPlaylistBuilder>(() => new PlaylistBuilder(this));
         }
     }
 }
