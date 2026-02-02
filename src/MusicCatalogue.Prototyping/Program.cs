@@ -1,5 +1,6 @@
 ﻿using MusicCatalogue.BusinessLogic.Factory;
 using MusicCatalogue.Data;
+using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.Prototyping
 {
@@ -15,6 +16,15 @@ namespace MusicCatalogue.Prototyping
             // Configure the business logic factory
             var context = new MusicCatalogueDbContextFactory().CreateDbContext([]);
             var factory = new MusicCatalogueFactory(context);
+
+
+            var playlist = await factory.ArtistPlaylistBuilder.BuildPlaylist(PlaylistType.Normal, TimeOfDay.Afternoon, 5);
+            var albums = await factory.ArtistPlaylistBuilder.PickPlaylistAlbums(playlist);
+
+            foreach (var album in albums)
+            {
+                Console.WriteLine($"{album.Title} - {album.Artist!.Name}");
+            }
         }
     }
 }
