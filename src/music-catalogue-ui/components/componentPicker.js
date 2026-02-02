@@ -32,6 +32,7 @@ import AlbumPicker from "./albums/albumPicker";
 import AlbumsByPurchaseDateReport from "./reports/albumsByPurchaseDateReport";
 import ArtistMoodEditor from "./artists/artistMoodEditor";
 import ClosestArtistList from "./closest/closestArtistList";
+import PlaylistBuilder from "./playlists/playlistBuilder";
 
 /**
  * Component using the current context to select and render the current page
@@ -112,6 +113,8 @@ const ComponentPicker = ({ context, navigate, logout }) => {
       );
     case pages.albumPicker:
       return <AlbumPicker navigate={navigate} logout={logout} />;
+    case pages.playlistBuilder:
+      return <PlaylistBuilder navigate={navigate} logout={logout} />;
     case pages.tracks:
       return (
         <TrackList

@@ -5,7 +5,7 @@ namespace MusicCatalogue.Api.Extensions
     public static class EnsembleTypeExtensions
     {
         /// <summary>
-        /// Convert a data exchange type to a descriptive string
+        /// Convert an ensemble type to a descriptive string
         /// </summary>
         /// <param name="units"></param>
         /// <returns></returns>

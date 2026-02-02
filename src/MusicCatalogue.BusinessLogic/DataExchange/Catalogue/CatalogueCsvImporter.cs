@@ -1,15 +1,11 @@
 ﻿using Microsoft.VisualBasic.FileIO;
-using MusicCatalogue.BusinessLogic.Database;
-using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace MusicCatalogue.BusinessLogic.DataExchange.Catalogue
 {
-    [ExcludeFromCodeCoverage]
     public partial class CatalogueCsvImporter : DataExchangeBase, IImporter
     {
         public event EventHandler<TrackDataExchangeEventArgs>? TrackImport;

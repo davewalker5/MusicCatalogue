@@ -2,11 +2,6 @@
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Search;
 using MusicCatalogue.BusinessLogic.Factory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicCatalogue.Tests
 {

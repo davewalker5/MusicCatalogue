@@ -5,7 +5,7 @@ namespace MusicCatalogue.Api.Extensions
     public static class VocalPresenceExtensions
     {
         /// <summary>
-        /// Convert a data exchange type to a descriptive string
+        /// Convert a vocal presence to a descriptive string
         /// </summary>
         /// <param name="units"></param>
         /// <returns></returns>

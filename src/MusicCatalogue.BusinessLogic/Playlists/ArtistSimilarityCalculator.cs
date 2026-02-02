@@ -1,12 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.BusinessLogic.Extensions;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Reporting;
+using MusicCatalogue.Entities.Playlists;
 
-namespace MusicCatalogue.BusinessLogic.Reporting
+namespace MusicCatalogue.BusinessLogic.Playlists
 {
-    [ExcludeFromCodeCoverage]
     public class ArtistSimilarityCalculator : IArtistSimilarityCalculator
     {
         private readonly IMusicCatalogueFactory _factory;
@@ -90,7 +88,7 @@ namespace MusicCatalogue.BusinessLogic.Reporting
             }
 
             // Materialise the artist list
-            var list = artists as IList<Artist> ?? [.. artists];
+            var list = artists as IList<Artist> ?? [.. artists!];
 
             // Get the target artist moods
             var targetMoodIds = GetMoodIds(target);

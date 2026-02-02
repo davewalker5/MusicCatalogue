@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.Entities.Database;
 
-namespace MusicCatalogue.Entities.Reporting
+namespace MusicCatalogue.Entities.Playlists
 {
     [ExcludeFromCodeCoverage]
     public class SimilarityWeights : MusicCatalogueEntityBase

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MusicCatalogue.Api.Entities;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.Entities.Reporting;
+using MusicCatalogue.Entities.Playlists;
 using System.Web;
 
 namespace MusicCatalogue.Api.Controllers
@@ -36,7 +35,7 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{artistName}/{albumTitle}/{storeInWishList}")]
-        public async Task<ActionResult<Album>> Search(string artistName, string albumTitle, bool storeInWishList)
+        public async Task<ActionResult<Album>> SearchAsync(string artistName, string albumTitle, bool storeInWishList)
         {
             // Decode the search criteria
             var decodedArtistName = HttpUtility.UrlDecode(artistName);
@@ -70,13 +69,33 @@ namespace MusicCatalogue.Api.Controllers
             return closest;
         }
 
+        /// <summary>
+        /// Pick albums matching the specified criteria
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("pick")]
-        public async Task<ActionResult<List<PickedAlbum>>> GetRandomAlbum([FromBody] AlbumSelectionCriteria criteria)
+        public async Task<ActionResult<List<PickedAlbum>>> GetRandomAlbumsAsync([FromBody] AlbumSelectionCriteria criteria)
         {
             _logger.LogMessage(Severity.Debug, $"Retrieving random albums matching criteria {criteria}");
             var pickedAlbums = await _factory.AlbumPicker.PickAsync(criteria);
             return pickedAlbums;
+        }
+
+        /// <summary>
+        /// Generate a playlist using the specified playlist builder criteria
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("playlist")]
+        public async Task<ActionResult<List<Album>>> GeneratePlaylistAsync([FromBody] PlaylistBuilderCriteria criteria)
+        {
+            _logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
+            var playlist = await _factory.ArtistPlaylistBuilder.BuildPlaylist(criteria.Type, criteria.TimeOfDay, criteria.NumberOfEntries);
+            var albums = await _factory.ArtistPlaylistBuilder.PickPlaylistAlbums(playlist);
+            return albums;
         }
     }
 }

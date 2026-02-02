@@ -75,7 +75,12 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<Mood>> AddMoodAsync([FromBody] Mood template)
         {
             _logger.LogMessage(Severity.Debug, $"Adding mood {template}");
-            var mood = await _factory.Moods.AddAsync(template.Name);
+            var mood = await _factory.Moods.AddAsync(
+                template.Name,
+                template.MorningWeight,
+                template.AfternoonWeight,
+                template.EveningWeight,
+                template.LateWeight);
             return mood;
         }
 
@@ -89,7 +94,13 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<Mood?>> UpdateMoodAsync([FromBody] Mood template)
         {
             _logger.LogMessage(Severity.Debug, $"Updating mood {template}");
-            var mood = await _factory.Moods.UpdateAsync(template.Id, template.Name);
+            var mood = await _factory.Moods.UpdateAsync(
+                template.Id,
+                template.Name,
+                template.MorningWeight,
+                template.AfternoonWeight,
+                template.EveningWeight,
+                template.LateWeight);
             return mood;
         }
 

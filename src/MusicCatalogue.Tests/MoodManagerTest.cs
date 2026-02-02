@@ -22,7 +22,7 @@ namespace MusicCatalogue.Tests
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
             _factory = new MusicCatalogueFactory(context);
 
-            _moodId = Task.Run(() => _factory!.Moods.AddAsync(Name)).Result.Id;
+            _moodId = Task.Run(() => _factory!.Moods.AddAsync(Name, 0, 0, 0, 0)).Result.Id;
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace MusicCatalogue.Tests
         [TestMethod]
         public async Task UpdateTest()
         {
-            await _factory!.Moods.UpdateAsync(_moodId, UpdatedName);
+            await _factory!.Moods.UpdateAsync(_moodId, UpdatedName, 0, 0, 0, 0);
             var mood = await _factory!.Moods.GetAsync(a => a.Id == _moodId);
             Assert.IsNotNull(mood);
             Assert.IsTrue(mood.Id > 0);

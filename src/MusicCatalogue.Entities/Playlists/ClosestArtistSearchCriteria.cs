@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using MusicCatalogue.Entities.Reporting;
 
-namespace MusicCatalogue.Api.Entities
+namespace MusicCatalogue.Entities.Playlists
 {
     [ExcludeFromCodeCoverage]
     public class ClosestArtistSearchCriteria : SimilarityWeights

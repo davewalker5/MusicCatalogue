@@ -41,8 +41,17 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// Add a mood, if it doesn't already exist
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="morningWeight"></param>
+        /// <param name="afternoonWeight"></param>
+        /// <param name="eveningWeight"></param>
+        /// <param name="lateWeight"></param>
         /// <returns></returns>
-        public async Task<Mood> AddAsync(string name)
+        public async Task<Mood> AddAsync(
+            string name,
+            double morningWeight,
+            double afternoonWeight,
+            double eveningWeight,
+            double lateWeight)
         {
             var clean = StringCleaner.Clean(name)!;
             var mood = await GetAsync(a => a.Name == clean);
@@ -52,7 +61,11 @@ namespace MusicCatalogue.BusinessLogic.Database
                 // Get a serchable name
                 mood = new Mood
                 {
-                    Name = clean
+                    Name = clean,
+                    MorningWeight = morningWeight,
+                    AfternoonWeight = afternoonWeight,
+                    EveningWeight = eveningWeight,
+                    LateWeight = lateWeight
                 };
 
                 await Context.Moods.AddAsync(mood);
@@ -67,14 +80,28 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
+        /// <param name="morningWeight"></param>
+        /// <param name="afternoonWeight"></param>
+        /// <param name="eveningWeight"></param>
+        /// <param name="lateWeight"></param>
         /// <returns></returns>
-        public async Task<Mood?> UpdateAsync(int id, string name)
+        public async Task<Mood?> UpdateAsync(
+            int id,
+            string name,
+            double morningWeight,
+            double afternoonWeight,
+            double eveningWeight,
+            double lateWeight)
         {
             var mood = Context.Moods.FirstOrDefault(x => x.Id == id);
             if (mood != null)
             {
                 // Save the changes
                 mood.Name = StringCleaner.Clean(name)!;
+                mood.MorningWeight = morningWeight;
+                mood.AfternoonWeight = afternoonWeight;
+                mood.EveningWeight = eveningWeight;
+                mood.LateWeight = lateWeight;
                 await Context.SaveChangesAsync();
             }
 

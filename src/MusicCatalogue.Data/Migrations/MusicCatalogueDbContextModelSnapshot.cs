@@ -276,6 +276,18 @@ namespace MusicCatalogue.Data.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Id");
 
+                    b.Property<double>("AfternoonWeight")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("EveningWeight")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("LateWeight")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("MorningWeight")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -543,7 +555,7 @@ namespace MusicCatalogue.Data.Migrations
 
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Album", b =>
                 {
-                    b.HasOne("MusicCatalogue.Entities.Database.Artist", null)
+                    b.HasOne("MusicCatalogue.Entities.Database.Artist", "Artist")
                         .WithMany("Albums")
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -556,6 +568,8 @@ namespace MusicCatalogue.Data.Migrations
                     b.HasOne("MusicCatalogue.Entities.Database.Retailer", "Retailer")
                         .WithMany()
                         .HasForeignKey("RetailerId");
+
+                    b.Navigation("Artist");
 
                     b.Navigation("Genre");
 

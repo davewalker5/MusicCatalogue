@@ -410,4 +410,5 @@ published/
 Published/
 venv/
 exported/
-musiccatalogue.db
+musiccatalogue.db*
+playlists.*
