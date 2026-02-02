@@ -34,7 +34,6 @@ const AlbumPicker = ({ navigate, logout }) => {
     [genre, energy, intimacy, warmth, logout]
   );
 
-      console.log(pickedAlbums);
   return (
     <>
       <div className="row mb-2 pageTitle">

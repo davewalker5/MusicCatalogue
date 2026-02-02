@@ -34,6 +34,7 @@ const pages = {
   moodEditor: "MoodEditor",
   artistMoodEditor: "ArtistMoodEditor",
   closestArtists: "ClosestArtists",
+  playlistBuilder: "PlaylistBuilder",
 };
 
 export default pages;
