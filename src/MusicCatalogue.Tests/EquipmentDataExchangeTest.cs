@@ -1,11 +1,7 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -27,7 +23,7 @@ namespace MusicCatalogue.Tests
         public void Initialise()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
 
             var equipmentTypeId = Task.Run(() => _factory.EquipmentTypes.AddAsync(EquipmentType)).Result.Id;
             var manufacturerId = Task.Run(() => _factory.Manufacturers.AddAsync(Manufacturer)).Result.Id;

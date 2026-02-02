@@ -31,7 +31,7 @@ const AlbumPicker = ({ navigate, logout }) => {
       const fetchedAlbums = await apiFetchRandomAlbum(genreId, moodId, energy, intimacy, warmth, logout);
       setPickedAlbums(fetchedAlbums);
     },
-    [genre, energy, intimacy, warmth, logout]
+    [genre, mood, energy, intimacy, warmth, logout]
   );
 
   return (
@@ -69,12 +69,12 @@ const AlbumPicker = ({ navigate, logout }) => {
                 <label className={styles.albumPickerLabel}>Energy</label>
                 <div>
                   <Slider
-                        initialValue={energy}
-                        minimum={0}
-                        maximum={5}
-                        step={1}
-                        sliderChangedCallback={setEnergy}
-                      />
+                    value={energy}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    onChange={setEnergy}
+                  />
                 </div>
               </div>
             </div>
@@ -83,12 +83,12 @@ const AlbumPicker = ({ navigate, logout }) => {
                 <label className={styles.albumPickerLabel}>Intimacy</label>
                 <div>
                   <Slider
-                        initialValue={intimacy}
-                        minimum={0}
-                        maximum={5}
-                        step={1}
-                        sliderChangedCallback={setIntimacy}
-                      />
+                    value={intimacy}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    onChange={setIntimacy}
+                  />
                 </div>
               </div>
             </div>
@@ -97,12 +97,12 @@ const AlbumPicker = ({ navigate, logout }) => {
                 <label className={styles.albumPickerLabel}>Warmth</label>
                 <div>
                   <Slider
-                        initialValue={warmth}
-                        minimum={0}
-                        maximum={5}
-                        step={1}
-                        sliderChangedCallback={setWarmth}
-                      />
+                    value={warmth}
+                    minimum={0}
+                    maximum={5}
+                    step={1}
+                    onChange={setWarmth}
+                  />
                 </div>
               </div>
             </div>

@@ -22,7 +22,7 @@ const AlbumPickerAlbumRow = ({ match, navigate }) => {
       artist: match.album.artist,
       album: match.album
     });
-  }, [artist, match, navigate]);
+  }, [match, navigate]);
 
   return (
     <tr>

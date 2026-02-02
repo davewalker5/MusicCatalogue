@@ -15,13 +15,9 @@ namespace MusicCatalogue.Api.Controllers
     public class ArtistsController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public ArtistsController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public ArtistsController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Return a list of all the artists in the catalogue matching the filter criteria in the request body
@@ -35,13 +31,13 @@ namespace MusicCatalogue.Api.Controllers
             // to an increasing number of query string parameters and a very messy URL. So the filter criteria
             // are POSTed in the request body, instead, and bound into a strongly typed criteria object
 
-            _logger.LogMessage(Severity.Debug, $"Retrieving artists matching criteria {criteria}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving artists matching criteria {criteria}");
 
             var artists = await _factory.Search.ArtistSearchAsync(criteria);
 
             if (artists == null)
             {
-                _logger.LogMessage(Severity.Error, $"No matching artists found");
+                _factory.Logger.LogMessage(Severity.Error, $"No matching artists found");
                 return NoContent();
             }
 
@@ -57,17 +53,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Artist>> GetArtistByIdAsync(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving artist with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving artist with ID {id}");
 
             var artist = await _factory.Artists.GetAsync(x => x.Id == id, true);
 
             if (artist == null)
             {
-                _logger.LogMessage(Severity.Error, $"Artist with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Artist with ID {id} not found");
                 return NotFound();
             }
 
-            _logger.LogMessage(Severity.Debug, $"Retrieved artist {artist}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieved artist {artist}");
             return artist;
         }
 
@@ -80,7 +76,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Artist>> AddArtistAsync([FromBody] Artist template)
         {
-            _logger.LogMessage(Severity.Debug, $"Adding artist {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Adding artist {template}");
 
             // Add the artist
             var artist = await _factory.Artists.AddAsync(
@@ -104,7 +100,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Artist?>> UpdateArtistAsync([FromBody] Artist template)
         {
-            _logger.LogMessage(Severity.Debug, $"Updating artist {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Updating artist {template}");
 
             // Add the artist
             var artist = await _factory.Artists.UpdateAsync(
@@ -129,13 +125,13 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteArtist(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Deleting artist with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting artist with ID {id}");
 
             // Check the artist exists, first
             var artist = await _factory.Artists.GetAsync(x => x.Id == id, false);
             if (artist == null)
             {
-                _logger.LogMessage(Severity.Error, $"Artist with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Artist with ID {id} not found");
                 return NotFound();
             }
 
@@ -147,7 +143,7 @@ namespace MusicCatalogue.Api.Controllers
             catch (ArtistInUseException)
             {
                 // Artist is in use (has albums) so this is a bad request
-                _logger.LogMessage(Severity.Error, $"Artist with ID {id} has albums associated with them and cannot be deleted");
+                _factory.Logger.LogMessage(Severity.Error, $"Artist with ID {id} has albums associated with them and cannot be deleted");
                 return BadRequest();
             }
 

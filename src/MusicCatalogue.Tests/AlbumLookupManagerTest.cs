@@ -42,10 +42,10 @@ namespace MusicCatalogue.Tests
 
             // Create the database management classes
             var context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, logger);
 
             // Create a lookup manager
-            _manager = new AlbumLookupManager(logger, albumsApi, tracksApi, _factory);
+            _manager = new AlbumLookupManager(albumsApi, tracksApi, _factory);
         }
 
         [TestMethod]

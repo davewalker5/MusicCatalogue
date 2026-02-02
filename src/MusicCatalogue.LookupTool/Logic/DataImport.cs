@@ -6,14 +6,10 @@ namespace MusicCatalogue.LookupTool.Logic
 {
     internal class DataImport
     {
-        private readonly IMusicLogger _logger;
         private readonly IMusicCatalogueFactory _factory;
 
-        public DataImport(IMusicLogger logger, IMusicCatalogueFactory factory)
-        {
-            _logger = logger;
-            _factory = factory;
-        }
+        public DataImport(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Import the data held in the specified CSV file
@@ -21,7 +17,7 @@ namespace MusicCatalogue.LookupTool.Logic
         /// <param name="albumName"></param>
         public void Import(string file)
         {
-            _logger.LogMessage(Severity.Info, $"Importing {file} ...");
+            _factory.Logger.LogMessage(Severity.Info, $"Importing {file} ...");
 
             try
             {
@@ -32,8 +28,8 @@ namespace MusicCatalogue.LookupTool.Logic
             catch (Exception ex)
             {
                 Console.WriteLine($"Import error: {ex.Message}");
-                _logger.LogMessage(Severity.Info, $"Import error: {ex.Message}");
-                _logger.LogException(ex);
+                _factory.Logger.LogMessage(Severity.Info, $"Import error: {ex.Message}");
+                _factory.Logger.LogException(ex);
             }
             finally
             {

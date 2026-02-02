@@ -1,13 +1,12 @@
 ﻿using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
-using MusicCatalogue.LookupTool.Entities;
 
 namespace MusicCatalogue.LookupTool.Logic
 {
     internal class CatalogueExporter : DataExportBase
     {
-        public CatalogueExporter(IMusicLogger logger, IMusicCatalogueFactory factory) : base(logger, factory)
+        public CatalogueExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 
@@ -32,8 +31,8 @@ namespace MusicCatalogue.LookupTool.Logic
             catch (Exception ex)
             {
                 Console.WriteLine($"Export error: {ex.Message}");
-                Logger.LogMessage(Severity.Info, $"Export error: {ex.Message}");
-                Logger.LogException(ex);
+                Factory.Logger.LogMessage(Severity.Info, $"Export error: {ex.Message}");
+                Factory.Logger.LogException(ex);
             }
             finally
             {

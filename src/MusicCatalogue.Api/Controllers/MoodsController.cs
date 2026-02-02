@@ -14,13 +14,9 @@ namespace MusicCatalogue.Api.Controllers
     public class MoodsController : Controller
     {
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public MoodsController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public MoodsController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Return a list of all the moods in the catalogue
@@ -30,7 +26,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<List<Mood>>> GetMoodsAsync()
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving list of moods");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving list of moods");
 
             var moods = await _factory.Moods.ListAsync(x => true);
 
@@ -51,17 +47,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id:int}")]
         public async Task<ActionResult<Mood>> GetMoodByIdAsync(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving mood with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving mood with ID {id}");
 
             var mood = await _factory.Moods.GetAsync(x => x.Id == id);
 
             if (mood == null)
             {
-                _logger.LogMessage(Severity.Error, $"Mood with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Mood with ID {id} not found");
                 return NotFound();
             }
 
-            _logger.LogMessage(Severity.Debug, $"Retrieved mood {mood}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieved mood {mood}");
             return mood;
         }
 
@@ -74,7 +70,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Mood>> AddMoodAsync([FromBody] Mood template)
         {
-            _logger.LogMessage(Severity.Debug, $"Adding mood {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Adding mood {template}");
             var mood = await _factory.Moods.AddAsync(
                 template.Name,
                 template.MorningWeight,
@@ -93,7 +89,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Mood?>> UpdateMoodAsync([FromBody] Mood template)
         {
-            _logger.LogMessage(Severity.Debug, $"Updating mood {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Updating mood {template}");
             var mood = await _factory.Moods.UpdateAsync(
                 template.Id,
                 template.Name,
@@ -113,13 +109,13 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteMood(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Deleting mood with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting mood with ID {id}");
 
             // Check the mood exists, first
             var mood = await _factory.Moods.GetAsync(x => x.Id == id);
             if (mood == null)
             {
-                _logger.LogMessage(Severity.Error, $"Mood with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Mood with ID {id} not found");
                 return NotFound();
             }
 
@@ -131,7 +127,7 @@ namespace MusicCatalogue.Api.Controllers
             catch (MoodInUseException)
             {
                 // Mood is in use (have equipment associated with them) so this is a bad request
-                _logger.LogMessage(Severity.Error, $"Mood with ID {id} has artists associated with it and cannot be deleted");
+                _factory.Logger.LogMessage(Severity.Error, $"Mood with ID {id} has artists associated with it and cannot be deleted");
                 return BadRequest();
             }
 

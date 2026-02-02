@@ -42,6 +42,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<IPlaylistBuilder> _artistPlaylistBuilder;
 
         public DbContext Context { get; private set; }
+        public IMusicLogger Logger { get; private set; }
         public IGenreManager Genres { get { return _genres.Value; } }
         public IMoodManager Moods { get { return _moods.Value; } }
         public IArtistManager Artists { get { return _artists.Value; } }
@@ -83,9 +84,10 @@ namespace MusicCatalogue.BusinessLogic.Factory
         public IAlbumPicker AlbumPicker { get { return _albumPicker.Value; } }
         public IPlaylistBuilder ArtistPlaylistBuilder { get { return _artistPlaylistBuilder.Value; } }
 
-        public MusicCatalogueFactory(MusicCatalogueDbContext context)
+        public MusicCatalogueFactory(MusicCatalogueDbContext context, IMusicLogger logger)
         {
             Context = context;
+            Logger = logger;
             _genres = new Lazy<IGenreManager>(() => new GenreManager(this));
             _moods = new Lazy<IMoodManager>(() => new MoodManager(this));
             _artists = new Lazy<IArtistManager>(() => new ArtistManager(this));

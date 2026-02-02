@@ -1,14 +1,8 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using MusicCatalogue.Data;
-using MusicCatalogue.Entities.Database;
+﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Exceptions;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -29,7 +23,7 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
             _genreId = Task.Run(() => _factory.Genres.AddAsync(Genre, false)).Result.Id;
         }
 

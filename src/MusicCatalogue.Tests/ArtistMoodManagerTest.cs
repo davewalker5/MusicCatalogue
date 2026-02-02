@@ -1,6 +1,7 @@
 using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -19,7 +20,7 @@ namespace MusicCatalogue.Tests
         public async Task TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            _factory = new MusicCatalogueFactory(context);
+            _factory = new MusicCatalogueFactory(context, new MockFileLogger());
             _artistId = (await _factory!.Artists.AddAsync(Artist)).Id;
             _moodId = (await _factory!.Moods.AddAsync(Mood, 0, 0, 0, 0)).Id;
             _mappingId = (await _factory!.ArtistMoods.AddAsync(_artistId, _moodId)).Id;

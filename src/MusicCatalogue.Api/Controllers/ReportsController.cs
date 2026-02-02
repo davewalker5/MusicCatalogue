@@ -17,13 +17,9 @@ namespace MusicCatalogue.Api.Controllers
         private const string DateTimeFormat = "yyyy-MM-dd H:mm:ss";
 
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public ReportsController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public ReportsController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Generate the job statistics report
@@ -39,7 +35,7 @@ namespace MusicCatalogue.Api.Controllers
             DateTime startDate = DateTime.ParseExact(HttpUtility.UrlDecode(start), DateTimeFormat, null);
             DateTime endDate = DateTime.ParseExact(HttpUtility.UrlDecode(end), DateTimeFormat, null);
 
-            _logger.LogMessage(Severity.Debug, $"Retrieving job status report from {start} to {end}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving job status report from {start} to {end}");
 
             // Get the report content
             var results = await _factory.JobStatuses
@@ -51,7 +47,7 @@ namespace MusicCatalogue.Api.Controllers
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 
@@ -69,14 +65,14 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<List<GenreStatistics>>> GetGenreStatisticsReportAsync(bool wishlist)
         {
             var catalogue = wishlist ? "wish list" : "main catalogue";
-            _logger.LogMessage(Severity.Debug, $"Retrieving genre statistics report for the {catalogue}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving genre statistics report for the {catalogue}");
 
             // Get the report content
             var results = await _factory.GenreStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 
@@ -94,14 +90,14 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<List<ArtistStatistics>>> GetArtistStatisticsReportAsync(bool wishlist)
         {
             var catalogue = wishlist ? "wish list" : "main catalogue";
-            _logger.LogMessage(Severity.Debug, $"Retrieving artists statistics report for the {catalogue}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving artists statistics report for the {catalogue}");
 
             // Get the report content
             var results = await _factory.ArtistStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 
@@ -120,14 +116,14 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<List<MonthlySpend>>> GetMonthlySpendingReportAsync(bool wishlist)
         {
             var catalogue = wishlist ? "wish list" : "main catalogue";
-            _logger.LogMessage(Severity.Debug, $"Retrieving spending report for the {catalogue}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving spending report for the {catalogue}");
 
             // Get the report content
             var results = await _factory.MonthlySpend.GenerateReportAsync(wishlist, 1, int.MaxValue);
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 
@@ -145,14 +141,14 @@ namespace MusicCatalogue.Api.Controllers
         public async Task<ActionResult<List<RetailerStatistics>>> GetRetailerStatisticsReportAsync(bool wishlist)
         {
             var catalogue = wishlist ? "wish list" : "main catalogue";
-            _logger.LogMessage(Severity.Debug, $"Retrieving retailer statistics report for the {catalogue}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving retailer statistics report for the {catalogue}");
 
             // Get the report content
             var results = await _factory.RetailerStatistics.GenerateReportAsync(wishlist, 1, int.MaxValue);
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 
@@ -164,14 +160,14 @@ namespace MusicCatalogue.Api.Controllers
         [Route("genreAlbums/{genreId}")]
         public async Task<ActionResult<List<GenreAlbum>>> GetGenreAlbumsReportAsync(int genreId)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving the albums by genre report for the genre with ID {genreId}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving the albums by genre report for the genre with ID {genreId}");
 
             // Get the report content
             var results = await _factory.GenreAlbums.GenerateReportAsync(genreId, 1, int.MaxValue);
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 
@@ -183,14 +179,14 @@ namespace MusicCatalogue.Api.Controllers
         [Route("albumsByPurchaseDate/{year}/{month}")]
         public async Task<ActionResult<List<AlbumByPurchaseDate>>> GetAlbumsByPurchaseDateReportAsync(int year, int month)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving the album purchase report for month {month}, year {year}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving the album purchase report for month {month}, year {year}");
 
             // Get the report content
             var results = await _factory.AlbumsByPurchaseDate.GenerateReportAsync(year, month, 1, 1, int.MaxValue);
 
             if (!results.Any())
             {
-                _logger.LogMessage(Severity.Warning, $"No matching records found");
+                _factory.Logger.LogMessage(Severity.Warning, $"No matching records found");
                 return NoContent();
             }
 

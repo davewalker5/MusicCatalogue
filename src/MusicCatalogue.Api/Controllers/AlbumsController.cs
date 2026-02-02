@@ -16,13 +16,9 @@ namespace MusicCatalogue.Api.Controllers
         private const string OtherGenre = "Other";
 
         private readonly IMusicCatalogueFactory _factory;
-        private readonly IMusicLogger _logger;
 
-        public AlbumsController(IMusicCatalogueFactory factory, IMusicLogger logger)
-        {
-            _factory = factory;
-            _logger = logger;
-        }
+        public AlbumsController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Return album details given an ID
@@ -33,17 +29,17 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<ActionResult<Album>> GetAlbumByIdAsync(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Retrieving album with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving album with ID {id}");
 
             var album = await _factory.Albums.GetAsync(x => x.Id == id);
 
             if (album == null)
             {
-                _logger.LogMessage(Severity.Error, $"Album with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Album with ID {id} not found");
                 return NotFound();
             }
 
-            _logger.LogMessage(Severity.Debug, $"Retrieved album {album}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieved album {album}");
             return album;
         }
 
@@ -62,14 +58,14 @@ namespace MusicCatalogue.Api.Controllers
             // to an increasing number of query string parameters and a very messy URL. So the filter criteria
             // are POSTed in the request body, instead, and bound into a strongly typed criteria object
 
-            _logger.LogMessage(Severity.Debug, $"Retrieving albums matching criteria {criteria}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving albums matching criteria {criteria}");
 
             // Retrieve a list of matching albums
             var albums = await _factory.Search.AlbumSearchAsync(criteria);
 
             if (albums == null)
             {
-                _logger.LogMessage(Severity.Error, $"No matching albums found");
+                _factory.Logger.LogMessage(Severity.Error, $"No matching albums found");
                 return NoContent();
             }
 
@@ -85,7 +81,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Album>> AddAlbumAsync([FromBody] Album template)
         {
-            _logger.LogMessage(Severity.Debug, $"Adding album {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Adding album {template}");
 
             // Make sure the "other" Genre exists as a fallback for album updates where no genre is given
             var otherGenre = _factory.Genres.AddAsync(OtherGenre, false);
@@ -115,7 +111,7 @@ namespace MusicCatalogue.Api.Controllers
         [Route("")]
         public async Task<ActionResult<Album>> UpdateAlbumAsync([FromBody] Album template)
         {
-            _logger.LogMessage(Severity.Debug, $"Updating album {template}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Updating album {template}");
 
             // Make sure the "other" Genre exists as a fallback for album updates where no genre is given
             var otherGenre = _factory.Genres.AddAsync(OtherGenre, false);
@@ -136,7 +132,7 @@ namespace MusicCatalogue.Api.Controllers
             // If the result is NULL, the album doesn't exist
             if (album == null)
             {
-                _logger.LogMessage(Severity.Error, $"Album not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Album not found");
                 return NotFound();
             }
 
@@ -153,18 +149,18 @@ namespace MusicCatalogue.Api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteAlbum(int id)
         {
-            _logger.LogMessage(Severity.Debug, $"Deleting album with ID {id}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting album with ID {id}");
 
             // Check the album exists, first
             var album = await _factory.Albums.GetAsync(x => x.Id == id);
             if (album == null)
             {
-                _logger.LogMessage(Severity.Error, $"Album with ID {id} not found");
+                _factory.Logger.LogMessage(Severity.Error, $"Album with ID {id} not found");
                 return NotFound();
             }
 
             // It does, so delete it
-            _logger.LogMessage(Severity.Debug, $"Deleting album {album}");
+            _factory.Logger.LogMessage(Severity.Debug, $"Deleting album {album}");
             await _factory.Albums.DeleteAsync(id);
             return Ok();
         }

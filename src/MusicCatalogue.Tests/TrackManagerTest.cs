@@ -1,6 +1,7 @@
 ﻿using MusicCatalogue.Data;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.BusinessLogic.Factory;
+using MusicCatalogue.Tests.Mocks;
 
 namespace MusicCatalogue.Tests
 {
@@ -29,7 +30,7 @@ namespace MusicCatalogue.Tests
         public void TestInitialize()
         {
             MusicCatalogueDbContext context = MusicCatalogueDbContextFactory.CreateInMemoryDbContext();
-            var factory = new MusicCatalogueFactory(context);
+            var factory = new MusicCatalogueFactory(context, new MockFileLogger());
 
             // Set up an artist and album for the tracks to belong to
             _artistId = Task.Run(() => factory.Artists.AddAsync(ArtistName)).Result.Id;
