@@ -44,6 +44,16 @@ namespace MusicCatalogue.LookupTool.Logic
                 table.AddRow(rowData);
             }
 
+            // Add the total playing time row
+            var totalPlayingTime = FormattedTotalPlayingTime(albums);
+            var totalPlayingTimeRow = new string[] {
+                    GetCellData(""),
+                    GetCellData(""),
+                    GetCellData(""),
+                    GetCellData(totalPlayingTime)
+                };
+            table.AddRow(totalPlayingTimeRow);
+
             AnsiConsole.Write(table);
         }
 
@@ -88,6 +98,23 @@ namespace MusicCatalogue.LookupTool.Logic
             var playlist = await _factory.ArtistPlaylistBuilder.BuildPlaylist(type, timeOfDay, numberOfEntries);
             var albums = await _factory.ArtistPlaylistBuilder.PickPlaylistAlbums(playlist);
             return albums;
+        }
+
+        /// <summary>
+        /// Calculate the total playing time for a playlist
+        /// </summary>
+        /// <param name="albums"></param>
+        /// <returns></returns>
+        private string FormattedTotalPlayingTime(List<Album> albums)
+        {
+       
+            var totalPlayingTime = albums.Sum(x => x.PlayingTime);
+            int seconds = totalPlayingTime / 1000;
+            int hours = seconds / 3600;
+            seconds -= 3600 * hours;
+            int minutes = seconds / 60;
+            seconds -= 60 * minutes;
+            return $"{hours:00}:{minutes:00}:{seconds:00}";
         }
     }
 }
