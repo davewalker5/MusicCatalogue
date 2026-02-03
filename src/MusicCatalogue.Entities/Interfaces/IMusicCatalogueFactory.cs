@@ -23,6 +23,8 @@ namespace MusicCatalogue.Entities.Interfaces
         ITrackExporter CatalogueXlsxExporter { get; }
         IEquipmentExporter EquipmentCsvExporter { get; }
         IEquipmentExporter EquipmentXlsxExporter { get; }
+        IPlaylistExporter PlaylistCsvExporter { get; }
+        IPlaylistExporter PlaylistXlsxExporter { get; }
         IJobStatusManager JobStatuses { get; }
         ISearchManager Search { get; }
         IWishListBasedReport<GenreStatistics> GenreStatistics { get; }

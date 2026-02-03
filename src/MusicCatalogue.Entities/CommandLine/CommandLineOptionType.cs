@@ -3,7 +3,9 @@
     public enum CommandLineOptionType
     {
         Unknown,
-        Export,
+        ExportCatalogue,
+        ExportEquipment,
+        ExportPlaylist,
         Help,
         Import,
         Lookup,
