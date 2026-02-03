@@ -8,6 +8,7 @@ using MusicCatalogue.BusinessLogic.DataExchange.Equipment;
 using MusicCatalogue.BusinessLogic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.BusinessLogic.Playlists;
+using MusicCatalogue.BusinessLogic.DataExchange.Playlist;
 
 namespace MusicCatalogue.BusinessLogic.Factory
 {
@@ -29,6 +30,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<ITrackExporter> _catalogueXlsxExporter;
         private readonly Lazy<IEquipmentExporter> _equipmentCsvExporter;
         private readonly Lazy<IEquipmentExporter> _equipmentXlsxExporter;
+        private readonly Lazy<IPlaylistExporter> _playlistCsvExporter;
+        private readonly Lazy<IPlaylistExporter> _playlistXlsxExporter;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
         private readonly Lazy<ISearchManager> _searchManager;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
@@ -61,6 +64,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
         public ITrackExporter CatalogueXlsxExporter { get { return _catalogueXlsxExporter.Value; } }
         public IEquipmentExporter EquipmentCsvExporter { get { return _equipmentCsvExporter.Value; } }
         public IEquipmentExporter EquipmentXlsxExporter { get { return _equipmentXlsxExporter.Value; } }
+        public IPlaylistExporter PlaylistCsvExporter { get { return _playlistCsvExporter.Value; } }
+        public IPlaylistExporter PlaylistXlsxExporter { get { return _playlistXlsxExporter.Value; } }
 
         [ExcludeFromCodeCoverage]
         public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
@@ -106,6 +111,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _catalogueXlsxExporter = new Lazy<ITrackExporter>(() => new CatalogueXlsxExporter(this));
             _equipmentCsvExporter = new Lazy<IEquipmentExporter>(() => new EquipmentCsvExporter(this));
             _equipmentXlsxExporter = new Lazy<IEquipmentExporter>(() => new EquipmentXlsxExporter(this));
+            _playlistCsvExporter = new Lazy<IPlaylistExporter>(() => new PlaylistCsvExporter(this));
+            _playlistXlsxExporter = new Lazy<IPlaylistExporter>(() => new PlaylistXlsxExporter(this));
             _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
             _artistStatistics = new Lazy<IWishListBasedReport<ArtistStatistics>>(() => new WishListBasedReport<ArtistStatistics>(context));
             _monthlySpend = new Lazy<IWishListBasedReport<MonthlySpend>>(() => new WishListBasedReport<MonthlySpend>(context));

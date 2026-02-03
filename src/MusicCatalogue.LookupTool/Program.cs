@@ -8,11 +8,9 @@ using MusicCatalogue.BusinessLogic.Config;
 using MusicCatalogue.BusinessLogic.Factory;
 using MusicCatalogue.BusinessLogic.Logging;
 using MusicCatalogue.LookupTool.Entities;
-using MusicCatalogue.LookupTool.Interfaces;
 using MusicCatalogue.LookupTool.Logic;
 using System.Diagnostics;
 using System.Reflection;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.LookupTool
@@ -32,7 +30,9 @@ namespace MusicCatalogue.LookupTool
                 // Parse the command line
                 CommandLineParser parser = new(new HelpTabulator());
                 parser.Add(CommandLineOptionType.Help, true, "--help", "-h", "Show command line help", 0, 0);
-                parser.Add(CommandLineOptionType.Export, true, "--export", "-e", "Export the collection or equipment register to a CSV file or Excel Workbook", 2, 2);
+                parser.Add(CommandLineOptionType.ExportCatalogue, true, "--export-catalogue", "-ec", "Export the music catalogue to a CSV file or Excel Workbook", 1, 1);
+                parser.Add(CommandLineOptionType.ExportEquipment, true, "--export-equipment", "-ee", "Export the equipment register to a CSV file or Excel Workbook", 1, 1);
+                parser.Add(CommandLineOptionType.ExportPlaylist, true, "--export-playlist", "-ep", "Generate and export a playlist to a CSV file or Excel Workbook", 4, 4);
                 parser.Add(CommandLineOptionType.Import, true, "--import", "-i", "Import data from a CSV format file", 1, 1);
                 parser.Add(CommandLineOptionType.Lookup, true, "--lookup", "-l", "Lookup an album and display its details", 3, 3);
                 parser.Add(CommandLineOptionType.Playlist, true, "--playlist", "-p", "Generate a playlist", 3, 3);
@@ -91,13 +91,18 @@ namespace MusicCatalogue.LookupTool
                         new DataImport(factory).Import(values![0]);
                     }
 
-                    // If this is an export, export the collection to the specified file
-                    if (parser.IsPresent(CommandLineOptionType.Export))
+                    // If this is a catalogue export, export the catalogue to the specified file
+                    if (parser.IsPresent(CommandLineOptionType.ExportCatalogue))
                     {
-                        var values = parser.GetValues(CommandLineOptionType.Export);
-                        var exportType = (ExportType)Enum.Parse(typeof(ExportType), values![0]);
-                        IDataExporter exporter = exportType == ExportType.music ? new CatalogueExporter(factory) : new EquipmentExporter(factory);
-                        exporter.Export(values[1]);
+                        var values = parser.GetValues(CommandLineOptionType.ExportCatalogue);
+                        new CatalogueExporter(factory).Export(values![0]);
+                    }
+
+                    // If this is an equipment export, export the equipment register to the specified file
+                    if (parser.IsPresent(CommandLineOptionType.ExportEquipment))
+                    {
+                        var values = parser.GetValues(CommandLineOptionType.ExportEquipment);
+                        new EquipmentExporter(factory).Export(values![0]);
                     }
 
                     // If this is a request for a playlist, generate one and show it on the console
@@ -108,6 +113,16 @@ namespace MusicCatalogue.LookupTool
                         var timeOfDay = Enum.Parse<TimeOfDay>(values![1], true);
                         var numberOfEntries = int.Parse(values![2]);
                         await new PlaylistGenerator(factory).GeneratePlaylistAsync(type, timeOfDay, numberOfEntries);
+                    }
+
+                    // If this is a request for a playlist export, generate one and export it to the specified file
+                    if (parser.IsPresent(CommandLineOptionType.ExportPlaylist))
+                    {
+                        var values = parser.GetValues(CommandLineOptionType.ExportPlaylist);
+                        var type = Enum.Parse<PlaylistType>(values![0], true);
+                        var timeOfDay = Enum.Parse<TimeOfDay>(values![1], true);
+                        var numberOfEntries = int.Parse(values![2]);
+                        await new PlaylistGenerator(factory).ExportPlaylistAsync(type, timeOfDay, numberOfEntries, values![3]);
                     }
                 }
             }

@@ -17,7 +17,7 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Equipment
 #pragma warning restore CS8618
 
         /// <summary>
-        /// Export the register to a CSV file
+        /// Export the register to an XLSX file
         /// </summary>
         /// <param name="file"></param>
         public async Task Export(string file)
@@ -38,7 +38,7 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Equipment
         }
 
         /// <summary>
-        /// Add the headers to the CSV file
+        /// Add the headers to the XLSX file
         /// </summary>
         /// <param name="headers"></param>
         protected override void AddHeaders(IEnumerable<string> headers)
@@ -52,7 +52,7 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Equipment
         }
 
         /// <summary>
-        /// Add an item of equipment to the CSV file
+        /// Add an item of equipment to the XLSX file
         /// </summary>
         /// <param name="equipment"></param>
         /// <param name="recordCount"></param>

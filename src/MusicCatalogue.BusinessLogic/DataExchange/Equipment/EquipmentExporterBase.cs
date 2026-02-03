@@ -39,7 +39,7 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Equipment
 
         /// <summary>
         /// Iterate over the equipment register calling the methods supplied by the child class to add
-        /// headers and to add each track to the output
+        /// headers and to add each piece of equipment to the output
         /// </summary>
         protected async Task IterateOverRegister()
         {
