@@ -3,10 +3,11 @@
     public enum CommandLineOptionType
     {
         Unknown,
-        Help,
-        Lookup,
-        Import,
         Export,
+        Help,
+        Import,
+        Lookup,
+        Playlist,
         Update,
     }
 }
