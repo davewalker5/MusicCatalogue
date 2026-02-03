@@ -12,7 +12,7 @@ import { useState } from "react";
 const GenreSelector = ({ initialGenre, genreChangedCallback, logout }) => {
   const { genres, setGenres } = useGenres(logout);
 
-  let options = [];
+  let options = [{value: null, label: ""}];
   if (genres.length > 0) {
     // Construct the options for the genres drop-down
     for (let i = 0; i < genres.length; i++) {

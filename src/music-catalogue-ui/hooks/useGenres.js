@@ -14,9 +14,12 @@ const useGenres = (logout) => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        // Get a list of genres via the service and store it in state
+        // Get a list of genres via the service, filter out the empty genre and store the remainder in state
         var fetchedGenres = await apiFetchGenres(null, logout);
-        setGenres(fetchedGenres);
+        const nonBlankGenres = fetchedGenres.filter(
+          genre => genre.name?.trim()
+        );
+        setGenres(nonBlankGenres);
       } catch {}
     };
 

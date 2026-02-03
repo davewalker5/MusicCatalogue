@@ -12,7 +12,7 @@ import { useState } from "react";
 const MoodSelector = ({ initialMood, moodChangedCallback, logout }) => {
   const { moods, setMoods } = useMoods(logout);
 
-  let options = [];
+  let options = [{value: null, label: ""}];
   if (moods.length > 0) {
     // Construct the options for the moods drop-down
     for (let i = 0; i < moods.length; i++) {

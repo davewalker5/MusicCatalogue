@@ -11,8 +11,5 @@ namespace MusicCatalogue.Entities.Playlists
         public double IntimacyWeight { get; set; }
         public double WarmthWeight { get; set; }
         public double MoodWeight {get; set; }
-
-        public bool HaveWeights()
-            => (EnergyWeight > 0) || (IntimacyWeight > 0) || (WarmthWeight > 0) || (MoodWeight > 0);
     }
 }
