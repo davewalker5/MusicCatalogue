@@ -82,7 +82,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
             bool excludeTarget = true)
         {
             // Make sure the search criteria are valid
-            if ((artists?.Count() == 0) || (n <= 0) || !weights.HaveWeights())
+            if ((artists?.Count() == 0) || (n <= 0))
             {
                 return [];
             }

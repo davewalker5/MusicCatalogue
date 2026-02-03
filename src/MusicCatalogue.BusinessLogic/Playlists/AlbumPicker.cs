@@ -17,17 +17,39 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="criteria"></param>
         /// <returns></returns>
         public async Task<List<PickedAlbum>> PickAsync(AlbumSelectionCriteria criteria)
-        {
-            // Make sure the criteria are valid
-            if (!criteria.HaveWeights() ||
-                (criteria.NumberOfAlbums < 1) ||
-                (criteria.NumberPerArtist < 1) ||
-                (criteria.PickerThreshold < 0) ||
-                (criteria.PickerThreshold > 1))
-            {
-                return [];
-            }
+            => ((criteria.EnergyWeight > 0) ||
+                (criteria.IntimacyWeight > 0) ||
+                (criteria.WarmthWeight > 0) ||
+                ((criteria.MoodId > 0) && (criteria.MoodWeight> 0))) ?
+                await PickByArtistSimilarityAsync(criteria) :
+                await SimplePickAsync(criteria);
 
+        /// <summary>
+        /// Pick a set of albums without style and mood considerations
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        private async Task<List<PickedAlbum>> SimplePickAsync(AlbumSelectionCriteria criteria)
+            => [.. (await LoadAlbumsAsync(criteria.GenreId))
+                .OrderBy(_ => Guid.NewGuid())
+                .Take(criteria.NumberOfAlbums)
+                .Select(x => new PickedAlbum
+                {
+                    Album = x,
+                    Distance = 0,
+                    Similarity = 100,
+                    NumericDistance = 0,
+                    MoodDistance = 0,
+                    SharedMoods = 0
+                })];
+
+        /// <summary>
+        /// Pick a set of albums using artist similarity
+        /// </summary>
+        /// <param name="criteria"></param>
+        /// <returns></returns>
+        private async Task<List<PickedAlbum>> PickByArtistSimilarityAsync(AlbumSelectionCriteria criteria)
+        {
             // Load the candidate albums and artists
             var albums = await LoadAlbumsAsync(criteria.GenreId);
             var artists = await LoadArtistsAsync(albums);
