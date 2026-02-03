@@ -50,6 +50,7 @@ const AlbumRow = ({
     <tr>
       <td onClick={rowClickCallback}>{artist.name}</td>
       <td onClick={rowClickCallback}>{album.title}</td>
+      <td onClick={rowClickCallback}>{album.formattedPlayingTime}</td>
       <td onClick={rowClickCallback}>{genreName}</td>
       <td onClick={rowClickCallback}>{album.released}</td>
       <td onClick={rowClickCallback}>
