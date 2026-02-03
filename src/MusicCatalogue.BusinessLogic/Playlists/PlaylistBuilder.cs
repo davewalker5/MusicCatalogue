@@ -30,7 +30,13 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="n"></param>
         /// <returns></returns>
         public async Task<List<PlaylistArtist>> BuildPlaylist(PlaylistType mode, TimeOfDay timeOfDay, int n)
-            => BuildPlaylist(await _factory.Artists.ListAsync(x => true, false), mode, timeOfDay, n);
+        {
+            // Load the albums that are *not* on the wish list, extract the artist IDs and load the artists
+            var albums = await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false));
+            var artistIds = albums.Select(x => x.ArtistId).ToList();
+            var artists = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
+            return BuildPlaylist(artists, mode, timeOfDay, n);
+        }
 
         /// <summary>
         /// Build a playlist using the specified set of artists
@@ -55,7 +61,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
                 var artist = await _factory.Artists.GetAsync(x => x.Id == playlistArtist.ArtistId, true);
                 if (artist.Albums.Count > 0)
                 {
-                    var album = artist.Albums.OrderBy(_ => Guid.NewGuid()).FirstOrDefault();
+                    var album = artist.Albums.Where(x => !(x.IsWishListItem ?? false)).OrderBy(_ => Guid.NewGuid()).FirstOrDefault();
                     album!.Artist = artist;
                     pickedAlbums.Add(album!);
                 }

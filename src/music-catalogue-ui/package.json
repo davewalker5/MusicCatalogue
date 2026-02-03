@@ -1,6 +1,6 @@
 {
   "name": "music-catalogue-ui",
-  "version": "1.40.2",
+  "version": "1.40.3",
   "private": true,
   "engines": {
     "node": ">=20"
