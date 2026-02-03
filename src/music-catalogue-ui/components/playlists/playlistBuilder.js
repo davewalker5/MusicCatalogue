@@ -106,6 +106,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
           <tr>
             <th>Artist</th>
             <th>Album Title</th>
+            <th>Playing Time</th>
             <th>Genre</th>
             <th>Released</th>
             <th>Purchased</th>
