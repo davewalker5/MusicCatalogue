@@ -149,8 +149,8 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <returns></returns>
         private async Task<List<Album>> LoadAlbumsAsync(int? genreId)
             => genreId != null ? 
-                await _factory.Albums.ListAsync(x => x.GenreId == genreId) :
-                await _factory.Albums.ListAsync(x => true);
+                await _factory.Albums.ListAsync(x => (x.GenreId == genreId) && !(x.IsWishListItem ?? false)) :
+                await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false));
 
         /// <summary>
         /// Load the artists for the specified albums
