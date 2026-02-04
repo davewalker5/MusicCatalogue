@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using MusicCatalogue.Entities.Extensions;
 
 namespace MusicCatalogue.Entities.Database
 {
@@ -12,23 +14,8 @@ namespace MusicCatalogue.Entities.Database
         /// <summary>
         /// Duration formatted as MM:SS
         /// </summary>
-        public string? FormattedDuration
-        {
-            get
-            {
-                if (Duration != null)
-                {
-                    int seconds = (Duration ?? 0) / 1000;
-                    int minutes = seconds / 60;
-                    seconds -= 60 * minutes;
-                    return $"{minutes:00}:{seconds:00}";
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        [NotMapped]
+        public string? FormattedDuration => DurationExtensions.TrackDurationToString(Duration);
 
         public DateTime? Purchased { get; set; }
 

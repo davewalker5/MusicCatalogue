@@ -1,5 +1,5 @@
-using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
+using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.Entities.Interfaces
 {
@@ -7,6 +7,6 @@ namespace MusicCatalogue.Entities.Interfaces
     {
         event EventHandler<PlaylistDataExchangeEventArgs>? PlaylistItemExport;
 
-        void Export(string file, IList<Album> playlist);
+        void Export(string file, Playlist playlist);
     }
 }

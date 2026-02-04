@@ -8,7 +8,7 @@ using MusicCatalogue.BusinessLogic.DataExchange.Equipment;
 using MusicCatalogue.BusinessLogic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.BusinessLogic.Playlists;
-using MusicCatalogue.BusinessLogic.DataExchange.Playlist;
+using MusicCatalogue.BusinessLogic.DataExchange.Playlists;
 
 namespace MusicCatalogue.BusinessLogic.Factory
 {
@@ -87,7 +87,7 @@ namespace MusicCatalogue.BusinessLogic.Factory
 
         public IArtistSimilarityCalculator ArtistSimilarityCalculator { get { return _artistSimilarityCalculator.Value; } }
         public IAlbumPicker AlbumPicker { get { return _albumPicker.Value; } }
-        public IPlaylistBuilder ArtistPlaylistBuilder { get { return _artistPlaylistBuilder.Value; } }
+        public IPlaylistBuilder PlaylistBuilder { get { return _artistPlaylistBuilder.Value; } }
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context, IMusicLogger logger)
         {

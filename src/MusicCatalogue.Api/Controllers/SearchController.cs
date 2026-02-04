@@ -88,12 +88,12 @@ namespace MusicCatalogue.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("playlist")]
-        public async Task<ActionResult<List<Album>>> GeneratePlaylistAsync([FromBody] PlaylistBuilderCriteria criteria)
+        public async Task<ActionResult<Playlist>> GeneratePlaylistAsync([FromBody] PlaylistBuilderCriteria criteria)
         {
             _factory.Logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
-            var playlist = await _factory.ArtistPlaylistBuilder.BuildPlaylist(criteria.Type, criteria.TimeOfDay, criteria.NumberOfEntries);
-            var albums = await _factory.ArtistPlaylistBuilder.PickPlaylistAlbums(playlist);
-            return albums;
+            var artists = await _factory.PlaylistBuilder.BuildPlaylist(criteria.Type, criteria.TimeOfDay, criteria.NumberOfEntries);
+            var playlist = await _factory.PlaylistBuilder.PickPlaylistAlbums(artists);
+            return playlist;
         }
     }
 }

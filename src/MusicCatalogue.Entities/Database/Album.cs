@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using MusicCatalogue.Entities.Extensions;
 
 namespace MusicCatalogue.Entities.Database
 {
@@ -28,25 +29,10 @@ namespace MusicCatalogue.Entities.Database
         public ICollection<Track>? Tracks { get; set; }
 
         [NotMapped]
-        public int PlayingTime
+        public long PlayingTime
             => Tracks?.Select(x => x.Duration ?? 0).Sum() ?? 0;
 
-        /// <summary>
-        /// Total playing time formatted as HH:MM:SS
-        /// </summary>
         [NotMapped]
-        public string FormattedPlayingTime
-        {
-            get
-            {
-                int seconds = PlayingTime / 1000;
-                int hours = seconds / 3600;
-                seconds -= 3600 * hours;
-                int minutes = seconds / 60;
-                seconds -= 60 * minutes;
-                return $"{hours:00}:{minutes:00}:{seconds:00}";
-            }
-        }
-
+        public string FormattedPlayingTime => DurationExtensions.DurationToFormattedPlayingTime(PlayingTime);
     }
 }
