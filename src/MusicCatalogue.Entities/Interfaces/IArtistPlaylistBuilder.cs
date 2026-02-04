@@ -5,8 +5,7 @@ namespace MusicCatalogue.Entities.Interfaces
 {
     public interface IPlaylistBuilder
     {
-        Task<List<PlaylistArtist>> BuildPlaylist(PlaylistType mode, TimeOfDay timeOfDay, int n);
-        List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistType mode, TimeOfDay timeOfDay, int n);
-        Task<Playlist> PickPlaylistAlbums(IEnumerable<PlaylistArtist> artists);
+        Task<Playlist> BuildPlaylistAsync(PlaylistType mode, TimeOfDay timeOfDay, int n);
+        Task<Playlist> BuildPlaylistAsync(IEnumerable<Artist>? artists, PlaylistType mode, TimeOfDay timeOfDay, int n);
     }
 }

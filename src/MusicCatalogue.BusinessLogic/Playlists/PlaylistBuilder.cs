@@ -29,42 +29,63 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="timeOfDay"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        public async Task<List<PlaylistArtist>> BuildPlaylist(PlaylistType mode, TimeOfDay timeOfDay, int n)
-        {
-            // Load the albums that are *not* on the wish list, extract the artist IDs and load the artists
-            var albums = await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false));
-            var artistIds = albums.Select(x => x.ArtistId).ToList();
-            var artists = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
-            return BuildPlaylist(artists, mode, timeOfDay, n);
-        }
+        public async Task<Playlist> BuildPlaylistAsync(PlaylistType mode, TimeOfDay timeOfDay, int n)
+            => await BuildPlaylistAsync(null, mode, timeOfDay, n);
 
         /// <summary>
         /// Build a playlist using the specified set of artists
         /// </summary>
-        public List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistType mode, TimeOfDay timeOfDay, int n)
+        public async Task<Playlist> BuildPlaylistAsync(IEnumerable<Artist>? artists, PlaylistType mode, TimeOfDay timeOfDay, int n)
         {
+            List<Album> albumPool;
+            List<int> artistIds;
+
+            // Load the pool of albums to select from
+            if ((artists == null) || (artists?.Count() == 0))
+            {
+                // If the supplied artist list is empty, load the albums that are *not* on the wish list, extract the
+                // artist IDs and load the artists for those IDs
+                albumPool = [.. await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false))];
+                artistIds = albumPool.Select(x => x.ArtistId).ToList();
+                artists = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
+            }
+            else
+            {
+                // Some artists have been specified so load the non-wishlist albums for those artists only
+                artistIds = [.. artists!.Select(x => x.Id)];
+                albumPool = [.. await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false) && artistIds.Contains(x.ArtistId))];
+            }
+
+            // Generate an artist playlist
             var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, n);
-            return BuildPlaylist(artists, parameters);
+            var playlistArtists = GenerateArtistList(artists!, parameters);
+
+            // Pick a random album for each artist
+            var playlist = PickPlaylistAlbums(playlistArtists, artists!, albumPool);
+            return playlist;
         }
 
         /// <summary>
-        /// Pick one random album for each artist in the specified playlist and return a playlist object containing them
+        /// Pick one random album for each artist in the specified artist playlist and return a playlist object
+        /// containing them
         /// </summary>
-        /// <param name="artists"></param>
+        /// <param name="playlistArtists"></param>
+        /// <param name="artistPool"></param>
+        /// <param name="albumPool"></param>
         /// <returns></returns>
-        public async Task<Playlist> PickPlaylistAlbums(IEnumerable<PlaylistArtist> artists)
+        private static Playlist PickPlaylistAlbums(
+            IEnumerable<PlaylistArtist> playlistArtists,
+            IEnumerable<Artist> artistPool,
+            IEnumerable<Album> albumPool)
         {
             var playlist = new Playlist();
 
-            foreach (var playlistArtist in artists)
+            foreach (var playlistArtist in playlistArtists)
             {
-                var artist = await _factory.Artists.GetAsync(x => x.Id == playlistArtist.ArtistId, true);
-                if (artist.Albums.Count > 0)
-                {
-                    var album = artist.Albums.Where(x => !(x.IsWishListItem ?? false)).OrderBy(_ => Guid.NewGuid()).FirstOrDefault();
-                    album!.Artist = artist;
-                    playlist.Albums.Add(album!);
-                }
+                // Pick a random album for this artists, attach the artist to it and add it to the album playlist
+                var album = albumPool.Where(x => x.ArtistId == playlistArtist.ArtistId).OrderBy(_ => Guid.NewGuid()).First();
+                album.Artist = artistPool.First(x => x.Id == playlistArtist.ArtistId);
+                playlist.Albums.Add(album!);
             }
 
             return playlist;
@@ -83,7 +104,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="timeOfDay"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private static List<PlaylistArtist> BuildPlaylist(IEnumerable<Artist> artists, PlaylistParameters parameters)
+        private static List<PlaylistArtist> GenerateArtistList(IEnumerable<Artist> artists, PlaylistParameters parameters)
         {
             // Materialize the artists list
             var artistList = artists.ToList();

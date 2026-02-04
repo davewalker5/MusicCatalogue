@@ -28,6 +28,7 @@ namespace MusicCatalogue.Api.Services
         /// <param name="item"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
+#pragma warning disable CS1998
         protected override async Task ProcessWorkItem(PlaylistExportWorkItem item, IMusicCatalogueFactory factory)
         {
             MessageLogger.LogInformation("Playlist export started");
@@ -44,5 +45,6 @@ namespace MusicCatalogue.Api.Services
             exporter.Export(filePath, item.Playlist ?? new());
             MessageLogger.LogInformation("Playlist export completed");
         }
+#pragma warning restore CS1998
     }
 }
