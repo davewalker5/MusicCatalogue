@@ -135,6 +135,10 @@ namespace MusicCatalogue.Api
             builder.Services.AddSingleton<IBackgroundQueue<AlbumsByPurchaseDateExportWorkItem>, BackgroundQueue<AlbumsByPurchaseDateExportWorkItem>>();
             builder.Services.AddHostedService<AlbumsByPurchaseDateExportService>();
 
+            // Add the playlist exporter hosted service
+            builder.Services.AddSingleton<IBackgroundQueue<PlaylistExportWorkItem>, BackgroundQueue<PlaylistExportWorkItem>>();
+            builder.Services.AddHostedService<PlaylistExportService>();
+
             // Configure JWT
             byte[] key = Encoding.ASCII.GetBytes(settings!.Secret);
             builder.Services.AddAuthentication(x =>

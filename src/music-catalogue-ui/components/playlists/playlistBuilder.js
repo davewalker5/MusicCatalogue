@@ -5,6 +5,7 @@ import Slider from "../common/slider";
 import PlaylistTypeSelector from "./playlistTypeSelector";
 import TimesOfDaySelector from "./timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
+import FormInputField from "../common/formInputField";
 
 /**
  * Component to pick a random album, optionally for a specified playlistType
@@ -16,6 +17,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
   const [playlistType, setPlaylistType] = useState(null);
   const [timeOfDay, setTimeOfDay] = useState(null);
   const [numberOfEntries, setNumberOfEntries] = useState(3);
+  const [exportFileName, setExportFileName] = useState("");
   const [playlist, setPlaylist] = useState(null);
 
   // Callback to request a playlist from the API
@@ -31,12 +33,12 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       // Make sure they're all specified
       if ((playlistTypeId != null) && (timeOfDayId != null) && (numberOfEntries > 0)) {
         // Request a playlist built using the specified criteria
-        const fetchedPlaylist = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, logout);
+        const fetchedPlaylist = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, exportFileName, logout);
         setPlaylist(fetchedPlaylist);
       }
 
     },
-    [playlistType, timeOfDay, numberOfEntries, logout]
+    [playlistType, timeOfDay, numberOfEntries, exportFileName, logout]
   );
 
   return (
@@ -86,6 +88,14 @@ const PlaylistBuilder = ({ navigate, logout }) => {
               </div>
             </div>
             <div className="col-md-2">
+                <FormInputField
+                  label="Export To"
+                  name="filename"
+                  value={exportFileName}
+                  setValue={setExportFileName}
+                />
+            </div>
+            <div className="col-md-2">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}></label>
                 <div>
@@ -129,7 +139,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
             </tbody>
           </table>
           <div className="row">
-            <div class="col d-flex justify-content-center">
+            <div className="col d-flex justify-content-center">
             <label className={styles.playlistBuilderLabel}>Total Playing Time:</label>
             <label>{playlist.formattedPlayingTime}</label>
             </div>
