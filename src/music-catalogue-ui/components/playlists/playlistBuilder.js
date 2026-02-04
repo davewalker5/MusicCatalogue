@@ -33,7 +33,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       // Make sure they're all specified
       if ((playlistTypeId != null) && (timeOfDayId != null) && (numberOfEntries > 0)) {
         // Request a playlist built using the specified criteria
-        const fetchedPlaylist = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, exportFileName, logout);
+        const fetchedPlaylist = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, [], [], exportFileName, logout);
         setPlaylist(fetchedPlaylist);
       }
 

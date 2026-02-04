@@ -1,3 +1,4 @@
+using MusicCatalogue.BusinessLogic.Database;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Extensions;
 using MusicCatalogue.Entities.Interfaces;
@@ -26,42 +27,77 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <summary>
         /// Build a playlist using all available artists in the catalogue
         /// </summary>
+        /// <param name="mode"></param>
         /// <param name="timeOfDay"></param>
         /// <param name="n"></param>
+        /// <param name="includedGenreIds"></param>
+        /// <param name="excludedGenreIds"></param>
         /// <returns></returns>
-        public async Task<Playlist> BuildPlaylistAsync(PlaylistType mode, TimeOfDay timeOfDay, int n)
-            => await BuildPlaylistAsync(null, mode, timeOfDay, n);
+        public async Task<Playlist> BuildPlaylistAsync(
+            PlaylistType mode,
+            TimeOfDay timeOfDay,
+            int n,
+            IEnumerable<int> includedGenreIds,
+            IEnumerable<int> excludedGenreIds)
+            => await BuildPlaylistAsync(null, mode, timeOfDay, n, includedGenreIds, excludedGenreIds);
 
         /// <summary>
         /// Build a playlist using the specified set of artists
         /// </summary>
-        public async Task<Playlist> BuildPlaylistAsync(IEnumerable<Artist>? artists, PlaylistType mode, TimeOfDay timeOfDay, int n)
+        /// <param name="artists"></param>
+        /// <param name="mode"></param>
+        /// <param name="timeOfDay"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public async Task<Playlist> BuildPlaylistAsync(
+            IEnumerable<Artist>? artists,
+            PlaylistType mode,
+            TimeOfDay timeOfDay,
+            int n,
+            IEnumerable<int> includedGenreIds,
+            IEnumerable<int> excludedGenreIds)
         {
-            List<Album> albumPool;
+            List<Album> unfilteredAlbumPool;
             List<int> artistIds;
 
             // Load the pool of albums to select from
             if ((artists == null) || (artists?.Count() == 0))
             {
-                // If the supplied artist list is empty, load the albums that are *not* on the wish list, extract the
-                // artist IDs and load the artists for those IDs
-                albumPool = [.. await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false))];
-                artistIds = albumPool.Select(x => x.ArtistId).ToList();
-                artists = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
+                // If the supplied artist list is empty, load the albums that are *not* on the wish list
+                unfilteredAlbumPool = [.. await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false))];
             }
             else
             {
-                // Some artists have been specified so load the non-wishlist albums for those artists only
+                // Some artists have been specified so load the non-wishlist albums for those artists only and
+                // filter them by genre
                 artistIds = [.. artists!.Select(x => x.Id)];
-                albumPool = [.. await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false) && artistIds.Contains(x.ArtistId))];
+                unfilteredAlbumPool = [.. await _factory.Albums.ListAsync(x => !(x.IsWishListItem ?? false) && artistIds.Contains(x.ArtistId))];
             }
+
+            // Filter the album pool by genre
+            List<Album> albumPool = unfilteredAlbumPool;
+
+            if (includedGenreIds?.Count() > 0)
+            {
+                albumPool = [.. albumPool.Where(x => (x.GenreId == null) || includedGenreIds.Contains(x.GenreId.Value))];
+            }
+
+            if (excludedGenreIds?.Count() > 0)
+            {
+                albumPool = [.. albumPool.Where(x => (x.GenreId == null) || !excludedGenreIds.Contains(x.GenreId.Value))];
+            }
+
+            // The album pool has now been been set up but we need to re-create the artist pool even if some artists were
+            // supplied to this method, as the genre filtering may have excluded some
+            artistIds = [.. albumPool.Select(x => x.ArtistId)];
+            List<Artist> artistPool = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
 
             // Generate an artist playlist
             var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, n);
-            var playlistArtists = GenerateArtistList(artists!, parameters);
+            var playlistArtists = GenerateArtistList(artistPool, parameters);
 
             // Pick a random album for each artist
-            var playlist = PickPlaylistAlbums(playlistArtists, artists!, albumPool);
+            var playlist = PickPlaylistAlbums(playlistArtists, artistPool, albumPool);
             return playlist;
         }
 

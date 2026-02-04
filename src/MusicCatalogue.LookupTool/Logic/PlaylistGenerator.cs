@@ -22,7 +22,7 @@ namespace MusicCatalogue.LookupTool.Logic
         public async Task GeneratePlaylistAsync(PlaylistType type, TimeOfDay timeOfDay, int numberOfEntries)
         {
             // Create a playlist
-            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(type, timeOfDay, numberOfEntries);
+            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(type, timeOfDay, numberOfEntries, [], []);
 
             // Create a table and add the columns to it
             var table = new Table();
@@ -68,7 +68,7 @@ namespace MusicCatalogue.LookupTool.Logic
         public async Task ExportPlaylistAsync(PlaylistType type, TimeOfDay timeOfDay, int numberOfEntries, string filePath)
         {
             // Create a playlist
-            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(type, timeOfDay, numberOfEntries);
+            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(type, timeOfDay, numberOfEntries, [], []);
 
             // Determine the export file type and get the appropriate exporter
             var exporter = Path.GetFileName(filePath).EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase) ?

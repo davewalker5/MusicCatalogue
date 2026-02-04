@@ -15,6 +15,8 @@ const apiGeneratePlaylist = async (
   playlistTypeId,
   timeOfDayId,
   numberOfEntries,
+  includedGenreIds,
+  excludedGenreIds,
   fileName,
   logout
 ) => {
@@ -23,6 +25,8 @@ const apiGeneratePlaylist = async (
     type: playlistTypeId,
     timeOfDay: timeOfDayId,
     numberOfEntries: numberOfEntries,
+    includedGenreIds: includedGenreIds,
+    excludedGenreIds: excludedGenreIds,
     fileName: fileName
   });
 

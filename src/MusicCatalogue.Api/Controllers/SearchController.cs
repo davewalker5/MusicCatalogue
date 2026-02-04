@@ -99,7 +99,12 @@ namespace MusicCatalogue.Api.Controllers
         {
             // Generate the playlist
             _factory.Logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
-            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(criteria.Type, criteria.TimeOfDay, criteria.NumberOfEntries);
+            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(
+                criteria.Type,
+                criteria.TimeOfDay,
+                criteria.NumberOfEntries,
+                criteria.IncludedGenreIds,
+                criteria.ExcludedGenreIds);
 
             // If a filename has been specified, queue a job to export the playlist to the file
             if (!string.IsNullOrEmpty(criteria.FileName))
