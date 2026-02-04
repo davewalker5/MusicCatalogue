@@ -1,9 +1,9 @@
 using ClosedXML.Excel;
-using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Playlists;
 
-namespace MusicCatalogue.BusinessLogic.DataExchange.Playlist
+namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
 {
     public class PlaylistXlsxExporter : PlaylistExporterBase, IPlaylistExporter
     {
@@ -21,7 +21,7 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlist
         /// Export the playlist to an XLSX file
         /// </summary>
         /// <param name="file"></param>
-        public void Export(string file, IList<Album> playlist)
+        public void Export(string file, Playlist playlist)
         {
             // Create a new Excel Workbook
             using (var workbook = new XLWorkbook())
@@ -57,13 +57,23 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlist
         /// </summary>
         /// <param name="item"></param>
         /// <param name="recordCount"></param>
-        protected override void AddPlaylist(FlattenedPlaylistItem item, int recordCount)
+        protected override void AddPlaylistItem(FlattenedPlaylistItem item, int recordCount)
         {
             var row = recordCount + 1;
             _worksheet!.Cell(row, 1).Value = item.Position.ToString();
             _worksheet!.Cell(row, 2).Value = item.ArtistName ?? "";
             _worksheet!.Cell(row, 3).Value = item.AlbumTitle ?? "";
             _worksheet!.Cell(row, 4).Value = item.PlayingTime ?? "";
+        }
+
+        /// <summary>
+        /// Method to add the total playing time to the output
+        /// </summary>
+        /// <param name="formattedPlayingTime"></param>
+        protected override void AddPlayingTime(string formattedPlayingTime, int recordCount)
+        {
+            var row = recordCount + 1;
+            _worksheet!.Cell(row, 4).Value = formattedPlayingTime ?? "";
         }
     }
 }

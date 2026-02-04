@@ -16,7 +16,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
   const [playlistType, setPlaylistType] = useState(null);
   const [timeOfDay, setTimeOfDay] = useState(null);
   const [numberOfEntries, setNumberOfEntries] = useState(3);
-  const [playlistAlbums, setPlaylistAlbums] = useState(null);
+  const [playlist, setPlaylist] = useState(null);
 
   // Callback to request a playlist from the API
   const generatePlaylistCallback = useCallback(
@@ -31,8 +31,8 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       // Make sure they're all specified
       if ((playlistTypeId != null) && (timeOfDayId != null) && (numberOfEntries > 0)) {
         // Request a playlist built using the specified criteria
-        const fetchedAlbums = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, logout);
-        setPlaylistAlbums(fetchedAlbums);
+        const fetchedPlaylist = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, logout);
+        setPlaylist(fetchedPlaylist);
       }
 
     },
@@ -101,31 +101,41 @@ const PlaylistBuilder = ({ navigate, logout }) => {
           </div>
         </form>
       </div>
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Artist</th>
-            <th>Album Title</th>
-            <th>Playing Time</th>
-            <th>Genre</th>
-            <th>Released</th>
-            <th>Purchased</th>
-            <th>Price</th>
-            <th>Retailer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(playlistAlbums ?? []).map((pa) => (
-            <PlaylistAlbumRow
-              key={pa.id}
-              id={pa.id}
-              artist={pa.artist}
-              album={pa}
-              navigate={navigate}
-            />
-          ))}
-        </tbody>
-      </table>
+      {playlist && playlist.albums && (
+        <>
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>Artist</th>
+                <th>Album Title</th>
+                <th>Playing Time</th>
+                <th>Genre</th>
+                <th>Released</th>
+                <th>Purchased</th>
+                <th>Price</th>
+                <th>Retailer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(playlist.albums ?? []).map((pa) => (
+                <PlaylistAlbumRow
+                  key={pa.id}
+                  id={pa.id}
+                  artist={pa.artist}
+                  album={pa}
+                  navigate={navigate}
+                />
+              ))}
+            </tbody>
+          </table>
+          <div className="row">
+            <div class="col d-flex justify-content-center">
+            <label className={styles.playlistBuilderLabel}>Total Playing Time:</label>
+            <label>{playlist.formattedPlayingTime}</label>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

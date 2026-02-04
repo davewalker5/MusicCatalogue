@@ -48,13 +48,13 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         }
 
         /// <summary>
-        /// Pick one random album for each artist in the specified playlist
+        /// Pick one random album for each artist in the specified playlist and return a playlist object containing them
         /// </summary>
         /// <param name="artists"></param>
         /// <returns></returns>
-        public async Task<List<Album>> PickPlaylistAlbums(IEnumerable<PlaylistArtist> artists)
+        public async Task<Playlist> PickPlaylistAlbums(IEnumerable<PlaylistArtist> artists)
         {
-            List<Album> pickedAlbums = [];
+            var playlist = new Playlist();
 
             foreach (var playlistArtist in artists)
             {
@@ -63,11 +63,11 @@ namespace MusicCatalogue.BusinessLogic.Playlists
                 {
                     var album = artist.Albums.Where(x => !(x.IsWishListItem ?? false)).OrderBy(_ => Guid.NewGuid()).FirstOrDefault();
                     album!.Artist = artist;
-                    pickedAlbums.Add(album!);
+                    playlist.Albums.Add(album!);
                 }
             }
 
-            return pickedAlbums;
+            return playlist;
         }
 
         /// <summary>

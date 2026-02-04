@@ -1,9 +1,9 @@
-using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Playlists;
 using System.Text;
 
-namespace MusicCatalogue.BusinessLogic.DataExchange.Playlist
+namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
 {
     public class PlaylistCsvExporter : PlaylistExporterBase, IPlaylistExporter
     {
@@ -20,7 +20,7 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlist
         /// </summary>
         /// <param name="file"></param>
         /// <param name="playlist"></param>
-        public void Export(string file, IList<Album> playlist)
+        public void Export(string file, Playlist playlist)
         {
             // Open the CSV file
             using (_writer = new(file, false, Encoding.UTF8))
@@ -45,9 +45,14 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlist
         /// </summary>
         /// <param name="item"></param>
         /// <param name="_"></param>
-        protected override void AddPlaylist(FlattenedPlaylistItem item, int _)
-        {
-            _writer!.WriteLine(item.ToCsv());
-        }
+        protected override void AddPlaylistItem(FlattenedPlaylistItem item, int _)
+            => _writer!.WriteLine(item.ToCsv());
+
+        /// <summary>
+        /// Method to add the total playing time to the output
+        /// </summary>
+        /// <param name="formattedPlayingTime"></param>
+        protected override void AddPlayingTime(string formattedPlayingTime, int recordCount)
+            => _writer!.WriteLine($",,,{formattedPlayingTime}");
     }
 }

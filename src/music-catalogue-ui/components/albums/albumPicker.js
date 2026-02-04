@@ -122,31 +122,33 @@ const AlbumPicker = ({ navigate, logout }) => {
           </div>
         </form>
       </div>
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Match Strength</th>
-            <th>Artist</th>
-            <th>Album Title</th>
-            <th>Playing Time</th>
-            <th>Genre</th>
-            <th>Released</th>
-            <th>Purchased</th>
-            <th>Price</th>
-            <th>Retailer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(pickedAlbums ?? []).map((pa) => (
-            <AlbumPickerAlbumRow
-              key={pa.album.id}
-              id={pa.album.id}
-              match={pa}
-              navigate={navigate}
-            />
-          ))}
-        </tbody>
-      </table>
+      {pickedAlbums && (
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>Match Strength</th>
+              <th>Artist</th>
+              <th>Album Title</th>
+              <th>Playing Time</th>
+              <th>Genre</th>
+              <th>Released</th>
+              <th>Purchased</th>
+              <th>Price</th>
+              <th>Retailer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(pickedAlbums ?? []).map((pa) => (
+              <AlbumPickerAlbumRow
+                key={pa.album.id}
+                id={pa.album.id}
+                match={pa}
+                navigate={navigate}
+              />
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
