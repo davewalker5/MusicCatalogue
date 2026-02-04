@@ -9,5 +9,6 @@ namespace MusicCatalogue.Entities.Playlists
         public PlaylistType Type { get; set; }
         public TimeOfDay TimeOfDay { get; set; }
         public int NumberOfEntries { get; set; }
+        public string? FileName { get; set; }
     }
 }

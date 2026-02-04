@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MusicCatalogue.Api.Entities;
+using MusicCatalogue.Api.Interfaces;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
@@ -16,11 +18,16 @@ namespace MusicCatalogue.Api.Controllers
     {
         private readonly IMusicCatalogueFactory _factory;
         private readonly IAlbumLookupManager _manager;
+        private readonly IBackgroundQueue<PlaylistExportWorkItem> _playlistQueue;
 
-        public SearchController(IMusicCatalogueFactory factory, IAlbumLookupManager manager)
+        public SearchController(
+            IMusicCatalogueFactory factory,
+            IAlbumLookupManager manager,
+            IBackgroundQueue<PlaylistExportWorkItem> playlistQueue)
         {
             _factory = factory;
             _manager = manager;
+            _playlistQueue = playlistQueue;
         }
 
         /// <summary>
@@ -90,9 +97,22 @@ namespace MusicCatalogue.Api.Controllers
         [Route("playlist")]
         public async Task<ActionResult<Playlist>> GeneratePlaylistAsync([FromBody] PlaylistBuilderCriteria criteria)
         {
+            // Generate the playlist
             _factory.Logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
             var artists = await _factory.PlaylistBuilder.BuildPlaylist(criteria.Type, criteria.TimeOfDay, criteria.NumberOfEntries);
             var playlist = await _factory.PlaylistBuilder.PickPlaylistAlbums(artists);
+
+            // If a filename has been specified, queue a job to export the playlist to the file
+            if (!string.IsNullOrEmpty(criteria.FileName))
+            {
+                _factory.Logger.LogMessage(Severity.Debug, $"Queueing job to export the playlist");
+                _playlistQueue.Enqueue(new PlaylistExportWorkItem
+                {
+                    FileName = "playlist.csv",
+                    Playlist = playlist
+                });
+            }
+
             return playlist;
         }
     }
