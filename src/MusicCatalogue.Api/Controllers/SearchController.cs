@@ -108,7 +108,8 @@ namespace MusicCatalogue.Api.Controllers
                 _factory.Logger.LogMessage(Severity.Debug, $"Queueing job to export the playlist");
                 _playlistQueue.Enqueue(new PlaylistExportWorkItem
                 {
-                    FileName = "playlist.csv",
+                    JobName = "Playlist Export",
+                    FileName = criteria.FileName,
                     Playlist = playlist
                 });
             }

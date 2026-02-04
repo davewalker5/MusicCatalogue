@@ -7,6 +7,7 @@ import { apiGetPostHeaders } from "./apiHeaders";
  * @param {*} playlistTypeId
  * @param {*} timeOfDayId
  * @param {*} numberOfEntries
+ * @param {*} fileName
  * @param {*} logout
  * @returns
  */
@@ -14,6 +15,7 @@ const apiGeneratePlaylist = async (
   playlistTypeId,
   timeOfDayId,
   numberOfEntries,
+  fileName,
   logout
 ) => {
   // Construct the body
@@ -21,6 +23,7 @@ const apiGeneratePlaylist = async (
     type: playlistTypeId,
     timeOfDay: timeOfDayId,
     numberOfEntries: numberOfEntries,
+    fileName: fileName
   });
 
   // Call the API to create the album

@@ -35,6 +35,7 @@ namespace MusicCatalogue.Api.Services
             // Use the file extension to determine which exporter to use
             var extension = Path.GetExtension(item.FileName).ToLower();
             IPlaylistExporter? exporter = extension == ".xlsx" ? factory.PlaylistXlsxExporter : factory.PlaylistCsvExporter;
+            MessageLogger.LogInformation($"Using the {exporter.GetType().Name} playlist exporter");
 
             // Construct the full path to the export file
             var filePath = Path.Combine(_settings.CatalogueExportPath, item.FileName);
