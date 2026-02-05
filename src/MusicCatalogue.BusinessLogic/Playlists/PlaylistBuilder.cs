@@ -29,6 +29,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="timeOfDay"></param>
+        /// <param name="currentArtistId"></param>
         /// <param name="n"></param>
         /// <param name="includedGenreIds"></param>
         /// <param name="excludedGenreIds"></param>
@@ -36,10 +37,11 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         public async Task<Playlist> BuildPlaylistAsync(
             PlaylistType mode,
             TimeOfDay timeOfDay,
+            int? currentArtistId,
             int n,
             IEnumerable<int> includedGenreIds,
             IEnumerable<int> excludedGenreIds)
-            => await BuildPlaylistAsync(null, mode, timeOfDay, n, includedGenreIds, excludedGenreIds);
+            => await BuildPlaylistAsync(null, mode, timeOfDay, currentArtistId, n, includedGenreIds, excludedGenreIds);
 
         /// <summary>
         /// Build a playlist using the specified set of artists
@@ -47,12 +49,16 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="artists"></param>
         /// <param name="mode"></param>
         /// <param name="timeOfDay"></param>
+        /// <param name="currentArtistId"></param>
         /// <param name="n"></param>
+        /// <param name="includedGenreIds"></param>
+        /// <param name="excludedGenreIds"></param>
         /// <returns></returns>
         public async Task<Playlist> BuildPlaylistAsync(
             IEnumerable<Artist>? artists,
             PlaylistType mode,
             TimeOfDay timeOfDay,
+            int? currentArtistId,
             int n,
             IEnumerable<int> includedGenreIds,
             IEnumerable<int> excludedGenreIds)
@@ -93,7 +99,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
             List<Artist> artistPool = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
 
             // Generate an artist playlist
-            var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, n);
+            var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, currentArtistId, n);
             var playlistArtists = GenerateArtistList(artistPool, parameters);
 
             // Pick a random album for each artist
@@ -206,7 +212,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
             var chosen = new List<PlaylistArtist>(Math.Min(parameters.NumberOfEntries, artistScores!.Count));
             var remaining = new List<ArtistScoringRow>(artistScores);
             var recent = new Queue<int>();
-            int? previousArtistId = null;
+            int? previousArtistId = parameters.CurrentArtistId;
 
             while (chosen.Count < Math.Min(parameters.NumberOfEntries, remaining.Count))
             {

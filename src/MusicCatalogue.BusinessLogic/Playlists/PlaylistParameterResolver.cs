@@ -13,10 +13,11 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// </summary>
         /// <param name="type"></param>
         /// <param name="timeOfDay"></param>
+        /// <param name="currentArtistId"></param>
         /// <param name="numberOfEntries"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static PlaylistParameters Resolve(PlaylistType type, TimeOfDay timeOfDay, int numberOfEntries)
+        public static PlaylistParameters Resolve(PlaylistType type, TimeOfDay timeOfDay, int? currentArtistId, int numberOfEntries)
         {
             var basePreset = PlaylistPresetTable.GetBasePreset(type, timeOfDay);
 
@@ -45,6 +46,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
 
             return new PlaylistParameters(
                 TimeOfDay: timeOfDay,
+                CurrentArtistId: currentArtistId,
                 NumberOfEntries: numberOfEntries,
                 TopK: topK,
                 Temperature: temperature,

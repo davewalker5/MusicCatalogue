@@ -102,6 +102,7 @@ namespace MusicCatalogue.Api.Controllers
             var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(
                 criteria.Type,
                 criteria.TimeOfDay,
+                criteria.CurrentArtistId,
                 criteria.NumberOfEntries,
                 criteria.IncludedGenreIds,
                 criteria.ExcludedGenreIds);
