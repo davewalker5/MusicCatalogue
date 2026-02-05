@@ -25,7 +25,7 @@
     - The builder has the following inputs:
       - Playlist "type"
       - Time of day and n
-      - Vumber of of albums
+      - Number of of albums
     - Two broad types of playlists are supported:
       - Normal - maximising breadth while remaining time-of-day aware
       - Curated - constrained to a stylistic neighbourhood but with enough randomness to avoid near-duplicate playlists
