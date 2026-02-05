@@ -24,7 +24,7 @@
   - A playlist builder:
     - The builder has the following inputs:
       - Playlist "type"
-      - Time of day and n
+      - Time of day
       - Number of of albums
     - Two broad types of playlists are supported:
       - Normal - maximising breadth while remaining time-of-day aware
