@@ -20,7 +20,19 @@
   - Music catalogue collection browser (artists, albums and tracks)
   - Artist style and mood tagging
   - A "wish list" of albums with the ability to move albums between the main catalogue and the wish list at will
-  - Album search
+  - An album picker based on genre and artist style parameters
+  - A playlist builder:
+    - The builder has the following inputs:
+      - Playlist "type"
+      - Time of day and n
+      - Vumber of of albums
+    - Two broad types of playlists are supported:
+      - Normal - maximising breadth while remaining time-of-day aware
+      - Curated - constrained to a stylistic neighbourhood but with enough randomness to avoid near-duplicate playlists
+    - Playlists may:
+      - Be built from the whole catalogue (default)
+      - Be built from selected genres
+      - Exclude specified genres
   - External API integration for looking up new albums
   - An equipment register browser (equipment, equipment types, manufacturers)
   - A "wish list" of equipment with the ability to move items between the main register and the wish list at will
