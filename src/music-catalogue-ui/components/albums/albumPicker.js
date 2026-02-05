@@ -18,6 +18,7 @@ const AlbumPicker = ({ navigate, logout }) => {
   const [intimacy, setIntimacy] = useState(3);
   const [warmth, setWarmth] = useState(3);
   const [pickedAlbums, setPickedAlbums] = useState(null);
+  const { selectedGenres, setSelectedGenres } = useState([]);
 
   // Callback to request a random album from the API
   const pickAlbumCallback = useCallback(

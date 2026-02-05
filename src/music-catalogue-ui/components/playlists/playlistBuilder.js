@@ -6,6 +6,7 @@ import PlaylistTypeSelector from "./playlistTypeSelector";
 import TimesOfDaySelector from "./timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
 import FormInputField from "../common/formInputField";
+import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList";
 
 /**
  * Component to pick a random album, optionally for a specified playlistType
@@ -19,6 +20,8 @@ const PlaylistBuilder = ({ navigate, logout }) => {
   const [numberOfEntries, setNumberOfEntries] = useState(3);
   const [exportFileName, setExportFileName] = useState("");
   const [playlist, setPlaylist] = useState(null);
+  const [includedGenres, setIncludedGenres] = useState([]);
+  const [excludedGenres, setExcludedGenres] = useState([]);
 
   // Callback to request a playlist from the API
   const generatePlaylistCallback = useCallback(
@@ -30,15 +33,26 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       const playlistTypeId = playlistType != null ? playlistType.id : null;
       const timeOfDayId = timeOfDay != null ? timeOfDay.id : null;
 
+      // Extract the IDs for the included and excluded genres
+      const includedGenreIds = includedGenres.map(item => item.id);
+      const excludedGenreIds = excludedGenres.map(item => item.id);
+
       // Make sure they're all specified
       if ((playlistTypeId != null) && (timeOfDayId != null) && (numberOfEntries > 0)) {
         // Request a playlist built using the specified criteria
-        const fetchedPlaylist = await apiGeneratePlaylist(playlistTypeId, timeOfDayId, numberOfEntries, exportFileName, logout);
+        const fetchedPlaylist = await apiGeneratePlaylist(
+          playlistTypeId,
+          timeOfDayId,
+          numberOfEntries,
+          includedGenreIds,
+          excludedGenreIds,
+          exportFileName,
+          logout);
         setPlaylist(fetchedPlaylist);
       }
 
     },
-    [playlistType, timeOfDay, numberOfEntries, exportFileName, logout]
+    [playlistType, timeOfDay, numberOfEntries, exportFileName, includedGenres, excludedGenres, logout]
   );
 
   return (
@@ -49,45 +63,73 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       <div className={styles.playlistBuilderFormContainer}>
         <form className={styles.playlistBuilderForm}>
           <div className="row d-flex justify-content-center">
-            <div className="col-md-2">
+            <div className="col">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Playlist Type</label>
                 <div>
                   <PlaylistTypeSelector
-                        initialPlaylistType={playlistType}
-                        playlistTypeChangedCallback={setPlaylistType}
-                        logout={logout}
-                      />
+                    initialPlaylistType={playlistType}
+                    playlistTypeChangedCallback={setPlaylistType}
+                    logout={logout}
+                  />
                 </div>
               </div>
             </div>
-            <div className="col-md-2">
+            <div className="col">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Time Of Day</label>
                 <div>
                   <TimesOfDaySelector
-                        initialTimeOfDay={timeOfDay}
-                        timeOfDayChangedCallback={setTimeOfDay}
-                        logout={logout}
-                      />
+                    initialTimeOfDay={timeOfDay}
+                    timeOfDayChangedCallback={setTimeOfDay}
+                    logout={logout}
+                  />
                 </div>
               </div>
             </div>
-            <div className="col-md-2">
+            <div className="col">
               <div className="form-group mt-3">
-                <label className={styles.playlistBuilderLabel}>Number Of Entries</label>
+                <label className={styles.playlistBuilderLabel}>
+                  Include{includedGenres.length > 0 && ` (${includedGenres.length})`}
+                </label>
+                <div>
+                  <GenreMultiSelectDropdownList
+                    label="Genres"
+                    onSelectionChanged={setIncludedGenres}
+                    logout={logout}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.playlistBuilderLabel}>
+                  Exclude{excludedGenres.length > 0 && ` (${excludedGenres.length})`}
+                </label>
+                <div>
+                  <GenreMultiSelectDropdownList
+                    label="Genres"
+                    onSelectionChanged={setExcludedGenres}
+                    logout={logout}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.playlistBuilderLabel}>Entries</label>
                 <div>
                   <Slider
-                        value={numberOfEntries}
-                        minimum={3}
-                        maximum={10}
-                        step={1}
-                        onChange={setNumberOfEntries}
-                      />
+                    value={numberOfEntries}
+                    minimum={3}
+                    maximum={10}
+                    step={1}
+                    onChange={setNumberOfEntries}
+                  />
                 </div>
               </div>
             </div>
-            <div className="col-md-2">
+            <div className="col">
                 <FormInputField
                   label="Export To"
                   name="filename"
@@ -95,7 +137,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                   setValue={setExportFileName}
                 />
             </div>
-            <div className="col-md-2">
+            <div className="col-md-1">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}></label>
                 <div>
