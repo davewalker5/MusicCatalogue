@@ -1,0 +1,12 @@
+.noChips :global(.multiselect-container .selectedListContainer),
+.noChips :global(.multiselect-container .chip),
+.noChips :global(.multiselect-container .chips) {
+  display: none !important;
+}
+
+/* optional: remove any leftover gap */
+.noChips :global(.multiselect-container .search-wrapper),
+.noChips :global(.multiselect-container .searchWrapper) {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
