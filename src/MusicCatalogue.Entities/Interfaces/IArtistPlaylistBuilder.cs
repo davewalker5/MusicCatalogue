@@ -8,7 +8,7 @@ namespace MusicCatalogue.Entities.Interfaces
         Task<Playlist> BuildPlaylistAsync(
             PlaylistType mode,
             TimeOfDay timeOfDay,
-            int? initialArtistId,
+            int? currentArtistId,
             int n,
             IEnumerable<int> includedGenreIds,
             IEnumerable<int> excludedGenreIds);
@@ -17,7 +17,7 @@ namespace MusicCatalogue.Entities.Interfaces
             IEnumerable<Artist>? artists,
             PlaylistType mode,
             TimeOfDay timeOfDay,
-            int? initialArtistId,
+            int? currentArtistId,
             int n,
             IEnumerable<int> includedGenreIds,
             IEnumerable<int> excludedGenreIds);
