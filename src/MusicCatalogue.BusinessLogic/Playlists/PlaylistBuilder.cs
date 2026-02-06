@@ -1,7 +1,7 @@
-using MusicCatalogue.BusinessLogic.Database;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Extensions;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.BusinessLogic.Playlists
@@ -146,8 +146,10 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="timeOfDay"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private static List<PlaylistArtist> GenerateArtistList(IEnumerable<Artist> artists, PlaylistParameters parameters)
+        private List<PlaylistArtist> GenerateArtistList(IEnumerable<Artist> artists, PlaylistParameters parameters)
         {
+            _factory.Logger.LogMessage(Severity.Debug, $"Generating artist list with parameters {parameters}");
+
             // Materialize the artists list
             var artistList = artists.ToList();
             if (artistList.Count == 0)
@@ -252,26 +254,31 @@ namespace MusicCatalogue.BusinessLogic.Playlists
                 // Use Softmax to pick an entry from the pool
                 var probs = Softmax([.. pool.Select(p => p.StepScore)], temperature);
                 int pickIdx = SampleIndex(rng, probs);
-                var (Row, StepScore) = pool[pickIdx];
+                var (row, stepScore) = pool[pickIdx];
 
-                // Add a new artist playlist item. This includes the pick and the calculated values
+                // Log the selected artist details. This includes the pick and the calculated values
                 // that illustrate why it was picked 
-                var artist = Row.Artist;
-                chosen.Add(new PlaylistArtist
+                var artist = row.Artist;
+                var selectedArtist = new PlaylistArtist
                 {
                     ArtistId = artist!.Id,
                     ArtistName = artist.Name,
-                    StepScore = StepScore,
-                    BaseScore = Row.BaseScore,
-                    StyleFit = Row.StyleFit,
-                    MoodScore = Row.MoodScore,
-                    MoodScoreNorm = Row.MoodScoreNorm,
+                    StepScore = stepScore,
+                    BaseScore = row.BaseScore,
+                    StyleFit = row.StyleFit,
+                    MoodScore = row.MoodScore,
+                    MoodScoreNorm = row.MoodScoreNorm,
                     Energy = artist.Energy,
                     Intimacy = artist.Intimacy,
                     Warmth = artist.Warmth,
                     VocalPresence = artist.Vocals,
                     EnsembleType = artist.Ensemble
-                });
+                };
+
+                _factory.Logger.LogMessage(Severity.Debug, $"Selected artist {selectedArtist}");
+
+                // Add the selected artist to the playlist
+                chosen.Add(selectedArtist);
 
                 // Update state for the next iteration
                 previousArtistId = artist.Id;
@@ -282,7 +289,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
                 }
 
                 // Remove the picked artist
-                remaining.Remove(Row);
+                remaining.Remove(row);
             }
 
             return chosen;

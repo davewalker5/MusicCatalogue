@@ -96,7 +96,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
             <div className="col">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>
-                  Exclude Genres{includedGenres.length > 0 && ` (${includedGenres.length})`}
+                  Exclude Genres{excludedGenres.length > 0 && ` (${excludedGenres.length})`}
                 </label>
                 <div>
                   <GenreMultiSelectDropdownList
