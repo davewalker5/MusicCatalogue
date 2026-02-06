@@ -7,6 +7,7 @@ import TimesOfDaySelector from "./timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
 import FormInputField from "../common/formInputField";
 import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList";
+import ArtistSelector from "../artists/artistSelector";
 
 /**
  * Component to pick a random album, optionally for a specified playlistType
@@ -20,6 +21,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
   const [numberOfEntries, setNumberOfEntries] = useState(3);
   const [exportFileName, setExportFileName] = useState("");
   const [playlist, setPlaylist] = useState(null);
+  const [currentArtist, setCurrentArtist] = useState([]);
   const [includedGenres, setIncludedGenres] = useState([]);
   const [excludedGenres, setExcludedGenres] = useState([]);
 
@@ -32,6 +34,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       // Get the playlist builder criteria
       const playlistTypeId = playlistType != null ? playlistType.id : null;
       const timeOfDayId = timeOfDay != null ? timeOfDay.id : null;
+      const currentArtistId = currentArtist != null ? currentArtist.id : null;
 
       // Extract the IDs for the included and excluded genres
       const includedGenreIds = includedGenres.map(item => item.id);
@@ -44,6 +47,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
           playlistTypeId,
           timeOfDayId,
           numberOfEntries,
+          currentArtistId,
           includedGenreIds,
           excludedGenreIds,
           exportFileName,
@@ -52,7 +56,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       }
 
     },
-    [playlistType, timeOfDay, numberOfEntries, exportFileName, includedGenres, excludedGenres, logout]
+    [playlistType, timeOfDay, numberOfEntries, exportFileName, currentArtist, includedGenres, excludedGenres, logout]
   );
 
   return (
@@ -62,6 +66,48 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       </div>
       <div className={styles.playlistBuilderFormContainer}>
         <form className={styles.playlistBuilderForm}>
+          <div className="row d-flex justify-content-center">
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.playlistBuilderLabel}>Current Artist</label>
+                <div>
+                  <ArtistSelector
+                    initialArtist={currentArtist}
+                    artistChangedCallback={setCurrentArtist}
+                    logout={logout}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.playlistBuilderLabel}>
+                  Include Genres{includedGenres.length > 0 && ` (${includedGenres.length})`}
+                </label>
+                <div>
+                  <GenreMultiSelectDropdownList
+                    label="Genres"
+                    onSelectionChanged={setIncludedGenres}
+                    logout={logout}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col">
+              <div className="form-group mt-3">
+                <label className={styles.playlistBuilderLabel}>
+                  Exclude Genres{includedGenres.length > 0 && ` (${includedGenres.length})`}
+                </label>
+                <div>
+                  <GenreMultiSelectDropdownList
+                    label="Genres"
+                    onSelectionChanged={setExcludedGenres}
+                    logout={logout}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="row d-flex justify-content-center">
             <div className="col">
               <div className="form-group mt-3">
@@ -82,34 +128,6 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                   <TimesOfDaySelector
                     initialTimeOfDay={timeOfDay}
                     timeOfDayChangedCallback={setTimeOfDay}
-                    logout={logout}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-group mt-3">
-                <label className={styles.playlistBuilderLabel}>
-                  Include{includedGenres.length > 0 && ` (${includedGenres.length})`}
-                </label>
-                <div>
-                  <GenreMultiSelectDropdownList
-                    label="Genres"
-                    onSelectionChanged={setIncludedGenres}
-                    logout={logout}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-group mt-3">
-                <label className={styles.playlistBuilderLabel}>
-                  Exclude{excludedGenres.length > 0 && ` (${excludedGenres.length})`}
-                </label>
-                <div>
-                  <GenreMultiSelectDropdownList
-                    label="Genres"
-                    onSelectionChanged={setExcludedGenres}
                     logout={logout}
                   />
                 </div>

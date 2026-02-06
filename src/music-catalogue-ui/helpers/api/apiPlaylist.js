@@ -7,6 +7,9 @@ import { apiGetPostHeaders } from "./apiHeaders";
  * @param {*} playlistTypeId
  * @param {*} timeOfDayId
  * @param {*} numberOfEntries
+ * @param {*} currentArtistId
+ * @param {*} includedGenreIds
+ * @param {*} excludedGenreIds
  * @param {*} fileName
  * @param {*} logout
  * @returns
@@ -15,6 +18,7 @@ const apiGeneratePlaylist = async (
   playlistTypeId,
   timeOfDayId,
   numberOfEntries,
+  currentArtistId,
   includedGenreIds,
   excludedGenreIds,
   fileName,
@@ -24,6 +28,7 @@ const apiGeneratePlaylist = async (
   const body = JSON.stringify({
     type: playlistTypeId,
     timeOfDay: timeOfDayId,
+    currentArtistId: currentArtistId,
     numberOfEntries: numberOfEntries,
     includedGenreIds: includedGenreIds,
     excludedGenreIds: excludedGenreIds,
