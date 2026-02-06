@@ -26,6 +26,7 @@
       - Playlist "type"
       - Time of day
       - Number of of albums
+      - Optional current artist (for the "where next?" question)
     - Two broad types of playlists are supported:
       - Normal - maximising breadth while remaining time-of-day aware
       - Curated - constrained to a stylistic neighbourhood but with enough randomness to avoid near-duplicate playlists

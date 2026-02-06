@@ -16,7 +16,7 @@ import useEnsembleTypes from "@/hooks/useEnsembleTypes";
  * @returns
  */
 const ArtistList = ({ filter, genre, isWishList, navigate, logout }) => {
-  const { artists, setArtists } = useArtists(filter, genre, isWishList, logout);
+  const { artists, setArtists } = useArtists(filter, genre, isWishList, true, logout);
   const { vocalPresences, setVocalPresences } = useVocalPresences(logout);
   const { ensembleTypes, setEnsembleTypes } = useEnsembleTypes(logout);
   const [error, setError] = useState("");

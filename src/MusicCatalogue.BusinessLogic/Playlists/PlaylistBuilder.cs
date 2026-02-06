@@ -1,7 +1,7 @@
-using MusicCatalogue.BusinessLogic.Database;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Extensions;
 using MusicCatalogue.Entities.Interfaces;
+using MusicCatalogue.Entities.Logging;
 using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.BusinessLogic.Playlists
@@ -29,6 +29,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// </summary>
         /// <param name="mode"></param>
         /// <param name="timeOfDay"></param>
+        /// <param name="currentArtistId"></param>
         /// <param name="n"></param>
         /// <param name="includedGenreIds"></param>
         /// <param name="excludedGenreIds"></param>
@@ -36,10 +37,11 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         public async Task<Playlist> BuildPlaylistAsync(
             PlaylistType mode,
             TimeOfDay timeOfDay,
+            int? currentArtistId,
             int n,
             IEnumerable<int> includedGenreIds,
             IEnumerable<int> excludedGenreIds)
-            => await BuildPlaylistAsync(null, mode, timeOfDay, n, includedGenreIds, excludedGenreIds);
+            => await BuildPlaylistAsync(null, mode, timeOfDay, currentArtistId, n, includedGenreIds, excludedGenreIds);
 
         /// <summary>
         /// Build a playlist using the specified set of artists
@@ -47,12 +49,16 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="artists"></param>
         /// <param name="mode"></param>
         /// <param name="timeOfDay"></param>
+        /// <param name="currentArtistId"></param>
         /// <param name="n"></param>
+        /// <param name="includedGenreIds"></param>
+        /// <param name="excludedGenreIds"></param>
         /// <returns></returns>
         public async Task<Playlist> BuildPlaylistAsync(
             IEnumerable<Artist>? artists,
             PlaylistType mode,
             TimeOfDay timeOfDay,
+            int? currentArtistId,
             int n,
             IEnumerable<int> includedGenreIds,
             IEnumerable<int> excludedGenreIds)
@@ -93,7 +99,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
             List<Artist> artistPool = await _factory.Artists.ListAsync(x => artistIds.Contains(x.Id), false);
 
             // Generate an artist playlist
-            var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, n);
+            var parameters = PlaylistParameterResolver.Resolve(mode, timeOfDay, currentArtistId, n);
             var playlistArtists = GenerateArtistList(artistPool, parameters);
 
             // Pick a random album for each artist
@@ -140,8 +146,10 @@ namespace MusicCatalogue.BusinessLogic.Playlists
         /// <param name="timeOfDay"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        private static List<PlaylistArtist> GenerateArtistList(IEnumerable<Artist> artists, PlaylistParameters parameters)
+        private List<PlaylistArtist> GenerateArtistList(IEnumerable<Artist> artists, PlaylistParameters parameters)
         {
+            _factory.Logger.LogMessage(Severity.Debug, $"Generating artist list with parameters {parameters}");
+
             // Materialize the artists list
             var artistList = artists.ToList();
             if (artistList.Count == 0)
@@ -206,7 +214,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
             var chosen = new List<PlaylistArtist>(Math.Min(parameters.NumberOfEntries, artistScores!.Count));
             var remaining = new List<ArtistScoringRow>(artistScores);
             var recent = new Queue<int>();
-            int? previousArtistId = null;
+            int? previousArtistId = parameters.CurrentArtistId;
 
             while (chosen.Count < Math.Min(parameters.NumberOfEntries, remaining.Count))
             {
@@ -246,26 +254,31 @@ namespace MusicCatalogue.BusinessLogic.Playlists
                 // Use Softmax to pick an entry from the pool
                 var probs = Softmax([.. pool.Select(p => p.StepScore)], temperature);
                 int pickIdx = SampleIndex(rng, probs);
-                var (Row, StepScore) = pool[pickIdx];
+                var (row, stepScore) = pool[pickIdx];
 
-                // Add a new artist playlist item. This includes the pick and the calculated values
+                // Log the selected artist details. This includes the pick and the calculated values
                 // that illustrate why it was picked 
-                var artist = Row.Artist;
-                chosen.Add(new PlaylistArtist
+                var artist = row.Artist;
+                var selectedArtist = new PlaylistArtist
                 {
                     ArtistId = artist!.Id,
                     ArtistName = artist.Name,
-                    StepScore = StepScore,
-                    BaseScore = Row.BaseScore,
-                    StyleFit = Row.StyleFit,
-                    MoodScore = Row.MoodScore,
-                    MoodScoreNorm = Row.MoodScoreNorm,
+                    StepScore = stepScore,
+                    BaseScore = row.BaseScore,
+                    StyleFit = row.StyleFit,
+                    MoodScore = row.MoodScore,
+                    MoodScoreNorm = row.MoodScoreNorm,
                     Energy = artist.Energy,
                     Intimacy = artist.Intimacy,
                     Warmth = artist.Warmth,
                     VocalPresence = artist.Vocals,
                     EnsembleType = artist.Ensemble
-                });
+                };
+
+                _factory.Logger.LogMessage(Severity.Debug, $"Selected artist {selectedArtist}");
+
+                // Add the selected artist to the playlist
+                chosen.Add(selectedArtist);
 
                 // Update state for the next iteration
                 previousArtistId = artist.Id;
@@ -276,7 +289,7 @@ namespace MusicCatalogue.BusinessLogic.Playlists
                 }
 
                 // Remove the picked artist
-                remaining.Remove(Row);
+                remaining.Remove(row);
             }
 
             return chosen;
