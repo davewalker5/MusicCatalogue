@@ -7,10 +7,11 @@ import { apiFetchArtists } from "@/helpers/api/apiArtists";
  * @param {*} filter
  * @param {*} genre
  * @param {*} isWishlist
+ * @param {*} includeArtistsWithNoAlbums
  * @param {*} logout
  * @returns
  */
-const useArtists = (filter, genre, isWishlist, logout) => {
+const useArtists = (filter, genre, isWishlist, includeArtistsWithNoAlbums, logout) => {
   // Current list of artists and the method to change it
   const [artists, setArtists] = useState([]);
 
@@ -25,7 +26,7 @@ const useArtists = (filter, genre, isWishlist, logout) => {
           filter,
           genreId,
           isWishlist,
-          true,
+          includeArtistsWithNoAlbums,
           logout
         );
         setArtists(fetchedArtists);
