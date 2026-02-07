@@ -18,11 +18,11 @@ import Slider from "../common/slider";
 const ArtistEditor = ({ filter, artist, isWishList, navigate, logout }) => {
   // Get initial values for artist properties
   const initialName = artist != null ? artist.name : null;
-  const initialVocalPresence = artist != null ? artist.vocals : null;
-  const initialEnsembleType = artist != null ? artist.ensemble : null;
-  const initialEnergy = artist != null ? artist.energy : null;
-  const initialIntimacy = artist != null ? artist.intimacy : null;
-  const initialWarmth = artist != null ? artist.warmth : null;
+  const initialVocalPresence = artist != null ? artist.vocals : 0;
+  const initialEnsembleType = artist != null ? artist.ensemble : 0;
+  const initialEnergy = artist != null ? artist.energy : 3;
+  const initialIntimacy = artist != null ? artist.intimacy : 3;
+  const initialWarmth = artist != null ? artist.warmth : 3;
 
   // Set up state
   const [name, setName] = useState(initialName);
