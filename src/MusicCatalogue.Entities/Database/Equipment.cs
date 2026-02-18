@@ -10,10 +10,10 @@ namespace MusicCatalogue.Entities.Database
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("EquipmentType.Id")]
+        [ForeignKey("EquipmentType")]
         public int EquipmentTypeId { get; set; }
 
-        [ForeignKey("Manufacturer.Id")]
+        [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
 
         [Required]

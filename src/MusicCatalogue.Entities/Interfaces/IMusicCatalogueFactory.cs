@@ -36,5 +36,6 @@ namespace MusicCatalogue.Entities.Interfaces
         IArtistSimilarityCalculator ArtistSimilarityCalculator { get; }
         IAlbumPicker AlbumPicker { get; }
         IPlaylistBuilder PlaylistBuilder { get; }
+        ISessionManager SessionManager { get; }
     }
 }

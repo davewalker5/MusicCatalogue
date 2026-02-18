@@ -57,33 +57,6 @@ namespace MusicCatalogue.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SESSION_GENRES",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SessionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GenreId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Include = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SESSION_GENRES", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SESSION_GENRES_GENRES_GenreId",
-                        column: x => x.GenreId,
-                        principalTable: "GENRES",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SESSION_GENRES_SESSIONS_SessionId",
-                        column: x => x.SessionId,
-                        principalTable: "SESSIONS",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_SESSION_ALBUMS_AlbumId",
                 table: "SESSION_ALBUMS",
@@ -93,16 +66,6 @@ namespace MusicCatalogue.Data.Migrations
                 name: "IX_SESSION_ALBUMS_SessionId",
                 table: "SESSION_ALBUMS",
                 column: "SessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SESSION_GENRES_GenreId",
-                table: "SESSION_GENRES",
-                column: "GenreId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SESSION_GENRES_SessionId",
-                table: "SESSION_GENRES",
-                column: "SessionId");
         }
 
         /// <inheritdoc />
@@ -110,9 +73,6 @@ namespace MusicCatalogue.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "SESSION_ALBUMS");
-
-            migrationBuilder.DropTable(
-                name: "SESSION_GENRES");
 
             migrationBuilder.DropTable(
                 name: "SESSIONS");

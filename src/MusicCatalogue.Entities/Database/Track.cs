@@ -10,7 +10,7 @@ namespace MusicCatalogue.Entities.Database
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Album.Id")]
+        [ForeignKey("Album")]
         [Required]
         public int AlbumId { get; set; }
 

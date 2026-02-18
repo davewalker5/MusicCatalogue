@@ -11,7 +11,7 @@ using MusicCatalogue.Data;
 namespace MusicCatalogue.Data.Migrations
 {
     [DbContext(typeof(MusicCatalogueDbContext))]
-    [Migration("20260218171244_SavedSessions")]
+    [Migration("20260218173453_SavedSessions")]
     partial class SavedSessions
     {
         /// <inheritdoc />
@@ -398,33 +398,6 @@ namespace MusicCatalogue.Data.Migrations
                     b.ToTable("SESSION_ALBUMS", (string)null);
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Database.SessionGenre", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("Id");
-
-                    b.Property<int>("GenreId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("GenreId");
-
-                    b.Property<bool>("Include")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SessionId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("SessionId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
-
-                    b.HasIndex("SessionId");
-
-                    b.ToTable("SESSION_GENRES", (string)null);
-                });
-
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>
                 {
                     b.Property<int>("Id")
@@ -715,23 +688,6 @@ namespace MusicCatalogue.Data.Migrations
                     b.Navigation("Album");
                 });
 
-            modelBuilder.Entity("MusicCatalogue.Entities.Database.SessionGenre", b =>
-                {
-                    b.HasOne("MusicCatalogue.Entities.Database.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MusicCatalogue.Entities.Database.Session", null)
-                        .WithMany("SessionGenres")
-                        .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Genre");
-                });
-
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Track", b =>
                 {
                     b.HasOne("MusicCatalogue.Entities.Database.Album", null)
@@ -756,8 +712,6 @@ namespace MusicCatalogue.Data.Migrations
             modelBuilder.Entity("MusicCatalogue.Entities.Database.Session", b =>
                 {
                     b.Navigation("SessionAlbums");
-
-                    b.Navigation("SessionGenres");
                 });
 #pragma warning restore 612, 618
         }

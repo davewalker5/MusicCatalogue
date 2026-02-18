@@ -28,7 +28,6 @@ namespace MusicCatalogue.Data
         public virtual DbSet<AlbumByPurchaseDate> AlbumsByPurchaseDate { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
         public virtual DbSet<SessionAlbum> SessionAlbums { get; set; }
-        public virtual DbSet<SessionGenre> SessionGenres { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
@@ -183,17 +182,6 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.AlbumId).IsRequired().HasColumnName("AlbumId");
     
                 entity.HasOne<Session>().WithMany(s => s.SessionAlbums).HasForeignKey(sa => sa.SessionId);
-            });
-
-            modelBuilder.Entity<SessionGenre>(entity =>
-            {
-                entity.ToTable("SESSION_GENRES");
-
-                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
-                entity.Property(e => e.SessionId).IsRequired().HasColumnName("SessionId");
-                entity.Property(e => e.GenreId).IsRequired().HasColumnName("GenreId");
-    
-                entity.HasOne<Session>().WithMany(s => s.SessionGenres).HasForeignKey(sg => sg.SessionId);
             });
         }
     }
