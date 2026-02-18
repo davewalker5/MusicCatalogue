@@ -36,7 +36,7 @@ const apiGeneratePlaylist = async (
   });
 
   // Call the API to create the album
-  const url = `${config.api.baseUrl}/search/playlist`;
+  const url = `${config.api.baseUrl}/playlist/generate`;
   const response = await fetch(url, {
     method: "POST",
     headers: apiGetPostHeaders(),
