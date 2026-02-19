@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from "react";
 import styles from "./playlistBuilder.module.css";
-import { apiGeneratePlaylist } from "@/helpers/api/apiPlaylist";
+import { apiGeneratePlaylist, apiSavePlaylist } from "@/helpers/api/apiPlaylist";
 import Slider from "../common/slider";
 import PlaylistTypeSelector from "./playlistTypeSelector";
 import TimesOfDaySelector from "./timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
-import FormInputField from "../common/formInputField";
 import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList";
 import ArtistSelector from "../artists/artistSelector";
 
@@ -16,10 +15,10 @@ import ArtistSelector from "../artists/artistSelector";
  * @returns
  */
 const PlaylistBuilder = ({ navigate, logout }) => {
+  const [message, setMessage] = useState("");
   const [playlistType, setPlaylistType] = useState(null);
   const [timeOfDay, setTimeOfDay] = useState(null);
   const [numberOfEntries, setNumberOfEntries] = useState(3);
-  const [exportFileName, setExportFileName] = useState("");
   const [playlist, setPlaylist] = useState(null);
   const [currentArtist, setCurrentArtist] = useState([]);
   const [includedGenres, setIncludedGenres] = useState([]);
@@ -30,6 +29,9 @@ const PlaylistBuilder = ({ navigate, logout }) => {
     async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
+
+      // Clear pre-existing messages
+      setMessage("");
 
       // Get the playlist builder criteria
       const playlistTypeId = playlistType != null ? playlistType.id : null;
@@ -56,7 +58,28 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       }
 
     },
-    [playlistType, timeOfDay, numberOfEntries, exportFileName, currentArtist, includedGenres, excludedGenres, logout]
+    [playlistType, timeOfDay, numberOfEntries, currentArtist, includedGenres, excludedGenres, logout]
+  );
+
+  // Callback to save a playlist as a saved session
+  const savePlaylistCallback = useCallback(
+    async (e) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Clear pre-existing messages
+      setMessage("");
+
+      // Extract a list of album IDs from the current playlist and get the playlist type and ToD
+      const albumIds = playlist.albums.map(item => item.id)
+      const playlistTypeId = playlistType != null ? playlistType.id : null;
+      const timeOfDayId = timeOfDay != null ? timeOfDay.id : null;
+
+      // Make sure they're all specified
+      const savedSession = await apiSavePlaylist(playlistTypeId, timeOfDayId, albumIds, logout);
+      setMessage(`Playlist has been saved as session number ${savedSession.id}`);
+    },
+    [playlistType, timeOfDay, playlist, logout]
   );
 
   return (
@@ -66,6 +89,13 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       </div>
       <div className={styles.playlistBuilderFormContainer}>
         <form className={styles.playlistBuilderForm}>
+          <div>
+            {message != "" ? (
+              <div className={styles.savedMessage}>{message}</div>
+            ) : (
+              <></>
+            )}
+          </div>
           <div className="row d-flex justify-content-center">
             <div className="col-md-2">
               <div className="form-group mt-3">
@@ -193,6 +223,14 @@ const PlaylistBuilder = ({ navigate, logout }) => {
             <label className={styles.playlistBuilderLabel}>Total Playing Time:</label>
             <label>{playlist.formattedPlayingTime}</label>
             </div>
+          </div>
+          <div className={styles.playlistSaveButton}>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => savePlaylistCallback(e)}
+            >
+              Save
+            </button>
           </div>
         </>
       )}

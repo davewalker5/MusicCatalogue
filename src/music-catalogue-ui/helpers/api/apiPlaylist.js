@@ -43,8 +43,41 @@ const apiGeneratePlaylist = async (
     body: body,
   });
 
-  const album = await apiReadResponseData(response, logout);
-  return album;
+  const playlist = await apiReadResponseData(response, logout);
+  return playlist;
 };
 
-export { apiGeneratePlaylist };
+/**
+ * POST a request to the API to save a playlist as a saved session
+ * @param {*} playlistTypeId 
+ * @param {*} timeOfDayId 
+ * @param {*} albumIds
+ * @param {*} logout 
+ * @returns 
+ */
+const apiSavePlaylist = async (
+  playlistTypeId,
+  timeOfDayId,
+  albumIds,
+  logout
+) => {
+  // Construct the body
+  const body = JSON.stringify({
+    type: playlistTypeId,
+    timeOfDay: timeOfDayId,
+    albumIds: albumIds
+  });
+
+  // Call the API to create the album
+  const url = `${config.api.baseUrl}/playlist/save`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const session = await apiReadResponseData(response, logout);
+  return session;
+};
+
+export { apiGeneratePlaylist, apiSavePlaylist };
