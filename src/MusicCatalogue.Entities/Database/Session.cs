@@ -10,7 +10,7 @@ namespace MusicCatalogue.Entities.Database
     {
         [Key]
         public int Id { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public PlaylistType Type { get; set; }
         public TimeOfDay TimeOfDay { get; set; }
 

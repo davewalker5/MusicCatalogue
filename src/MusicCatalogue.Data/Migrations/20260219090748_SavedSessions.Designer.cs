@@ -11,7 +11,7 @@ using MusicCatalogue.Data;
 namespace MusicCatalogue.Data.Migrations
 {
     [DbContext(typeof(MusicCatalogueDbContext))]
-    [Migration("20260218173453_SavedSessions")]
+    [Migration("20260219090748_SavedSessions")]
     partial class SavedSessions
     {
         /// <inheritdoc />
@@ -676,7 +676,7 @@ namespace MusicCatalogue.Data.Migrations
                     b.HasOne("MusicCatalogue.Entities.Database.Album", "Album")
                         .WithMany()
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MusicCatalogue.Entities.Database.Session", null)

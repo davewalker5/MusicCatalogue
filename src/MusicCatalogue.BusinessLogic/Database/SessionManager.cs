@@ -78,6 +78,8 @@ namespace MusicCatalogue.BusinessLogic.Database
             await Context.SessionAlbums.AddRangeAsync(sessionAlbums);
             await Context.SaveChangesAsync();
 
+            // Load it to load the related entities
+            session = await GetAsync(x => x.Id == session.Id);
             return session;
         }
 

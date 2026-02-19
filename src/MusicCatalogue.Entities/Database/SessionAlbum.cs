@@ -15,6 +15,6 @@ namespace MusicCatalogue.Entities.Database
         public int AlbumId { get; set; }
         public int Position { get; set; }
 
-        public Album Album { get; set; } = new();
+        public Album? Album { get; set; }
     }
 }

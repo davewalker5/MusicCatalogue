@@ -48,7 +48,7 @@ namespace MusicCatalogue.Data.Migrations
                         column: x => x.AlbumId,
                         principalTable: "ALBUMS",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SESSION_ALBUMS_SESSIONS_SessionId",
                         column: x => x.SessionId,

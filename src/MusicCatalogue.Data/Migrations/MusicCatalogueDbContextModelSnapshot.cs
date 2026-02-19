@@ -675,7 +675,7 @@ namespace MusicCatalogue.Data.Migrations
                     b.HasOne("MusicCatalogue.Entities.Database.Album", "Album")
                         .WithMany()
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MusicCatalogue.Entities.Database.Session", null)

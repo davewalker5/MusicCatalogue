@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicCatalogue.Api.Services
 {
     [ExcludeFromCodeCoverage]
+    [Obsolete("Playlist export will be replaced with a saved session export")]
     public class PlaylistExportService : BackgroundQueueProcessor<PlaylistExportWorkItem>
     {
         private readonly MusicApplicationSettings _settings;

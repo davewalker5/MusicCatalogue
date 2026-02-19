@@ -181,7 +181,8 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.SessionId).IsRequired().HasColumnName("SessionId");
                 entity.Property(e => e.AlbumId).IsRequired().HasColumnName("AlbumId");
     
-                entity.HasOne<Session>().WithMany(s => s.SessionAlbums).HasForeignKey(sa => sa.SessionId);
+                entity.HasOne<Session>().WithMany(s => s.SessionAlbums).HasForeignKey(sa => sa.SessionId).OnDelete(DeleteBehavior.Cascade);;
+                entity.HasOne(sa => sa.Album).WithMany().HasForeignKey(sa => sa.AlbumId).OnDelete(DeleteBehavior.Restrict);;
             });
         }
     }
