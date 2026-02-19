@@ -19,7 +19,7 @@ namespace MusicCatalogue.BusinessLogic.Database
         /// <returns></returns>
         public async Task<Session> GetAsync(Expression<Func<Session, bool>> predicate)
         {
-            List<Session> sessions = await ListAsync(predicate);
+            List<Session> sessions = await ListAsync(predicate, 1, 1);
 
 #pragma warning disable CS8603
             return sessions.FirstOrDefault();
@@ -27,11 +27,13 @@ namespace MusicCatalogue.BusinessLogic.Database
         }
 
         /// <summary>
-        /// Return all sessions matching the specified criteria
+        /// Return sessions matching the specified criteria
         /// </summary>
         /// <param name="predicate"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async Task<List<Session>> ListAsync(Expression<Func<Session, bool>> predicate)
+        public async Task<List<Session>> ListAsync(Expression<Func<Session, bool>> predicate, int pageNumber, int pageSize)
             => await Context.Sessions
                             .Include(s => s.SessionAlbums)
                                 .ThenInclude(sa => sa.Album!)
@@ -44,6 +46,8 @@ namespace MusicCatalogue.BusinessLogic.Database
                                     .ThenInclude(a => a.Tracks)
                             .Where(predicate)
                             .OrderBy(x => x.CreatedAt)
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
                             .ToListAsync();
 
         /// <summary>
