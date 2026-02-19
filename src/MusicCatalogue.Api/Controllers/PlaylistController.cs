@@ -17,16 +17,8 @@ namespace MusicCatalogue.Api.Controllers
     {
         private readonly IMusicCatalogueFactory _factory;
 
-#warning Playlist export will be replaced with a saved session export
-        private readonly IBackgroundQueue<PlaylistExportWorkItem> _playlistQueue;
-
-        public PlaylistController(
-            IMusicCatalogueFactory factory,
-            IBackgroundQueue<PlaylistExportWorkItem> playlistQueue)
-        {
-            _factory = factory;
-            _playlistQueue = playlistQueue;
-        }
+        public PlaylistController(IMusicCatalogueFactory factory)
+            => _factory = factory;
 
         /// <summary>
         /// Generate a playlist using the specified playlist builder criteria
@@ -46,19 +38,6 @@ namespace MusicCatalogue.Api.Controllers
                 criteria.NumberOfEntries,
                 criteria.IncludedGenreIds,
                 criteria.ExcludedGenreIds);
-
-#warning Playlist export will be replaced with a saved session export
-            // If a filename has been specified, queue a job to export the playlist to the file
-            if (!string.IsNullOrEmpty(criteria.FileName))
-            {
-                _factory.Logger.LogMessage(Severity.Debug, $"Queueing job to export the playlist");
-                _playlistQueue.Enqueue(new PlaylistExportWorkItem
-                {
-                    JobName = "Playlist Export",
-                    FileName = criteria.FileName,
-                    Playlist = playlist
-                });
-            }
 
             return playlist;
         }

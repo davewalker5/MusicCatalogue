@@ -10,7 +10,6 @@ import { apiGetPostHeaders } from "./apiHeaders";
  * @param {*} currentArtistId
  * @param {*} includedGenreIds
  * @param {*} excludedGenreIds
- * @param {*} fileName
  * @param {*} logout
  * @returns
  */
@@ -21,7 +20,6 @@ const apiGeneratePlaylist = async (
   currentArtistId,
   includedGenreIds,
   excludedGenreIds,
-  fileName,
   logout
 ) => {
   // Construct the body
@@ -31,8 +29,7 @@ const apiGeneratePlaylist = async (
     currentArtistId: currentArtistId,
     numberOfEntries: numberOfEntries,
     includedGenreIds: includedGenreIds,
-    excludedGenreIds: excludedGenreIds,
-    fileName: fileName
+    excludedGenreIds: excludedGenreIds
   });
 
   // Call the API to create the album

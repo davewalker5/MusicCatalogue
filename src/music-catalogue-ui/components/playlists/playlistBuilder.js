@@ -52,7 +52,6 @@ const PlaylistBuilder = ({ navigate, logout }) => {
           currentArtistId,
           includedGenreIds,
           excludedGenreIds,
-          null,
           logout);
         setPlaylist(fetchedPlaylist);
       }
