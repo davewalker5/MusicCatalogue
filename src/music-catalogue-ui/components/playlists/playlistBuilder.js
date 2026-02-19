@@ -50,7 +50,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
           currentArtistId,
           includedGenreIds,
           excludedGenreIds,
-          exportFileName,
+          null,
           logout);
         setPlaylist(fetchedPlaylist);
       }
@@ -67,7 +67,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       <div className={styles.playlistBuilderFormContainer}>
         <form className={styles.playlistBuilderForm}>
           <div className="row d-flex justify-content-center">
-            <div className="col">
+            <div className="col-md-2">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Current Artist</label>
                 <div>
@@ -79,7 +79,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>
                   Include Genres{includedGenres.length > 0 && ` (${includedGenres.length})`}
@@ -93,7 +93,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>
                   Exclude Genres{excludedGenres.length > 0 && ` (${excludedGenres.length})`}
@@ -107,9 +107,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="row d-flex justify-content-center">
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Playlist Type</label>
                 <div>
@@ -121,7 +119,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Time Of Day</label>
                 <div>
@@ -133,7 +131,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Entries</label>
                 <div>
@@ -147,15 +145,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
-                <FormInputField
-                  label="Export To"
-                  name="filename"
-                  value={exportFileName}
-                  setValue={setExportFileName}
-                />
-            </div>
-            <div className="col-md-1">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}></label>
                 <div>
