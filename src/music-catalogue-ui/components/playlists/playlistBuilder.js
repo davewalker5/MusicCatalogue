@@ -2,8 +2,8 @@ import React, { useCallback, useState } from "react";
 import styles from "./playlistBuilder.module.css";
 import { apiGeneratePlaylist, apiSavePlaylist } from "@/helpers/api/apiPlaylist";
 import Slider from "../common/slider";
-import PlaylistTypeSelector from "./playlistTypeSelector";
-import TimesOfDaySelector from "./timesOfDaySelector";
+import PlaylistTypeSelector from "../common/playlistTypeSelector";
+import TimesOfDaySelector from "../common/timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
 import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList";
 import ArtistSelector from "../artists/artistSelector";
@@ -74,7 +74,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       const playlistTypeId = playlistType != null ? playlistType.id : null;
       const timeOfDayId = timeOfDay != null ? timeOfDay.id : null;
 
-      // Make sure they're all specified
+      // Save the session
       const savedSession = await apiSavePlaylist(playlistTypeId, timeOfDayId, albumIds, logout);
       setMessage(`Playlist has been saved as session number ${savedSession.id}`);
     },

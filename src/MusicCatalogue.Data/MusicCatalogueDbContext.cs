@@ -104,6 +104,11 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Purchased).HasColumnName("Purchased");
                 entity.Property(e => e.Price).HasColumnName("Price");
                 entity.Property(e => e.RetailerId).HasColumnName("RetailerId");
+
+                entity.HasOne(e => e.Artist)
+                    .WithMany(a => a.Albums)
+                    .HasForeignKey(e => e.ArtistId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Track>(entity =>
@@ -181,8 +186,8 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.SessionId).IsRequired().HasColumnName("SessionId");
                 entity.Property(e => e.AlbumId).IsRequired().HasColumnName("AlbumId");
     
-                entity.HasOne<Session>().WithMany(s => s.SessionAlbums).HasForeignKey(sa => sa.SessionId).OnDelete(DeleteBehavior.Cascade);;
-                entity.HasOne(sa => sa.Album).WithMany().HasForeignKey(sa => sa.AlbumId).OnDelete(DeleteBehavior.Restrict);;
+                entity.HasOne<Session>().WithMany(s => s.SessionAlbums).HasForeignKey(sa => sa.SessionId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(sa => sa.Album).WithMany().HasForeignKey(sa => sa.AlbumId).OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

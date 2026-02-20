@@ -1,0 +1,22 @@
+.sessionListFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sessionListForm {
+  width: 100vw;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.sessionListLabel {
+  margin-right: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.sessionListSelector {
+  width: 200px;
+}

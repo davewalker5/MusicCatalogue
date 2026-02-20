@@ -16,7 +16,7 @@ namespace MusicCatalogue.Entities.Database
 
         public ICollection<SessionAlbum> SessionAlbums { get; set; } = [];
 
-        public long TotalPlayingTime => SessionAlbums?.Sum(x => x.Album?.PlayingTime ?? 0) ?? 0;
+        public long TotalPlayingTime => SessionAlbums.Sum(x => x.Album!.PlayingTime);
         public string FormattedPlayingTime => DurationExtensions.DurationToFormattedPlayingTime(TotalPlayingTime);
     }
 }

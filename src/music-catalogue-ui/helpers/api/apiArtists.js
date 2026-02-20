@@ -24,8 +24,6 @@ const apiCreateArtist = async (name, energy, intimacy, warmth, vocalPresence, en
     ensemble: ensembleType
   });
 
-  console.log(body);
-
   // Call the API to create the artist
   const url = `${config.api.baseUrl}/artists`;
   const response = await fetch(url, {

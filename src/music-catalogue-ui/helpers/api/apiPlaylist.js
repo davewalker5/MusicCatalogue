@@ -77,4 +77,40 @@ const apiSavePlaylist = async (
   return session;
 };
 
-export { apiGeneratePlaylist, apiSavePlaylist };
+/**
+ * POST a request to the API to load saved sessions matching specified criteria
+ * @param {*} fromDate 
+ * @param {*} toDate 
+ * @param {*} playlistTypeId 
+ * @param {*} timeOfDayId
+ * @param {*} logout 
+ * @returns 
+ */
+const apiSearchForSessions = async (
+  fromDate,
+  toDate,
+  playlistTypeId,
+  timeOfDayId,
+  logout
+) => {
+  // Construct the body
+  const body = JSON.stringify({
+    from: fromDate,
+    to: toDate,
+    type: playlistTypeId,
+    timeOfDay: timeOfDayId
+  });
+
+  // Call the API to create the album
+  const url = `${config.api.baseUrl}/playlist/search`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  const sessions = await apiReadResponseData(response, logout);
+  return sessions;
+};
+
+export { apiGeneratePlaylist, apiSavePlaylist, apiSearchForSessions };

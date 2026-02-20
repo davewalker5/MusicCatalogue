@@ -35,6 +35,8 @@ const pages = {
   artistMoodEditor: "ArtistMoodEditor",
   closestArtists: "ClosestArtists",
   playlistBuilder: "PlaylistBuilder",
+  savedSessions: "SavedSessions",
+  savedSessionDetails: "SavedSessionDetails"
 };
 
 export default pages;
