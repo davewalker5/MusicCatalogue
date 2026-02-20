@@ -19,6 +19,7 @@ namespace MusicCatalogue.Api.Controllers
         private readonly IBackgroundQueue<RetailerStatisticsExportWorkItem> _retailerStatisticsQueue;
         private readonly IBackgroundQueue<GenreAlbumsExportWorkItem> _genreAlbumsQueue;
         private readonly IBackgroundQueue<AlbumsByPurchaseDateExportWorkItem> _albumsByPurchaseDateQueue;
+        private readonly IBackgroundQueue<SessionExportWorkItem> _sessionQueue;
 
         public ExportController(
             IBackgroundQueue<CatalogueExportWorkItem> catalogueQueue,
@@ -28,7 +29,8 @@ namespace MusicCatalogue.Api.Controllers
             IBackgroundQueue<MonthlySpendExportWorkItem> monthlySpendQueue,
             IBackgroundQueue<RetailerStatisticsExportWorkItem> retailerStatisticsQueue,
             IBackgroundQueue<GenreAlbumsExportWorkItem> genreAlbumsQueue,
-            IBackgroundQueue<AlbumsByPurchaseDateExportWorkItem> albumsByPurchaseDateQueue)
+            IBackgroundQueue<AlbumsByPurchaseDateExportWorkItem> albumsByPurchaseDateQueue,
+            IBackgroundQueue<SessionExportWorkItem> sessionQueue)
         {
             _catalogueQueue = catalogueQueue;
             _equipmentQueue = equipmentQueue;
@@ -38,6 +40,7 @@ namespace MusicCatalogue.Api.Controllers
             _retailerStatisticsQueue = retailerStatisticsQueue;
             _genreAlbumsQueue = genreAlbumsQueue;
             _albumsByPurchaseDateQueue = albumsByPurchaseDateQueue;
+            _sessionQueue = sessionQueue;
         }
 
         [HttpPost]
@@ -133,6 +136,18 @@ namespace MusicCatalogue.Api.Controllers
 
             // Queue the work item
             _albumsByPurchaseDateQueue.Enqueue(item);
+            return Accepted();
+        }
+
+        [HttpPost]
+        [Route("session")]
+        public IActionResult ExportSavedSession([FromBody] SessionExportWorkItem item)
+        {
+            // Set the job name used in the job status record
+            item.JobName = "Saved Session Export";
+
+            // Queue the work item
+            _sessionQueue.Enqueue(item);
             return Accepted();
         }
     }

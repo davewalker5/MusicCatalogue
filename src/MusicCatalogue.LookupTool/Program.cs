@@ -114,16 +114,6 @@ namespace MusicCatalogue.LookupTool
                         var numberOfEntries = int.Parse(values![2]);
                         await new PlaylistGenerator(factory).GeneratePlaylistAsync(type, timeOfDay, numberOfEntries);
                     }
-
-                    // If this is a request for a playlist export, generate one and export it to the specified file
-                    if (parser.IsPresent(CommandLineOptionType.ExportPlaylist))
-                    {
-                        var values = parser.GetValues(CommandLineOptionType.ExportPlaylist);
-                        var type = Enum.Parse<PlaylistType>(values![0], true);
-                        var timeOfDay = Enum.Parse<TimeOfDay>(values![1], true);
-                        var numberOfEntries = int.Parse(values![2]);
-                        await new PlaylistGenerator(factory).ExportPlaylistAsync(type, timeOfDay, numberOfEntries, values![3]);
-                    }
                 }
             }
             catch (Exception ex)

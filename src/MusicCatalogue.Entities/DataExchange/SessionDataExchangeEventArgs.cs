@@ -4,9 +4,9 @@ namespace MusicCatalogue.Entities.DataExchange
 {
 
     [ExcludeFromCodeCoverage]
-    public class PlaylistDataExchangeEventArgs : EventArgs
+    public class SessionDataExchangeEventArgs : EventArgs
     {
         public long RecordCount { get; set; }
-        public FlattenedPlaylistItem? Item { get; set; }
+        public FlattenedSessionAlbum? Item { get; set; }
     }
 }

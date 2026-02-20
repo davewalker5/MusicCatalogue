@@ -1,12 +1,12 @@
+using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
-using MusicCatalogue.Entities.Playlists;
 
 namespace MusicCatalogue.Entities.Interfaces
 {
-    public interface IPlaylistExporter
+    public interface ISessionExporter
     {
-        event EventHandler<PlaylistDataExchangeEventArgs>? PlaylistItemExport;
+        event EventHandler<SessionDataExchangeEventArgs>? SessionAlbumExport;
 
-        void Export(string file, Playlist playlist);
+        void Export(string file, Session session);
     }
 }

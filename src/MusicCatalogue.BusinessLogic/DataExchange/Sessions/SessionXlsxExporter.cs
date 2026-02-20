@@ -1,27 +1,27 @@
 using ClosedXML.Excel;
+using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Playlists;
 
-namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
+namespace MusicCatalogue.BusinessLogic.DataExchange.Sessions
 {
-    public class PlaylistXlsxExporter : PlaylistExporterBase, IPlaylistExporter
+    public class SessionXlsxExporter : SessionExporterBase, ISessionExporter
     {
-        private const string WorksheetName = "Playlist";
+        private const string WorksheetName = "Session";
 
         private IXLWorksheet? _worksheet = null;
 
 #pragma warning disable CS8618
-        internal PlaylistXlsxExporter(IMusicCatalogueFactory factory) : base(factory)
+        internal SessionXlsxExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 #pragma warning restore CS8618
 
         /// <summary>
-        /// Export the playlist to an XLSX file
+        /// Export the session to an XLSX file
         /// </summary>
         /// <param name="file"></param>
-        public void Export(string file, Playlist playlist)
+        public void Export(string file, Session session)
         {
             // Create a new Excel Workbook
             using (var workbook = new XLWorkbook())
@@ -29,9 +29,9 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
                 // Add a worksheet to contain the data
                 _worksheet = workbook.Worksheets.Add(WorksheetName);
 
-                // Iterate over the equipment register, calling the row addition methods. This builds the spreadsheet
+                // Iterate over the session albums, calling the row addition methods. This builds the spreadsheet
                 // in memory
-                IterateOverPlaylist(playlist);
+                IterateOverSession(session);
 
                 // Save the workbook to the specified file
                 workbook.SaveAs(file);
@@ -53,17 +53,17 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
         }
 
         /// <summary>
-        /// Add a playlist item to the XLSX file
+        /// Add a session albun to the XLSX file
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="album"></param>
         /// <param name="recordCount"></param>
-        protected override void AddPlaylistItem(FlattenedPlaylistItem item, int recordCount)
+        protected override void AddSessionAlbum(FlattenedSessionAlbum album, int recordCount)
         {
             var row = recordCount + 1;
-            _worksheet!.Cell(row, 1).Value = item.Position.ToString();
-            _worksheet!.Cell(row, 2).Value = item.ArtistName ?? "";
-            _worksheet!.Cell(row, 3).Value = item.AlbumTitle ?? "";
-            _worksheet!.Cell(row, 4).Value = item.PlayingTime ?? "";
+            _worksheet!.Cell(row, 1).Value = album.Position.ToString();
+            _worksheet!.Cell(row, 2).Value = album.ArtistName ?? "";
+            _worksheet!.Cell(row, 3).Value = album.AlbumTitle ?? "";
+            _worksheet!.Cell(row, 4).Value = album.PlayingTime ?? "";
         }
 
         /// <summary>

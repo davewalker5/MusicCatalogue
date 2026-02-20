@@ -1,4 +1,3 @@
-using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Playlists;
 using Spectre.Console;
@@ -55,27 +54,6 @@ namespace MusicCatalogue.LookupTool.Logic
             table.AddRow(totalPlayingTimeRow);
 
             AnsiConsole.Write(table);
-        }
-
-        /// <summary>
-        /// Generate a playlist and export it to a CSV or XLSX file
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="timeOfDay"></param>
-        /// <param name="numberOfEntries"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public async Task ExportPlaylistAsync(PlaylistType type, TimeOfDay timeOfDay, int numberOfEntries, string filePath)
-        {
-            // Create a playlist
-            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(type, timeOfDay, null, numberOfEntries, [], []);
-
-            // Determine the export file type and get the appropriate exporter
-            var exporter = Path.GetFileName(filePath).EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase) ?
-                _factory.PlaylistXlsxExporter : _factory.PlaylistCsvExporter;
-
-            // Export the playlist
-            exporter.Export(filePath, playlist);
         }
 
         /// <summary>
