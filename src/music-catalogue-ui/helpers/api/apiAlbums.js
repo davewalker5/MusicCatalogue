@@ -265,54 +265,6 @@ const apiSetAlbumPurchaseDetails = async (
   return response;
 };
 
-/**
- * Return the album details for a randomly selected album from the
- * Music Catalogue REST API
- * @param {*} genreId
- * @param {*} moodId
- * @param {*} energyWeight
- * @param {*} intimacyWeight
- * @param {*} warmthWeight
- * @param {*} logout
- * @returns
- */
-const apiFetchRandomAlbum = async (
-  genreId,
-  moodId,
-  targetEnergy,
-  targetIntimacy,
-  targetWarmth,
-  logout
-) => {
-  // Construct the filtering criteria as the request body and convert to JSON
-  const criteria = {
-    genreId: genreId,
-    moodId: moodId, 
-    targetEnergy: targetEnergy,
-    targetIntimacy: targetIntimacy,
-    targetWarmth: targetWarmth,
-    numberOfAlbums: config.matching.numberOfAlbums,
-    numberPerArtist: config.matching.numberPerArtist,
-    energyWeight: config.matching.energyWeight,
-    intimacyWeight: config.matching.intimacyWeight,
-    warmthWeight: config.matching.warmthWeight,
-    moodWeight: config.matching.moodWeight,
-    pickerThreshold: config.matching.pickerThreshold
-  };
-  const body = JSON.stringify(criteria);
-
-  // Call the API to get the details for a randomly selected album
-  const url = `${config.api.baseUrl}/search/pick`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: apiGetPostHeaders(),
-    body: body,
-  });
-
-  const album = await apiReadResponseData(response, logout);
-  return album;
-};
-
 export {
   apiCreateAlbum,
   apiUpdateAlbum,
@@ -321,6 +273,5 @@ export {
   apiFetchAlbumById,
   apiLookupAlbum,
   apiSetAlbumWishListFlag,
-  apiSetAlbumPurchaseDetails,
-  apiFetchRandomAlbum,
+  apiSetAlbumPurchaseDetails
 };

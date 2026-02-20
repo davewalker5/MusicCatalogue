@@ -108,9 +108,6 @@ const MenuBar = ({ navigate, logout }) => {
             <a onClick={() => navigate({ page: pages.playlistBuilder })}>
               Playlist Builder
             </a>
-            <a onClick={() => navigate({ page: pages.albumPicker })}>
-              Album Picker
-            </a>
             <a onClick={() => navigate({ page: pages.savedSessions })}>
               Saved Sessions
             </a>

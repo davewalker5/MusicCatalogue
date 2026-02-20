@@ -28,7 +28,6 @@ import ManufacturerEditor from "./manufacturers/manufacturerEditor";
 import EquipmentList from "./equipment/equipmentList";
 import EquipmentPurchaseDetails from "./equipment/equpimentPurchaseDetails";
 import EquipmentEditor from "./equipment/equipmentEditor";
-import AlbumPicker from "./albums/albumPicker";
 import AlbumsByPurchaseDateReport from "./reports/albumsByPurchaseDateReport";
 import ArtistMoodEditor from "./artists/artistMoodEditor";
 import ClosestArtistList from "./closest/closestArtistList";
@@ -113,8 +112,6 @@ const ComponentPicker = ({ context, navigate, logout }) => {
           logout={logout}
         />
       );
-    case pages.albumPicker:
-      return <AlbumPicker navigate={navigate} logout={logout} />;
     case pages.playlistBuilder:
       return <PlaylistBuilder navigate={navigate} logout={logout} />;
     case pages.savedSessions:

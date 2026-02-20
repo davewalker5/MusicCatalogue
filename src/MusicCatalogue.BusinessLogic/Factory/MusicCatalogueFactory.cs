@@ -41,7 +41,6 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<IGenreBasedReport<GenreAlbum>> _genreAlbums;
         private readonly Lazy<IDateBasedReport<AlbumByPurchaseDate>> _albumsByPurchaseDate;
         private readonly Lazy<IArtistSimilarityCalculator> _artistSimilarityCalculator;
-        private readonly Lazy<IAlbumPicker> _albumPicker;
         private readonly Lazy<IPlaylistBuilder> _playlistBuilder;
         private readonly Lazy<ISessionManager> _sessionManager;
 
@@ -87,7 +86,6 @@ namespace MusicCatalogue.BusinessLogic.Factory
         public IDateBasedReport<AlbumByPurchaseDate> AlbumsByPurchaseDate { get { return _albumsByPurchaseDate.Value; } }
 
         public IArtistSimilarityCalculator ArtistSimilarityCalculator { get { return _artistSimilarityCalculator.Value; } }
-        public IAlbumPicker AlbumPicker { get { return _albumPicker.Value; } }
         public IPlaylistBuilder PlaylistBuilder { get { return _playlistBuilder.Value; } }
         public ISessionManager SessionManager { get { return _sessionManager.Value; } }
 
@@ -122,7 +120,6 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _genreAlbums = new Lazy<IGenreBasedReport<GenreAlbum>>(() => new GenreBasedReport<GenreAlbum>(context));
             _albumsByPurchaseDate = new Lazy<IDateBasedReport<AlbumByPurchaseDate>>(() => new DateBasedReport<AlbumByPurchaseDate>(context));
             _artistSimilarityCalculator = new Lazy<IArtistSimilarityCalculator>(() => new ArtistSimilarityCalculator(this));
-            _albumPicker = new Lazy<IAlbumPicker>(() => new AlbumPicker(this));
             _playlistBuilder = new Lazy<IPlaylistBuilder>(() => new PlaylistBuilder(this));
             _sessionManager = new Lazy<ISessionManager>(() => new SessionManager(this));
         }

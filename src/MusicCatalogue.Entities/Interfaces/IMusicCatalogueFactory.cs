@@ -34,7 +34,6 @@ namespace MusicCatalogue.Entities.Interfaces
         IGenreBasedReport<GenreAlbum> GenreAlbums { get; }
         IDateBasedReport<AlbumByPurchaseDate> AlbumsByPurchaseDate { get; }
         IArtistSimilarityCalculator ArtistSimilarityCalculator { get; }
-        IAlbumPicker AlbumPicker { get; }
         IPlaylistBuilder PlaylistBuilder { get; }
         ISessionManager SessionManager { get; }
     }

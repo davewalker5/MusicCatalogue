@@ -9,7 +9,7 @@ import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList
 import ArtistSelector from "../artists/artistSelector";
 
 /**
- * Component to pick a random album, optionally for a specified playlistType
+ * Component to render the playlist builder
  * @param {*} navigate
  * @param {*} logout
  * @returns
