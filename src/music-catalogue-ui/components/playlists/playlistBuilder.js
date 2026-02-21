@@ -1,35 +1,58 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 import styles from "./playlistBuilder.module.css";
-import { apiGeneratePlaylist } from "@/helpers/api/apiPlaylist";
+import { apiGeneratePlaylist, apiSavePlaylist } from "@/helpers/api/apiPlaylist";
 import Slider from "../common/slider";
-import PlaylistTypeSelector from "./playlistTypeSelector";
-import TimesOfDaySelector from "./timesOfDaySelector";
+import PlaylistTypeSelector from "../common/playlistTypeSelector";
+import TimesOfDaySelector from "../common/timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
-import FormInputField from "../common/formInputField";
 import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList";
 import ArtistSelector from "../artists/artistSelector";
+import { getCurrentTimeOfDay, getPlaylistTypeForTimeOfDay } from "../common/timeOfDay";
+import useTimesOfDay from "@/hooks/useTimesOfDay";
+import usePlaylistTypes from "@/hooks/usePlaylistTypes";
 
 /**
- * Component to pick a random album, optionally for a specified playlistType
+ * Component to render the playlist builder
  * @param {*} navigate
  * @param {*} logout
  * @returns
  */
 const PlaylistBuilder = ({ navigate, logout }) => {
-  const [playlistType, setPlaylistType] = useState(null);
+  const { timesOfDay, setTimesOfDay } = useTimesOfDay(logout);
+  const { playlistTypes, setPlaylistTypes } = usePlaylistTypes(logout);
+
+  const currentTimeOfDay = useMemo(() => getCurrentTimeOfDay(timesOfDay), [timesOfDay]);
+
   const [timeOfDay, setTimeOfDay] = useState(null);
+  const [message, setMessage] = useState("");
+  const [playlistType, setPlaylistType] = useState(null);
   const [numberOfEntries, setNumberOfEntries] = useState(3);
-  const [exportFileName, setExportFileName] = useState("");
   const [playlist, setPlaylist] = useState(null);
   const [currentArtist, setCurrentArtist] = useState([]);
   const [includedGenres, setIncludedGenres] = useState([]);
   const [excludedGenres, setExcludedGenres] = useState([]);
+
+  // On initially rendering, currentTimeOfDay won't be set because the times of day won't have
+  // been retrieved from the API yet. So we can't use currentTimeOfDay to initialise state, above
+  useEffect(() => {
+    if (currentTimeOfDay) {
+      // Set the time of day
+      setTimeOfDay(currentTimeOfDay);
+
+      // Identify the default playlist type
+      const playlistType = getPlaylistTypeForTimeOfDay(playlistTypes, currentTimeOfDay);
+      setPlaylistType(playlistType);
+    }
+  }, [currentTimeOfDay, playlistTypes]);
 
   // Callback to request a playlist from the API
   const generatePlaylistCallback = useCallback(
     async (e) => {
       // Prevent the default action associated with the click event
       e.preventDefault();
+
+      // Clear pre-existing messages
+      setMessage("");
 
       // Get the playlist builder criteria
       const playlistTypeId = playlistType != null ? playlistType.id : null;
@@ -50,13 +73,33 @@ const PlaylistBuilder = ({ navigate, logout }) => {
           currentArtistId,
           includedGenreIds,
           excludedGenreIds,
-          exportFileName,
           logout);
         setPlaylist(fetchedPlaylist);
       }
 
     },
-    [playlistType, timeOfDay, numberOfEntries, exportFileName, currentArtist, includedGenres, excludedGenres, logout]
+    [playlistType, timeOfDay, numberOfEntries, currentArtist, includedGenres, excludedGenres, logout]
+  );
+
+  // Callback to save a playlist as a saved session
+  const savePlaylistCallback = useCallback(
+    async (e) => {
+      // Prevent the default action associated with the click event
+      e.preventDefault();
+
+      // Clear pre-existing messages
+      setMessage("");
+
+      // Extract a list of album IDs from the current playlist and get the playlist type and ToD
+      const albumIds = playlist.albums.map(item => item.id)
+      const playlistTypeId = playlistType != null ? playlistType.id : null;
+      const timeOfDayId = timeOfDay != null ? timeOfDay.id : null;
+
+      // Save the session
+      const savedSession = await apiSavePlaylist(playlistTypeId, timeOfDayId, albumIds, logout);
+      setMessage(`Playlist has been saved as session number ${savedSession.id}`);
+    },
+    [playlistType, timeOfDay, playlist, logout]
   );
 
   return (
@@ -66,8 +109,15 @@ const PlaylistBuilder = ({ navigate, logout }) => {
       </div>
       <div className={styles.playlistBuilderFormContainer}>
         <form className={styles.playlistBuilderForm}>
+          <div>
+            {message != "" ? (
+              <div className={styles.savedMessage}>{message}</div>
+            ) : (
+              <></>
+            )}
+          </div>
           <div className="row d-flex justify-content-center">
-            <div className="col">
+            <div className="col-md-2">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Current Artist</label>
                 <div>
@@ -79,7 +129,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>
                   Include Genres{includedGenres.length > 0 && ` (${includedGenres.length})`}
@@ -93,7 +143,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>
                   Exclude Genres{excludedGenres.length > 0 && ` (${excludedGenres.length})`}
@@ -107,9 +157,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="row d-flex justify-content-center">
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Playlist Type</label>
                 <div>
@@ -121,7 +169,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Time Of Day</label>
                 <div>
@@ -133,7 +181,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}>Entries</label>
                 <div>
@@ -147,15 +195,7 @@ const PlaylistBuilder = ({ navigate, logout }) => {
                 </div>
               </div>
             </div>
-            <div className="col">
-                <FormInputField
-                  label="Export To"
-                  name="filename"
-                  value={exportFileName}
-                  setValue={setExportFileName}
-                />
-            </div>
-            <div className="col-md-1">
+            <div className="col-auto">
               <div className="form-group mt-3">
                 <label className={styles.playlistBuilderLabel}></label>
                 <div>
@@ -203,6 +243,14 @@ const PlaylistBuilder = ({ navigate, logout }) => {
             <label className={styles.playlistBuilderLabel}>Total Playing Time:</label>
             <label>{playlist.formattedPlayingTime}</label>
             </div>
+          </div>
+          <div className={styles.playlistSaveButton}>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => savePlaylistCallback(e)}
+            >
+              Save
+            </button>
           </div>
         </>
       )}

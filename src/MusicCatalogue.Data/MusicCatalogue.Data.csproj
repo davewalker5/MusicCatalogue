@@ -5,9 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>MusicCatalogue.Data</PackageId>
-    <PackageVersion>1.42.1.0</PackageVersion>
+    <PackageVersion>1.43.0.0</PackageVersion>
     <Authors>Dave Walker</Authors>
-    <Copyright>Copyright (c) Dave Walker 2023</Copyright>
+    <Copyright>Copyright (c) Dave Walker 2023-2026</Copyright>
     <Owners>Dave Walker</Owners>
     <Summary>Music Catalogue EF Core Database Layer</Summary>
     <PackageTags>Music Catalogue database</PackageTags>
@@ -17,7 +17,7 @@
     <PackageProjectUrl>https://github.com/davewalker5/MusicCatalogue</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ReleaseVersion>1.42.1.0</ReleaseVersion>
+    <ReleaseVersion>1.43.0.0</ReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace MusicCatalogue.Entities.DataExchange
 {
     [ExcludeFromCodeCoverage]
-    public class FlattenedPlaylistItem
+    public class FlattenedSessionAlbum
     {
         public int Position { get; set; }
         public string ArtistName { get; set; } = "";

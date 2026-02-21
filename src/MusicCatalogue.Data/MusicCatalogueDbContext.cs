@@ -26,6 +26,8 @@ namespace MusicCatalogue.Data
         public virtual DbSet<RetailerStatistics> RetailerStatistics { get; set; }
         public virtual DbSet<GenreAlbum> GenreAlbums { get; set; }
         public virtual DbSet<AlbumByPurchaseDate> AlbumsByPurchaseDate { get; set; }
+        public virtual DbSet<Session> Sessions { get; set; }
+        public virtual DbSet<SessionAlbum> SessionAlbums { get; set; }
 
         public MusicCatalogueDbContext(DbContextOptions<MusicCatalogueDbContext> options) : base(options)
         {
@@ -102,6 +104,11 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Purchased).HasColumnName("Purchased");
                 entity.Property(e => e.Price).HasColumnName("Price");
                 entity.Property(e => e.RetailerId).HasColumnName("RetailerId");
+
+                entity.HasOne(e => e.Artist)
+                    .WithMany(a => a.Albums)
+                    .HasForeignKey(e => e.ArtistId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<Track>(entity =>
@@ -135,10 +142,7 @@ namespace MusicCatalogue.Data
             {
                 entity.ToTable("JOB_STATUS");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .ValueGeneratedOnAdd();
-
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
                 entity.Property(e => e.Name).IsRequired().HasColumnName("name");
                 entity.Property(e => e.Parameters).HasColumnName("parameters");
                 entity.Property(e => e.Start).IsRequired().HasColumnName("start").HasColumnType("DATETIME");
@@ -161,6 +165,29 @@ namespace MusicCatalogue.Data
                 entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
                 entity.HasOne(am => am.Mood).WithMany().HasForeignKey(am => am.MoodId);
                 entity.HasOne<Artist>().WithMany(a => a.Moods).HasForeignKey(am => am.ArtistId);
+            });
+
+            modelBuilder.Entity<Session>(entity =>
+            {
+                entity.ToTable("SESSIONS");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.CreatedAt).IsRequired().HasColumnName("CreatedAt").HasColumnType("DATETIME");
+                entity.Property(e => e.Type).IsRequired().HasColumnName("Type");
+                entity.Property(e => e.TimeOfDay).IsRequired().HasColumnName("TimeOfDay");
+            });
+
+            modelBuilder.Entity<SessionAlbum>(entity =>
+            {
+                entity.ToTable("SESSION_ALBUMS");
+
+                entity.Property(e => e.Id).HasColumnName("Id").ValueGeneratedOnAdd();
+                entity.Property(e => e.Position).IsRequired().HasColumnName("Position");
+                entity.Property(e => e.SessionId).IsRequired().HasColumnName("SessionId");
+                entity.Property(e => e.AlbumId).IsRequired().HasColumnName("AlbumId");
+    
+                entity.HasOne<Session>().WithMany(s => s.SessionAlbums).HasForeignKey(sa => sa.SessionId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(sa => sa.Album).WithMany().HasForeignKey(sa => sa.AlbumId).OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

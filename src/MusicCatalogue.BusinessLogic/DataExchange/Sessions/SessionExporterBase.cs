@@ -1,10 +1,10 @@
+using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Playlists;
 
-namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
+namespace MusicCatalogue.BusinessLogic.DataExchange.Sessions
 {
-    public abstract class PlaylistExporterBase : DataExchangeBase
+    public abstract class SessionExporterBase : DataExchangeBase
     {
         private readonly string[] ColumnHeaders =
         {
@@ -14,9 +14,9 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
             "Playing Time"
         };
 
-        public event EventHandler<PlaylistDataExchangeEventArgs>? PlaylistItemExport;
+        public event EventHandler<SessionDataExchangeEventArgs>? SessionAlbumExport;
 
-        protected PlaylistExporterBase(IMusicCatalogueFactory factory) : base(factory)
+        protected SessionExporterBase(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 
@@ -27,11 +27,11 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
         protected abstract void AddHeaders(IEnumerable<string> headers);
 
         /// <summary>
-        /// Method to add a new playlist item to the output
+        /// Method to add a new session album to the output
         /// </summary>
         /// <param name="equipment"></param>
         /// <param name="recordNumber"></param>
-        protected abstract void AddPlaylistItem(FlattenedPlaylistItem equipment, int recordNumber);
+        protected abstract void AddSessionAlbum(FlattenedSessionAlbum equipment, int recordNumber);
 
         /// <summary>
         /// Method to add the total playing time to the output
@@ -41,11 +41,11 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
         protected abstract void AddPlayingTime(string formattedPlayingTime, int recordNumber);
 
         /// <summary>
-        /// Iterate over a playlist calling the methods supplied by the child class to add
-        /// headers and each playlist entry the output
+        /// Iterate over a session calling the methods supplied by the child class to add
+        /// headers and each session album to the output
         /// </summary>
-        /// <param name="playlist"></param>
-        protected void IterateOverPlaylist(Playlist playlist)
+        /// <param name="session"></param>
+        protected void IterateOverSession(Session session)
         {
             // Call the method, supplied by the child class, to add the headers to the output
             AddHeaders(ColumnHeaders);
@@ -53,29 +53,30 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
             // Initialise the record count
             int count = 0;
 
-            // Iterate over the playlist
-            for (int i = 0; i < playlist.Albums.Count; i++)
+            // Iterate over the session albums
+            foreach (var sessionAlbum in session.SessionAlbums)
             {
-                // Construct a flattened record for this item of equipment
-                var flattened = new FlattenedPlaylistItem
+                count++;
+
+                // Construct a flattened record for this album
+                var flattened = new FlattenedSessionAlbum
                 {
-                    Position = i + 1,
-                    ArtistName = playlist.Albums[i].Artist!.Name,
-                    AlbumTitle = playlist.Albums[i].Title,
-                    PlayingTime = playlist.Albums[i].FormattedPlayingTime
+                    Position = count + 1,
+                    ArtistName = sessionAlbum.Album!.Artist!.Name,
+                    AlbumTitle = sessionAlbum.Album.Title,
+                    PlayingTime = sessionAlbum.Album.FormattedPlayingTime
                 };
 
                 // Call the method to add this album to the file
-                count++;
-                AddPlaylistItem(flattened, count);
+                AddSessionAlbum(flattened, count);
 
                 // Raise the equipment exported event
-                PlaylistItemExport?.Invoke(this, new PlaylistDataExchangeEventArgs { RecordCount = count, Item = flattened });
+                SessionAlbumExport?.Invoke(this, new SessionDataExchangeEventArgs { RecordCount = count, Item = flattened });
             }
 
             // Finally, call the method, supplied by the child class, to add the total playing time
             // to the output
-            AddPlayingTime(playlist.FormattedPlayingTime, playlist.Albums.Count + 1);
+            AddPlayingTime(session.FormattedPlayingTime, session.SessionAlbums.Count + 1);
         }
     }
 }

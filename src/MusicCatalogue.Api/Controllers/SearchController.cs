@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MusicCatalogue.Api.Entities;
-using MusicCatalogue.Api.Interfaces;
 using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.Interfaces;
 using MusicCatalogue.Entities.Logging;
@@ -18,16 +16,13 @@ namespace MusicCatalogue.Api.Controllers
     {
         private readonly IMusicCatalogueFactory _factory;
         private readonly IAlbumLookupManager _manager;
-        private readonly IBackgroundQueue<PlaylistExportWorkItem> _playlistQueue;
 
         public SearchController(
             IMusicCatalogueFactory factory,
-            IAlbumLookupManager manager,
-            IBackgroundQueue<PlaylistExportWorkItem> playlistQueue)
+            IAlbumLookupManager manager)
         {
             _factory = factory;
             _manager = manager;
-            _playlistQueue = playlistQueue;
         }
 
         /// <summary>
@@ -72,54 +67,6 @@ namespace MusicCatalogue.Api.Controllers
             _factory.Logger.LogMessage(Severity.Debug, $"Searching closest artists using criteria {criteria}");
             var closest = await _factory.ArtistSimilarityCalculator.GetClosestArtistsAsync(criteria, criteria.ArtistId, criteria.TopN, true);
             return closest;
-        }
-
-        /// <summary>
-        /// Pick albums matching the specified criteria
-        /// </summary>
-        /// <param name="criteria"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("pick")]
-        public async Task<ActionResult<List<PickedAlbum>>> GetRandomAlbumsAsync([FromBody] AlbumSelectionCriteria criteria)
-        {
-            _factory.Logger.LogMessage(Severity.Debug, $"Retrieving random albums matching criteria {criteria}");
-            var pickedAlbums = await _factory.AlbumPicker.PickAsync(criteria);
-            return pickedAlbums;
-        }
-
-        /// <summary>
-        /// Generate a playlist using the specified playlist builder criteria
-        /// </summary>
-        /// <param name="criteria"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("playlist")]
-        public async Task<ActionResult<Playlist>> GeneratePlaylistAsync([FromBody] PlaylistBuilderCriteria criteria)
-        {
-            // Generate the playlist
-            _factory.Logger.LogMessage(Severity.Debug, $"Generating a playlist using criteria {criteria}");
-            var playlist = await _factory.PlaylistBuilder.BuildPlaylistAsync(
-                criteria.Type,
-                criteria.TimeOfDay,
-                criteria.CurrentArtistId,
-                criteria.NumberOfEntries,
-                criteria.IncludedGenreIds,
-                criteria.ExcludedGenreIds);
-
-            // If a filename has been specified, queue a job to export the playlist to the file
-            if (!string.IsNullOrEmpty(criteria.FileName))
-            {
-                _factory.Logger.LogMessage(Severity.Debug, $"Queueing job to export the playlist");
-                _playlistQueue.Enqueue(new PlaylistExportWorkItem
-                {
-                    JobName = "Playlist Export",
-                    FileName = criteria.FileName,
-                    Playlist = playlist
-                });
-            }
-
-            return playlist;
         }
     }
 }

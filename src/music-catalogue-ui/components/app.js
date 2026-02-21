@@ -22,6 +22,7 @@ const defaultContext = {
   genre: null,
   mood: null,
   retailer: null,
+  session: null,
 
   // Equipment registry
   equipmentType: null,
@@ -47,6 +48,7 @@ const App = () => {
     album = null,
     track = null,
     retailer = null,
+    session = null,
     genre = null,
     mood = null,
     equipmentType = null,
@@ -62,6 +64,7 @@ const App = () => {
       album: typeof album != "undefined" ? album : null,
       track: typeof track != "undefined" ? track : null,
       retailer: typeof retailer != "undefined" ? retailer : null,
+      session: typeof session != "undefined" ? session : null,
       genre: typeof genre != "undefined" ? genre : null,
       mood: typeof mood != "undefined" ? mood : null,
       equipmentType: typeof equipmentType != "undefined" ? equipmentType : null,

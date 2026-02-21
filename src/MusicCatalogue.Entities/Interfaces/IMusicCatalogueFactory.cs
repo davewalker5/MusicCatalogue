@@ -23,8 +23,8 @@ namespace MusicCatalogue.Entities.Interfaces
         ITrackExporter CatalogueXlsxExporter { get; }
         IEquipmentExporter EquipmentCsvExporter { get; }
         IEquipmentExporter EquipmentXlsxExporter { get; }
-        IPlaylistExporter PlaylistCsvExporter { get; }
-        IPlaylistExporter PlaylistXlsxExporter { get; }
+        ISessionExporter SessionCsvExporter { get; }
+        ISessionExporter SessionXlsxExporter { get; }
         IJobStatusManager JobStatuses { get; }
         ISearchManager Search { get; }
         IWishListBasedReport<GenreStatistics> GenreStatistics { get; }
@@ -34,7 +34,7 @@ namespace MusicCatalogue.Entities.Interfaces
         IGenreBasedReport<GenreAlbum> GenreAlbums { get; }
         IDateBasedReport<AlbumByPurchaseDate> AlbumsByPurchaseDate { get; }
         IArtistSimilarityCalculator ArtistSimilarityCalculator { get; }
-        IAlbumPicker AlbumPicker { get; }
         IPlaylistBuilder PlaylistBuilder { get; }
+        ISessionManager SessionManager { get; }
     }
 }

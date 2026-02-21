@@ -7,7 +7,6 @@ const pages = {
   albums: "Albums",
   albumEditor: "AlbumEditor",
   albumPurchaseDetails: "AlbumPurchaseDetails",
-  albumPicker: "AlbumPicker",
   wishlistAlbums: "WishlistAlbums",
   tracks: "Tracks",
   trackEditor: "TrackEditor",
@@ -35,6 +34,8 @@ const pages = {
   artistMoodEditor: "ArtistMoodEditor",
   closestArtists: "ClosestArtists",
   playlistBuilder: "PlaylistBuilder",
+  savedSessions: "SavedSessions",
+  savedSessionDetails: "SavedSessionDetails"
 };
 
 export default pages;

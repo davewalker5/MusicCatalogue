@@ -1,6 +1,6 @@
 import Select from "react-select";
 import usePlaylistTypes from "@/hooks/usePlaylistTypes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * Component to display the Playlist Type selector
@@ -20,14 +20,17 @@ const PlaylistTypeSelector = ({ initialPlaylistType, playlistTypeChangedCallback
     }
   }
 
-  // Determine the initial selection
-  let selectedOption = null;
-  if (initialPlaylistType != null) {
-    selectedOption = options.find((x) => x.value === initialPlaylistType);
-  }
-
   // Set up state
-  const [playlistType, setPlaylistType] = useState(selectedOption);
+  const [playlistType, setPlaylistType] = useState(null);
+
+  useEffect(() => {
+    if ((playlistType == null) && (initialPlaylistType != null) && (options.length > 0)) {
+      const match = options.find(o => o.value === initialPlaylistType.id);
+      if (match) {
+        setPlaylistType(match);
+      }
+    }
+  }, [initialPlaylistType, options]);
 
   // Callback to update the playlist type state and notify the parent component
   // that the playlist type has changed
@@ -44,7 +47,7 @@ const PlaylistTypeSelector = ({ initialPlaylistType, playlistTypeChangedCallback
   };
 
   return (
-    <Select value={selectedOption} onChange={playlistTypeChanged} options={options} />
+    <Select value={playlistType} onChange={playlistTypeChanged} options={options} />
   );
 };
 

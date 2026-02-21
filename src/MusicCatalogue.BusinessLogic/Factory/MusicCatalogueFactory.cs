@@ -8,7 +8,7 @@ using MusicCatalogue.BusinessLogic.DataExchange.Equipment;
 using MusicCatalogue.BusinessLogic.Reporting;
 using System.Diagnostics.CodeAnalysis;
 using MusicCatalogue.BusinessLogic.Playlists;
-using MusicCatalogue.BusinessLogic.DataExchange.Playlists;
+using MusicCatalogue.BusinessLogic.DataExchange.Sessions;
 
 namespace MusicCatalogue.BusinessLogic.Factory
 {
@@ -30,8 +30,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<ITrackExporter> _catalogueXlsxExporter;
         private readonly Lazy<IEquipmentExporter> _equipmentCsvExporter;
         private readonly Lazy<IEquipmentExporter> _equipmentXlsxExporter;
-        private readonly Lazy<IPlaylistExporter> _playlistCsvExporter;
-        private readonly Lazy<IPlaylistExporter> _playlistXlsxExporter;
+        private readonly Lazy<ISessionExporter> _sessionCsvExporter;
+        private readonly Lazy<ISessionExporter> _sessionXlsxExporter;
         private readonly Lazy<IJobStatusManager> _jobStatuses;
         private readonly Lazy<ISearchManager> _searchManager;
         private readonly Lazy<IWishListBasedReport<GenreStatistics>> _genreStatistics;
@@ -41,8 +41,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
         private readonly Lazy<IGenreBasedReport<GenreAlbum>> _genreAlbums;
         private readonly Lazy<IDateBasedReport<AlbumByPurchaseDate>> _albumsByPurchaseDate;
         private readonly Lazy<IArtistSimilarityCalculator> _artistSimilarityCalculator;
-        private readonly Lazy<IAlbumPicker> _albumPicker;
-        private readonly Lazy<IPlaylistBuilder> _artistPlaylistBuilder;
+        private readonly Lazy<IPlaylistBuilder> _playlistBuilder;
+        private readonly Lazy<ISessionManager> _sessionManager;
 
         public DbContext Context { get; private set; }
         public IMusicLogger Logger { get; private set; }
@@ -64,8 +64,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
         public ITrackExporter CatalogueXlsxExporter { get { return _catalogueXlsxExporter.Value; } }
         public IEquipmentExporter EquipmentCsvExporter { get { return _equipmentCsvExporter.Value; } }
         public IEquipmentExporter EquipmentXlsxExporter { get { return _equipmentXlsxExporter.Value; } }
-        public IPlaylistExporter PlaylistCsvExporter { get { return _playlistCsvExporter.Value; } }
-        public IPlaylistExporter PlaylistXlsxExporter { get { return _playlistXlsxExporter.Value; } }
+        public ISessionExporter SessionCsvExporter { get { return _sessionCsvExporter.Value; } }
+        public ISessionExporter SessionXlsxExporter { get { return _sessionXlsxExporter.Value; } }
 
         [ExcludeFromCodeCoverage]
         public IWishListBasedReport<GenreStatistics> GenreStatistics { get { return _genreStatistics.Value; } }
@@ -86,8 +86,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
         public IDateBasedReport<AlbumByPurchaseDate> AlbumsByPurchaseDate { get { return _albumsByPurchaseDate.Value; } }
 
         public IArtistSimilarityCalculator ArtistSimilarityCalculator { get { return _artistSimilarityCalculator.Value; } }
-        public IAlbumPicker AlbumPicker { get { return _albumPicker.Value; } }
-        public IPlaylistBuilder PlaylistBuilder { get { return _artistPlaylistBuilder.Value; } }
+        public IPlaylistBuilder PlaylistBuilder { get { return _playlistBuilder.Value; } }
+        public ISessionManager SessionManager { get { return _sessionManager.Value; } }
 
         public MusicCatalogueFactory(MusicCatalogueDbContext context, IMusicLogger logger)
         {
@@ -111,8 +111,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _catalogueXlsxExporter = new Lazy<ITrackExporter>(() => new CatalogueXlsxExporter(this));
             _equipmentCsvExporter = new Lazy<IEquipmentExporter>(() => new EquipmentCsvExporter(this));
             _equipmentXlsxExporter = new Lazy<IEquipmentExporter>(() => new EquipmentXlsxExporter(this));
-            _playlistCsvExporter = new Lazy<IPlaylistExporter>(() => new PlaylistCsvExporter(this));
-            _playlistXlsxExporter = new Lazy<IPlaylistExporter>(() => new PlaylistXlsxExporter(this));
+            _sessionCsvExporter = new Lazy<ISessionExporter>(() => new SessionCsvExporter(this));
+            _sessionXlsxExporter = new Lazy<ISessionExporter>(() => new SessionXlsxExporter(this));
             _genreStatistics = new Lazy<IWishListBasedReport<GenreStatistics>>(() => new WishListBasedReport<GenreStatistics>(context));
             _artistStatistics = new Lazy<IWishListBasedReport<ArtistStatistics>>(() => new WishListBasedReport<ArtistStatistics>(context));
             _monthlySpend = new Lazy<IWishListBasedReport<MonthlySpend>>(() => new WishListBasedReport<MonthlySpend>(context));
@@ -120,8 +120,8 @@ namespace MusicCatalogue.BusinessLogic.Factory
             _genreAlbums = new Lazy<IGenreBasedReport<GenreAlbum>>(() => new GenreBasedReport<GenreAlbum>(context));
             _albumsByPurchaseDate = new Lazy<IDateBasedReport<AlbumByPurchaseDate>>(() => new DateBasedReport<AlbumByPurchaseDate>(context));
             _artistSimilarityCalculator = new Lazy<IArtistSimilarityCalculator>(() => new ArtistSimilarityCalculator(this));
-            _albumPicker = new Lazy<IAlbumPicker>(() => new AlbumPicker(this));
-            _artistPlaylistBuilder = new Lazy<IPlaylistBuilder>(() => new PlaylistBuilder(this));
+            _playlistBuilder = new Lazy<IPlaylistBuilder>(() => new PlaylistBuilder(this));
+            _sessionManager = new Lazy<ISessionManager>(() => new SessionManager(this));
         }
     }
 }

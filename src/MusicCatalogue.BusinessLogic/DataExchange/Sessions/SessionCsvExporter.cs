@@ -1,32 +1,32 @@
+using MusicCatalogue.Entities.Database;
 using MusicCatalogue.Entities.DataExchange;
 using MusicCatalogue.Entities.Interfaces;
-using MusicCatalogue.Entities.Playlists;
 using System.Text;
 
-namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
+namespace MusicCatalogue.BusinessLogic.DataExchange.Sessions
 {
-    public class PlaylistCsvExporter : PlaylistExporterBase, IPlaylistExporter
+    public class SessionCsvExporter : SessionExporterBase, ISessionExporter
     {
         private StreamWriter? _writer = null;
 
 #pragma warning disable CS8618
-        internal PlaylistCsvExporter(IMusicCatalogueFactory factory) : base(factory)
+        internal SessionCsvExporter(IMusicCatalogueFactory factory) : base(factory)
         {
         }
 #pragma warning restore CS8618
 
         /// <summary>
-        /// Export a playlist to a CSV file
+        /// Export a session to a CSV file
         /// </summary>
         /// <param name="file"></param>
-        /// <param name="playlist"></param>
-        public void Export(string file, Playlist playlist)
+        /// <param name="session"></param>
+        public void Export(string file, Session session)
         {
             // Open the CSV file
             using (_writer = new(file, false, Encoding.UTF8))
             {
-                // Iterate over the playlist, calling the row addition methods
-                IterateOverPlaylist(playlist);
+                // Iterate over the session, calling the row addition methods
+                IterateOverSession(session);
             }
         }
 
@@ -41,11 +41,11 @@ namespace MusicCatalogue.BusinessLogic.DataExchange.Playlists
         }
 
         /// <summary>
-        /// Add a playlist item to the CSV file
+        /// Add a session album to the CSV file
         /// </summary>
         /// <param name="item"></param>
         /// <param name="_"></param>
-        protected override void AddPlaylistItem(FlattenedPlaylistItem item, int _)
+        protected override void AddSessionAlbum(FlattenedSessionAlbum item, int _)
             => _writer!.WriteLine(item.ToCsv());
 
         /// <summary>
