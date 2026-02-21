@@ -117,7 +117,7 @@ const ComponentPicker = ({ context, navigate, logout }) => {
     case pages.savedSessions:
       return <SessionList navigate={navigate} logout={logout} />;
     case pages.savedSessionDetails:
-      return <SessionDetails session={context.session} />;
+      return <SessionDetails session={context.session} logout={logout} />;
     case pages.tracks:
       return (
         <TrackList

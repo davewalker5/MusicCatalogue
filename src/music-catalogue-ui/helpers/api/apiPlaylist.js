@@ -101,7 +101,7 @@ const apiSearchForSessions = async (
     timeOfDay: timeOfDayId
   });
 
-  // Call the API to create the album
+  // Call the API to search for matching sessions
   const url = `${config.api.baseUrl}/playlist/search`;
   const response = await fetch(url, {
     method: "POST",
@@ -113,4 +113,38 @@ const apiSearchForSessions = async (
   return sessions;
 };
 
-export { apiGeneratePlaylist, apiSavePlaylist, apiSearchForSessions };
+/**
+ * POST a request to the API to load expoert a session
+ * @param {*} sessionId 
+ * @param {*} fileName
+ * @param {*} logout 
+ * @returns 
+ */
+const apiExportSession = async (
+  sessionId,
+  fileName,
+  logout
+) => {
+  // Construct the body
+  const body = JSON.stringify({
+    sessionId: sessionId,
+    fileName: fileName
+  });
+
+  // Call the API to export the session
+  const url = `${config.api.baseUrl}/export/session`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: apiGetPostHeaders(),
+    body: body,
+  });
+
+  if (response.status == 401) {
+    // Unauthorized so the token's likely expired - force a login
+    logout();
+  }
+
+  return response.ok;
+};
+
+export { apiGeneratePlaylist, apiSavePlaylist, apiSearchForSessions, apiExportSession };
