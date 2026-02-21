@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 import styles from "./playlistBuilder.module.css";
 import { apiGeneratePlaylist, apiSavePlaylist } from "@/helpers/api/apiPlaylist";
 import Slider from "../common/slider";
@@ -7,6 +7,9 @@ import TimesOfDaySelector from "../common/timesOfDaySelector";
 import PlaylistAlbumRow from "./playlistAlbumRow";
 import GenreMultiSelectDropdownList from "../genres/genreMultiSelectDropdownList";
 import ArtistSelector from "../artists/artistSelector";
+import { getCurrentTimeOfDay, getPlaylistTypeForTimeOfDay } from "../common/timeOfDay";
+import useTimesOfDay from "@/hooks/useTimesOfDay";
+import usePlaylistTypes from "@/hooks/usePlaylistTypes";
 
 /**
  * Component to render the playlist builder
@@ -15,14 +18,32 @@ import ArtistSelector from "../artists/artistSelector";
  * @returns
  */
 const PlaylistBuilder = ({ navigate, logout }) => {
+  const { timesOfDay, setTimesOfDay } = useTimesOfDay(logout);
+  const { playlistTypes, setPlaylistTypes } = usePlaylistTypes(logout);
+
+  const currentTimeOfDay = useMemo(() => getCurrentTimeOfDay(timesOfDay), [timesOfDay]);
+
+  const [timeOfDay, setTimeOfDay] = useState(null);
   const [message, setMessage] = useState("");
   const [playlistType, setPlaylistType] = useState(null);
-  const [timeOfDay, setTimeOfDay] = useState(null);
   const [numberOfEntries, setNumberOfEntries] = useState(3);
   const [playlist, setPlaylist] = useState(null);
   const [currentArtist, setCurrentArtist] = useState([]);
   const [includedGenres, setIncludedGenres] = useState([]);
   const [excludedGenres, setExcludedGenres] = useState([]);
+
+  // On initially rendering, currentTimeOfDay won't be set because the times of day won't have
+  // been retrieved from the API yet. So we can't use currentTimeOfDay to initialise state, above
+  useEffect(() => {
+    if (currentTimeOfDay) {
+      // Set the time of day
+      setTimeOfDay(currentTimeOfDay);
+
+      // Identify the default playlist type
+      const playlistType = getPlaylistTypeForTimeOfDay(playlistTypes, currentTimeOfDay);
+      setPlaylistType(playlistType);
+    }
+  }, [currentTimeOfDay, playlistTypes]);
 
   // Callback to request a playlist from the API
   const generatePlaylistCallback = useCallback(

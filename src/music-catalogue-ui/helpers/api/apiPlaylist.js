@@ -32,6 +32,8 @@ const apiGeneratePlaylist = async (
     excludedGenreIds: excludedGenreIds
   });
 
+  console.log(body);
+
   // Call the API to create the album
   const url = `${config.api.baseUrl}/playlist/generate`;
   const response = await fetch(url, {

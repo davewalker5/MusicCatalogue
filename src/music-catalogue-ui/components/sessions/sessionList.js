@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import styles from "./sessionList.module.css";
 import { apiSearchForSessions } from "@/helpers/api/apiPlaylist";
 import PlaylistTypeSelector from "../common/playlistTypeSelector";
@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import SessionRow from "./sessionRow";
 import useTimesOfDay from "@/hooks/useTimesOfDay";
 import usePlaylistTypes from "@/hooks/usePlaylistTypes";
+import { getCurrentTimeOfDay, getPlaylistTypeForTimeOfDay } from "../common/timeOfDay";
 
 /**
  * Component to search for and display saved sessions
@@ -15,13 +16,29 @@ import usePlaylistTypes from "@/hooks/usePlaylistTypes";
  * @returns
  */
 const SessionList = ({ navigate, logout }) => {
-  const { playlistTypes, setPlaylistTypes } = usePlaylistTypes(logout);
   const { timesOfDay, setTimesOfDay } = useTimesOfDay(logout);
+  const { playlistTypes, setPlaylistTypes } = usePlaylistTypes(logout);
+
+  const currentTimeOfDay = useMemo(() => getCurrentTimeOfDay(timesOfDay), [timesOfDay]);
+
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [playlistType, setPlaylistType] = useState(null);
   const [timeOfDay, setTimeOfDay] = useState(null);
   const [sessions, setSessions] = useState(null);
+
+  // On initially rendering, currentTimeOfDay won't be set because the times of day won't have
+  // been retrieved from the API yet. So we can't use currentTimeOfDay to initialise state, above
+  useEffect(() => {
+    if (currentTimeOfDay) {
+      // Set the time of day
+      setTimeOfDay(currentTimeOfDay);
+
+      // Identify the default playlist type
+      const playlistType = getPlaylistTypeForTimeOfDay(playlistTypes, currentTimeOfDay);
+      setPlaylistType(playlistType);
+    }
+  }, [currentTimeOfDay, playlistTypes]);
 
   // Callback to retrieve saved sessions
   const loadSessionsCallback = useCallback(
@@ -43,7 +60,6 @@ const SessionList = ({ navigate, logout }) => {
         s.artists = s.sessionAlbums.map(sa => sa.album.artist.name).join(", ");
         s.playlistTypeName = playlistTypes.find(t => t.id === s.type)?.name;
         s.timeOfDayName = timesOfDay.find(t => t.id === s.timeOfDay)?.name;
-        console.log(s);
       });
 
       // Store the sessions
