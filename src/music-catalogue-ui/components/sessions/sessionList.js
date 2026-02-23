@@ -26,6 +26,8 @@ const SessionList = ({ navigate, logout }) => {
   const [playlistType, setPlaylistType] = useState(null);
   const [timeOfDay, setTimeOfDay] = useState(null);
   const [sessions, setSessions] = useState(null);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   // On initially rendering, currentTimeOfDay won't be set because the times of day won't have
   // been retrieved from the API yet. So we can't use currentTimeOfDay to initialise state, above
@@ -72,6 +74,18 @@ const SessionList = ({ navigate, logout }) => {
     <>
       <div className="row mb-2 pageTitle">
         <h5 className="themeFontColor text-center">Saved Sessions</h5>
+      </div>
+      <div className="row">
+          {message != "" ? (
+              <div className={styles.sessionListMessage}>{message}</div>
+          ) : (
+              <></>
+          )}
+          {error != "" ? (
+              <div className={styles.sessionListError}>{error}</div>
+          ) : (
+              <></>
+          )}
       </div>
       <div className={styles.sessionListFormContainer}>
         <form className={styles.sessionListForm}>
@@ -148,6 +162,7 @@ const SessionList = ({ navigate, logout }) => {
                 <th>Time Of Day</th>
                 <th>Artists</th>
                 <th>Albums</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -156,7 +171,10 @@ const SessionList = ({ navigate, logout }) => {
                   key={s.id}
                   id={s.id}
                   session={s}
+                  setMessage={setMessage}
+                  setError={setError}
                   navigate={navigate}
+                  logout={logout}
                 />
               ))}
             </tbody>
