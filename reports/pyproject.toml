@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "music-catalogue-reports"
+version = "0.1.0"
+description = "Standalone Jupyter notebook reports for Music Catalogue data."
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel",
+    "jupyterlab",
+    "kneed",
+    "matplotlib",
+    "notebook",
+    "numpy",
+    "openpyxl",
+    "pandas",
+    "papermill",
+    "scikit-learn",
+    "sqlparse",
+]
+
+[tool.setuptools]
+py-modules = []
