@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:latest
-COPY musiccatalogue.api-1.43.0.0 /opt/musiccatalogue.api
+ARG APPLICATION_VERSION
+COPY musiccatalogue.api-${APPLICATION_VERSION} /opt/musiccatalogue.api
 WORKDIR /opt/musiccatalogue.api/bin
 ENTRYPOINT [ "./MusicCatalogue.Api" ]
