@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -19,7 +19,7 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "google-map-react": "^2.2.1",
     "multiselect-react-dropdown": "^2.0.25",
-    "next": "^14.2.34",
+    "next": "^15.5.20",
     "react": "^18",
     "react-currency-input-field": "^3.6.12",
     "react-datepicker": "^4.21.0",
@@ -33,7 +33,12 @@
     "glob": "^10.3.10"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "^14.2.34"
+    "@eslint/eslintrc": "^3.3.5",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^15.5.20"
+  },
+  "allowScripts": {
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.11.1": true
   }
 }
