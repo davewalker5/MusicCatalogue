@@ -9,4 +9,31 @@
 .noChips :global(.multiselect-container .searchWrapper) {
   padding-top: 0 !important;
   margin-top: 0 !important;
+  color: var(--text);
+  background: var(--surface-3);
+  border-color: var(--line);
+  border-radius: 7px;
+}
+
+.noChips :global(.multiselect-container .searchBox) {
+  color: var(--text);
+  background: transparent;
+}
+
+.noChips :global(.multiselect-container .optionContainer) {
+  color: var(--muted);
+  background: var(--surface);
+  border-color: var(--line);
+}
+
+.noChips :global(.multiselect-container .option),
+.noChips :global(.multiselect-container .highlightOption) {
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.noChips :global(.multiselect-container .option:hover),
+.noChips :global(.multiselect-container .highlightOption) {
+  color: var(--text);
+  background: rgba(53, 212, 208, .09);
 }

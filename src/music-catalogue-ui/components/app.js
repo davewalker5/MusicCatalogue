@@ -93,18 +93,22 @@ const App = () => {
   return (
     <>
       {isLoggedIn ? (
-        <>
-          <div>
-            <MenuBar navigate={navigate} logout={logout} />
-          </div>
-          <div>
+        <div className="appShell">
+          <MenuBar navigate={navigate} logout={logout} />
+          <main className="appContent">
             <ComponentPicker
               context={context}
               navigate={navigate}
               logout={logout}
             />
-          </div>
-        </>
+          </main>
+          <footer className="appFooter">
+            <div className="appContainer footerContent">
+              <span><span className="footerDisc" aria-hidden="true" /> Music Catalogue</span>
+              <span>Personal music library</span>
+            </div>
+          </footer>
+        </div>
       ) : (
         <Login login={login} />
       )}
