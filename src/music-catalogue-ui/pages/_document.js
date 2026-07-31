@@ -5,12 +5,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="css/globals.css" />
+        <link rel="stylesheet" href="/css/globals.css" />
       </Head>
       <body>
-        <div className="container">
-          <Main />
-        </div>
+        <Main />
         <NextScript />
       </body>
     </Html>

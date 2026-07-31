@@ -412,3 +412,4 @@ venv/
 exported/
 musiccatalogue.db*
 playlists.*
+appsettings.Development.json
