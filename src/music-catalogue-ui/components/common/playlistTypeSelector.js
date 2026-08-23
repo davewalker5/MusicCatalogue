@@ -1,6 +1,6 @@
 import Select from "react-select";
 import usePlaylistTypes from "@/hooks/usePlaylistTypes";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 /**
  * Component to display the Playlist Type selector
@@ -12,13 +12,10 @@ import { useState, useEffect } from "react";
 const PlaylistTypeSelector = ({ initialPlaylistType, playlistTypeChangedCallback, logout }) => {
   const { playlistTypes, setPlaylistTypes } = usePlaylistTypes(logout);
 
-  let options = [];
-  if (playlistTypes && playlistTypes.length > 0) {
-    // Construct the options for the playlist type drop-down
-    for (let i = 0; i < playlistTypes.length; i++) {
-      options = [...options, { value: playlistTypes[i].id, label: playlistTypes[i].name }];
-    }
-  }
+  const options = useMemo(() => (playlistTypes ?? []).map((playlistType) => ({
+    value: playlistType.id,
+    label: playlistType.name,
+  })), [playlistTypes]);
 
   // Set up state
   const [playlistType, setPlaylistType] = useState(null);
@@ -30,7 +27,7 @@ const PlaylistTypeSelector = ({ initialPlaylistType, playlistTypeChangedCallback
         setPlaylistType(match);
       }
     }
-  }, [initialPlaylistType, options]);
+  }, [initialPlaylistType, playlistType, options]);
 
   // Callback to update the playlist type state and notify the parent component
   // that the playlist type has changed

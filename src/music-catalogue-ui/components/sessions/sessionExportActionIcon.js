@@ -40,7 +40,7 @@ const SessionExportActionIcon = ({ session, setMessage, setError, logout }) => {
             // message
             window.scrollTo({ top: 0, behavior: "smooth" });
         },
-        [session, logout]
+        [session, logout, setMessage, setError]
     );
 
   return (

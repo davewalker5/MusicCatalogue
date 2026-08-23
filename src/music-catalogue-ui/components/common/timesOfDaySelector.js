@@ -1,6 +1,6 @@
 import Select from "react-select";
 import useTimesOfDay from "@/hooks/useTimesOfDay";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 /**
  * Component to display the "time of day" selector
@@ -12,13 +12,10 @@ import { useState, useEffect } from "react";
 const TimesOfDaySelector = ({ initialTimeOfDay, timeOfDayChangedCallback, logout }) => {
   const { timesOfDay, setTimesOfDay } = useTimesOfDay(logout);
 
-  let options = [];
-  if (timesOfDay && timesOfDay.length > 0) {
-    // Construct the options for the "time of day" drop-down
-    for (let i = 0; i < timesOfDay.length; i++) {
-      options = [...options, { value: timesOfDay[i].id, label: timesOfDay[i].name }];
-    }
-  }
+  const options = useMemo(() => (timesOfDay ?? []).map((timeOfDay) => ({
+    value: timeOfDay.id,
+    label: timeOfDay.name,
+  })), [timesOfDay]);
 
   // Set up state
   const [timeOfDay, setTimeOfDay] = useState(null);
@@ -30,7 +27,7 @@ const TimesOfDaySelector = ({ initialTimeOfDay, timeOfDayChangedCallback, logout
         setTimeOfDay(match);
       }
     }
-  }, [initialTimeOfDay, options]);
+  }, [initialTimeOfDay, timeOfDay, options]);
 
   // Callback to update the playlist type state and notify the parent component
   // that the playlist type has changed
