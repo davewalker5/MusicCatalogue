@@ -36,10 +36,9 @@ namespace MusicCatalogue.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Read the configuration file
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
+            // Use the host configuration, which includes appsettings.json and the optional
+            // appsettings.{Environment}.json override (for example, appsettings.Development.json).
+            IConfiguration configuration = builder.Configuration;
 
             // Configure strongly typed application settings
             IConfigurationSection section = configuration.GetSection("ApplicationSettings");

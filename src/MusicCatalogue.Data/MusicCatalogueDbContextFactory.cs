@@ -15,11 +15,14 @@ namespace MusicCatalogue.Data
         [ExcludeFromCodeCoverage]
         public MusicCatalogueDbContext CreateDbContext(string[] args)
         {
+            var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+
             // Construct a configuration object that contains the key/value pairs from the settings file
             // at the root of the main applicatoin
             IConfigurationRoot configuration = new ConfigurationBuilder()
                                                     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                                                     .AddJsonFile("appsettings.json")
+                                                    .AddJsonFile($"appsettings.{environment}.json", optional: true)
                                                     .Build();
 
             // Use the configuration object to read the connection string
