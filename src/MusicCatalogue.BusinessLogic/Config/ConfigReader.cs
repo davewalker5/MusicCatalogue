@@ -11,9 +11,15 @@ namespace MusicCatalogue.BusinessLogic.Config
         /// <returns></returns>
         public virtual T? Read(string jsonFileName)
         {
+            var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+            var directory = Path.GetDirectoryName(jsonFileName);
+            var environmentFileName = $"{Path.GetFileNameWithoutExtension(jsonFileName)}.{environment}{Path.GetExtension(jsonFileName)}";
+            var environmentFilePath = Path.Combine(directory ?? string.Empty, environmentFileName);
+
             // Set up the configuration reader
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddJsonFile(jsonFileName)
+                .AddJsonFile(environmentFilePath, optional: true)
                 .Build();
 
             // Read the application settings section
