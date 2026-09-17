@@ -19,7 +19,7 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "google-map-react": "^2.2.1",
     "multiselect-react-dropdown": "^2.0.25",
-    "next": "15.5.21",
+    "next": "15.5.24",
     "react": "^18",
     "react-currency-input-field": "^3.6.12",
     "react-datepicker": "^4.21.0",
@@ -32,15 +32,15 @@
     "rimraf": "^6.0.0",
     "glob": "^10.3.10",
     "postcss": "^8.5.25",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "eslint": "^9.39.4",
-    "eslint-config-next": "15.5.21"
+    "eslint-config-next": "15.5.24"
   },
   "allowScripts": {
-    "sharp@0.35.3": true,
+    "sharp@0.35.4": true,
     "unrs-resolver@1.11.1": true
   }
 }
