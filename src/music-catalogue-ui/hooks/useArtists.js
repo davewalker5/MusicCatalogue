@@ -34,7 +34,7 @@ const useArtists = (filter, genre, isWishlist, includeArtistsWithNoAlbums, logou
     };
 
     fetchArtists();
-  }, [filter, genre, isWishlist, logout]);
+  }, [filter, genre, isWishlist, logout, includeArtistsWithNoAlbums]);
 
   return { artists, setArtists };
 };
